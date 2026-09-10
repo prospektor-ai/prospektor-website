@@ -12,11 +12,20 @@
 // fields. Everything else on the session (line items, the subscription id, the
 // rest of the metadata) deliberately stays server-side.
 //
-// #622 added a fifth, on the same terms: `trial`. A Close arrival's session
-// completes with `payment_status: 'no_payment_required'` — a card on file and
-// nothing charged — and this page's served copy says *Payment confirmed* and
-// *your receipt is on its way*, both of which are false for that buyer. One
-// boolean is what it takes for the page to show the sentence that is true.
+// #622 added a fifth, on the same terms: `trial`. A Close arrival hands over a
+// card and is charged nothing, and this page's served copy said *Payment
+// confirmed* and *your receipt is on its way* as constants — the first is not
+// what happened and the second is a receipt for $0.
+//
+// The signal has to be a FACT rather than an inference. `payment_status` is no
+// use: Stripe's reference says a trial session reads `paid`, because the $0
+// trial invoice really is processed. `amount_total: 0` is no use either — a
+// 100% promotion code produces exactly that, and that buyer HAS paid, in full,
+// for nothing. So the subscription itself is asked: `?expand[]=subscription`
+// on the read this function already makes (no second call), and a `trialing`
+// status is the one thing that means *nothing has been charged yet*. The
+// subscription's id and the rest of it stay server-side as they always did;
+// one boolean crosses.
 //
 // #542 added a fourth, and it is the narrowest widening that would do: `plan`,
 // one of exactly two words, read off the metadata the checkout call wrote. The
@@ -48,7 +57,7 @@ exports.handler = async function(event) {
 
   let response, session;
   try {
-    response = await fetch('https://api.stripe.com/v1/checkout/sessions/' + id, {
+    response = await fetch('https://api.stripe.com/v1/checkout/sessions/' + id + '?expand[]=subscription', {
       headers: { 'Authorization': `Bearer ${key}` },
     });
     session = await response.json();
@@ -64,10 +73,12 @@ exports.handler = async function(event) {
     statusCode: 200,
     body: JSON.stringify({
       paid: session.payment_status === 'paid',
-      // Nothing was due: a subscription opened on `trial_period_days` (#622).
-      // The card is on file and the workspace is real; only the first invoice
-      // is $0, which is a different sentence rather than a lesser purchase.
-      trial: session.payment_status === 'no_payment_required',
+      // Still inside the free month (#622): the card is on file, the workspace
+      // is real, and no money has moved. A different sentence, not a lesser
+      // purchase. An unexpanded or absent subscription reads as false, which
+      // is the page every buyer read before this existed.
+      trial: !!(session.subscription && typeof session.subscription === 'object'
+        && session.subscription.status === 'trialing'),
       amount_total: typeof session.amount_total === 'number' ? session.amount_total : null,
       currency: session.currency || 'usd',
       email: (session.customer_details && session.customer_details.email) || session.customer_email || null,

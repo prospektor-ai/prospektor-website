@@ -40,16 +40,25 @@ function signedStripeEvent(secret, event) {
   return { httpMethod: 'POST', body: payload, headers: { 'stripe-signature': `t=${t},v1=${v1}` } };
 }
 
-// `paid` is three-valued on purpose since #622: true is a charge, false is a
-// delayed method that has not settled, and 'trial' is the shape Stripe sends
-// for a subscription opened with `trial_period_days` — a completed session
-// whose first invoice is $0. That third value is not a variant of the second.
+// `paid` takes four values since #622, because a trial checkout is a shape the
+// old two could not express:
+//   true               a charge — `paid`
+//   false              a delayed method that has not settled — `unpaid`
+//   'trial'            a subscription opened with `trial_period_days`. Stripe
+//                      reports this as `paid`, because the $0 trial invoice IS
+//                      processed — its API reference says so on the enum — so
+//                      this is `paid` with a `trialing` subscription, NOT a
+//                      third payment_status.
+//   'no_payment_required'  the second door the gate accepts: a setup-mode or
+//                      billing-anchored session, which this funnel does not
+//                      create today but a later one might.
 function checkoutSessionCompleted({ email, metadata = {}, paid = true }) {
-  const payment_status = paid === 'trial' ? 'no_payment_required' : paid ? 'paid' : 'unpaid';
-  return {
-    type: 'checkout.session.completed',
-    data: { object: { id: 'cs_test_1', payment_status, customer_details: { email }, metadata } },
-  };
+  const payment_status = paid === 'trial' ? 'paid'
+    : paid === 'no_payment_required' ? 'no_payment_required'
+      : paid ? 'paid' : 'unpaid';
+  const object = { id: 'cs_test_1', payment_status, customer_details: { email }, metadata };
+  if (paid === 'trial') object.subscription = { id: 'sub_123', status: 'trialing' };
+  return { type: 'checkout.session.completed', data: { object } };
 }
 
 function resetEnv() {

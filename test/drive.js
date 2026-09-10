@@ -1847,7 +1847,9 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     const page = await browser.newPage();
     await page.route('**/.netlify/functions/checkout-session-status**', route =>
       route.fulfill({ status: 200, contentType: 'application/json',
-        body: JSON.stringify({ paid: false, trial: true, amount_total: 0, currency: 'usd',
+        // As Stripe reports it: `paid`, because the $0 trial invoice was
+        // processed. The page must not read that as "they were charged".
+        body: JSON.stringify({ paid: true, trial: true, amount_total: 0, currency: 'usd',
           email: 'buyer@acme.com', plan: 'month' }) }));
     await page.goto('http://localhost:8899/checkout/done/?session_id=cs_test_abcdefghij');
     await page.waitForSelector('[data-paid-show="trial"]:not([hidden])', { timeout: 5000 });

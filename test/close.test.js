@@ -122,6 +122,8 @@ describe('/integrations/close/ — the page, and the offer it may print', () => 
     assert.match(html, /data-paid-show="paid"/);
     assert.match(html, /data-paid-show="trial"/);
     assert.match(text(html), /nothing charged/i);
+    // Written on every build, armed or not: a session that is trialing is a
+    // fact about the subscription, not about this build's environment.
   });
 
   test('the offer is stated where it is sold, and nowhere else', () => {

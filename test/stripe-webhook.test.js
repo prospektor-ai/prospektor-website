@@ -32,13 +32,13 @@ describe('stripe-webhook', () => {
     assert.equal(calls.filter(c => c.url.includes('/api/provision')).length, 0);
   });
 
-  // ── The trial checkout, and the assumption it turned out to break (#622) ──
+  // ── The trial checkout (#622), which the row asked to be verified ──
   //
-  // #622's row said a trial buyer "is provisioned like any other". Against this
-  // handler as it stood they were NOT: a session opened with
-  // `trial_period_days` completes with `payment_status: 'no_payment_required'`,
-  // which the pay-first gate read as not-yet-paid and skipped. The buyer would
-  // have handed over a card, been told their studio was ready, and had none.
+  // Verified against Stripe's API reference: a session whose subscription is on
+  // a free trial completes `paid`, because the $0 trial invoice is processed.
+  // So the answer to the row's question is yes — a trial buyer provisions like
+  // any other, through the gate exactly as it stood. This test is what keeps
+  // that true if the gate is ever tightened again.
   test('provisions a trial checkout — the card is on file and the workspace is real', async () => {
     const calls = stubFetch([provisioned(), ['postmarkapp', { status: 200, body: {} }]]);
     const r = await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({
@@ -48,6 +48,14 @@ describe('stripe-webhook', () => {
     assert.ok(p, 'a trial buyer must be provisioned like any other');
     assert.equal(JSON.parse(p.body).email, 'b@acme.com');
     assert.ok(welcome(calls), 'and welcomed like any other');
+  });
+
+  test('and provisions the second door too, so a billing anchor cannot strand a buyer', async () => {
+    const calls = stubFetch([provisioned(), ['postmarkapp', { status: 200, body: {} }]]);
+    await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({
+      email: 'b@acme.com', paid: 'no_payment_required', metadata: { domain: 'acme.com', company: 'Acme' } })));
+    assert.ok(calls.find(c => c.url.includes('/api/provision')),
+      'no_payment_required means nothing is DUE, never that funds are missing');
   });
 
   test('the arrival marker changes nothing about provisioning', async () => {

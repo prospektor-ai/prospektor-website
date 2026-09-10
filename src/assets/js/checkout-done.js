@@ -22,15 +22,16 @@
     .then(r => (r.ok ? r.json() : null))
     .then(d => {
       if (!d) return;
-      // #622: a trial session is not `paid` and is not a failure — it is the
-      // Close arrival, card on file and nothing charged. Swap the two
-      // sentences the build wrote for exactly this, then carry on: the amount
-      // block below is skipped because there is no amount to show.
+      // #622: a session still in its free month reads as `paid` — Stripe
+      // processed a $0 trial invoice — so `paid` alone cannot decide what this
+      // page says. Swap in the two sentences the build wrote for that buyer,
+      // and print no amount: "Paid today: $0.00" is what a 100% promo code
+      // earns, not what a card on file with nothing taken from it did.
       if (d.trial)
         for (const el of document.querySelectorAll('[data-paid-show]'))
           el.hidden = el.dataset.paidShow !== 'trial';
       if (!d.paid && !d.trial) return;
-      if (d.paid && typeof d.amount_total === 'number') {
+      if (!d.trial && d.paid && typeof d.amount_total === 'number') {
         let amount;
         try {
           // The page's own language decides how the number reads (#114):

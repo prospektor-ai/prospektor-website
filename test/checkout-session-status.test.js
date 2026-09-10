@@ -83,18 +83,38 @@ describe('checkout-session-status', () => {
       assert.ok(!r.body.includes(leak), `${leak} must stay server-side`);
   });
 
-  // #622: the Close arrival's session. Stripe completes it with
-  // `no_payment_required` — a card on file and a $0 first invoice — and
-  // /checkout/done/ has two sentences written for exactly this, one of which
-  // ("Payment confirmed", "your receipt is on its way") would be false.
-  test('a trial checkout says so, and is not reported as paid', async () => {
-    stubFetch([['api.stripe.com', { status: 200, body: Object.assign({}, SESSION, {
-      payment_status: 'no_payment_required', amount_total: 0,
+  // #622: the Close arrival's session. It reads `paid` — Stripe processes the
+  // $0 trial invoice — so the page cannot tell from that alone that nothing
+  // was charged, and its served copy ("Payment confirmed", "your receipt is on
+  // its way") is written for somebody who paid. The subscription's own status
+  // is the fact that decides it.
+  test('a session still in its free month says so', async () => {
+    const calls = stubFetch([['api.stripe.com', { status: 200, body: Object.assign({}, SESSION, {
+      payment_status: 'paid', amount_total: 0, subscription: { id: 'sub_123', status: 'trialing' },
     }) }]]);
     const r = await get({ session_id: 'cs_test_abcdefghij' });
     assert.equal(r.statusCode, 200);
     assert.equal(body(r).trial, true, 'the page has no other way to know nothing was charged');
-    assert.equal(body(r).paid, false, 'no money moved, and the amount line must stay hidden');
+    assert.match(calls[0].url, /expand\[\]=subscription/, 'and it is read on the call already being made');
+    assert.ok(!r.body.includes('sub_123'), 'the subscription itself stays server-side');
+  });
+
+  test('a $0 first invoice from a promotion code is NOT a trial', async () => {
+    // The one case an amount check would get wrong: this buyer has paid in
+    // full, and "Paid today: $0.00" is the true sentence for them.
+    stubFetch([['api.stripe.com', { status: 200, body: Object.assign({}, SESSION, {
+      payment_status: 'paid', amount_total: 0, subscription: { id: 'sub_123', status: 'active' },
+    }) }]]);
+    const r = await get({ session_id: 'cs_test_abcdefghij' });
+    assert.deepEqual([body(r).paid, body(r).trial], [true, false]);
+  });
+
+  test('an unexpanded or absent subscription is not a trial', async () => {
+    for (const subscription of [undefined, null, 'sub_123']) {
+      stubFetch([['api.stripe.com', { status: 200, body: Object.assign({}, SESSION, { subscription }) }]]);
+      assert.equal(body(await get({ session_id: 'cs_test_abcdefghij' })).trial, false,
+        JSON.stringify(subscription));
+    }
   });
 
   test('an unpaid session is neither paid nor a trial', async () => {
