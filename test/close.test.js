@@ -24,7 +24,7 @@ const path = require('node:path');
 const os = require('node:os');
 
 const { buildInto, siteBuild } = require('./helpers.js');
-const { TRIAL_DAYS, trialDays } = require('../lib/trial.js');
+const { TRIAL_DAYS, PROVEN, trialDays } = require('../lib/trial.js');
 const i18n = require('../lib/i18n.js');
 
 const PAGE = 'integrations/close/index.html';
@@ -81,20 +81,51 @@ describe('/integrations/close/ — the page, and the offer it may print', () => 
     assert.match(html, /data-from="close"/, 'a cancelled checkout must come back here');
   });
 
+  const OFFER = [/free for/i, /first month free/i, /30 days/i, /\$0 today/i];
+
   test('with the offer dark the page promises no trial at all', () => {
     assert.equal(trialDays({}), 0);
     const body = text(read(DARK, PAGE));
-    for (const re of [/free for/i, /first month free/i, /30 days/i, /\$0 today/i])
+    for (const re of OFFER)
       assert.ok(!re.test(body), `the dark build says ${re} — the checkout call would grant nothing`);
   });
 
-  test('armed, it states the offer, and states what happens after it', () => {
-    const body = text(read(ARMED, PAGE));
-    assert.match(body, /first month free/i);
-    assert.match(body, new RegExp(`${TRIAL_DAYS} days`), 'the reader is owed the number Stripe is sent');
-    assert.match(body, /\$999/, 'a trial that converts must say what it converts to');
-    assert.match(body, /hello@prospektor\.ai/, 'a cancel-any-time promise needs the way to cancel');
-  });
+  // ── The two switches, and which one is holding ──────────────────────────
+  //
+  // `CLOSE_TRIAL_DAYS` was set on the live site BEFORE this code existed, so
+  // it cannot be the switch that arms the offer — a variable set in advance
+  // arms itself on deploy, which is the one thing ship-dark exists to prevent.
+  // `PROVEN` in lib/trial.js is the switch that can only be flipped by a
+  // commit, and it stays false until #625 has run a real test-mode trial.
+  //
+  // Both halves are written. Whichever way that constant is set, the build and
+  // the page have to agree with it — which is the property that matters, and
+  // the only one either half is asserting.
+  if (!PROVEN) {
+    test('UNPROVEN: the env var alone cannot arm the offer, and the page states none', () => {
+      assert.equal(trialDays({ CLOSE_TRIAL_DAYS: String(TRIAL_DAYS) }), 0,
+        'a variable somebody set last night must not arm a path nobody has driven');
+      const body = text(read(ARMED, PAGE));
+      for (const re of OFFER)
+        assert.ok(!re.test(body), `an env-armed build still says ${re} — nothing would grant it`);
+    });
+
+    test('UNPROVEN: and the page itself is live anyway, which is the point', () => {
+      // The page is what Close's listing form needs. Holding it back to hold
+      // back the offer would cost a day on the listing to fix nothing.
+      const body = text(read(ARMED, PAGE));
+      assert.match(body, /\b39\b/);
+      assert.match(body, /\$999/, 'it still sells the workspace at list price');
+    });
+  } else {
+    test('PROVEN: armed, it states the offer, and states what happens after it', () => {
+      const body = text(read(ARMED, PAGE));
+      assert.match(body, /first month free/i);
+      assert.match(body, new RegExp(`${TRIAL_DAYS} days`), 'the reader is owed the number Stripe is sent');
+      assert.match(body, /\$999/, 'a trial that converts must say what it converts to');
+      assert.match(body, /hello@prospektor\.ai/, 'a cancel-any-time promise needs the way to cancel');
+    });
+  }
 
   test('every span of days the OFFER prints is the span Stripe is sent', () => {
     // Scoped to the two pages that talk about the trial, in every language,
@@ -143,8 +174,9 @@ describe('/integrations/close/ — the page, and the offer it may print', () => 
   test('CLOSE_TRIAL_DAYS is a switch, not a dial', () => {
     // The whole reason the number lives in the repo: an env var that could say
     // 14 would falsify the page from a dashboard, with no deploy and nothing
-    // red. Anything but the published figure arms nothing.
-    assert.equal(trialDays({ CLOSE_TRIAL_DAYS: String(TRIAL_DAYS) }), TRIAL_DAYS);
+    // red. Anything but the published figure arms nothing — and while PROVEN
+    // is false, nothing arms anything at all.
+    assert.equal(trialDays({ CLOSE_TRIAL_DAYS: String(TRIAL_DAYS) }), PROVEN ? TRIAL_DAYS : 0);
     for (const v of ['', '0', '14', '7', '60', 'true', 'yes', '30d', 'thirty', '-30', '030'])
       assert.equal(trialDays({ CLOSE_TRIAL_DAYS: v }), 0, `CLOSE_TRIAL_DAYS=${JSON.stringify(v)} must arm nothing`);
   });

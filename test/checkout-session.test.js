@@ -4,7 +4,7 @@ const { test, describe, beforeEach } = require('node:test');
 const assert = require('node:assert');
 const { stubFetch, post, get, resetEnv } = require('./helpers');
 const fn = require('../netlify/functions/create-checkout-session');
-const { TRIAL_DAYS } = require('../lib/trial');
+const { TRIAL_DAYS, PROVEN } = require('../lib/trial');
 
 const STRIPE_OK = ['api.stripe.com', { status: 200, body: { url: 'https://checkout.stripe.com/c/pay/cs_test_1' } }];
 const FREE = ['provision-check', { status: 200, body: { taken: false } }];
@@ -156,12 +156,16 @@ describe('create-checkout-session', () => {
     delete process.env.CLOSE_TRIAL_DAYS;
   });
 
+  // Until #625 has driven a real test-mode trial, `PROVEN` in lib/trial.js is
+  // false and NOTHING arms the offer — the env var was set on the live site
+  // before this code existed, so it cannot be the switch. Both halves of this
+  // test are written; the constant decides which one is the truth today.
   test('armed, a Close arrival gets exactly the days the page prints', async () => {
     process.env.CLOSE_TRIAL_DAYS = String(TRIAL_DAYS);
     const calls = stubFetch([STRIPE_OK, FREE]);
     await post(fn, { email: 'b@acme.com', from: 'close', via: 'close' });
     const p = new URLSearchParams(stripeCalls(calls)[0].body);
-    assert.equal(p.get('subscription_data[trial_period_days]'), String(TRIAL_DAYS));
+    assert.equal(p.get('subscription_data[trial_period_days]'), PROVEN ? String(TRIAL_DAYS) : null);
     // Still a $999/month subscription — a trial is when the first invoice
     // falls due, never a different price.
     assert.equal(p.get('line_items[0][price_data][unit_amount]'), '99900');
@@ -178,7 +182,7 @@ describe('create-checkout-session', () => {
     const calls = stubFetch([STRIPE_OK, FREE]);
     await post(fn, { email: 'b@acme.com', from: 'close', via: ' Close ' });
     assert.equal(new URLSearchParams(stripeCalls(calls)[0].body).get('subscription_data[trial_period_days]'),
-      String(TRIAL_DAYS));
+      PROVEN ? String(TRIAL_DAYS) : null);
   });
 
   test('armed, nobody but a Close arrival gets a free month', async () => {
