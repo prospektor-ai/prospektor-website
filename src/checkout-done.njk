@@ -31,7 +31,13 @@ description: "Your Prospektor workspace is live. Sign in with the address you pa
 
     <div class="onboard-panel">
       <h1 class="onboard-h1">{% t %}You're in.{% endt %} <span class="done-check">✓</span></h1>
-      <p class="onboard-sub">{% t %}Payment confirmed — your studio is already reading your site and drafting your brief.{% endt %}</p>
+      {#- #622: a trial checkout charges nothing, so "Payment confirmed" is
+          false for the buyer who came from Close. Both sentences are written
+          here by the build, in the reader's language, and checkout-done.js
+          hides one — the same construction as the plan rows below, and for
+          the same reason: this page may not invent what happened. -#}
+      <p class="onboard-sub" data-paid-show="paid">{% t %}Payment confirmed — your studio is already reading your site and drafting your brief.{% endt %}</p>
+      <p class="onboard-sub" data-paid-show="trial" hidden>{% t %}Card saved, nothing charged — your studio is already reading your site and drafting your brief.{% endt %}</p>
 
       <div class="order-card" id="confirmCard">
         {#- #542: the row said "$999/mo" as a constant, which stopped being
@@ -46,7 +52,13 @@ description: "Your Prospektor workspace is live. Sign in with the address you pa
         <ul class="confirm-list">
           <li id="confirmPaid" hidden>{% t %}Paid today:{% endt %} <strong id="confirmAmount"></strong></li>
           <li id="confirmEmail" hidden>{% t %}Your sign-in:{% endt %} <strong id="confirmAddress"></strong></li>
-          <li>{% t %}Your receipt is on its way — Stripe emails it to the address you paid with{% endt %}</li>
+          <li data-paid-show="paid">{% t %}Your receipt is on its way — Stripe emails it to the address you paid with{% endt %}</li>
+          {#- The figure is written out, not interpolated: a paired {% t %}
+              takes no placeholders, and a sentence whose shape changes per
+              language is a sentence no catalogue can hold. `test/close.test.js`
+              pins every "30 days" on the site to lib/trial.js's constant, so
+              the number here cannot drift away from the one Stripe is sent. -#}
+          <li data-paid-show="trial" hidden>{% t %}Free for 30 days, then $999/month. Cancel before then — email <a href="mailto:hello@prospektor.ai">hello@prospektor.ai</a> — and nothing is charged.{% endt %}</li>
         </ul>
       </div>
 

@@ -32,6 +32,36 @@ describe('stripe-webhook', () => {
     assert.equal(calls.filter(c => c.url.includes('/api/provision')).length, 0);
   });
 
+  // ── The trial checkout, and the assumption it turned out to break (#622) ──
+  //
+  // #622's row said a trial buyer "is provisioned like any other". Against this
+  // handler as it stood they were NOT: a session opened with
+  // `trial_period_days` completes with `payment_status: 'no_payment_required'`,
+  // which the pay-first gate read as not-yet-paid and skipped. The buyer would
+  // have handed over a card, been told their studio was ready, and had none.
+  test('provisions a trial checkout — the card is on file and the workspace is real', async () => {
+    const calls = stubFetch([provisioned(), ['postmarkapp', { status: 200, body: {} }]]);
+    const r = await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({
+      email: 'b@acme.com', paid: 'trial', metadata: { domain: 'acme.com', company: 'Acme', via: 'close' } })));
+    assert.equal(r.statusCode, 200);
+    const p = calls.find(c => c.url.includes('/api/provision'));
+    assert.ok(p, 'a trial buyer must be provisioned like any other');
+    assert.equal(JSON.parse(p.body).email, 'b@acme.com');
+    assert.ok(welcome(calls), 'and welcomed like any other');
+  });
+
+  test('the arrival marker changes nothing about provisioning', async () => {
+    // `via` rides through for the operator's own counting. The studio is never
+    // told about it and nothing here reads it — a Close buyer's workspace is
+    // the workspace every other buyer gets.
+    const calls = stubFetch([provisioned(), ['postmarkapp', { status: 200, body: {} }]]);
+    await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({
+      email: 'b@acme.com', metadata: { domain: 'acme.com', company: 'Acme', via: 'close', utm_source: 'close' } })));
+    const sent = JSON.parse(calls.find(c => c.url.includes('/api/provision')).body);
+    for (const k of ['via', 'utm_source'])
+      assert.ok(!(k in sent), k + ' is ours to count, not the studio\'s to store');
+  });
+
   test('provisions on payment and sends both mails', async () => {
     const calls = stubFetch([provisioned({ goal: true }), ['postmarkapp', { status: 200, body: {} }]]);
     const r = await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({

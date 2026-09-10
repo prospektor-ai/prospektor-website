@@ -7,6 +7,10 @@
 // a 200 with existing:true is success, not an error — so there is no dedupe
 // bookkeeping here, only a plain retry on network failure.
 //
+// A trial checkout completes with `payment_status: 'no_payment_required'`
+// rather than `'paid'` (#622) and provisions like any other — see the gate
+// below for why that is the pay-first rule holding rather than bending.
+//
 // Any provision failure returns non-2xx so Stripe re-delivers (for days, with
 // the operator alerted in the dashboard). That makes a not-yet-configured
 // studio self-heal: once the secret lands, the next retry provisions.
@@ -450,8 +454,25 @@ exports.handler = async function(event) {
   }
 
   const session = (stripeEvent.data && stripeEvent.data.object) || {};
-  if (session.payment_status && session.payment_status !== 'paid') {
-    // Pay-first rule: never provision an unpaid checkout.
+  // The pay-first rule, and the one arrival it has to let through (#622).
+  //
+  // Stripe's `payment_status` has three values, not two: `paid`, `unpaid`, and
+  // **`no_payment_required`** — the one a session gets when nothing is due at
+  // completion, which is precisely a subscription opened with
+  // `trial_period_days`. #622's row assumed a trial buyer "is provisioned like
+  // any other"; against this gate as it stood they were not. The session
+  // completes, the subscription enters `trialing`, `payment_status` reads
+  // `no_payment_required`, and the buyer who has just handed over a card would
+  // have got the free month and NO WORKSPACE — the exact failure the row asked
+  // to be verified rather than trusted.
+  //
+  // `no_payment_required` is not a weakening of the rule. The card is on file
+  // and the subscription is real; only the first invoice is $0. What stays
+  // refused is `unpaid`, which is a delayed payment method that has not
+  // settled — that session provisions on `async_payment_succeeded` instead,
+  // which is why this handler listens for both.
+  const PROVISIONABLE = ['paid', 'no_payment_required'];
+  if (session.payment_status && PROVISIONABLE.indexOf(session.payment_status) < 0) {
     console.log('Session', session.id, 'not paid yet (', session.payment_status, ') — waiting.');
     return { statusCode: 200, body: JSON.stringify({ received: true }) };
   }

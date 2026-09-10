@@ -809,7 +809,12 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
                     // article below — so a new static page that is forgotten
                     // here fails as "one article too many, and it has no date",
                     // which names neither the page nor the cause.
-                    'https://prospektor.ai/contact/'];
+                    'https://prospektor.ai/contact/',
+                    // #620. The page Close's integration directory points at —
+                    // a static page like the rest, listed here for the reason
+                    // the comment above gives, and its language twins are
+                    // derived below like everybody else's.
+                    'https://prospektor.ai/integrations/close/'];
     // #114: each static page is followed by its twins in every language the
     // build wrote it in — derived from lib/i18n.js and the built tree, the
     // same way sitemap.njk derives them, so a new language or a newly
@@ -1781,6 +1786,92 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
       card.includes('$9,990') && !card.includes('$999'), card);
     check('and the amount is the one that left the card',
       (await page.textContent('#confirmAmount')) === '$9,990.00');
+    await page.close();
+  }
+
+  // ── §17 THE CLOSE ARRIVAL (#620/#622) ────────────────────────────────────
+  //
+  // The page Close's directory points at, driven the way a visitor from that
+  // directory arrives: with the listing's tracking parameters on the URL. Two
+  // things the unit tests cannot see — that the form on THIS page reveals and
+  // submits like /pricing/'s, and that what leaves the browser carries the
+  // arrival and the parameters and nothing else invented.
+  {
+    const page = await browser.newPage();
+    const posts = [];
+    await page.route('**/.netlify/functions/create-checkout-session', async route => {
+      if (route.request().method() === 'GET')
+        return route.fulfill({ status: 200, body: JSON.stringify({ configured: true }) });
+      posts.push(JSON.parse(route.request().postData()));
+      return route.fulfill({ status: 200, contentType: 'application/json',
+        body: JSON.stringify({ url: 'https://checkout.stripe.com/c/pay/cs_live_1' }) });
+    });
+    await page.route('https://checkout.stripe.com/**', route =>
+      route.fulfill({ status: 200, contentType: 'text/html', body: '<h1>STRIPE CHECKOUT</h1>' }));
+
+    await page.goto('http://localhost:8899/integrations/close/'
+      + '?utm_source=close&utm_medium=directory&utm_campaign=integrations&gclid=nope');
+    check('the Close page leads with the census, not with the product',
+      ((await page.textContent('h1')) || '').includes('39'), await page.textContent('h1'));
+    await page.waitForSelector('#buyForm:not([hidden])', { timeout: 5000 });
+    check('and its buy form is the direct pay path, revealed by the keys probe',
+      await page.isHidden('#buyLink'));
+    await page.fill('#buyEmail', 'buyer@acme.com');
+    await page.click('#buyBtn');
+    await page.waitForURL(/checkout\.stripe\.com/, { timeout: 5000 });
+    const sent = posts[0] || {};
+    check('the checkout call says which directory sent them', sent.via === 'close', sent);
+    check('and where a cancelled checkout should land them back', sent.from === 'close', sent);
+    check('the listing\'s parameters ride along, so the traffic is countable',
+      sent.utm && sent.utm.utm_source === 'close' && sent.utm.utm_campaign === 'integrations', sent.utm);
+    check('and nothing else off the URL does', sent.utm && !('gclid' in sent.utm), sent.utm);
+    await page.close();
+  }
+  {
+    // The same page in Spanish — it exists, it is Spanish, and its own CTA
+    // stays inside the Spanish funnel (#114's rule for every internal href).
+    const page = await browser.newPage();
+    await page.goto('http://localhost:8899/es/integrations/close/');
+    check('the Spanish twin is served, in Spanish',
+      (await page.getAttribute('html', 'lang')) === 'es'
+      && ((await page.textContent('h1')) || '').toLowerCase().includes('ninguna'),
+      await page.textContent('h1'));
+    check('and its no-keys fallback link stays on the Spanish checkout',
+      ((await page.getAttribute('#buyLink', 'href')) || '').startsWith('/es/checkout/'),
+      await page.getAttribute('#buyLink', 'href'));
+    await page.close();
+  }
+  {
+    // #622: a trial buyer is not a paid buyer, and /checkout/done/ said
+    // "Payment confirmed" and "your receipt is on its way" as constants.
+    const page = await browser.newPage();
+    await page.route('**/.netlify/functions/checkout-session-status**', route =>
+      route.fulfill({ status: 200, contentType: 'application/json',
+        body: JSON.stringify({ paid: false, trial: true, amount_total: 0, currency: 'usd',
+          email: 'buyer@acme.com', plan: 'month' }) }));
+    await page.goto('http://localhost:8899/checkout/done/?session_id=cs_test_abcdefghij');
+    await page.waitForSelector('[data-paid-show="trial"]:not([hidden])', { timeout: 5000 });
+    const shown = (await page.$$eval('[data-paid-show]:not([hidden])',
+      ns => ns.map(n => n.textContent.replace(/\s+/g, ' ').trim()))).join(' | ');
+    check('a trial buyer is not told they paid', !/payment confirmed/i.test(shown), shown);
+    check('they are told the card is saved and nothing was charged',
+      /nothing charged/i.test(shown), shown);
+    check('and when the first charge comes, and how to stop it',
+      /30 days/.test(shown) && /\$999/.test(shown) && /hello@prospektor\.ai/.test(shown), shown);
+    check('no amount is printed, because none left the card',
+      await page.isHidden('#confirmPaid'));
+    // And the paid path is untouched by all of it.
+    await page.unroute('**/.netlify/functions/checkout-session-status**');
+    await page.route('**/.netlify/functions/checkout-session-status**', route =>
+      route.fulfill({ status: 200, contentType: 'application/json',
+        body: JSON.stringify({ paid: true, trial: false, amount_total: 99900, currency: 'usd',
+          email: 'buyer@acme.com', plan: 'month' }) }));
+    await page.goto('http://localhost:8899/checkout/done/?session_id=cs_test_abcdefghij');
+    await page.waitForSelector('#confirmPaid:not([hidden])', { timeout: 5000 });
+    const paid = (await page.$$eval('[data-paid-show]:not([hidden])',
+      ns => ns.map(n => n.textContent.replace(/\s+/g, ' ').trim()))).join(' | ');
+    check('a paying buyer still reads the sentence they always read',
+      /payment confirmed/i.test(paid) && !/nothing charged/i.test(paid), paid);
     await page.close();
   }
 

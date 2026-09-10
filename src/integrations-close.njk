@@ -1,0 +1,175 @@
+---
+layout: base.njk
+title: Close CRM integration
+description: "Close works the deal. Prospektor picks the target and writes what you send — pushed back as a lead, its contacts, an opportunity and a note."
+# One page per language (#114/#535, the same shape the funnel and the two
+# product pages take) — see src/index.njk for the reasoning.
+pagination:
+  data: languages
+  size: 1
+  alias: language
+  addAllPagesToCollections: true
+permalink: "{{ language.prefix }}/integrations/close/"
+---
+
+{#- #620, 10 Sep 2026. The page Close's integration directory points at, and
+    the answer to two required fields on their listing form (#9 Marketing URL,
+    and "do you promote Close on your website in any way?").
+
+    THE ONE THING THIS PAGE MUST NOT DO: sell whom to chase. Its visitor
+    already has a CRM and already believes in it. Everything here is the half
+    Close does not have — which is not an opinion, it is #567's census, read
+    off the live directory on 9 Sep 2026 and archived in the studio's
+    ROADMAP.md: Close's Lead Generation shelf held thirty-nine tools and not
+    one of them writes what to send. The number is DATED in the copy on
+    purpose, because a shelf grows and a published sentence may never go false.
+
+    `/integrations/` rather than `/partners/` (which implies a programme the
+    product does not have and would collide with the unbuilt affiliate scheme,
+    #87) and rather than `/close/` (a common English word that tells a visitor
+    nothing). It mirrors Close's own `close.com/integrations/<name>`, so it
+    reads as native from their directory, and it is a namespace that scales to
+    HubSpot and Affinity.
+
+    Every claim about what a push writes is `lib/crm-close.js` in the studio
+    (#582, `47f71e6`, proven in production by the operator's own press on
+    10 Sep) — the lead found by domain, its contacts, an opportunity whose
+    CONFIDENCE is the fit score and whose status is the organization's default,
+    and a note that renders. If one of those stops being true, this page is
+    wrong, not modest. -#}
+
+<header class="page-hero">
+  <div class="page-hero-inner">
+    <span class="tag">{% t %}Close integration{% endt %}</span>
+    <h1 class="page-h1">{% t %}39 lead tools. None writes the email.{% endt %}</h1>
+    <p class="page-lede">
+      {% t %}That was Close's Lead Generation shelf on 9 September 2026, counted one
+      by one. Every tool on it finds companies. Not one of them writes what to
+      send them — the part that actually costs you an afternoon per account.
+      That half is what Prospektor does, in your voice, with its sources, and it
+      lands back in Close.{% endt %}
+    </p>
+    <div class="page-hero-actions">
+      {%- if offer.close %}
+      <a class="btn-cta" href="#start">{% t %}Start free — first month on us →{% endt %}</a>
+      {%- else %}
+      <a class="btn-cta" href="#start">{% t %}Start your studio →{% endt %}</a>
+      {%- endif %}
+      <a class="btn-ghost" href="{{ '/what-to-send/' | localize }}">{% t %}What it writes →{% endt %}</a>
+    </div>
+  </div>
+</header>
+
+<section class="flow">
+  <div class="flow-inner">
+
+    <article class="flowstep">
+      <span class="flowstep-n">01</span>
+      <div class="flowstep-body">
+        <h2>{% t %}Connect Close once, from your workspace settings.{% endt %}</h2>
+        <p>
+          {% t %}One click through Close's own consent screen — no API key to paste, no
+          key to rotate later. Prospektor writes to the organization you granted
+          and reads nothing else.{% endt %}
+        </p>
+        <p class="flowstep-proof">{% t %}Disconnect in the same panel; the grant is revoked at Close.{% endt %}</p>
+      </div>
+    </article>
+
+    <article class="flowstep">
+      <span class="flowstep-n">02</span>
+      <div class="flowstep-body">
+        <h2>{% t %}One press puts the whole pitch into Close.{% endt %}</h2>
+        <p>{% t %}Four records, written the way Close models a deal:{% endt %}</p>
+        <ul class="pricing-list">
+          <li>{% t %}The company as a <strong>lead</strong>, matched on its web domain{% endt %}</li>
+          <li>{% t %}Its named decision-makers as <strong>contacts</strong> of that lead{% endt %}</li>
+          <li>{% t %}An <strong>opportunity</strong> carrying the fit score as its confidence{% endt %}</li>
+          <li>{% t %}A <strong>note</strong> holding the fit, the angle, the sources and a link back{% endt %}</li>
+        </ul>
+        <p class="flowstep-proof">{% t %}Push the same pitch again and those records update. Nothing is duplicated.{% endt %}</p>
+      </div>
+    </article>
+
+    <article class="flowstep">
+      <span class="flowstep-n">03</span>
+      <div class="flowstep-body">
+        <h2>{% t %}What arrives is an argument, not a row of data.{% endt %}</h2>
+        <p>
+          {% t %}The fit score comes with the case for the company and the case against
+          it. Every decision-maker's name carries the source that named them, and
+          a name nothing backs comes back blank rather than guessed. Where somebody
+          in your own network can open the door, you get the chain.{% endt %}
+        </p>
+        <p>
+          {% t %}Then the deck, the one-pager, the cold emails and the proposal — drafted
+          in your voice, from what has already worked for you, with nothing
+          invented.{% endt %}
+        </p>
+        <p class="flowstep-proof">{% t %}Your existing addresses are added beside, never over-written.{% endt %}</p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section class="pricing pricing-page" id="start">
+  <div class="pricing-card">
+    {#- Monthly only, deliberately: the offer below is a free month converting to
+        a monthly subscription, and a plan switch beside it would be a second
+        decision on a page that already has one (the style skill, rule 8). The
+        yearly plan is one click away on /pricing/. -#}
+    <div class="price-row">
+      <span class="price-num">$999</span>
+      <span class="price-per">{% t %}/ month · per workspace{% endt %}</span>
+    </div>
+
+    {%- if offer.close %}
+    {#- #622. Written ONLY when this build's environment arms the offer, so the
+        page cannot advertise a trial the checkout call would not grant — and
+        the number below is `lib/trial.js`'s constant, which is also the only
+        value `CLOSE_TRIAL_DAYS` will accept. test/close.test.js pins the two
+        together in both directions. -#}
+    <div class="onboard-note">
+      <p>{% t %}<strong>First month free, for Close customers.</strong> Card on file, nothing
+        charged for 30 days. Cancel inside them — one email to
+        <a href="mailto:hello@prospektor.ai">hello@prospektor.ai</a> — and you are
+        never charged.{% endt %}</p>
+    </div>
+    {%- endif %}
+
+    <ul class="pricing-list">
+      <li>{% t %}Unlimited pitch runs — research, scoring and every deliverable{% endt %}</li>
+      <li>{% t %}Up to 100 companies in one batch, drafted while the tab is closed{% endt %}</li>
+      <li>{% t %}Every colleague on your work-email domain, at no extra cost{% endt %}</li>
+      <li>{% t %}Push to Close, HubSpot or Affinity — and back again on the next run{% endt %}</li>
+    </ul>
+
+    {#- The same markup, ids and script as /pricing/'s tile: one field, then
+        Stripe. `data-via` is what makes this arrival the Close one — it is on
+        the FORM rather than read from the URL, so the offer belongs to the page
+        that states it and no query parameter a stranger types can claim it.
+        `data-from` sends a cancelled checkout back here instead of to /#pricing. -#}
+    <div class="buy" id="buy">
+      <a href="{{ '/checkout/' | localize }}" class="btn-cta" id="buyLink">{% t %}Start my studio →{% endt %}</a>
+      <form class="reserve-form buy-form" id="buyForm" data-via="close" data-from="close" hidden novalidate>
+        <input class="reserve-input" id="buyEmail" type="email" autocomplete="email"
+               placeholder="you@yourcompany.com" aria-label="{% t %}Your work email{% endt %}">
+        <button class="btn-cta" type="submit" id="buyBtn">
+          {%- if offer.close %}{% t %}Start free — $0 today →{% endt %}{% else %}{% t %}Pay &amp; start &mdash; $999/mo →{% endt %}{% endif -%}
+        </button>
+      </form>
+      <input class="reserve-input buy-site" id="buySite" type="text" inputmode="url" autocomplete="url"
+             placeholder="yourcompany.com" aria-label="{% t %}Your company website{% endt %}" hidden>
+      <p class="reserve-msg is-error" id="buyMsg" hidden></p>
+      <p class="buy-note">
+        <span id="buyLive" hidden>{% t %}Next stop is Stripe. This address becomes your studio's sign-in — a work email brings your whole team in with you.{% endt %} </span>{% t %}Money back if it doesn't earn its keep — no fourteen days of hoping you remember to cancel.{% endt %}
+      </p>
+    </div>
+  </div>
+</section>
+{#- defer, like every script this site serves (#137/#170). buy.js looks its
+    elements up by id and returns if they are absent, so this page and
+    /pricing/ share it without either knowing about the other. No plan.js:
+    there is no switch on this page to drive. -#}
+<script src="{{ '/assets/js/buy.js' | asset }}" defer></script>

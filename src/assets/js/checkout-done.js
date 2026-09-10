@@ -21,8 +21,16 @@
   fetch('/.netlify/functions/checkout-session-status?session_id=' + encodeURIComponent(id))
     .then(r => (r.ok ? r.json() : null))
     .then(d => {
-      if (!d || !d.paid) return;
-      if (typeof d.amount_total === 'number') {
+      if (!d) return;
+      // #622: a trial session is not `paid` and is not a failure — it is the
+      // Close arrival, card on file and nothing charged. Swap the two
+      // sentences the build wrote for exactly this, then carry on: the amount
+      // block below is skipped because there is no amount to show.
+      if (d.trial)
+        for (const el of document.querySelectorAll('[data-paid-show]'))
+          el.hidden = el.dataset.paidShow !== 'trial';
+      if (!d.paid && !d.trial) return;
+      if (d.paid && typeof d.amount_total === 'number') {
         let amount;
         try {
           // The page's own language decides how the number reads (#114):

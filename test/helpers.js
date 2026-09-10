@@ -40,17 +40,24 @@ function signedStripeEvent(secret, event) {
   return { httpMethod: 'POST', body: payload, headers: { 'stripe-signature': `t=${t},v1=${v1}` } };
 }
 
+// `paid` is three-valued on purpose since #622: true is a charge, false is a
+// delayed method that has not settled, and 'trial' is the shape Stripe sends
+// for a subscription opened with `trial_period_days` — a completed session
+// whose first invoice is $0. That third value is not a variant of the second.
 function checkoutSessionCompleted({ email, metadata = {}, paid = true }) {
+  const payment_status = paid === 'trial' ? 'no_payment_required' : paid ? 'paid' : 'unpaid';
   return {
     type: 'checkout.session.completed',
-    data: { object: { id: 'cs_test_1', payment_status: paid ? 'paid' : 'unpaid',
-      customer_details: { email }, metadata } },
+    data: { object: { id: 'cs_test_1', payment_status, customer_details: { email }, metadata } },
   };
 }
 
 function resetEnv() {
   for (const k of ['STRIPE_SECRET_KEY','STRIPE_WEBHOOK_SECRET','STUDIO_PROVISION_SECRET',
-                   'POSTMARK_SERVER_TOKEN','SENDGRID_API_KEY','OPERATOR_EMAIL','URL'])
+                   'POSTMARK_SERVER_TOKEN','SENDGRID_API_KEY','OPERATOR_EMAIL','URL',
+                   // #622: the Close offer's switch. Left set, it leaks a free
+                   // month into every later case in the file.
+                   'CLOSE_TRIAL_DAYS'])
     delete process.env[k];
 }
 

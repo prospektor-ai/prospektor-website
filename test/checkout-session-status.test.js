@@ -44,13 +44,13 @@ describe('checkout-session-status', () => {
     stubFetch([['api.stripe.com', { status: 200, body: SESSION }]]);
     const r = await get({ session_id: 'cs_test_abcdefghij' });
     assert.equal(r.statusCode, 200);
-    assert.deepEqual(body(r), { paid: true, amount_total: 1, currency: 'usd', email: 'buyer@acme.com', plan: 'month' });
+    assert.deepEqual(body(r), { paid: true, trial: false, amount_total: 1, currency: 'usd', email: 'buyer@acme.com', plan: 'month' });
   });
 
   test('never leaks the rest of the session — metadata, subscription id, anything', async () => {
     stubFetch([['api.stripe.com', { status: 200, body: SESSION }]]);
     const r = await get({ session_id: 'cs_test_abcdefghij' });
-    assert.deepEqual(Object.keys(body(r)).sort(), ['amount_total', 'currency', 'email', 'paid', 'plan']);
+    assert.deepEqual(Object.keys(body(r)).sort(), ['amount_total', 'currency', 'email', 'paid', 'plan', 'trial']);
     assert.ok(!r.body.includes('secret goal sentence'));
     assert.ok(!r.body.includes('sub_123'));
   });
@@ -81,6 +81,28 @@ describe('checkout-session-status', () => {
     assert.equal(body(r).plan, 'year');
     for (const leak of ['secret goal sentence', 'targetco.example', 'Target Co'])
       assert.ok(!r.body.includes(leak), `${leak} must stay server-side`);
+  });
+
+  // #622: the Close arrival's session. Stripe completes it with
+  // `no_payment_required` — a card on file and a $0 first invoice — and
+  // /checkout/done/ has two sentences written for exactly this, one of which
+  // ("Payment confirmed", "your receipt is on its way") would be false.
+  test('a trial checkout says so, and is not reported as paid', async () => {
+    stubFetch([['api.stripe.com', { status: 200, body: Object.assign({}, SESSION, {
+      payment_status: 'no_payment_required', amount_total: 0,
+    }) }]]);
+    const r = await get({ session_id: 'cs_test_abcdefghij' });
+    assert.equal(r.statusCode, 200);
+    assert.equal(body(r).trial, true, 'the page has no other way to know nothing was charged');
+    assert.equal(body(r).paid, false, 'no money moved, and the amount line must stay hidden');
+  });
+
+  test('an unpaid session is neither paid nor a trial', async () => {
+    stubFetch([['api.stripe.com', { status: 200, body: Object.assign({}, SESSION, {
+      payment_status: 'unpaid',
+    }) }]]);
+    const r = await get({ session_id: 'cs_test_abcdefghij' });
+    assert.deepEqual([body(r).paid, body(r).trial], [false, false]);
   });
 
   test('an unknown or non-session id is a 404, not an error page', async () => {

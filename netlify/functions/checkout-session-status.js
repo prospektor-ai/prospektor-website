@@ -12,6 +12,12 @@
 // fields. Everything else on the session (line items, the subscription id, the
 // rest of the metadata) deliberately stays server-side.
 //
+// #622 added a fifth, on the same terms: `trial`. A Close arrival's session
+// completes with `payment_status: 'no_payment_required'` — a card on file and
+// nothing charged — and this page's served copy says *Payment confirmed* and
+// *your receipt is on its way*, both of which are false for that buyer. One
+// boolean is what it takes for the page to show the sentence that is true.
+//
 // #542 added a fourth, and it is the narrowest widening that would do: `plan`,
 // one of exactly two words, read off the metadata the checkout call wrote. The
 // order card on /checkout/done/ printed "$999/mo" as a constant, which is a
@@ -58,6 +64,10 @@ exports.handler = async function(event) {
     statusCode: 200,
     body: JSON.stringify({
       paid: session.payment_status === 'paid',
+      // Nothing was due: a subscription opened on `trial_period_days` (#622).
+      // The card is on file and the workspace is real; only the first invoice
+      // is $0, which is a different sentence rather than a lesser purchase.
+      trial: session.payment_status === 'no_payment_required',
       amount_total: typeof session.amount_total === 'number' ? session.amount_total : null,
       currency: session.currency || 'usd',
       email: (session.customer_details && session.customer_details.email) || session.customer_email || null,

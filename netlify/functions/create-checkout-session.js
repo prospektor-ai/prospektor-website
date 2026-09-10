@@ -29,10 +29,18 @@
 // The buyer's email is passed to Stripe as customer_email, which locks the
 // field there — that is what keeps the check above meaningful, since the
 // address that pays is then the address that was checked.
+//
+// #622: one arrival is sold differently. A visitor who came from Close's
+// integration directory (`via: 'close'`, which /integrations/close/ carries in
+// its own markup rather than reading off a URL anybody can type) gets the free
+// month that page advertises — but only when `CLOSE_TRIAL_DAYS` arms it, and
+// only for exactly the number of days the page prints. `lib/trial.js` is the
+// whole rule and carries the reasoning.
 
 const { checkOwnership, ownershipMessage } = require('../lib/ownership');
 const { companyDomainFromEmail, cleanDomain } = require('../lib/email-domain');
 const { languageOf, LANGUAGES } = require('../../lib/i18n');
+const { trialDays, partnerOf } = require('../../lib/trial');
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -59,6 +67,13 @@ const planOf = value => {
   const name = String(value == null ? '' : value).trim();
   return Object.prototype.hasOwnProperty.call(PLANS, name) ? name : 'month';
 };
+
+// #620: the five parameters a directory listing writes on its outbound link.
+// A closed list, because this is the one thing on the site that turns a
+// stranger's click into a row somebody can count — prospektor.ai runs no
+// analytics at all, so attribution lives where the money does, in the
+// subscription's own Stripe metadata. Anything not on this list is dropped.
+const UTM = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
 
 exports.handler = async function(event) {
   const key = process.env.STRIPE_SECRET_KEY;
@@ -101,6 +116,13 @@ exports.handler = async function(event) {
   // Stripe request this function always sent, byte for byte.
   const plan = planOf(data.plan);
   const price = PLANS[plan];
+  // #620/#622: which partner directory this buyer arrived from, and the offer
+  // that page states. `close` is the only name there is, whitelisted the way a
+  // plan is, and the trial is granted ONLY to it and ONLY when this build's
+  // environment arms it — so the plain funnel keeps selling at list price and
+  // an unarmed deploy sends Stripe the request it always sent.
+  const partner = partnerOf(data.via);
+  const trial = partner === 'close' ? trialDays() : 0;
 
   // Required now, where it used to be optional. Stripe can collect an address
   // itself, but an address Stripe collects is one nothing has checked — and
@@ -155,9 +177,12 @@ exports.handler = async function(event) {
   // its payment step, and a re-subscribe (minted server-to-server by the
   // studio's locked screen) back to the studio. Whitelisted, so the field
   // cannot become an open redirect.
+  // A Map rather than an object literal, for `planOf`'s reason one line up:
+  // `RETURNS['constructor']` on an object is a function, and a truthy one.
+  const RETURNS = new Map([['pricing', '/#pricing'], ['close', '/integrations/close/']]);
   const cancelUrl = data.from === 'resubscribe'
     ? 'https://studio.prospektor.ai/'
-    : site + prefix + (data.from === 'pricing' ? '/#pricing' : '/checkout/');
+    : site + prefix + (RETURNS.get(data.from) || '/checkout/');
 
   const params = new URLSearchParams({
     mode: 'subscription',
@@ -175,12 +200,25 @@ exports.handler = async function(event) {
     cancel_url: cancelUrl,
   });
   if (lang) params.set('locale', lang.code);
+  // #622. `subscription_data.trial_period_days` alongside inline `price_data`:
+  // no dashboard product, no coupon, nothing for anybody to remember to create
+  // — the same property that keeps the two figures in PLANS honest. Stripe
+  // collects the card, charges nothing today, and bills $999 on day 31 unless
+  // the subscription is cancelled first, which is exactly the sentence the page
+  // is allowed to print when this is set.
+  if (trial) params.set('subscription_data[trial_period_days]', String(trial));
   // #204: the optional marketing box. Only a literal true becomes metadata —
   // "false" from a form, or anything else truthy-looking, must never ride
   // through checkout and come out the other side as consent. Absent means
   // exactly what an unticked box means: nothing is recorded anywhere.
   const marketing = data.marketing === true ? 'yes' : '';
-  for (const [k, v] of [['domain', website], ['company', company], ['goal', goal], ['marketing', marketing], ['language', lang ? lang.code : ''], ['plan', plan === 'month' ? '' : plan]]) {
+  // #620: the arrival, and the listing's own tracking parameters. Both are
+  // metadata and nothing else — they buy no discount by themselves (the trial
+  // above is decided by `partner`, not by a utm_source anybody can type) and
+  // they are what lets the operator answer "did the directory send anyone?"
+  // from the Stripe dashboard on a site that sets no cookie and runs no tag.
+  const tags = UTM.map(k => [k, meta((data.utm || {})[k])]);
+  for (const [k, v] of [['domain', website], ['company', company], ['goal', goal], ['marketing', marketing], ['language', lang ? lang.code : ''], ['plan', plan === 'month' ? '' : plan], ['via', partner], ...tags]) {
     if (v) {
       params.set('metadata[' + k + ']', v);
       params.set('subscription_data[metadata][' + k + ']', v);

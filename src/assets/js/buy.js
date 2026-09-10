@@ -42,6 +42,22 @@
   // the welcome email speak it too. Nothing is sent for English, so an
   // English purchase is the request it always was.
   const LANG = document.documentElement.lang || 'en';
+  // #620: which page this form is on, and which partner arrival it speaks for.
+  // Both come off the markup, never off the URL — the offer belongs to the page
+  // that states it, so no query parameter a stranger types can claim it. The
+  // pricing tile sets neither and sends what it always sent.
+  const FROM = form.dataset.from || 'pricing';
+  const VIA = form.dataset.via || '';
+  // The listing's own tracking parameters, forwarded once into the Stripe
+  // session's metadata so the directory's traffic is countable where the money
+  // is. Read here and nowhere else; nothing is written to the device, so there
+  // is nothing for consent.js's inventory to declare.
+  const UTM = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+  const utm = (params => {
+    const out = {};
+    for (const k of UTM) { const v = params.get(k); if (v) out[k] = v; }
+    return Object.keys(out).length ? out : null;
+  })(new URLSearchParams(location.search));
 
   fetch('/.netlify/functions/create-checkout-session')
     .then(r => {
@@ -97,10 +113,11 @@
         body: JSON.stringify(Object.assign({
           email: email,
           domain: siteInput.hidden ? '' : siteInput.value.trim(),
-          from: 'pricing',
+          from: FROM,
           // #542: monthly sends nothing, the way English sends no locale — so
           // a monthly purchase is the request this has always made.
-        }, plan === 'year' ? { plan: 'year' } : {}, LANG === 'en' ? {} : { locale: LANG })),
+        }, plan === 'year' ? { plan: 'year' } : {}, LANG === 'en' ? {} : { locale: LANG },
+           VIA ? { via: VIA } : {}, utm ? { utm: utm } : {})),
       });
       data = await response.json().catch(() => null);
     } catch (err) {

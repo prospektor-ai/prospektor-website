@@ -4,6 +4,7 @@ const { test, describe, beforeEach } = require('node:test');
 const assert = require('node:assert');
 const { stubFetch, post, get, resetEnv } = require('./helpers');
 const fn = require('../netlify/functions/create-checkout-session');
+const { TRIAL_DAYS } = require('../lib/trial');
 
 const STRIPE_OK = ['api.stripe.com', { status: 200, body: { url: 'https://checkout.stripe.com/c/pay/cs_test_1' } }];
 const FREE = ['provision-check', { status: 200, body: { taken: false } }];
@@ -135,6 +136,94 @@ describe('create-checkout-session', () => {
     }
   });
 
+  // ── The Close arrival, and the free month it is sold with (#620/#622) ──
+  //
+  // Two rules hold this together, and both are asserted in the negative first:
+  // an arrival the table does not name is nobody, and an offer this build's
+  // environment has not armed is not granted to anybody.
+
+  test('with the offer dark, a Close arrival is the request this funnel always sent', async () => {
+    for (const env of [undefined, '', '0', '14', 'true', '9999', '30d', 'thirty']) {
+      if (env === undefined) delete process.env.CLOSE_TRIAL_DAYS;
+      else process.env.CLOSE_TRIAL_DAYS = env;
+      const calls = stubFetch([STRIPE_OK, FREE]);
+      await post(fn, { email: 'b@acme.com', from: 'close', via: 'close' });
+      const p = new URLSearchParams(stripeCalls(calls)[0].body);
+      assert.equal(p.get('subscription_data[trial_period_days]'), null,
+        `CLOSE_TRIAL_DAYS=${JSON.stringify(env)} must grant no trial`);
+      assert.equal(p.get('line_items[0][price_data][unit_amount]'), '99900');
+    }
+    delete process.env.CLOSE_TRIAL_DAYS;
+  });
+
+  test('armed, a Close arrival gets exactly the days the page prints', async () => {
+    process.env.CLOSE_TRIAL_DAYS = String(TRIAL_DAYS);
+    const calls = stubFetch([STRIPE_OK, FREE]);
+    await post(fn, { email: 'b@acme.com', from: 'close', via: 'close' });
+    const p = new URLSearchParams(stripeCalls(calls)[0].body);
+    assert.equal(p.get('subscription_data[trial_period_days]'), String(TRIAL_DAYS));
+    // Still a $999/month subscription — a trial is when the first invoice
+    // falls due, never a different price.
+    assert.equal(p.get('line_items[0][price_data][unit_amount]'), '99900');
+    assert.equal(p.get('line_items[0][price_data][recurring][interval]'), 'month');
+    assert.equal(p.get('metadata[via]'), 'close');
+    assert.equal(p.get('subscription_data[metadata][via]'), 'close');
+  });
+
+  test('a value with a stray space around it still means what it says', async () => {
+    // Both sides of this are read by a person out of a dashboard field and a
+    // template attribute, so surrounding whitespace is a typo, not a different
+    // answer. The whitelist below is what stops that leniency from mattering.
+    process.env.CLOSE_TRIAL_DAYS = ' ' + TRIAL_DAYS + ' ';
+    const calls = stubFetch([STRIPE_OK, FREE]);
+    await post(fn, { email: 'b@acme.com', from: 'close', via: ' Close ' });
+    assert.equal(new URLSearchParams(stripeCalls(calls)[0].body).get('subscription_data[trial_period_days]'),
+      String(TRIAL_DAYS));
+  });
+
+  test('armed, nobody but a Close arrival gets a free month', async () => {
+    process.env.CLOSE_TRIAL_DAYS = String(TRIAL_DAYS);
+    // `['close']` is deliberately absent: `String(['close'])` is `'close'`, the
+    // same leniency `planOf` has carried since #542, and a browser that sends
+    // the marker in a one-element array has said the same word. What must not
+    // work is a DIFFERENT word, or a key off Object.prototype.
+    for (const via of [undefined, '', 'pricing', 'hubspot', 'closer', 'constructor', '__proto__', 42, { via: 'close' }]) {
+      const calls = stubFetch([STRIPE_OK, FREE]);
+      await post(fn, { email: 'b@acme.com', from: 'pricing', via });
+      const p = new URLSearchParams(stripeCalls(calls)[0].body);
+      assert.equal(p.get('subscription_data[trial_period_days]'), null,
+        `via=${JSON.stringify(via)} must not buy a trial`);
+      assert.equal(p.get('metadata[via]'), null);
+    }
+  });
+
+  test('the listing\'s tracking parameters ride into the metadata, and only those five', async () => {
+    const calls = stubFetch([STRIPE_OK, FREE]);
+    await post(fn, { email: 'b@acme.com', from: 'close', via: 'close', utm: {
+      utm_source: 'close', utm_medium: 'directory', utm_campaign: 'integrations',
+      utm_content: 'listing-card', utm_term: 'prospecting',
+      // Not on the list, and not a parameter anybody may invent their way into
+      // the subscription's metadata with.
+      gclid: 'abc', ref: 'somebody', plan: 'year', trial_period_days: '365',
+    } });
+    const p = new URLSearchParams(stripeCalls(calls)[0].body);
+    assert.equal(p.get('metadata[utm_source]'), 'close');
+    assert.equal(p.get('metadata[utm_campaign]'), 'integrations');
+    assert.equal(p.get('subscription_data[metadata][utm_term]'), 'prospecting');
+    for (const uninvited of ['gclid', 'ref'])
+      assert.equal(p.get('metadata[' + uninvited + ']'), null, uninvited + ' is not a parameter we carry');
+    assert.equal(p.get('subscription_data[trial_period_days]'), null, 'a UTM key may never become a Stripe field');
+    assert.equal(p.get('line_items[0][price_data][recurring][interval]'), 'month', 'nor a plan');
+  });
+
+  test('a page with no tracking parameters sends none', async () => {
+    const calls = stubFetch([STRIPE_OK, FREE]);
+    await post(fn, { email: 'b@acme.com', from: 'pricing' });
+    const p = new URLSearchParams(stripeCalls(calls)[0].body);
+    for (const k of [...p.keys()])
+      assert.ok(!k.includes('utm_'), k + ' was sent for a buyer who carried no parameters');
+  });
+
   test('refuses an address that already owns a studio, and mints nothing', async () => {
     const calls = stubFetch([STRIPE_OK, ['provision-check', { status: 200, body: { taken: true, name: 'Acme GmbH', reason: 'email' } }]]);
     const r = await post(fn, { email: 'b@acme.com', from: 'pricing' });
@@ -206,6 +295,16 @@ describe('create-checkout-session', () => {
     assert.match(new URLSearchParams(stripeCalls(calls)[0].body).get('cancel_url'), /\/#pricing$/);
     await post(fn, { email: 'b@acme.com', domain: 'acme.com' });
     assert.match(new URLSearchParams(stripeCalls(calls)[1].body).get('cancel_url'), /\/checkout\/$/);
+    // #620: a Close arrival goes back to the page that made them the offer.
+    await post(fn, { email: 'b@acme.com', from: 'close' });
+    assert.match(new URLSearchParams(stripeCalls(calls)[2].body).get('cancel_url'), /\/integrations\/close\/$/);
+    // And a `from` nobody built — `constructor` included, which is a function
+    // on an object literal — is the checkout page, never a URL made of one.
+    for (const from of ['constructor', '__proto__', 'toString', 'nonsense']) {
+      const c = stubFetch([STRIPE_OK, FREE]);
+      await post(fn, { email: 'b@acme.com', domain: 'acme.com', from });
+      assert.match(new URLSearchParams(stripeCalls(c)[0].body).get('cancel_url'), /\/checkout\/$/, 'from=' + from);
+    }
   });
 
   // Fail-open is a deliberate choice: blocking a paying customer because the
