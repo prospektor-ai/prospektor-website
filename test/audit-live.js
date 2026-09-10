@@ -647,7 +647,11 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
                        // "not a guide or an article" and names neither itself
                        // nor the cause. test/drive.js keeps the same list for
                        // the built sitemap and needs the same edit.
-                       'https://prospektor.ai/contact/'];
+                       'https://prospektor.ai/contact/',
+                       // #620. The page Close's integration directory points
+                       // at, appended here because it was appended to the
+                       // sitemap — the paragraph above is the whole rule.
+                       'https://prospektor.ai/integrations/close/'];
   // #114: each static page is followed by its twin in every language this
   // repo has a catalogue for — asked of lib/i18n.js and of the live site (a
   // twin that answers 200 is listed; one that 404s is not), never listed here.
