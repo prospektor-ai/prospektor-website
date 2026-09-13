@@ -75,7 +75,7 @@
     if (!domain) {
       const typed = cleanDomain(siteInput.value);
       if (!typed) {
-        siteMsg.textContent = t('That doesn’t look like a web address — just the domain is fine, like acme.com.');
+        siteMsg.textContent = t('That doesn’t look like a web address. Just the domain is fine, like acme.com.');
         siteMsg.hidden = false;
         return;
       }
@@ -132,7 +132,7 @@
     e.preventDefault();
     const email = document.getElementById('payEmail').value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      stripeNote(t('That doesn’t look like an email address — this one becomes your studio’s sign-in.'));
+      stripeNote(t('That doesn’t look like an email address, and this one becomes your studio’s sign-in.'));
       return;
     }
     stripeBtn.disabled = true;
@@ -158,7 +158,7 @@
           // already owning the studio is a different message from this exact
           // address owning it, and only the server knows which it is.
           stripeNote(owns.message
-            || t('This email already has a studio — signing in will take you to it, or use a different address to start a new one.'), true);
+            || t('This email already has a studio. Signing in will take you to it, or use a different address to start a new one.'), true);
           return;
         }
       } catch (e2) { /* fail open — never block a sale on a hiccup */ }
@@ -191,7 +191,7 @@
     } catch (err) {
       stripeBtn.disabled = false;
       stripeBtn.textContent = stripeBtnLabel;
-      stripeNote(t('That didn’t open. Try again — or email hello@prospektor.ai and we’ll sort it by hand.'));
+      stripeNote(t('That didn’t open. Try again, or email hello@prospektor.ai and we’ll sort it by hand.'));
     }
   });
 
@@ -219,7 +219,7 @@
     e.preventDefault();
     const email = reserveEmail.value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      reserveNote(t('That doesn’t look like an email address — try your work email.'));
+      reserveNote(t('That doesn’t look like an email address. Try your work email.'));
       return;
     }
     reserveBtn.disabled = true;
@@ -256,7 +256,7 @@
 
     if (sent) {
       reserveForm.hidden = true;
-      reserveNote(t('✓ Spot held. One email when checkout opens — nothing else.'));
+      reserveNote(t('✓ Spot held. One email when checkout opens, nothing else.'));
     } else {
       reserveBtn.disabled = false;
       reserveNote(t('That didn’t send. Email us instead:'), true);

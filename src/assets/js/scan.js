@@ -242,7 +242,7 @@
     [0,  d => t('opening {domain}…', { domain: d })],
     [2,  d => t('reading {domain}…', { domain: d })],
     [8,  () => t('writing what it found…')],
-    [14, d => t('still reading {domain} — taking longer than usual…', { domain: d })],
+    [14, d => t('still reading {domain}, taking longer than usual…', { domain: d })],
   ];
   let liveNote = '';
 
@@ -416,9 +416,9 @@
     if (gen !== generation) return;
 
     if (res.status === 400) {
-      showError(t('That doesn’t look like a domain — try something like acme.com.'));
+      showError(t('That doesn’t look like a domain. Try something like acme.com.'));
     } else if (res.status === 429) {
-      showFallback(roughDomain, (data && data.error) || t('At capacity today — scans are back tomorrow.'));
+      showFallback(roughDomain, (data && data.error) || t('At capacity today. Scans are back tomorrow.'));
     } else if (res.status === 200 && data && data.status === 'done' && data.result) {
       renderResult(data.domain || roughDomain, data.result);
     } else if (res.status === 202 && data && data.domain) {

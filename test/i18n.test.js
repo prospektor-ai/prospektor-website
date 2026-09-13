@@ -74,7 +74,7 @@ describe('the language contract (#114)', () => {
     }
     // The block the layout and the scripts depend on are all seen.
     const keys = new Set(inv.map(e => e.key));
-    for (const k of ['Sign in', 'Scan your site', 'Who to pitch. What to send.', 'Opening secure checkout…', 'opening {domain}…', 'Your studio is ready — sign in'])
+    for (const k of ['Sign in', 'Scan your site', 'Who to pitch. What to send.', 'Opening secure checkout…', 'opening {domain}…', 'Your studio is ready: sign in'])
       assert.ok(keys.has(k), `the extractor no longer sees ${JSON.stringify(k)}`);
     for (const k of Object.values(i18n.SUGGEST_KEYS)) assert.ok(keys.has(k), `the suggestion bar's ${JSON.stringify(k)} is not in the inventory`);
   });

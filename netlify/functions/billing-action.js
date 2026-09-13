@@ -134,6 +134,6 @@ exports.handler = async function(event) {
     // the operator finishes in the Stripe dashboard — a quiet half-done
     // answer here would read as "billing stopped" while it had not.
     console.error('billing-action failed:', e.message);
-    return { statusCode: 502, body: JSON.stringify({ error: 'Stripe could not be asked — finish this in the Stripe dashboard' }) };
+    return { statusCode: 502, body: JSON.stringify({ error: 'Stripe could not be asked. Finish this in the Stripe dashboard' }) };
   }
 };

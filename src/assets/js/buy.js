@@ -92,7 +92,7 @@
     e.preventDefault();
     const email = emailInput.value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      note(t('That doesn’t look like an email address — this one becomes your studio’s sign-in.'));
+      note(t('That doesn’t look like an email address, and this one becomes your studio’s sign-in.'));
       emailInput.focus();
       return;
     }
@@ -122,7 +122,7 @@
       data = await response.json().catch(() => null);
     } catch (err) {
       reset();
-      note(t('That didn’t open. Try again — or email hello@prospektor.ai and we’ll sort it by hand.'));
+      note(t('That didn’t open. Try again, or email hello@prospektor.ai and we’ll sort it by hand.'));
       return;
     }
 
@@ -131,7 +131,7 @@
       form.hidden = true;
       live.hidden = true;
       link.hidden = false;
-      note(t('Checkout is reopening — start here and we’ll take it from the payment step.'));
+      note(t('Checkout is reopening. Start here and we’ll take it from the payment step.'));
       return;
     }
 
@@ -157,7 +157,7 @@
     if (!response.ok || !data || !data.url) {
       reset();
       note((data && data.error)
-        || t('That didn’t open. Try again — or email hello@prospektor.ai and we’ll sort it by hand.'));
+        || t('That didn’t open. Try again, or email hello@prospektor.ai and we’ll sort it by hand.'));
       return;
     }
 

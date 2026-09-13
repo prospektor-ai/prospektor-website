@@ -42,7 +42,11 @@ them without reading the studio's code.
    edited guide corrects itself on its own page), but it has no URL of its own
    until the next build. See *The help contract* below.
    **`npm run learnings`** prints the `/resources` coverage report — see
-   *The resources contract* below. **`npm run og`** re-renders the article
+   *The resources contract* below. **`npm run humanize`** prints the copy
+   against the humanizer standard, surface by surface — see *The voice
+   contract* below; `npm test` is red on a strong tell anywhere and on a dash
+   count rising past its ceiling, so read the seven tells there before
+   writing a sentence a visitor reads. **`npm run og`** re-renders the article
    Open Graph cards with Playwright and commits the PNGs; run it after adding
    or retitling an article, or after changing a `topic:`, since the card shows
    it. It is an authoring step, never a build step — the Netlify build must
@@ -293,6 +297,79 @@ year. Four surfaces carry a figure and exactly one of them decides it.
 - **Nothing counts plans.** A third one can only turn the suite red by having
   no `Offer`, no `billingPeriod`, or a figure `/llms.txt` contradicts — the
   #131 rule, that friction points at the defect and never at the work.
+
+## The voice contract — the humanizer standard (#640, out of the studio's #634)
+
+The studio's copy has been held to the humanizer standard since #634:
+`/humanizer` (`.claude/skills/humanizer/SKILL.md`, blader/humanizer, MIT, built
+on Wikipedia's *Signs of AI writing*), `findTells()` in `lib/humanize.js`,
+`npm run humanize`, and a ratchet in `npm test`. This site is written in the
+same voice by the same threads and had no such check. Measured before anything
+changed, 13 Sep 2026: the funnel said 450 distinct strings and **124 of them
+used a dash as the connector** (one string in four), the scripts 25 in 84, the
+mails 17 in 48, the legal pages 192 in 391, the articles 331 in 2,532, and
+the articles carried 43 strong tells besides. The words were nearly clean: one
+*leverage* and one not-X-but-Y on `/what-to-send/`. So the tell in this site's
+own copy is §8, dashes as the universal connector, the same as the studio's.
+
+- **The patterns are the studio's, unchanged.** `lib/humanize.js` is
+  `lib/humanize.js` in `prospektor-ai/studio` as CommonJS, so the two repos
+  disagree about nothing: a *strong* tell (the not-X-but-Y contrast, the
+  one-line closer, the saying that sounds deep, the run-up, arguing with
+  nobody, the stock vocabulary, inflated significance, sales dressing, chat
+  residue, the greeting-card mail opener) justifies an edit on one sighting;
+  a *weak* one (a dash, a stacked qualifier, a dressed-up verb, *actually*)
+  is counted and reported. Exempt: a URL, inline code (a `<code>` element
+  reads as one), a `{placeholder}`, a quoted phrase, an unspaced en dash in a
+  range, a hyphen inside a word.
+- **What is read, and from where.** `tools/humanize.js` reads the **funnel**
+  off the BUILT English pages, block by block, the way a visitor reads it (so
+  a sentence from frontmatter, `site.json` or a `{% t %}` block is one
+  sentence wherever it was written, and the nav counts once), plus `/llms.txt`
+  and the help hub's own sentences off the inventory; the **legal** pages,
+  derived from `site.legal`; the **resources**; the **scripts** (every `t('…')`
+  a browser can say, off `lib/i18n.js`'s inventory); the **functions** (the
+  welcome email's sentences, the operator notices, and every reply a function
+  hands the browser, as the string literals of every file under
+  `netlify/functions/` and `netlify/lib/`); and **one surface per catalogue**,
+  its values. NOT read: `/help/` and its guide pages, which are the studio's
+  corpus rendered here and the studio's #639.
+- **`npm test` is red on a strong tell, anywhere, and on a dash count rising
+  past its ceiling.** The ceilings are `CEILING` in `tools/humanize.js`, one
+  row per surface, and the test also fails when a count has fallen well
+  *under* its ceiling, naming the number to write, so a thread that rewrote
+  a page records the gain and the next thread cannot spend it. The funnel,
+  the scripts and the functions are at **zero** and stay there. The legal
+  pages hold at 189: two of them carry wording still unmerged on the
+  operator's desk (#529, #531), and nine of `/privacy/`'s sentences are pinned
+  by name in the studio's `test/privacy-claims.test.js`, so a dash there is
+  that row's to remove. The articles hold at 304 dashes and 43 strong tells,
+  the one surface with a ceiling on strong tells, because 43 across
+  twenty-six articles is a row of its own and a check that demanded zero in
+  one thread would be deleted.
+- **A translation keeps its own language's punctuation.** The raya and the
+  Gedankenstrich are those languages' punctuation, not a tell; the rule lives
+  on the English key, and rewriting an English sentence RE-KEYS its three
+  translations with the values untouched (`test/i18n.test.js` is red on a
+  stale key). Each catalogue has its own dash ceiling so the count is watched;
+  a fourth language lands with no ceiling row and is reported, not red.
+- **How the rewrite was done, and how the next one should be.** Judgment,
+  string by string, never a substitution: a period where the second clause
+  stands alone, a comma or parentheses where it was an aside, a colon where
+  it introduced a list, a middle dot in a label-and-figure pair (*Pay & start ·
+  $999/mo*) and in the `<title>` pair, which is the studio's own choice for
+  its title pair. The seven tells this site's copy actually commits, dashes
+  first, are the studio's `/style` list: no dashes; never *not X but Y*; no
+  one-line closer and no row of fragments; no run-up and no arguing with
+  nobody; none of the §12 words, and plain verbs; nothing from a chat or a
+  greeting card; lists as long as the meaning. `npm run humanize -- funnel`
+  lists what is left, longest first; `/humanizer` on one string rewrites it
+  without changing what it says.
+- **Nothing counts strings, pages or languages.** Adding a page adds its
+  sentences to a surface already measured; adding a script adds its `t()`
+  sentences to the scripts; a new function's literals join the functions. Any
+  of them can only turn the suite red by carrying a strong tell or a new dash,
+  the #131 rule.
 
 ## The language contract — the English sentence is the key (#114, #535)
 

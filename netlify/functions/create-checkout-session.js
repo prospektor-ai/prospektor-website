@@ -131,7 +131,7 @@ exports.handler = async function(event) {
   if (!EMAIL_RE.test(email)) {
     return {
       statusCode: 400,
-      body: JSON.stringify({ error: 'That doesn’t look like an email address — this one becomes your studio’s sign-in.' }),
+      body: JSON.stringify({ error: 'That doesn’t look like an email address, and this one becomes your studio’s sign-in.' }),
     };
   }
 
@@ -190,7 +190,7 @@ exports.handler = async function(event) {
     'line_items[0][price_data][currency]': 'usd',
     'line_items[0][price_data][unit_amount]': price.unit_amount,
     'line_items[0][price_data][recurring][interval]': price.interval,
-    'line_items[0][price_data][product_data][name]': 'Prospektor — one workspace',
+    'line_items[0][price_data][product_data][name]': 'Prospektor · one workspace',
     allow_promotion_codes: 'true',
     // {CHECKOUT_SESSION_ID} is Stripe's template literal — Stripe substitutes
     // the real cs_… id on redirect, and /checkout/done/ trades it back for

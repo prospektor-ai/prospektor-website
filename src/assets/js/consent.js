@@ -115,7 +115,7 @@
       name: 'pps-consent',
       kind: t('Local storage'),
       category: 'necessary',
-      purpose: t('Your answer to this notice, with the date you gave it. It exists so we can show that you were asked — and so we stop asking.'),
+      purpose: t('Your answer to this notice, with the date you gave it. It exists so we can show that you were asked, and so we stop asking.'),
       retention: t('12 months, then we ask again'),
     },
     {
@@ -123,7 +123,7 @@
       name: 'prospektor.scan',
       kind: t('Session storage'),
       category: 'necessary',
-      purpose: t('The scan you asked for — the domain you typed and what we found about it — held just long enough to carry it from the front page into the checkout form so you do not fill the same thing in twice. It stays in this tab; nothing reads it but this site.'),
+      purpose: t('The scan you asked for (the domain you typed and what we found about it), held just long enough to carry it from the front page into the checkout form so you do not fill the same thing in twice. It stays in this tab; nothing reads it but this site.'),
       retention: t('Until you close the tab, and cleared the moment checkout finishes'),
     },
     {
@@ -139,7 +139,7 @@
       name: 'prospektor.lang',
       kind: t('Local storage'),
       category: 'necessary',
-      purpose: t('That you have seen the one-line offer to read this site in the language your browser prefers, and which language you went on in — so it is shown once on this browser, whether you took it or not, and never on every page.'),
+      purpose: t('That you have seen the one-line offer to read this site in the language your browser prefers, and which language you went on in, so it is shown once on this browser, whether you took it or not, and never on every page.'),
       retention: t('Until you clear your browser data'),
     },
     {
@@ -152,7 +152,7 @@
       kind: t('Script'),
       category: 'analytics',
       provider: 'Netlify',
-      purpose: t('How quickly the pages actually load for real people, so we can fix the slow ones. It puts nothing on this device — no cookie, no storage of any kind — but as you leave a page it posts that page’s timings, with your IP address, to Netlify, who host this site. Off unless you turn it on.'),
+      purpose: t('How quickly the pages actually load for real people, so we can fix the slow ones. It puts nothing on this device (no cookie, no storage of any kind), but as you leave a page it posts that page’s timings, with your IP address, to Netlify, who host this site. Off unless you turn it on.'),
       retention: t('Nothing is kept on this device; Netlify keeps the metrics'),
     },
     /* No advertising. No session recording. No third party other than the one
@@ -472,11 +472,11 @@
     var text = hasChoice
       ? el('p', {
         class: 'ppsc-bar-text',
-        html: t('<strong>Your choice about how you are measured.</strong> This site sets no cookies. It keeps a couple of things in your own browser so the scan you asked for survives the trip to checkout — those always run. Anything that measures your visit is off until you turn it on.'),
+        html: t('<strong>Your choice about how you are measured.</strong> This site sets no cookies. It keeps a couple of things in your own browser so the scan you asked for survives the trip to checkout. Those always run. Anything that measures your visit is off until you turn it on.'),
       })
       : el('p', {
         class: 'ppsc-bar-text',
-        html: t('<strong>A short note about cookies.</strong> This site sets none at all. It keeps a couple of things in your own browser so the scan you asked for survives the trip to checkout, and nothing else. <em>No analytics, no advertising, no session recording, no third parties</em> — so there is nothing here to opt into.'),
+        html: t('<strong>A short note about cookies.</strong> This site sets none at all. It keeps a couple of things in your own browser so the scan you asked for survives the trip to checkout, and nothing else. <em>No analytics, no advertising, no session recording, no third parties</em>, so there is nothing here to opt into.'),
       });
 
     var actions = hasChoice
@@ -608,7 +608,7 @@
         class: 'ppsc-lede',
         text: hasChoice
           ? t('Everything Prospektor stores on this device, and what you can turn off. Nothing in an optional group runs before you allow it.')
-          : t('Everything Prospektor stores on this device. There is nothing optional to turn off right now — this is the whole list, and it is the same list the code works from.'),
+          : t('Everything Prospektor stores on this device. There is nothing optional to turn off right now: this is the whole list, and it is the same list the code works from.'),
       }),
     ]);
 
@@ -626,13 +626,13 @@
         el('span', { class: 'ppsc-cat-name', text: t('Strictly necessary') }),
         el('span', {
           class: 'ppsc-cat-blurb',
-          text: t('Remembering the answer you give here, and carrying the scan you asked for from the front page into the checkout form. This site sets no cookies at all — these are keys in your own browser, they are never sent anywhere on their own, and there is no account behind them. Nothing here works without them, so they need no permission — but here they are, every one of them.'),
+          text: t('Remembering the answer you give here, and carrying the scan you asked for from the front page into the checkout form. This site sets no cookies at all: these are keys in your own browser, they are never sent anywhere on their own, and there is no account behind them. Nothing here works without them, so they need no permission, but here they are, every one of them.'),
         }),
       ]),
       el('span', { class: 'ppsc-locked', text: t('Always on') }),
     ]));
     body.appendChild(el('details', { class: 'ppsc-disclose' }, [
-      el('summary', { text: t('What’s in it — {n} items', { n: necessary.length }) }),
+      el('summary', { text: t('What’s in it ({n} items)', { n: necessary.length }) }),
       inventoryTable(necessary),
     ]));
 
@@ -643,7 +643,7 @@
       var items = optional.filter(function (i) { return i.category === cat.id; });
       if (items.length) {
         body.appendChild(el('details', { class: 'ppsc-disclose' }, [
-          el('summary', { text: t('What’s in it — {n} items', { n: items.length }) }),
+          el('summary', { text: t('What’s in it ({n} items)', { n: items.length }) }),
           inventoryTable(items),
         ]));
       }
@@ -655,7 +655,7 @@
           el('span', { class: 'ppsc-cat-name', text: t('Analytics, advertising, session recording') }),
           el('span', {
             class: 'ppsc-cat-blurb',
-            text: t('None. Not off-by-default — absent. The pages make no third-party request at all, and no third party receives anything about your visit. If that ever changes, this notice changes with it and asks you first.'),
+            text: t('None: not off by default but absent. The pages make no third-party request at all, and no third party receives anything about your visit. If that ever changes, this notice changes with it and asks you first.'),
           }),
         ]),
         el('span', { class: 'ppsc-locked', text: t('None') }),

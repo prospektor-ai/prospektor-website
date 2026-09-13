@@ -33,18 +33,18 @@ permalink: "{{ language.prefix }}/checkout/"
       {#- #242: short enough to sit on one line at every width — the old
           "Here's what Prospektor will hunt for you." wrapped mid-phrase. -#}
       <h1 class="onboard-h1">{% t %}Your target.{% endt %}</h1>
-      <p class="onboard-sub">{% t %}Sharpen it in your own words — it seeds your studio's brief.{% endt %}</p>
+      <p class="onboard-sub">{% t %}Sharpen it in your own words. It seeds your studio's brief.{% endt %}</p>
       <!-- Direct path (no scan): the studio researches the buyer from their
            site, so the one thing we must have is their address. -->
       <div id="siteAsk" hidden>
-        <p class="onboard-sub">{% t %}Came here directly? All we need is your website — your studio researches you from it. (Or <a href="/#scan">scan it first</a> to see what it finds, free.){% endt %}</p>
+        <p class="onboard-sub">{% t %}Came here directly? All we need is your website: your studio researches you from it. (Or <a href="/#scan">scan it first</a> to see what it finds, free.){% endt %}</p>
         <input class="reserve-input" id="siteInput" type="text" inputmode="url" autocomplete="url"
                placeholder="yourcompany.com" aria-label="{% t %}Your website{% endt %}">
         <p class="reserve-msg is-error" id="siteMsg" hidden></p>
       </div>
       <textarea class="goal-input" id="goalInput" rows="4" placeholder="{% t %}What should Prospektor find for you? e.g. Mid-size property managers in the DACH region who still screen tenants manually.{% endt %}"></textarea>
       <div class="onboard-actions">
-        <button class="btn-cta" id="toPayBtn">{% t %}Looks right — continue →{% endt %}</button>
+        <button class="btn-cta" id="toPayBtn">{% t %}Looks right, continue →{% endt %}</button>
         <a class="onboard-back" href="{{ '/#scan' | localize }}">{% t %}← rescan a different site{% endt %}</a>
       </div>
     </div>
@@ -60,17 +60,17 @@ permalink: "{{ language.prefix }}/checkout/"
             does not send. `?plan=year` from /pricing/ arrives preselected. -#}
         <div class="plan-switch" id="planSwitch" role="group" aria-label="{% t %}Billing period{% endt %}">
           <button type="button" class="plan-opt" data-plan="month" aria-pressed="true">{% t %}Monthly{% endt %}</button>
-          <button type="button" class="plan-opt" data-plan="year" aria-pressed="false">{% t %}Yearly — 2 months free{% endt %}</button>
+          <button type="button" class="plan-opt" data-plan="year" aria-pressed="false">{% t %}Yearly (2 months free){% endt %}</button>
         </div>
         <div class="order-row">
           <span class="order-name">{% t %}Prospektor · one workspace{% endt %}</span>
           <span class="order-price" data-plan-show="month">$999<span class="order-per">/mo</span></span>
           <span class="order-price" data-plan-show="year" hidden>$9,990<span class="order-per">/yr</span></span>
         </div>
-        <p class="plan-note" data-plan-show="year" hidden>{% t %}<strong>Two months free</strong> on $11,988 — charged once, and the price is fixed for the year.{% endt %}</p>
+        <p class="plan-note" data-plan-show="year" hidden>{% t %}<strong>Two months free</strong> on $11,988, charged once, and the price is fixed for the year.{% endt %}</p>
         <ul class="pricing-list">
           <li>{% t %}Unlimited pitch runs, under fair use{% endt %}</li>
-          <li>{% t %}Deck, one-pager, cold emails and proposal — every run, in your voice{% endt %}</li>
+          <li>{% t %}Deck, one-pager, cold emails and proposal on every run, in your voice{% endt %}</li>
           <li>{% t %}Your whole team in via your work-email domain{% endt %}</li>
         </ul>
       </div>
@@ -98,14 +98,14 @@ permalink: "{{ language.prefix }}/checkout/"
                question is with COMPLIANCE in HANDOVER-compliance.md. -->
           <label class="pay-opt" for="payMarketing">
             <input type="checkbox" id="payMarketing">
-            <span>{% t %}Product news and tips, by email — optional, a few times a month at most{% endt %}</span>
+            <span>{% t %}Product news and tips by email (optional, a few times a month at most){% endt %}</span>
           </label>
         </form>
-        <p class="onboard-sub">{% t %}After payment you sign in with this address — with Google, or an emailed link. Work email means your whole team gets in.{% endt %}</p>
+        <p class="onboard-sub">{% t %}After payment you sign in with this address, with Google or an emailed link. Work email means your whole team gets in.{% endt %}</p>
         <p class="reserve-msg is-error" id="stripeMsg" hidden></p>
       </div>
       <div class="onboard-note" id="payFallbackNote">
-        <p>{% t %}<strong>Checkout isn't open yet — days, not weeks.</strong> Leave your email and we'll hold a founding spot; you'll get one message when checkout opens, nothing else. Your target sentence rides along so your studio starts from it.{% endt %}</p>
+        <p>{% t %}<strong>Checkout isn't open yet. Days, not weeks.</strong> Leave your email and we'll hold a founding spot; you'll get one message when checkout opens, nothing else. Your target sentence rides along so your studio starts from it.{% endt %}</p>
       </div>
       <form class="reserve-form" id="reserveForm" novalidate>
         <input class="reserve-input" id="reserveEmail" type="email" autocomplete="email"

@@ -60,7 +60,7 @@ exports.handler = async function(event) {
       personalizations: [{ to: [{ email: 'hello@prospektor.ai', name: 'Prospektor' }] }],
       from: { email: 'hello@prospektor.ai', name: 'Prospektor Checkout' },
       reply_to: { email: email },
-      subject: `Founding spot: ${email}${company ? ' — ' + company : domain ? ' — ' + domain : ''}`,
+      subject: `Founding spot: ${email}${company ? ' · ' + company : domain ? ' · ' + domain : ''}`,
       content: [{ type: 'text/html', value: htmlBody }],
     }),
   });

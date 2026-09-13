@@ -114,7 +114,7 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
   // 3 — the guard: 409 blocks, offers sign-in, never leaves the page
   {
     const { page } = await open(() => ({ status: 409, body: {
-      error: 'Acme GmbH already has a studio and your address gets in — just sign in, there is nothing to buy twice.',
+      error: 'Acme GmbH already has a studio and your address gets in. Just sign in, there is nothing to buy twice.',
       reason: 'domain', signin: 'https://studio.prospektor.ai' } }));
     await page.waitForSelector('#buyForm:not([hidden])');
     await page.fill('#buyEmail', 'colleague@acme.com');
@@ -1287,7 +1287,7 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
       await fresh.goto('http://localhost:8899/es/pricing/');
       await fresh.waitForSelector('.ppsc-bar', { timeout: 5000 });
       const bar = await fresh.textContent('.ppsc-bar');
-      const expected = ES['<strong>Your choice about how you are measured.</strong> This site sets no cookies. It keeps a couple of things in your own browser so the scan you asked for survives the trip to checkout — those always run. Anything that measures your visit is off until you turn it on.'].replace(/<[^>]+>/g, '');
+      const expected = ES['<strong>Your choice about how you are measured.</strong> This site sets no cookies. It keeps a couple of things in your own browser so the scan you asked for survives the trip to checkout. Those always run. Anything that measures your visit is off until you turn it on.'].replace(/<[^>]+>/g, '');
       check('the cookie notice is in Spanish on a Spanish page', bar.includes(expected), bar.slice(0, 80));
       check('and so are its buttons', (await fresh.$$eval('.ppsc-bar .ppsc-btn', ns => ns.map(n => n.textContent))).join('|') === [ES['Reject'], ES['Accept']].join('|'));
       await fresh.click('.ppsc-bar .ppsc-link');

@@ -1,7 +1,7 @@
 ---
 layout: base.njk
 title: Help
-description: How to use Prospektor — guides, answers and a search box, served straight from the running product so they always describe the version that is live.
+description: "How to use Prospektor: guides, answers and a search box, served straight from the running product so they always describe the version that is live."
 # One hub per EDITION of the corpus (#535): the English one at /help/, and
 # /<code>/help/ for every language the studio holds at least one guide in —
 # src/_data/help.js decides the list from the studio's own answer, never from
@@ -15,15 +15,15 @@ pagination:
 permalink: "{{ edition.prefix }}/help/"
 faqs:
   - q: What does Prospektor cost?
-    a: $999 a month per workspace, taken by Stripe. The scan on the home page is free and needs no sign-up — point it at a site and it reads that company before it says a word about them.
+    a: $999 a month per workspace, taken by Stripe. The scan on the home page is free and needs no sign-up. Point it at a site and it reads that company before it says a word about them.
   - q: Do I have to install anything?
     a: No. Prospektor runs in the browser at studio.prospektor.ai. There is nothing to download and no extension to add.
   - q: Can I run Prospektor for my clients?
-    a: Yes. An agency-flagged workspace gets New client workspace in the workspace switcher, for the agency's owner or admins — name the client and a researched workspace exists before the next screen. A portfolio upload creates a whole roster at once. Each client workspace is billed as its own workspace.
+    a: "Yes. An agency-flagged workspace gets New client workspace in the workspace switcher, for the agency's owner or admins: name the client and a researched workspace exists before the next screen. A portfolio upload creates a whole roster at once. Each client workspace is billed as its own workspace."
     link: /help/workspace/
     linkLabel: Read the workspace guide
   - q: Who at my company can sign in?
-    a: If you bought with a company address, the access list carries your whole domain as well as your own address, so everyone at that company can sign in — including addresses that do not exist yet. An owner can keep that or narrow it to named addresses.
+    a: If you bought with a company address, the access list carries your whole domain as well as your own address, so everyone at that company can sign in, including addresses that do not exist yet. An owner can keep that or narrow it to named addresses.
     link: /help/workspace/
     linkLabel: Members and access
   - q: What happens if I stop paying?
@@ -38,10 +38,10 @@ faqs:
   <div class="help-hero-inner">
     <span class="tag">{% t %}help{% endt %}</span>
     <h1 class="help-h1">{% t %}How can we help?{% endt %}</h1>
-    <p class="help-lede">{% t %}Guides and step-by-step answers for Prospektor — each on its own page, all searchable from here. They read the same documentation the product itself runs on, so they always describe the version that is live.{% endt %}</p>
+    <p class="help-lede">{% t %}Guides and step-by-step answers for Prospektor, each on its own page, all searchable from here. They read the same documentation the product itself runs on, so they always describe the version that is live.{% endt %}</p>
     <div class="help-search">
       <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l3.2 3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-      <input id="helpSearch" type="search" placeholder="{% t %}Search the guides — try &ldquo;how do I create a new workspace&rdquo;{% endt %}" autocomplete="off" aria-label="{% t %}Search the help guides{% endt %}">
+      <input id="helpSearch" type="search" placeholder="{% t %}Search the guides. Try &ldquo;how do I create a new workspace&rdquo;{% endt %}" autocomplete="off" aria-label="{% t %}Search the help guides{% endt %}">
     </div>
   </div>
 </header>
