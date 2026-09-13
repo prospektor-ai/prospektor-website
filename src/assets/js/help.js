@@ -176,7 +176,7 @@
     } else {
       var head = '';
       if (hits[0].partial) {
-        head = '<p class="help-dim help-results-note">' + H.esc(t('No guide covers all of that — these come closest.')) + '</p>';
+        head = '<p class="help-dim help-results-note">' + H.esc(t('No guide covers all of that. These come closest.')) + '</p>';
       }
       $results.innerHTML = head + hits.map(function (h) {
         return '<div class="help-hit">' +
@@ -313,7 +313,7 @@
           return;
         }
         console.error('help corpus failed to load', error);
-        offerRetry(H.esc(t('The guides could not be loaded right now — they are served live from the studio, and the studio did not answer in time.')));
+        offerRetry(H.esc(t('The guides could not be loaded right now. They are served live from the studio, and it did not answer in time.')));
       });
   }
 

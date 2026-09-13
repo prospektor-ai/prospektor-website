@@ -1,7 +1,7 @@
 ---
 layout: base.njk
 title: Close CRM integration
-description: "Close works the deal. Prospektor picks the target and writes what you send — pushed back as a lead, its contacts, an opportunity and a note."
+description: "Close works the deal. Prospektor picks the target and writes what you send, pushed back as a lead, its contacts, an opportunity and a note."
 # One page per language (#114/#535, the same shape the funnel and the two
 # product pages take) — see src/index.njk for the reasoning.
 pagination:
@@ -45,13 +45,13 @@ permalink: "{{ language.prefix }}/integrations/close/"
     <p class="page-lede">
       {% t %}That was Close's Lead Generation shelf on 9 September 2026, counted one
       by one. Every tool on it finds companies. Not one of them writes what to
-      send them — the part that actually costs you an afternoon per account.
+      send them, the part that actually costs you an afternoon per account.
       That half is what Prospektor does, in your voice, with its sources, and it
       lands back in Close.{% endt %}
     </p>
     <div class="page-hero-actions">
       {%- if offer.close %}
-      <a class="btn-cta" href="#start">{% t %}Start free — first month on us →{% endt %}</a>
+      <a class="btn-cta" href="#start">{% t %}Start free, first month on us →{% endt %}</a>
       {%- else %}
       <a class="btn-cta" href="#start">{% t %}Start your studio →{% endt %}</a>
       {%- endif %}
@@ -68,7 +68,7 @@ permalink: "{{ language.prefix }}/integrations/close/"
       <div class="flowstep-body">
         <h2>{% t %}Connect Close once, from your workspace settings.{% endt %}</h2>
         <p>
-          {% t %}One click through Close's own consent screen — no API key to paste, no
+          {% t %}One click through Close's own consent screen: no API key to paste, no
           key to rotate later. Prospektor writes to the organization you granted
           and reads nothing else.{% endt %}
         </p>
@@ -102,7 +102,7 @@ permalink: "{{ language.prefix }}/integrations/close/"
           in your own network can open the door, you get the chain.{% endt %}
         </p>
         <p>
-          {% t %}Then the deck, the one-pager, the cold emails and the proposal — drafted
+          {% t %}Then the deck, the one-pager, the cold emails and the proposal, drafted
           in your voice, from what has already worked for you, with nothing
           invented.{% endt %}
         </p>
@@ -132,17 +132,17 @@ permalink: "{{ language.prefix }}/integrations/close/"
         together in both directions. -#}
     <div class="onboard-note">
       <p>{% t %}<strong>First month free, for Close customers.</strong> Card on file, nothing
-        charged for 30 days. Cancel inside them — one email to
-        <a href="mailto:hello@prospektor.ai">hello@prospektor.ai</a> — and you are
+        charged for 30 days. Cancel inside them (one email to
+        <a href="mailto:hello@prospektor.ai">hello@prospektor.ai</a>) and you are
         never charged.{% endt %}</p>
     </div>
     {%- endif %}
 
     <ul class="pricing-list">
-      <li>{% t %}Unlimited pitch runs — research, scoring and every deliverable{% endt %}</li>
+      <li>{% t %}Unlimited pitch runs: research, scoring and every deliverable{% endt %}</li>
       <li>{% t %}Up to 100 companies in one batch, drafted while the tab is closed{% endt %}</li>
       <li>{% t %}Every colleague on your work-email domain, at no extra cost{% endt %}</li>
-      <li>{% t %}Push to Close, HubSpot or Affinity — and back again on the next run{% endt %}</li>
+      <li>{% t %}Push to Close, HubSpot or Affinity, and back again on the next run{% endt %}</li>
     </ul>
 
     {#- The same markup, ids and script as /pricing/'s tile: one field, then
@@ -156,14 +156,14 @@ permalink: "{{ language.prefix }}/integrations/close/"
         <input class="reserve-input" id="buyEmail" type="email" autocomplete="email"
                placeholder="you@yourcompany.com" aria-label="{% t %}Your work email{% endt %}">
         <button class="btn-cta" type="submit" id="buyBtn">
-          {%- if offer.close %}{% t %}Start free — $0 today →{% endt %}{% else %}{% t %}Pay &amp; start &mdash; $999/mo →{% endt %}{% endif -%}
+          {%- if offer.close %}{% t %}Start free, $0 today →{% endt %}{% else %}{% t %}Pay &amp; start · $999/mo →{% endt %}{% endif -%}
         </button>
       </form>
       <input class="reserve-input buy-site" id="buySite" type="text" inputmode="url" autocomplete="url"
              placeholder="yourcompany.com" aria-label="{% t %}Your company website{% endt %}" hidden>
       <p class="reserve-msg is-error" id="buyMsg" hidden></p>
       <p class="buy-note">
-        <span id="buyLive" hidden>{% t %}Next stop is Stripe. This address becomes your studio's sign-in — a work email brings your whole team in with you.{% endt %} </span>{% t %}Money back if it doesn't earn its keep — no fourteen days of hoping you remember to cancel.{% endt %}
+        <span id="buyLive" hidden>{% t %}Next stop is Stripe. This address becomes your studio's sign-in, and a work email brings your whole team in with you.{% endt %} </span>{% t %}Money back if it doesn't earn its keep, with no fourteen days of hoping you remember to cancel.{% endt %}
       </p>
     </div>
   </div>

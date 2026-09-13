@@ -246,9 +246,9 @@ async function sendOperatorNotice({ email, company, website, goal, language, cli
   // Sent a sentence and the studio did not record it — the one case worth
   // shouting about, because the buyer typed something and it went nowhere.
   const goalDropped = !!goal && goalRecorded === false;
-  const who = company ? ' — ' + company : website ? ' — ' + website : '';
+  const who = company ? ' · ' + company : website ? ' · ' + website : '';
   const subject = resumed
-    ? `Subscription resumed: ${email}${who} paid and their workspace is unlocked`
+    ? `Subscription resumed: ${email}${who} paid and their workspace is open again`
     : existing
     ? `⚠️ Order needs attention: ${email} paid but already had a studio`
     : goalDropped
@@ -257,11 +257,11 @@ async function sendOperatorNotice({ email, company, website, goal, language, cli
 
   const targetLine = goal
     ? (goalRecorded === true
-        ? `${goal}\n(recorded — it seeds their brief and they are not asked again)`
+        ? `${goal}\n(recorded: it seeds their brief and they are not asked again)`
         : goalRecorded === false
-          ? `${goal}\n⚠️ SENT BUT NOT RECORDED — the studio will infer a goal and ask them to confirm it instead`
+          ? `${goal}\n⚠️ SENT BUT NOT RECORDED: the studio will infer a goal and ask them to confirm it instead`
           : goal)
-    : 'none sent — bought straight from the pricing tile, so the studio infers one and asks them to confirm it';
+    : 'none sent: bought straight from the pricing tile, so the studio infers one and asks them to confirm it';
 
   const lines = [
     ['Buyer email', email],
@@ -271,23 +271,23 @@ async function sendOperatorNotice({ email, company, website, goal, language, cli
     // #114: which language they bought in, so the operator knows before
     // writing back. Absent for English, which is the case with nothing to say.
     ['Language', language ? languageName(language) : ''],
-    ['Workspace', clientId ? `${clientId} (${resumed ? 'RESUMED — was suspended, this payment unlocked it' : existing ? 'EXISTING — no new workspace was created' : 'newly created'})` : ''],
+    ['Workspace', clientId ? `${clientId} (${resumed ? 'RESUMED: was suspended, this payment reopened it' : existing ? 'EXISTING: no new workspace was created' : 'newly created'})` : ''],
   ];
   const textBody = [
     resumed
-      ? 'A suspended customer completed checkout — their workspace is resumed and they are back in. One thing to check by hand: if their old subscription still exists in Stripe (a failed-payment suspension rather than a cancellation), cancel it so they are not billed twice.'
+      ? 'A suspended customer completed checkout. Their workspace is resumed and they are back in. One thing to check by hand: if their old subscription still exists in Stripe (a failed-payment suspension rather than a cancellation), cancel it so they are not billed twice.'
       : existing
-      ? 'A buyer completed checkout, but their email already had a workspace — the studio returned the existing one and did NOT create a workspace for what they just bought. Reach out and sort it by hand.'
+      ? 'A buyer completed checkout, but their email already had a workspace: the studio returned the existing one and did NOT create a workspace for what they just bought. Reach out and sort it by hand.'
       : goalDropped
-        ? 'A buyer completed checkout and their studio was provisioned — but the target sentence they typed was not recorded against it. They will be asked to confirm an inferred goal instead, so nothing is broken for them; something is broken for us.'
+        ? 'A buyer completed checkout and their studio was provisioned, but the target sentence they typed was not recorded against it. They will be asked to confirm an inferred goal instead, so nothing is broken for them; something is broken for us.'
         : 'A buyer completed checkout and their studio was provisioned.',
     '',
     ...lines.filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`),
   ].join('\n');
   const htmlBody = emailShell(`
     <p style="font-size:17px;font-weight:800;letter-spacing:-0.01em;color:${(existing && !resumed) || goalDropped ? BRAND.coral : BRAND.ink};margin:0 0 16px;">${resumed ? 'Subscription resumed' : existing ? '⚠️ Order needs attention' : goalDropped ? '⚠️ Order fine, target sentence dropped' : 'New order'}</p>
-    ${resumed ? `<p style="font-size:13px;color:${BRAND.ink};line-height:1.65;margin:0 0 16px;">A suspended customer paid again and their workspace is unlocked. One hand-check: if their old subscription still exists in Stripe (failed payment rather than cancellation), cancel it so they are not billed twice.</p>` : existing ? `<p style="font-size:13px;color:${BRAND.ink};line-height:1.65;margin:0 0 16px;">The buyer paid, but this email already had a workspace — the studio returned the existing one and <strong>did not create a workspace for what they just bought</strong>. Reach out and sort it by hand.</p>` : ''}
-    ${goalDropped ? `<p style="font-size:13px;color:${BRAND.ink};line-height:1.65;margin:0 0 16px;">The workspace was created, but the sentence this buyer typed <strong>was not recorded against it</strong> — <code>/api/provision</code> answered <code>goal:false</code> for a sentence we did send. They will be asked to confirm an inferred goal instead, so their experience is intact; the field is what is broken.</p>` : ''}
+    ${resumed ? `<p style="font-size:13px;color:${BRAND.ink};line-height:1.65;margin:0 0 16px;">A suspended customer paid again and their workspace is open again. One hand-check: if their old subscription still exists in Stripe (failed payment rather than cancellation), cancel it so they are not billed twice.</p>` : existing ? `<p style="font-size:13px;color:${BRAND.ink};line-height:1.65;margin:0 0 16px;">The buyer paid, but this email already had a workspace: the studio returned the existing one and <strong>did not create a workspace for what they just bought</strong>. Reach out and sort it by hand.</p>` : ''}
+    ${goalDropped ? `<p style="font-size:13px;color:${BRAND.ink};line-height:1.65;margin:0 0 16px;">The workspace was created, but the sentence this buyer typed <strong>was not recorded against it</strong>: <code>/api/provision</code> answered <code>goal:false</code> for a sentence we did send. They will be asked to confirm an inferred goal instead, so their experience is intact; the field is what is broken.</p>` : ''}
     <table style="width:100%;border-collapse:collapse;">
       ${lines.filter(([, v]) => v).map(([k, v]) => `<tr><td style="padding:8px 12px 8px 0;font-family:monospace;font-size:11px;color:${BRAND.inkFaint};text-transform:uppercase;vertical-align:top;white-space:nowrap;">${k}</td><td style="padding:8px 0;font-size:14px;color:${BRAND.ink};line-height:1.5;">${esc(v).replace(/\n/g, '<br>')}</td></tr>`).join('')}
     </table>`,
@@ -312,10 +312,10 @@ async function sendWelcomeEmail(email, language) {
     t('Your Prospektor workspace is ready.', L),
     '',
     t('Sign in here: {url}', L, { url: signin }),
-    t('Sign in with Google, using this address — the one you paid with — or have the studio email you a sign-in link from that page. Either way, that is the whole setup.', L),
+    t('Sign in with Google, using this address (the one you paid with), or have the studio email you a sign-in link from that page. Either way, that is the whole setup.', L),
     '',
     t('While you were paying, your studio read your site and drafted your brief.', L),
-    t('First thing you’ll do is confirm your target sentence — one line, your words.', L),
+    t('First thing you’ll do is confirm your target sentence: one line, your words.', L),
     t('Then three researched prospects are waiting to run your first pitches.', L),
     '',
     t('Paid with your work email? Every colleague on your domain can sign in the same way.', L),
@@ -326,7 +326,7 @@ async function sendWelcomeEmail(email, language) {
   const htmlBody = emailShell(`
     <p style="font-size:22px;font-weight:800;letter-spacing:-0.02em;color:${BRAND.ink};line-height:1.25;margin:0 0 14px;">${t('Your studio is ready.', L)}</p>
     <p style="font-size:14px;color:${BRAND.ink};line-height:1.7;margin:0 0 22px;">
-      ${t('Sign in at {link} — <strong>with Google, using this address</strong> (the one you paid with), <strong>or have the studio email you a sign-in link</strong> from that same page. That&#39;s the whole setup: no token, no wizard.', L, { link })}
+      ${t('Sign in at {link}, <strong>with Google, using this address</strong> (the one you paid with), <strong>or have the studio email you a sign-in link</strong> from that same page. That&#39;s the whole setup: no token, no wizard.', L, { link })}
     </p>
     <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 26px;"><tr><td style="border-radius:100px;background:${BRAND.coral};">
       <a href="${signin}" style="display:inline-block;padding:13px 28px;font-size:14px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:100px;">${t('Sign in to your studio &rarr;', L)}</a>
@@ -334,16 +334,16 @@ async function sendWelcomeEmail(email, language) {
     <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;">
       ${[
         t('While you were paying, your studio read your site and drafted your brief.', L),
-        t('First thing you&#39;ll do is confirm your target sentence — one line, your words.', L),
+        t('First thing you&#39;ll do is confirm your target sentence: one line, your words.', L),
         t('Three researched prospects are waiting to run your first pitches.', L),
       ].map(li => `<tr><td style="width:16px;vertical-align:top;padding:5px 0;"><span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:${BRAND.accent};margin-bottom:2px;"></span></td><td style="font-size:14px;color:${BRAND.ink};line-height:1.6;padding:3px 0;">${li}</td></tr>`).join('')}
     </table>
     <p style="font-size:13px;color:${BRAND.inkFaint};line-height:1.65;margin:20px 0 0;">
       ${t('Paid with your work email? Every colleague on your domain can sign in the same way.', L)}
     </p>`,
-    t('You&#39;re getting this one email because you started a Prospektor workspace. Questions? Just reply — it reaches a human at hello@prospektor.ai.', L));
+    t('You&#39;re getting this one email because you started a Prospektor workspace. Questions? Just reply. It reaches a human at hello@prospektor.ai.', L));
 
-  await sendMail({ to: email, subject: t('Your studio is ready — sign in', L), textBody, htmlBody });
+  await sendMail({ to: email, subject: t('Your studio is ready: sign in', L), textBody, htmlBody });
 }
 
 exports.handler = async function(event) {
@@ -413,7 +413,7 @@ exports.handler = async function(event) {
     const object = (stripeEvent.data && stripeEvent.data.object) || {};
     const secret = process.env.STUDIO_PROVISION_SECRET;
     if (!secret) {
-      console.error('STUDIO_PROVISION_SECRET is not set — cannot', billing.action);
+      console.error('STUDIO_PROVISION_SECRET is not set, cannot', billing.action);
       return { statusCode: 500, body: JSON.stringify({ error: 'Not configured' }) };
     }
     // Renewal invoices carry the address; subscription and dispute events
@@ -426,7 +426,7 @@ exports.handler = async function(event) {
     if (!email) {
       // Nothing to act on and nothing a retry would find: acknowledge, and
       // leave the trail in the function log for the operator.
-      console.error(stripeEvent.type, 'carried no resolvable email — no workspace touched.');
+      console.error(stripeEvent.type, 'carried no resolvable email, no workspace touched.');
       return { statusCode: 200, body: JSON.stringify({ received: true, acted: false }) };
     }
     let result;
@@ -476,7 +476,7 @@ exports.handler = async function(event) {
   // instead, which is why this handler listens for both events.
   const PROVISIONABLE = ['paid', 'no_payment_required'];
   if (session.payment_status && PROVISIONABLE.indexOf(session.payment_status) < 0) {
-    console.log('Session', session.id, 'not paid yet (', session.payment_status, ') — waiting.');
+    console.log('Session', session.id, 'not paid yet (', session.payment_status, '), waiting.');
     return { statusCode: 200, body: JSON.stringify({ received: true }) };
   }
 
@@ -498,11 +498,11 @@ exports.handler = async function(event) {
   if (!provisionSecret) {
     // Retryable on purpose: once the operator sets the env var, Stripe's next
     // re-delivery provisions this buyer with no manual step.
-    console.error('STUDIO_PROVISION_SECRET is not set — cannot provision', email);
+    console.error('STUDIO_PROVISION_SECRET is not set: cannot provision', email);
     return { statusCode: 500, body: JSON.stringify({ error: 'Provisioning not configured' }) };
   }
   if (!email) {
-    console.error('Session', session.id, 'completed without an email — cannot provision.');
+    console.error('Session', session.id, 'completed without an email, cannot provision.');
     return { statusCode: 502, body: JSON.stringify({ error: 'No buyer email on session' }) };
   }
 

@@ -219,9 +219,9 @@ module.exports = function(eleventyConfig) {
   const TITLE_BUDGET = 60;
   eleventyConfig.addFilter("metaTitle", (title, name, tagline) => {
     if (!title) return `${name} · ${tagline}`;
-    const full = `${title} — ${name} · ${tagline}`;
+    const full = `${title} · ${name} · ${tagline}`;
     if (full.length <= TITLE_BUDGET) return full;
-    const short = `${title} — ${name}`;
+    const short = `${title} · ${name}`;
     if (short.length <= TITLE_BUDGET) return short;
     return title;
   });

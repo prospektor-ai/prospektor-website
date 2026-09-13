@@ -42,7 +42,7 @@ exports.handler = async function(event) {
         taken: false,
         checked: result.checked,
         suspended: true,
-        message: 'Welcome back — this email\u2019s workspace is paused. Completing checkout reactivates it with everything where you left it.',
+        message: 'Welcome back: this email\u2019s workspace is paused, and completing checkout reactivates it with everything where you left it.',
       }),
     };
   }

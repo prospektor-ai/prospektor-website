@@ -69,9 +69,9 @@ async function checkOwnership(email) {
 function ownershipMessage(result) {
   if (result.reason === 'domain') {
     const who = result.name || 'Your company';
-    return who + ' already has a studio and your address gets in — just sign in, there is nothing to buy twice.';
+    return who + ' already has a studio and your address gets in. Just sign in, there is nothing to buy twice.';
   }
-  return 'This email already has a studio — sign in to it, or use a different address to start a new one.';
+  return 'This email already has a studio. Sign in to it, or use a different address to start a new one.';
 }
 
 module.exports = { checkOwnership, ownershipMessage, CHECK_URL };

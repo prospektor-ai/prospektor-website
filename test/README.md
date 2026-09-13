@@ -1,6 +1,6 @@
 # Tests for the website lane
 
-Three commands, in the order a thread uses them. `npm test` runs
+Four commands, in the order a thread uses them. `npm test` runs
 `test/run.js`, not `node --test` — read *Why `npm test` is a script* below
 before changing that.
 
@@ -8,6 +8,7 @@ before changing that.
 |---|---|---|
 | `npm test` | Do the functions behave, and does the site build what it claims? 192 tests over the guards, the fail-open policy, the webhook, `/resources/` (including the learnings ledger), `/help/` (the hub, and the per-guide pages #166 split it into) and the content-hashed assets #169 introduced. | Nothing — no network, no keys (`HELP_CORPUS_OFFLINE=1` is set for you, so the help corpus comes from the committed snapshot) |
 | `npm run drive` | Does the built site wire up in a real browser? 290 checks over the pay form, the ownership block, the website ask and both fallbacks, the help hub and its search, a guide on its own URL and the anchors that forward to it, the /resources topic filter, and what a crawler is served — with the functions and the studio mocked. | Chromium (`CHROME_PATH` to override) |
+| `npm run humanize` | Does the copy read as a person wrote it? Every string on the pages, in the scripts, in the functions' mails and replies and in each catalogue, against the humanizer standard (#640) — dashes, strong tells, length — with where each one lives. `npm test` gates the same numbers: `test/humanize.test.js` is red on a strong tell and on a dash count rising past its ceiling in `tools/humanize.js`. | Nothing (it builds its own copy of the site with the help corpus offline) |
 | `npm run audit` | Is **production** still what the board says it is? Every claim on this lane's board rows, fetched from the live site — the count grows with the board, so it is deliberately not promised here (#135's lesson about the runbook's fixed URL count). Read-only — it runs a real scan and reads pages, and never posts anything that charges. | Chromium, network (`AUDIT_SITE` to point elsewhere) |
 
 ## What the function tests are actually protecting

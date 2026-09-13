@@ -114,7 +114,7 @@ permalink: "{{ language.prefix }}/pricing/"
         page it was — which is also what a crawler reads. -#}
     <div class="plan-switch" id="planSwitch" role="group" aria-label="{% t %}Billing period{% endt %}">
       <button type="button" class="plan-opt" data-plan="month" aria-pressed="true">{% t %}Monthly{% endt %}</button>
-      <button type="button" class="plan-opt" data-plan="year" aria-pressed="false">{% t %}Yearly — 2 months free{% endt %}</button>
+      <button type="button" class="plan-opt" data-plan="year" aria-pressed="false">{% t %}Yearly (2 months free){% endt %}</button>
     </div>
     <div class="price-row" data-plan-show="month">
       <span class="price-num">$999</span>
@@ -124,12 +124,12 @@ permalink: "{{ language.prefix }}/pricing/"
       <span class="price-num">$9,990</span>
       <span class="price-per">{% t %}/ year · per workspace{% endt %}</span>
     </div>
-    <p class="plan-note" data-plan-show="month">{% t %}Or <strong>$9,990 a year</strong> — two months free.{% endt %}</p>
-    <p class="plan-note" data-plan-show="year" hidden>{% t %}<strong>Two months free</strong> on $11,988 — and the price is fixed for the year.{% endt %}</p>
+    <p class="plan-note" data-plan-show="month">{% t %}Or <strong>$9,990 a year</strong>, two months free.{% endt %}</p>
+    <p class="plan-note" data-plan-show="year" hidden>{% t %}<strong>Two months free</strong> on $11,988, and the price is fixed for the year.{% endt %}</p>
     <p class="price-line">{% t %}Unlimited runs · your whole team in · money back if it doesn't earn its keep{% endt %}</p>
 
     <ul class="pricing-list">
-      <li>{% t %}Unlimited pitch runs — research, scoring and every deliverable{% endt %}</li>
+      <li>{% t %}Unlimited pitch runs: research, scoring and every deliverable{% endt %}</li>
       <li>{% t %}Up to 100 companies in one batch, drafted while the tab is closed{% endt %}</li>
       <li>{% t %}Decision-makers with sources, and the confidence rating on each name{% endt %}</li>
       <li>{% t %}Your network mapped to warm paths, with the intro request drafted{% endt %}</li>
@@ -149,7 +149,7 @@ permalink: "{{ language.prefix }}/pricing/"
             are the sentence's own; without it Nunjucks would escape the `&`
             twice and the button would read "Pay &amp; start". -#}
         <button class="btn-cta" type="submit" id="buyBtn"
-                data-label-year="{{ 'Pay &amp; start &mdash; $9,990/yr →' | t | safe }}">{% t %}Pay &amp; start &mdash; $999/mo →{% endt %}</button>
+                data-label-year="{{ 'Pay &amp; start · $9,990/yr →' | t | safe }}">{% t %}Pay &amp; start · $999/mo →{% endt %}</button>
       </form>
       <input class="reserve-input buy-site" id="buySite" type="text" inputmode="url" autocomplete="url"
              placeholder="yourcompany.com" aria-label="{% t %}Your company website{% endt %}" hidden>
@@ -157,7 +157,7 @@ permalink: "{{ language.prefix }}/pricing/"
       <p class="buy-note">
         {#- #423 — the homepage tile's twin, and it changes with it. The
             reasoning is in src/index.njk beside the same line. -#}
-        <span id="buyLive" hidden>{% t %}Next stop is Stripe. This address becomes your studio's sign-in — a work email brings your whole team in with you.{% endt %} </span>{% t %}Money back if it doesn't earn its keep — no fourteen days of hoping you remember to cancel.{% endt %}
+        <span id="buyLive" hidden>{% t %}Next stop is Stripe. This address becomes your studio's sign-in, and a work email brings your whole team in with you.{% endt %} </span>{% t %}Money back if it doesn't earn its keep, with no fourteen days of hoping you remember to cancel.{% endt %}
       </p>
     </div>
   </div>
@@ -179,7 +179,7 @@ permalink: "{{ language.prefix }}/pricing/"
     <dl class="pricing-faq-list">
       <div class="pricing-faq-item">
         <dt>{% t %}What counts as a workspace?{% endt %}</dt>
-        <dd>{% t %}One company you are selling <em>for</em> — its brief, its voice, its
+        <dd>{% t %}One company you are selling <em>for</em>: its brief, its voice, its
           proof points, its pitches, its network. Selling for yourself means one
           workspace. An agency selling on behalf of five clients keeps five, so
           nobody's research, voice or network leaks into anybody else's.{% endt %}</dd>
@@ -187,14 +187,14 @@ permalink: "{{ language.prefix }}/pricing/"
       <div class="pricing-faq-item">
         <dt>{% t %}How many seats do I get?{% endt %}</dt>
         <dd>{% t %}All of them. Pay with your work email and every colleague on that
-          domain signs straight in — there is nothing to count and nothing to
+          domain signs straight in. There is nothing to count and nothing to
           upgrade. Sign-in is Google or an emailed single-use link; there are no
           passwords.{% endt %}</dd>
       </div>
       <div class="pricing-faq-item">
         <dt>{% t %}Is there a run limit or a credit meter?{% endt %}</dt>
         <dd>{% t %}No. Runs are unlimited, and a batch takes up to a hundred companies
-          at a time. We would rather you used it hard — a workspace that runs a
+          at a time. We would rather you used it hard: a workspace that runs a
           lot and records what happened is a workspace that gets visibly better
           results, which is the point.{% endt %}</dd>
       </div>
@@ -210,7 +210,7 @@ permalink: "{{ language.prefix }}/pricing/"
         <dd>{% t %}No clock, no. The scan on the homepage reads your own site and shows
           who it would hunt for you, and the
           <a href="https://studio.prospektor.ai/r">free run</a> names companies
-          worth approaching — neither asks for an account or a card. The
+          worth approaching. Neither asks for an account or a card. The
           subscription you pay for up front and take the money back if it
           doesn't earn its keep, with no fourteen days of hoping you remember to
           cancel.{% endt %}</dd>
@@ -228,20 +228,20 @@ permalink: "{{ language.prefix }}/pricing/"
             expectation, and it is the only honest answer until billing is
             self-serve. -#}
         <dt>{% t %}Can I switch between monthly and yearly?{% endt %}</dt>
-        <dd>{% t %}Yes — email <a href="mailto:{{ site.email }}">{{ site.email }}</a> and
+        <dd>{% t %}Yes. Email <a href="mailto:{{ site.email }}">{{ site.email }}</a> and
           we move you at your next renewal. There is no switch inside the studio
           yet, so today it is a reply from a human rather than a button.{% endt %}</dd>
       </div>
       <div class="pricing-faq-item">
         <dt>{% t %}What happens if I stop?{% endt %}</dt>
         <dd>{% t %}Nothing is held hostage. Export what you have, share the links you
-          have shared, print what you need — and the workspace and everything in
+          have shared, print what you need, and the workspace and everything in
           it is deleted when you ask. What we sell is next month's work, not
           custody of last month's.{% endt %}</dd>
       </div>
       <div class="pricing-faq-item">
         <dt>{% t %}What happens to my data?{% endt %}</dt>
-        <dd>{% t %}Workspaces are strictly separated — your research, pitches and
+        <dd>{% t %}Workspaces are strictly separated: your research, pitches and
           network are visible to your team only. Email addresses in a LinkedIn
           export are deleted at import, and your network never travels on a
           shared pitch. The <a href="/privacy/">privacy page</a> says the rest,
@@ -253,5 +253,5 @@ permalink: "{{ language.prefix }}/pricing/"
 
 <section class="cta">
   <h2 class="reveal">{% t %}Not sure yet? See what it'd <span class="accent">hunt</span> for you.{% endt %}</h2>
-  <a href="{{ '/#scan' | localize }}" class="btn-cta reveal">{% t %}Scan your site — free{% endt %}</a>
+  <a href="{{ '/#scan' | localize }}" class="btn-cta reveal">{% t %}Scan your site for free{% endt %}</a>
 </section>

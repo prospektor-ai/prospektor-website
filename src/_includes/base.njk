@@ -47,16 +47,16 @@
 {%- if loc.code != 'en' %}
 <meta property="og:locale" content="{{ loc.og }}">
 {%- endif %}
-<meta property="og:title" content="{% if title %}{{ title | t }} — {% endif %}{{ site.name }}">
+<meta property="og:title" content="{% if title %}{{ title | t }} · {% endif %}{{ site.name }}">
 <meta property="og:description" content="{{ (description or site.description) | t }}">
 <meta property="og:url" content="{{ site.url }}{{ page.url }}">
 <meta property="og:image" content="{{ site.url }}{{ (ogImage or '/assets/img/og.png') | asset }}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-{% if ogType == "article" %}<meta property="og:image:alt" content="{{ title }} — Prospektor">
-{% else %}<meta property="og:image:alt" content="{{ ogAlt or ('Prospektor — ' + (site.tagline | t) + '. ' + ('$999 per month, per workspace.' | t)) }}">{% endif %}
+{% if ogType == "article" %}<meta property="og:image:alt" content="{{ title }} · Prospektor">
+{% else %}<meta property="og:image:alt" content="{{ ogAlt or ('Prospektor · ' + (site.tagline | t) + '. ' + ('$999 per month, per workspace.' | t)) }}">{% endif %}
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{% if title %}{{ title | t }} — {% endif %}{{ site.name }}">
+<meta name="twitter:title" content="{% if title %}{{ title | t }} · {% endif %}{{ site.name }}">
 <meta name="twitter:description" content="{{ (description or site.description) | t }}">
 <meta name="twitter:image" content="{{ site.url }}{{ (ogImage or '/assets/img/og.png') | asset }}">
 

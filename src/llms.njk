@@ -5,29 +5,29 @@ eleventyExcludeFromCollections: true
 # Prospektor
 
 > You spend about three minutes teaching Prospektor what your company is and
-> what you are hunting for — new customers, distribution partners, resellers,
+> what you are hunting for: new customers, distribution partners, resellers,
 > companies worth investing in or acquiring. It then finds those companies,
 > names the person at each one worth contacting, and writes what you send them.
 > The writing is the product: a deck, a one-pager, emails and a proposal in one
 > client's voice, grounded in the work that client has already won.
 
 This domain is the marketing site: what the product is, and what it costs. Every
-page a visitor reads — the front page, the two product pages, pricing, checkout,
-contact — is also served in
+page a visitor reads (the front page, the two product pages, pricing, checkout,
+contact) is also served in
 {% for l in languages %}{% if l.code != 'en' %}{{ l.own }} under `{{ l.prefix }}/`{% if not loop.last %}, {% endif %}{% endif %}{% endfor %};
 the help guides are served in a language wherever the product's own documentation
 is written in it ({% for e in help.editions %}{% if e.code != 'en' %}{{ e.own }} at `{{ e.prefix }}/help/`{% if not loop.last %}, {% endif %}{% endif %}{% endfor %}); the legal pages and the articles are English.
 Every translated page names its siblings with `hreflang`, and `/` is English. The
-application is `studio.prospektor.ai`, and it has its own file for machines —
+application is `studio.prospektor.ai`, and it has its own file for machines:
 [studio.prospektor.ai/llms.txt](https://studio.prospektor.ai/llms.txt) lists the
 calls that need no account. Nothing on this domain is an API.
 
 ## The price
 
-US$999 a month, per workspace, paid before you start — or US$9,990 for a year,
+US$999 a month, per workspace, paid before you start, or US$9,990 for a year,
 which is two months free and fixed for that year. A workspace is one company
 you are selling for, so an agency selling for five clients keeps five. Runs are
-unlimited and every colleague on your work-email domain is included — no seats to
+unlimited and every colleague on your work-email domain is included: no seats to
 count, no credit meter. Money back if it doesn't earn its keep. If the price ever
 changes, customers get at least 30 days' notice and it applies from the next renewal,
 never to a period already paid for.
@@ -36,10 +36,10 @@ money questions.
 
 ## What it does
 
-**Who to pitch** — it reads a company's own site, scores it against your brief,
+**Who to pitch**: it reads a company's own site, scores it against your brief,
 and names the same-named companies it ruled out. Your brief decides what counts
 as a target, so the same machinery hunts customers, channel partners, resellers,
-investment targets or acquisitions. **What to send** — the deck, the one-pager,
+investment targets or acquisitions. **What to send**: the deck, the one-pager,
 the emails and the proposal, in your voice, grounded in work you have already
 won. The second half is the hard one, and it is what you are paying for.
 
@@ -50,34 +50,34 @@ a few questions. Nothing has to be re-explained afterwards.
 Five agents do the run, and each one shows its work. The names are the sales-org
 job titles the work corresponds to, in plain terms:
 
-- **BDR** — *the researcher.* Brings companies worth approaching, scored against your brief.
-- **SDR** — *the door-opener.* Decision-makers with a source behind every name, then who in your network can introduce you.
-- **AE** — *the writer.* Writes the deck, the one-pager, the proposal and the emails.
-- **Sales Ops** — *the fact-checker.* Checks the work before you see it: an invented number, a fabricated person, a ruled-out company.
-- **RevOps** — *the memory.* Remembers what worked, so run 100 is not run 1.
+- **BDR**, *the researcher.* Brings companies worth approaching, scored against your brief.
+- **SDR**, *the door-opener.* Decision-makers with a source behind every name, then who in your network can introduce you.
+- **AE**, *the writer.* Writes the deck, the one-pager, the proposal and the emails.
+- **Sales Ops**, *the fact-checker.* Checks the work before you see it: an invented number, a fabricated person, a ruled-out company.
+- **RevOps**, *the memory.* Remembers what worked, so run 100 is not run 1.
 
-There is no scheduled hunt — nothing goes looking on a timer. What keeps the
+There is no scheduled hunt: nothing goes looking on a timer. What keeps the
 queue full is that the studio offers three companies before you ask for any,
 every run ends with more like the one it just did, and a batch takes up to 100
 companies while the tab is closed.
 
-They research, draft and check. You send — nothing signs your name but you. The
+They research, draft and check. You send. Nothing signs your name but you. The
 two halves in full: [prospektor.ai/who-to-pitch/](https://prospektor.ai/who-to-pitch/)
 and [prospektor.ai/what-to-send/](https://prospektor.ai/what-to-send/).
 
 ## Try it without an account
 
-- [prospektor.ai](https://prospektor.ai/) — put your own domain in the scan field and see who it would hunt for you. No sign-up, no card.
-- [studio.prospektor.ai/r](https://studio.prospektor.ai/r) — the free run: name a company, get companies it should approach.
+- [prospektor.ai](https://prospektor.ai/): put your own domain in the scan field and see who it would hunt for you. No sign-up, no card.
+- [studio.prospektor.ai/r](https://studio.prospektor.ai/r): the free run. Name a company, get companies it should approach.
 
 ## The rest of the pages
 
-- [prospektor.ai/help/](https://prospektor.ai/help/) — how the product works, screen by screen.
-- [prospektor.ai/privacy/](https://prospektor.ai/privacy/) — what is kept, what deletion leaves, and what to do if your name came up in someone's research.
-- [prospektor.ai/terms/](https://prospektor.ai/terms/) — the contract.
-- [prospektor.ai/dpa/](https://prospektor.ai/dpa/) — the data processing addendum: the customer is controller of what its workspace holds and connects, Prospektor is processor.
-- [prospektor.ai/resources/](https://prospektor.ai/resources/) — how we think about who to approach and what to send them.
-- [prospektor.ai/contact/](https://prospektor.ai/contact/) — name, email, message. For questions; not a way to buy, and not a call to book.
+- [prospektor.ai/help/](https://prospektor.ai/help/): how the product works, screen by screen.
+- [prospektor.ai/privacy/](https://prospektor.ai/privacy/): what is kept, what deletion leaves, and what to do if your name came up in someone's research.
+- [prospektor.ai/terms/](https://prospektor.ai/terms/): the contract.
+- [prospektor.ai/dpa/](https://prospektor.ai/dpa/): the data processing addendum, the customer is controller of what its workspace holds and connects, Prospektor is processor.
+- [prospektor.ai/resources/](https://prospektor.ai/resources/): how we think about who to approach and what to send them.
+- [prospektor.ai/contact/](https://prospektor.ai/contact/): name, email, message. For questions; not a way to buy, and not a call to book.
 
 ## What is not here
 
