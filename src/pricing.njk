@@ -31,9 +31,44 @@ permalink: "{{ language.prefix }}/pricing/"
     away from what a buyer is charged. test/seo.test.js pins the two together,
     so changing the price in one place and not the other fails the suite.
 
-    `brand` and `seller` point at the Organization node base.njk puts on every
-    page. `priceValidUntil` is deliberately absent: it is optional for a
-    subscription that has no end date, and an invented one expires.
+    `priceValidUntil` is deliberately absent: it is optional for a subscription
+    that has no end date, and an invented one expires.
+
+    #674, 15 Sep 2026. `brand` and `seller` used to be bare `{ "@id": … }`
+    pointers at the Organization node base.njk puts on every page. That reads
+    correctly as JSON-LD and Search Console still rejected it — "Invalid object
+    type for field brand" — because the pointer crosses into a second <script>
+    block and Google's parser did not resolve it there. `brand` is now an
+    inline `Brand`, which is the shape Google's own Product documentation
+    shows. `seller` keeps its `@id` AND states its type inline, so a parser
+    that merges the graph still unifies the two and one that does not still
+    sees a typed Organization.
+
+    `hasMerchantReturnPolicy` says, machine-readably, the promise this page
+    already makes in words twice: money back if it doesn't earn its keep, by
+    email, with no window to miss. `MerchantReturnUnlimitedWindow` is that
+    promise in Google's vocabulary and it is the honest one — the FAQ below
+    says "write to us and we refund you" with no clock on it, which is a
+    genuinely unlimited window rather than a generous finite one.
+    `applicableCountry` is absent on purpose: Stripe takes any country, Google
+    has no wildcard for that, and listing a handful would narrow a promise we
+    do not narrow. `merchantReturnLink` alone satisfies Google's stated
+    requirement, and it points here, where the guarantee is written out.
+
+    THREE FIELDS SEARCH CONSOLE ASKS FOR ARE MISSING ON PURPOSE. Do not
+    "fix" them. All three are non-critical suggestions — they suppress
+    nothing — and each one would mean publishing something untrue:
+
+      - `shippingDetails`: nothing is shipped. The field exists so Google can
+        print a delivery cost and a delivery date; a workspace has neither.
+        Inventing a $0 parcel to an invented country list models a thing that
+        does not exist.
+      - `aggregateRating` and `review`: Prospektor has no customers yet, so it
+        has no ratings and no reviews. Writing either would be fabricated
+        review markup — against Google's structured data policy, grounds for a
+        manual action against the whole domain, and a false claim to a person
+        reading a search result. When real customers give real reviews, these
+        two become the right thing to add, and not one day before.
 
     #542: two Offers, because there are now two ways to buy the same one
     workspace. `offers` takes a list for exactly this, and the test above reads
@@ -46,7 +81,7 @@ permalink: "{{ language.prefix }}/pricing/"
   "@type": "Product",
   "name": "Prospektor",
   "description": {{ ("A Prospektor workspace: unlimited pitch runs, research, decision-makers with sources, warm-intro mapping and every deliverable drafted in your voice." | t) | dump | safe }},
-  "brand": { "@id": "{{ site.url }}/#organization" },
+  "brand": { "@type": "Brand", "name": "{{ site.name }}" },
   "url": "{{ site.url }}{{ page.url }}",
   "image": "{{ site.url }}{{ '/assets/img/og.png' | asset }}",
   "offers": [
@@ -57,7 +92,14 @@ permalink: "{{ language.prefix }}/pricing/"
       "price": "999.00",
       "priceCurrency": "USD",
       "availability": "https://schema.org/InStock",
-      "seller": { "@id": "{{ site.url }}/#organization" },
+      "seller": { "@id": "{{ site.url }}/#organization", "@type": "Organization", "name": "{{ site.name }}" },
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "returnPolicyCategory": "https://schema.org/MerchantReturnUnlimitedWindow",
+        "returnFees": "https://schema.org/FreeReturn",
+        "refundType": "https://schema.org/FullRefund",
+        "merchantReturnLink": "{{ site.url }}{{ page.url }}"
+      },
       "priceSpecification": {
         "@type": "UnitPriceSpecification",
         "price": "999.00",
@@ -75,7 +117,14 @@ permalink: "{{ language.prefix }}/pricing/"
       "price": "9990.00",
       "priceCurrency": "USD",
       "availability": "https://schema.org/InStock",
-      "seller": { "@id": "{{ site.url }}/#organization" },
+      "seller": { "@id": "{{ site.url }}/#organization", "@type": "Organization", "name": "{{ site.name }}" },
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "returnPolicyCategory": "https://schema.org/MerchantReturnUnlimitedWindow",
+        "returnFees": "https://schema.org/FreeReturn",
+        "refundType": "https://schema.org/FullRefund",
+        "merchantReturnLink": "{{ site.url }}{{ page.url }}"
+      },
       "priceSpecification": {
         "@type": "UnitPriceSpecification",
         "price": "9990.00",

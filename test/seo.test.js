@@ -77,6 +77,15 @@ describe('SEO — the #137 findings, pinned', () => {
   before(() => { built = siteBuild('seo'); SITE = built.dir; });
   after(() => built && built.cleanup());
 
+  // Every language builds its own /pricing/ (#114), and the Product block is in
+  // all of them — so a schema assertion that reads only the English page passes
+  // while three others are wrong.
+  const pricingPages = () => {
+    const found = pages().filter(p => /^(\/[a-z]{2})?\/pricing\/$/.test(p.url));
+    assert.ok(found.length, 'no /pricing/ page was built');
+    return found;
+  };
+
   test('every title fits the result, or says why it cannot', () => {
     for (const p of pages())
       assert.ok(p.title && p.title.length <= TITLE_MAX,
@@ -192,6 +201,81 @@ describe('SEO — the #137 findings, pinned', () => {
     for (const offer of offers)
       assert.ok(charged.some(p => p.price === offer.price),
         `/pricing/ offers ${offer.price}, which no plan in create-checkout-session.js charges`);
+  });
+
+  // ---- #674, 15 Sep 2026. Two Search Console mails, five findings on the
+  // Product block above. Three of the five are pinned here: one that was a
+  // real defect, one that is now stated, and one that must never be "fixed".
+
+  test('the Product on /pricing/ names a brand and a seller Google can read', () => {
+    // The measured defect: `brand` was `{ "@id": ".../#organization" }`, a
+    // pointer into the OTHER <script> block on the page. Valid JSON-LD, and
+    // Search Console still said "Invalid object type for field brand" — it
+    // does not resolve the reference across blocks, so it saw an untyped node.
+    // A bare @id here is therefore the bug, in any language.
+    for (const p of pricingPages()) {
+      const product = p.jsonld.map(JSON.parse).find(v => v['@type'] === 'Product');
+      assert.ok(product, `${p.url}: no Product structured data`);
+
+      const named = (node, field) => {
+        assert.ok(node && typeof node === 'object', `${p.url}: ${field} is not an object`);
+        assert.ok(node['@type'], `${p.url}: ${field} has no @type — a bare @id is what Google rejected`);
+        assert.ok(node.name, `${p.url}: ${field} has no name`);
+      };
+      named(product.brand, 'brand');
+      assert.strictEqual(product.brand['@type'], 'Brand',
+        `${p.url}: Google's Product documentation asks for the Brand type`);
+      for (const offer of [].concat(product.offers)) named(offer.seller, 'seller');
+    }
+  });
+
+  test('every Offer on /pricing/ carries the money-back promise the page makes in words', () => {
+    // The page says "money back if it doesn't earn its keep" in the hero, in
+    // the buy line and in a FAQ answer that puts no clock on it. Until #674
+    // the markup said none of it, and Search Console asked for the field by
+    // name. The assertion runs both ways: the promise in words and the promise
+    // in markup have to keep agreeing, so dropping either one fails.
+    for (const p of pricingPages()) {
+      const product = p.jsonld.map(JSON.parse).find(v => v['@type'] === 'Product');
+      for (const offer of [].concat(product.offers)) {
+        const policy = offer.hasMerchantReturnPolicy;
+        assert.ok(policy, `${p.url}: the ${offer.name} Offer has no hasMerchantReturnPolicy`);
+        assert.strictEqual(policy['@type'], 'MerchantReturnPolicy');
+        assert.ok(policy.merchantReturnLink,
+          `${p.url}: no merchantReturnLink — it is what satisfies Google without a country list`);
+        assert.strictEqual(policy.returnPolicyCategory,
+          'https://schema.org/MerchantReturnUnlimitedWindow',
+          `${p.url}: the FAQ promises a refund with no window; the markup must say the same`);
+      }
+    }
+    // The words themselves, on the English page, so the two cannot drift apart.
+    const en = pages().find(p => p.url === '/pricing/');
+    assert.match(en.html, /money back/i,
+      '/pricing/ no longer promises money back — then the schema must stop promising it too');
+  });
+
+  test('/pricing/ invents no rating, no review and no shipment', () => {
+    // This one guards against a FIX, not against a regression, and it is the
+    // reason the other two exist. Search Console also asks /pricing/ for
+    // `aggregateRating`, `review` and `shippingDetails`. All three are
+    // non-critical suggestions that suppress nothing, and all three are absent
+    // because they would be untrue: Prospektor has no customers yet, so it has
+    // no ratings and no reviews, and a workspace is not shipped anywhere.
+    //
+    // Fabricated review markup is against Google's structured data policy and
+    // is grounds for a manual action against the whole domain. So the day
+    // somebody clears the warning by writing "4.8 from 37 reviews", this test
+    // goes red and says why. When the reviews are REAL, delete this test in
+    // the same commit that adds them — that is the only honest way past it.
+    for (const p of pricingPages()) {
+      const product = p.jsonld.map(JSON.parse).find(v => v['@type'] === 'Product');
+      for (const field of ['aggregateRating', 'review', 'reviews'])
+        assert.ok(!(field in product),
+          `${p.url}: Product.${field} is set. If these are real customer reviews, delete this test with the commit that adds them; if they are not, Google calls this a policy violation.`);
+      for (const offer of [].concat(product.offers))
+        assert.ok(!('shippingDetails' in offer),
+          `${p.url}: the ${offer.name} Offer declares shippingDetails. Nothing is shipped — a workspace is a login.`);
+    }
   });
 
   test('every article is reachable from three other articles, not one', () => {
