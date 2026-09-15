@@ -27,6 +27,7 @@
 
 const crypto = require('node:crypto');
 const i18n = require('../../lib/i18n');
+const { redactKeys, worthRetrying } = require('../../lib/stripe-error');
 // The catalogues, as literal requires the bundler can see (#114).
 i18n.load(require('../lib/strings'));
 const { languageOf, languageName } = i18n;
@@ -119,19 +120,49 @@ async function callSuspension({ email, action, reason, secret }) {
 // subscription and dispute events only carry ids, so one authenticated read
 // resolves the customer — the only Stripe API call in this codebase besides
 // minting checkout sessions.
+/*
+ * Resolve a customer's address — and say which kind of nothing it found (#684).
+ *
+ * This returned a bare `''` for four different facts: no key configured, no
+ * customer id, Stripe refused the read, and the customer genuinely has no
+ * address. The caller could only read that as the last one, so a **403** on
+ * `GET /v1/customers/:id` was logged as *"carried no resolvable email, no
+ * workspace touched"* and answered **200** — which tells Stripe the event was
+ * handled and never to re-deliver it. The permission failure that caused it is
+ * fixed in a dashboard in a minute; the delivery it swallowed is gone for good.
+ *
+ * So it returns `{ email, failure }`. `failure` is set only when Stripe could
+ * not be asked, never when the answer was an honest blank, and
+ * `worthRetrying` is what separates the two — a 404 is an answer and stays
+ * un-retried, a 403 or a 5xx is not.
+ */
 async function customerEmail(customerId) {
   const key = process.env.STRIPE_SECRET_KEY;
-  if (!key || !customerId) return '';
+  // Neither of these is a Stripe failure: there is simply nothing to ask, and
+  // a retry would find the same nothing.
+  if (!key || !customerId) return { email: '', failure: null };
+  let response;
   try {
-    const response = await fetch('https://api.stripe.com/v1/customers/' + encodeURIComponent(customerId), {
+    response = await fetch('https://api.stripe.com/v1/customers/' + encodeURIComponent(customerId), {
       headers: { authorization: 'Bearer ' + key },
     });
-    if (!response.ok) return '';
-    const customer = await response.json().catch(() => ({}));
-    return String(customer.email || '').trim().toLowerCase();
   } catch (e) {
-    return '';
+    return { email: '', failure: { status: null, detail: redactKeys(e.message), retry: true } };
   }
+  if (!response.ok) {
+    const body = await response.json().catch(() => null);
+    const detail = (body && body.error && body.error.message) || '';
+    return {
+      email: '',
+      failure: {
+        status: response.status,
+        detail: redactKeys(detail),
+        retry: worthRetrying(response.status),
+      },
+    };
+  }
+  const customer = await response.json().catch(() => ({}));
+  return { email: String(customer.email || '').trim().toLowerCase(), failure: null };
 }
 
 async function callProvision({ email, company, website, goal, marketing, language, secret }) {
@@ -420,13 +451,32 @@ exports.handler = async function(event) {
     // only carry ids, so resolve the customer with one authenticated read.
     // A dispute names its customer via the charge's expandable field — take
     // what is inline and fall back to the customer lookup.
-    const email = String(object.customer_email || '').trim().toLowerCase()
-      || await customerEmail(object.customer)
+    const inline = String(object.customer_email || '').trim().toLowerCase();
+    // Only looked up when the event did not carry the address, exactly as
+    // before — what changed is that the lookup now says why it came back empty.
+    const looked = inline ? { email: '', failure: null } : await customerEmail(object.customer);
+    const email = inline
+      || looked.email
       || String(((object.billing_details || {}).email) || '').trim().toLowerCase();
     if (!email) {
+      /*
+       * Two different nothings, and answering them the same way is the bug
+       * (#684). A retry cannot conjure an address for an event that has none,
+       * so that one is acknowledged. But a read Stripe refused is a question
+       * we never got to ask: answer non-2xx and Stripe re-delivers, so the
+       * event survives long enough for somebody to fix the key.
+       */
+      if (looked.failure && looked.failure.retry) {
+        console.error(stripeEvent.type, 'could not resolve the customer:',
+          `Stripe answered ${looked.failure.status || 'nothing'}`,
+          looked.failure.detail ? `- ${looked.failure.detail}` : '',
+          '- answering 502 so this delivery is retried.');
+        return { statusCode: 502, body: JSON.stringify({ error: 'Customer lookup failed' }) };
+      }
       // Nothing to act on and nothing a retry would find: acknowledge, and
       // leave the trail in the function log for the operator.
-      console.error(stripeEvent.type, 'carried no resolvable email, no workspace touched.');
+      console.error(stripeEvent.type, 'carried no resolvable email, no workspace touched.',
+        looked.failure ? `Stripe answered ${looked.failure.status}.` : '');
       return { statusCode: 200, body: JSON.stringify({ received: true, acted: false }) };
     }
     let result;

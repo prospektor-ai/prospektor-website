@@ -26,6 +26,7 @@
 // that as recovery.
 
 const crypto = require('node:crypto');
+const { redactKeys } = require('../../lib/stripe-error');
 
 const STRIPE = 'https://api.stripe.com/v1';
 const ACTIONS = ['pause', 'resume', 'cancel'];
@@ -133,7 +134,20 @@ exports.handler = async function(event) {
     // Partial failure is a 502 on purpose: the studio reports it loudly and
     // the operator finishes in the Stripe dashboard — a quiet half-done
     // answer here would read as "billing stopped" while it had not.
-    console.error('billing-action failed:', e.message);
-    return { statusCode: 502, body: JSON.stringify({ error: 'Stripe could not be asked. Finish this in the Stripe dashboard' }) };
+    //
+    // And the cause travels with it (#684). Until this, `e.message` went to
+    // `console.error` and nowhere else, so the studio's notice, the operator's
+    // screen and the board all reported an absence while the one-line answer
+    // sat in a Netlify log nobody had opened — six hours and two wrong
+    // theories on #676. `error` is unchanged, byte for byte, because the
+    // studio keys its own sentence off the status and off that string;
+    // `cause` is the new half, and an older studio that ignores it is no worse
+    // off than it is today.
+    const cause = redactKeys(e.message);
+    console.error('billing-action failed:', cause);
+    return { statusCode: 502, body: JSON.stringify({
+      error: 'Stripe could not be asked. Finish this in the Stripe dashboard',
+      cause,
+    }) };
   }
 };

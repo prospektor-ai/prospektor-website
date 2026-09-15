@@ -324,6 +324,48 @@ describe('stripe-webhook billing gate', () => {
     assert.equal(patchCalls(calls).length, 0);
   });
 
+  /*
+   * #684, out of #676, and the two tests below are opposite halves of one
+   * distinction. `customerEmail` returned `''` for both cases, so a refused
+   * read was logged as "carried no resolvable email" and answered 200 — which
+   * tells Stripe the event is handled and never to re-deliver it. The
+   * permission failure behind it is a one-minute dashboard change; the
+   * delivery it swallowed is gone for good.
+   */
+  test('a refused customer read answers non-2xx, so the delivery survives the fix', async () => {
+    const calls = stubFetch([['api.stripe.com/v1/customers/cus_9', { status: 403, body: { error: {
+      message: "The provided key 'sk_live_51H****abcd' does not have the required permissions.",
+    } } }]]);
+    const r = await fn.handler(signedStripeEvent(SECRET, {
+      type: 'invoice.payment_failed',
+      data: { object: { customer: 'cus_9' } },
+    }));
+    assert.equal(r.statusCode, 502, 'Stripe re-delivers a non-2xx');
+    assert.ok(!r.body.includes('sk_live'), 'and the key it named does not leave the function');
+    assert.equal(patchCalls(calls).length, 0, 'nothing was touched on a lookup that failed');
+  });
+
+  test('a transport failure on the lookup is retried too, not read as an address-less event', async () => {
+    stubFetch([['api.stripe.com/v1/customers/cus_9', new Error('socket hang up')]]);
+    const r = await fn.handler(signedStripeEvent(SECRET, {
+      type: 'invoice.payment_failed',
+      data: { object: { customer: 'cus_9' } },
+    }));
+    assert.equal(r.statusCode, 502);
+  });
+
+  test('an event that carries its own address never triggers the lookup at all', async () => {
+    // The short-circuit the old `||` chain gave for free, kept deliberately:
+    // one fewer authenticated read on every renewal invoice.
+    const calls = stubFetch([['/api/provision', { status: 200, body: { ok: true } }]]);
+    const r = await fn.handler(signedStripeEvent(SECRET, {
+      type: 'invoice.payment_failed',
+      data: { object: { customer: 'cus_9', customer_email: 'B@Acme.com' } },
+    }));
+    assert.equal(r.statusCode, 200);
+    assert.equal(calls.filter(c => c.url.includes('/v1/customers/')).length, 0);
+  });
+
   test('a studio failure returns non-2xx so Stripe re-delivers', async () => {
     stubFetch([['/api/provision', { status: 503, body: { error: 'not configured' } }]]);
     const r = await fn.handler(signedStripeEvent(SECRET, {

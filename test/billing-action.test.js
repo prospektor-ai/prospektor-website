@@ -110,4 +110,38 @@ describe('billing-action', () => {
     assert.equal(r.statusCode, 502);
     assert.match(JSON.parse(r.body).error, /Stripe dashboard/, 'the answer says where to finish the job');
   });
+
+  // #684, out of #676: the 502 used to carry the sentence above and nothing
+  // else, so the cause existed only in a Netlify log nobody had opened — six
+  // hours and two wrong theories to find a one-line answer.
+  test('the 502 carries what Stripe actually said, so the cause is not left in a log', async () => {
+    stubFetch([['/v1/customers?', { status: 403, body: { error: {
+      message: "The provided key 'sk_live_51H****abcd' does not have the required permissions.",
+    } } }]]);
+    const r = await post({ email: 'b@acme.com', action: 'pause' });
+    const body = JSON.parse(r.body);
+    assert.equal(r.statusCode, 502);
+    assert.match(body.cause, /does not have the required permissions/, 'the cause travels');
+    assert.match(body.cause, /answered 403/, 'with the status that produced it');
+    assert.match(body.cause, /\/customers/, 'and the call that failed');
+  });
+
+  test('and the key Stripe names in a 403 never leaves this function', async () => {
+    stubFetch([['/v1/customers?', { status: 403, body: { error: {
+      message: "The provided key 'sk_live_51H****abcd' does not have the required permissions.",
+    } } }]]);
+    const r = await post({ email: 'b@acme.com', action: 'pause' });
+    const body = JSON.parse(r.body);
+    assert.ok(!r.body.includes('sk_live'), 'nothing key-shaped in the answer at all');
+    assert.match(body.cause, /\[redacted key\]/);
+  });
+
+  test('`error` is unchanged, so a studio that has not been redeployed reads exactly what it read before', async () => {
+    // The two repos deploy independently and in either order. This is what
+    // makes that safe: the old field keeps its bytes and `cause` is additive.
+    stubFetch([['/v1/customers?', { status: 500, body: { error: { message: 'boom' } } }]]);
+    const r = await post({ email: 'b@acme.com', action: 'pause' });
+    assert.equal(JSON.parse(r.body).error,
+      'Stripe could not be asked. Finish this in the Stripe dashboard');
+  });
 });
