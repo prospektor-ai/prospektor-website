@@ -252,6 +252,17 @@ describe('SEO — the #137 findings, pinned', () => {
     const en = pages().find(p => p.url === '/pricing/');
     assert.match(en.html, /money back/i,
       '/pricing/ no longer promises money back — then the schema must stop promising it too');
+
+    // #680, 15 Sep 2026: and the binding document says it as well. Until then
+    // the promise was published in the hero, the buy line, a FAQ answer and
+    // (since #674) Google's own return-policy field, and /terms/ mentioned a
+    // refund nowhere — a headline commercial promise the document a customer
+    // is actually bound by did not carry. Three places now, and this asserts
+    // the last of them, so removing the clause fails rather than going quiet.
+    const terms = pages().find(p => p.url === '/terms/');
+    assert.ok(terms, 'no /terms/ page was built');
+    assert.match(terms.html, /refund/i,
+      '/terms/ no longer mentions a refund, while /pricing/ and the Offer schema both promise one');
   });
 
   test('/pricing/ invents no rating, no review and no shipment', () => {
