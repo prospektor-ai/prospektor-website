@@ -99,6 +99,23 @@ describe('§08: the transfer sentence names everyone the table does (#441)', () 
           + 'the two is a recipient they cannot look up (#441).');
   });
 
+  // #672 (out of the studio's #669): Lightfield's published pages name no
+  // country, so the sentence cannot honestly put it on either side. It is on
+  // the table, it is named in the sentence AFTER the transfer list as the one
+  // with no published location, and it must never join the enumeration that
+  // asserts processing outside the EEA. A later thread that folds it in
+  // asserts a place nobody read.
+  test('Lightfield is on the table and named as unplaced, never as a transfer (#672)', () => {
+    assert.ok(providers().includes('Lightfield'), '/privacy/ §08 has no Lightfield row, and the studio pushes there since 14 Sep 2026');
+    const sentence = transferSentence();
+    const enumeration = sentence.slice(0, sentence.indexOf('all process data'));
+    assert.ok(!enumeration.includes('Lightfield'),
+      'the transfer paragraph lists Lightfield among those processing outside the EEA. Its pages publish no '
+      + 'processing location, so that is an assertion nobody can source; keep it in the clause after Findymail\'s');
+    assert.match(sentence, /Lightfield publishes no processing location/,
+      'the transfer paragraph must say Lightfield publishes no processing location, so a reader can rule nothing in or out');
+  });
+
   test('the transfer sentence states no count', () => {
     const sentence = transferSentence();
     const counted = sentence.match(/\b(all )?(two|three|four|five|six|seven|eight|\d+) providers?\b/i);
