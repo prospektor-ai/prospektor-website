@@ -1,7 +1,7 @@
 ---
 title: "Nobody has ever been promoted for saving 20% of their time"
 seoTitle: "Sell to the career, not to the task"
-dek: "Most B2B pitches describe what the software does to a task. The pitches that get answered describe what it does to the person reading them — and there is a bar the claim has to clear before anyone acts on it at all."
+dek: "Most B2B pitches describe what the software does to a task. The pitches that get answered describe what it does to the person reading them, and there is a bar the claim has to clear before anyone acts on it at all."
 description: "Why career claims outperform utility claims in B2B outreach, and the 3x bar an improvement has to clear before a buyer will bother changing anything."
 topic: positioning
 learnings: delight-vs-table-stakes, career-not-task, lead-with-the-human, three-x-rule
@@ -24,7 +24,7 @@ Here is Jason Cohen, mid-teardown, on a product being sold to marketers at large
 companies:
 
 > If I'm a marketer at a big company and I want my job to not go away, because big
-> companies are in fact letting people go — you just save my job for frick's sake.
+> companies are in fact letting people go, you just save my job for frick's sake.
 > Like, that sounds freaking good. You didn't say that.
 >
 > Jason Cohen
@@ -44,24 +44,24 @@ is delivered. They hit the number. They own the thing that worked. They stop bei
 the person who is always behind. They keep their job in a year when other people
 didn't.
 
-Career claims are not fluffier than utility claims — they are *downstream* of them,
-and they are strictly more specific, because they require you to know who is
-reading and what they are measured on. That is also why they are rarer: writing one
+Career claims read as fluffier than utility claims and are the opposite: they sit
+*downstream* of them, and they are strictly more specific, because they require
+you to know who is reading and what they are measured on. That is also why they are rarer: writing one
 means committing to a buyer.
 
 Not everyone gets to make the dramatic version, and the generalisation matters:
 
 > There are a lot of products that maybe don't delight, that you log in because you
 > have to, but they save your job. If you're a founder running a five-person
-> company, well, I don't need to save my job — but what I do need is results. I
+> company, well, I don't need to save my job, but what I do need is results. I
 > need more leads.
 >
 > Rob Walling
 
-So the question is not "how do I make this exciting". It is *what does the specific
-person opening this email need to be able to say about themselves next quarter*,
-and the answer differs completely between an employee at a large company and a
-founder of a small one.
+So "how do I make this exciting" is the wrong question. The one to ask is *what
+does the specific person opening this email need to be able to say about themselves
+next quarter*, and the answer differs completely between an employee at a large
+company and a founder of a small one.
 
 ## The test for whether the claim is strong enough
 
@@ -69,7 +69,7 @@ There is a good test, and it is deliberately embarrassing to fail:
 
 > I want them to be a member of some random Slack channel of marketing people, or
 > the alumni list of their last company. And I want them to say: dude, dude, dude,
-> I just went to my boss and was like, I'm gonna get us — blah, blah, blah, your
+> I just went to my boss and was like, I'm gonna get us, blah, blah, blah, your
 > pitch. And I want other people on that Slack channel to go: my God, I have to do
 > that.
 >
@@ -89,7 +89,7 @@ notice. The threshold is much higher than most founders assume:
 > If your site is 30% faster, is that enough to motivate someone to care, to
 > search, to migrate their site, to not migrate away later? It's pretty weak. The
 > reason we said four times faster is we had customer after customer where they had
-> literally data showing that — when it's that much faster, you can just feel it.
+> literally data showing that: when it's that much faster, you can just feel it.
 >
 > Jason Cohen
 
@@ -113,13 +113,13 @@ same fact, expressed at a size that changes what someone can plan.
 ## Why your customers will not hand you this
 
 If you are waiting for the career claim to arrive in a feature request, it won't.
-Here is what happens when you build purely from what customers ask for — a founder
-listing his enterprise wins: invoicing and POs, audit logs, white-glove migrations,
+Here is what happens when you build purely from what customers ask for. A founder
+lists his enterprise wins: invoicing and POs, audit logs, white-glove migrations,
 SSO. The response:
 
 > I didn't hear anything in there that's exciting or that would light someone up.
 > Everything you told me was: I just have to have this, I don't have a choice.
-> You're alleviating a fear. It's useful — there's nothing wrong with it. But
+> You're alleviating a fear. It's useful. There's nothing wrong with it. But
 > nothing you told me was exciting.
 >
 > Jason Cohen
@@ -139,12 +139,12 @@ customers what is *wrong*; do not ask them what would be remarkable.
 
 ## Rewriting one line this week
 
-1. **Name the reader.** Not the company — the individual, with a job title and a
+1. **Name the reader.** The individual, not the company, with a job title and a
    thing they are measured on this quarter.
 2. **Write the utility claim as a number**, honestly. This is your input, not your
    pitch.
 3. **Multiply it into something plannable.** If the multiple is under 2×, you have
-   a feature, not a pitch — go and find the version that clears 3×.
+   a feature, not a pitch. Go and find the version that clears 3×.
 4. **Write the sentence they would say to a peer.** First person, out loud, no
    product name in it. If it sounds ridiculous spoken, it reads as noise written.
 5. **Keep the utility claim underneath as proof.** The career claim opens the

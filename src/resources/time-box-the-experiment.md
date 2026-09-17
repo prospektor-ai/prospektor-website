@@ -11,9 +11,9 @@ ogImage: /assets/img/og/time-box-the-experiment.png
 ---
 
 You have an idea about where the next chunk of revenue comes from. A new segment, a
-partnership motion, an outbound push. The question is not whether it is a good idea
-— you cannot know that yet. The question is how long you are going to give it before
-you are entitled to an opinion.
+partnership motion, an outbound push. Whether it is a good idea, you cannot know
+yet. The question is how long you are going to give it before you are entitled to
+an opinion.
 
 The answer, prescribed to a founder deciding between four strategic options:
 
@@ -39,9 +39,9 @@ one of these recognises it immediately:
 >
 > Jason Cohen
 
-Read the last sentence twice. You do not abandon the experiment; you run a
-half-version of it, get a weak result, and then *conclude something* from that weak
-result. The retreat into comfortable work does not merely waste the four weeks — it
+The last sentence is the important one. You do not abandon the experiment; you run
+a half-version of it, get a weak result, and then *conclude something* from that
+weak result. The retreat into comfortable work wastes the four weeks and
 manufactures a false negative you will carry for years.
 
 And the same thing at the other end of the scale, where the conclusion arrives even
@@ -66,11 +66,11 @@ and its virtue is the ordering:
 - **2 hours** of research. Does this survive contact with what is already known?
 - **20 hours** of conversations and a smoke test. Do the people who would buy it
   behave as though they would?
-- **200 hours** of building — and only then.
+- **200 hours** of building, and only then.
 
 > This term "validating", in air quotes, makes people think there is a way to get to
-> 100% confidence. What validation is — or evidence, because I said don't build
-> without evidence — is evidence that says if you build this, it might be something
+> 100% confidence. What validation is, or evidence, because I said don't build
+> without evidence, is evidence that says if you build this, it might be something
 > people want.
 >
 > Rob Walling
@@ -82,8 +82,8 @@ involve strangers saying no to you.
 
 The related claim is blunter and worth pinning above a desk: **building more does
 not de-risk the company.** Every additional feature shipped before the twenty hours
-have been run increases the amount you will have to throw away if the answer is no
-— and it postpones the moment you find out, which is the only thing that was
+have been run increases the amount you will have to throw away if the answer is no.
+It also postpones the moment you find out, which is the only thing that was
 actually risky.
 
 ## An initiative nobody owns does not happen
@@ -92,7 +92,7 @@ If the experiment runs inside a company that already has customers, there is a
 structural failure waiting that has nothing to do with effort:
 
 > What's bad is you say, here's this big strategic initiative, we're gonna go after
-> BigCommerce. And then everyone's like — okay, well, who's doing that? I don't
+> BigCommerce. And then everyone's like, okay, well, who's doing that? I don't
 > know, we'll just generally fold it into stuff that we're doing. That's not
 > intentional enough. Every time something appears for the rest of the business,
 > the other thing will take precedence, because that other thing is the existing
@@ -100,10 +100,10 @@ structural failure waiting that has nothing to do with effort:
 >
 > Jason Cohen
 
-The existing business always wins the argument, and it wins it honestly — there are
-real customers on the other end of every interruption. This is not a discipline
-problem that a shared commitment fixes. It is a queueing problem, and it has two
-mechanical answers:
+The existing business always wins the argument, and it wins it honestly: there are
+real customers on the other end of every interruption. Treating that as a
+discipline problem and asking for a shared commitment does not work. It is a
+queueing problem, and it has two mechanical answers:
 
 - **One named owner**, whose week is the experiment and whose interruptions from the
   existing business have to be refused by someone other than them.
@@ -119,15 +119,15 @@ moment you need it to be a matter of fact.
 The last piece is the one that makes the box worth having: write down, before you
 start, what result would make you continue and what result would make you stop.
 
-Not a revenue target — four weeks does not produce revenue. Leading indicators: how
-many of the people you reach will take a call, how many describe the problem in the
-terms you predicted, how many ask what it costs. Pick the numbers while you are
-still neutral, because at the end of four weeks you will be tired, invested, and
-extremely good at explaining whatever happened.
+A revenue target will not do, because four weeks does not produce revenue. Use
+leading indicators: how many of the people you reach will take a call, how many
+describe the problem in the terms you predicted, how many ask what it costs. Pick
+the numbers while you are still neutral, because at the end of four weeks you will
+be tired, invested, and extremely good at explaining whatever happened.
 
 ## The five rules
 
-1. **Fix the window** — about four weeks — and put the end date in the calendar
+1. **Fix the window**, about four weeks, and put the end date in the calendar
    before day one.
 2. **Name one owner** and protect their week from the existing business explicitly.
 3. **Run the twenty hours before the two hundred.** Conversations first. They are

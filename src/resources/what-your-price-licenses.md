@@ -1,7 +1,7 @@
 ---
 title: "Your price decides which sales motion you are allowed to run"
 seoTitle: "What your price licenses you to do"
-dek: "Whether you can afford demo calls, an account-based motion, or only a self-serve funnel is not a strategy question. It is arithmetic, and the thresholds are specific enough to check yourself against this afternoon."
+dek: "Whether you can afford demo calls, an account-based motion, or only a self-serve funnel is arithmetic, and the thresholds are specific enough to check yourself against this afternoon."
 description: "The price thresholds that decide whether you can run self-serve, demo calls or an account-based motion, and the ACV floor beneath which outbound cannot pay."
 topic: sales motion
 learnings: abm-vs-campaign, fewer-better-customers, acv-floor-for-outbound, funnel-benchmarks, enterprise-triggers
@@ -43,35 +43,34 @@ And the price that decides which one you can afford:
 The direction of the fix is the useful part. If your motion is too expensive for
 your price, you have two options and only one of them is usually considered.
 Everybody tries to make the motion cheaper. Raising the price is the other one, and
-it is frequently the correct one — roughly 80% of early B2B companies have a pricing
+it is frequently the correct one: roughly 80% of early B2B companies have a pricing
 problem, and it is nearly always underpricing.
 
-Being five times underpriced does not merely reduce margin. **It removes your right
-to market at all**, because every channel that involves a human becomes unaffordable
+Being five times underpriced costs more than margin. **It removes your right to
+market at all**, because every channel that involves a human becomes unaffordable
 at once.
 
 ## The floor beneath outbound
 
 Cold outbound has a specific floor, and three practitioners who arrived at it
-separately put it in the same band: roughly **$3,000–$5,000 of annual contract
+separately put it in the same band: roughly **$3,000–5,000 of annual contract
 value** before founder-led outbound pays for itself.
 
-The reason is time. An outbound motion consumes hours per account — research,
-sequences, the calls, the follow-ups — and those hours are the same whether the
+The reason is time. An outbound motion consumes hours per account (research,
+sequences, the calls, the follow-ups), and those hours are the same whether the
 account pays $600 a year or $12,000. Below the floor, you cannot buy back the hours
 even when the motion works perfectly.
 
-So: **annual contract value under about $3,000, and outbound is not your channel** —
-not because you are executing it badly, but because it is arithmetically closed to
-you. Content, SEO, integrations and partnerships are where that price point can
-still reach people. Above the floor, outbound is not merely available; it is the
-channel your price specifically licenses, and it is the one a small team fully
-controls without a budget or an audience.
+So: **annual contract value under about $3,000, and outbound is not your channel.**
+However well you execute it, it is arithmetically closed to you. Content, SEO,
+integrations and partnerships are where that price point can still reach people.
+Above the floor, outbound is the channel your price specifically licenses, and it
+is the one a small team fully controls without a budget or an audience.
 
 ## What the other end looks like
 
 If you are running self-serve, there are published ranges to check yourself against.
-These apply to low-touch funnels at roughly $10–$50/month entry:
+These apply to low-touch funnels at roughly $10–50/month entry:
 
 | Trial gate | Visitor → trial | Trial → paid |
 |---|---|---|
@@ -85,9 +84,9 @@ These apply to low-touch funnels at roughly $10–$50/month entry:
 > Rob Walling
 
 Two things to take from the table. First, the card gate trades top-of-funnel volume
-for bottom-of-funnel quality at roughly a ten-to-one ratio in both directions — it
+for bottom-of-funnel quality at roughly a ten-to-one ratio in both directions. It
 is a choice about which end of the funnel you would rather work on, not a growth
-tactic. Second, these numbers describe a $10–$50 product. If you are selling at
+tactic. Second, these numbers describe a $10–50 product. If you are selling at
 $1,000 and comparing yourself to them, you are measuring the wrong funnel: your
 equivalent metric is meetings booked and won, not trials started.
 
@@ -110,9 +109,9 @@ to hold:
 > Rob Walling
 
 At $1,000/month, a hundred customers is $1.2M a year. One person can hold a hundred
-relationships. Nobody holds ten thousand — and the ten-thousand version needs a
-support organisation, a self-serve funnel, and a churn rate that a large low-touch
-base makes structurally worse.
+relationships. Nobody holds ten thousand, and the ten-thousand version needs a
+support organisation, a self-serve funnel, and a churn rate that a large base of
+low-touch customers makes structurally worse.
 
 ## When the enterprise signals arrive
 
@@ -126,8 +125,8 @@ None of those is paperwork. Each is a signal that this buyer's cost to serve is
 about to be several times your normal one, and that they have a budget process
 capable of handling a much larger number.
 
-The pricing response is to start high — a common rule of thumb is roughly **20× your
-public price** as the enterprise base — and search upward from there rather than
+The pricing response is to start high (a common rule of thumb is roughly **20× your
+public price** as the enterprise base) and search upward from there rather than
 anchoring on your list price. And read the indemnification clauses before you sign
 anything, because that is where the asymmetric risk in these contracts lives.
 
@@ -137,13 +136,13 @@ later decision than most founders treat it as.
 
 ## Checking yourself
 
-1. **Write down your annual contract value.** Not the monthly price — the annual
+1. **Write down your annual contract value.** Not the monthly price: the annual
    number, after typical discounting.
 2. **Compare it to the outbound floor.** Under ~$3,000 and outbound is closed to
    you; fix the price or change the channel.
 3. **Compare your motion to the price table.** If you are running demo calls at $40
    a month, one of those two numbers has to move.
-4. **If you are self-serve, check the two ranges** — and check you are comparing
+4. **If you are self-serve, check the two ranges**, and check you are comparing
    against a funnel like yours.
 5. **Treat redlines, procurement and security questionnaires as a pricing event**,
    not an admin one.

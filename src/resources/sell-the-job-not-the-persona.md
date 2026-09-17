@@ -20,7 +20,7 @@ talk on the go-to-market moat nobody talks about:
 >
 > Derrick Reimer
 
-A persona answers *who*. A job answers *why* — what the buyer was trying to get
+A persona answers *who*. A job answers *why*: what the buyer was trying to get
 done at the moment they went looking for something like you. The two are not the
 same axis, and when they disagree the job wins, because the job is what they are
 paying for.
@@ -39,7 +39,7 @@ Two practitioners, working on different problems, landed on the same instruction
 ## What the persona cannot see
 
 Suppose a law firm and an architecture practice. On any firmographic list they
-are in different rows — different industry codes, different titles for the person
+are in different rows: different industry codes, different titles for the person
 who would buy, different everything. Now suppose both have just promoted a batch
 of new partners and need every one of them photographed, on brand, before the
 quarter ends. For a photography studio those two are one segment. Same job, same
@@ -55,18 +55,18 @@ buy the same way, and separates companies that do.
 ## This is not the horizontal cut
 
 If you have read [the case for niching down](/resources/niche-down/), you have
-seen its table: the horizontal cut — anyone with this job to do — churns hardest,
+seen its table: the horizontal cut (anyone with this job to do) churns hardest,
 and the vertical and orthogonal cuts grow faster. So is *segment by the job* the
 horizontal mistake with a better name?
 
 No, and the difference is specificity. The horizontal cut is the product's
-*function* — anyone who needs invoices sent, anyone who needs photographs taken.
+*function*: anyone who needs invoices sent, anyone who needs photographs taken.
 A job is a *situation*: a firm that has just promoted a batch of partners and has
 a brand standard to meet by quarter end. Stated at that level, most companies do
 not have the job. It is at least as narrow as a vertical, and it is narrow along
 the axis that predicts buying.
 
-The orthogonal cut in that table — one role, across industries — is the persona
+The orthogonal cut in that table (one role, across industries) is the persona
 at its best, and it is a good proxy. The role that owns the job is usually the
 same role from one industry to the next. But it is a proxy. The role is who holds
 the job; the job is why they call. When a company that has never had the role
@@ -83,16 +83,16 @@ work downwards. Her cascade runs the other way: **growth depends on messaging,
 messaging on positioning, positioning on the customer, and the customer on
 data.** Data is the foundation, not the reporting layer on top.
 
-That has one practical consequence for finding the job. It is not found in a
-workshop. It is found in what the people who already bought were doing in the
-week before they bought — the trigger, the workflow that broke, the deadline. If
+That has one practical consequence for finding the job. The place to look is what
+the people who already bought were doing in the week before they bought: the
+trigger, the workflow that broke, the deadline. A workshop will not turn it up. If
 you have customers, the job is in their stories, and the question is not *what
 industry are you in* but *what was happening when you went looking for us*. If
 you have none yet, the job is what [the first calls are
-for](/resources/the-first-call-is-research/) — and it is a large part of why
+for](/resources/the-first-call-is-research/), and it is a large part of why
 [the founder runs those calls](/resources/do-not-delegate-sales/) rather than a
-hire: below a certain revenue you are not executing a sales process, you are
-discovering which job converts.
+hire: below a certain revenue what looks like a sales process is still the search
+for which job converts.
 
 ## What it changes in the list
 
@@ -103,14 +103,14 @@ announcement, the promotion round. A company whose job column is empty is a
 company you are guessing about.
 
 That column is also where timing lives. A company can have the job and still not
-be ready this quarter — [readiness is a separate test](/resources/who-to-approach/),
+be ready this quarter: [readiness is a separate test](/resources/who-to-approach/),
 asked after this one, about whether a specific person's quarter depends on it.
 The job decides whether a company is a candidate at all. Activation decides
 whether it is a candidate now.
 
 ## Five things
 
-1. **Write the job in one sentence** — what a buyer is trying to get done at the
+1. **Write the job in one sentence**: what a buyer is trying to get done at the
    moment they look for you. If the sentence names an industry, it is a persona.
 2. **Keep the persona as a proxy**, not a definition. The role usually owns the
    job; the job is still the thing.

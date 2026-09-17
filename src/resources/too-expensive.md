@@ -1,7 +1,7 @@
 ---
 title: "\"Too expensive\" is never why they left"
 seoTitle: '"Too expensive" is not why customers churn'
-dek: "It is the most common answer on every cancellation survey and every lost-deal note, and it is almost always false — because the customer already decided the price was acceptable when they bought."
+dek: "It is the most common answer on every cancellation survey and every lost-deal note, and it is almost always false, because the customer already decided the price was acceptable when they bought."
 description: "Why 'too expensive' is the wrong diagnosis for churn and lost deals, what customers actually mean by it, and the cancel flow that surfaces the real reason."
 topic: retention
 learnings: too-expensive
@@ -25,7 +25,7 @@ That response is nearly always wrong, and the argument against it is airtight:
 > Jason Cohen
 
 The price did not change. They already accepted it once, with more scepticism than
-they have now. So what changed is **the other side of the ratio** — the value they
+they have now. So what changed is **the other side of the ratio**: the value they
 believe they are getting. "Too expensive" is a statement about value, phrased as a
 statement about price, because price is the socially easy thing to say.
 
@@ -36,7 +36,7 @@ nothing in common except the words:
 
 1. **It did less than they expected.** They believed it would do X. It does not, or
    not with their setup, or not without work nobody warned them about.
-2. **They never got started.** The value was real and they never reached it — the
+2. **They never got started.** The value was real and they never reached it: the
    onboarding stalled, the data was never imported, the person who championed it
    moved on. They are cancelling something they never used.
 3. **The thing it was for ended.** A project finished. A campaign shipped. This is
@@ -65,8 +65,8 @@ There is a version where price genuinely is the issue, and it is worth naming so
 this does not become dogma: **when the price rises.** If you have raised prices on
 existing customers and churn follows, the survey is telling the truth.
 
-Even here the pattern is specific. Teams who run a **regular annual increase** —
-5–10% every year, same month, announced upfront and never skipped — find the churn
+Even here the pattern is specific. Teams who run a **regular annual increase**
+(5–10% every year, same month, announced upfront and never skipped) find the churn
 lands almost entirely on accounts that were **never properly onboarded**. Which makes
 the increase a diagnostic instrument rather than a loss: it identifies the accounts
 that were never getting value.
@@ -80,7 +80,7 @@ beats large and occasional.
 You cannot fix a reason you did not capture. The cancellation flow that produces
 usable answers:
 
-- **Multiple choice, never free text.** Free text yields less, not more — most people
+- **Multiple choice, never free text.** Free text yields less, not more: most people
   type nothing, and the ones who type something write "too expensive". Structured
   options force a distinction.
 - **Offer a pause, not just a cancel.** Far cheaper than re-acquiring the customer
@@ -92,7 +92,7 @@ usable answers:
 - **Send a founder email five minutes after cancellation** asking for a reply. This
   reliably yields more truth than any in-product form, because it arrives after the
   decision is safely made and it is obviously from a person.
-- **Do not budget on win-backs.** Roughly **one in thirty** respond — even to an offer
+- **Do not budget on win-backs.** Roughly **one in thirty** respond, even to an offer
   of 100% off for two months. Win-back campaigns are not a retention strategy.
 
 ## The same mistake in the sales pipeline
@@ -101,8 +101,8 @@ This generalises past churn. "Too expensive" is also the most common lost-deal
 note, and it fails there for the same reason: a prospect who reached a pricing
 conversation had already decided the number was plausible enough to keep talking.
 
-What "too expensive" usually means on a lost deal is *I did not believe it enough*
-— insufficient proof, an unclear outcome, or a champion who could not make the
+What "too expensive" usually means on a lost deal is *I did not believe it enough*:
+insufficient proof, an unclear outcome, or a champion who could not make the
 internal case with what you gave them. The fix is proof and a better internal
 argument, not a discount. A discount, offered at the point of doubt, tends to
 confirm the doubt: it says the number was arbitrary, which invites the buyer to

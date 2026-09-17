@@ -83,6 +83,15 @@ describe('the scanner', () => {
     assert.deepStrictEqual(ids('It’s not just a song, it’s a statement.'), ['not-but'], 'a curly apostrophe is an apostrophe');
   });
 
+  // #649: a transcript is the speaker's words. A block that is one quotation
+  // from its first character to its last carries no tell and no dash of the
+  // writer's; a quotation that ends before the block does is prose again.
+  test('a block that is a quotation whole is the speaker\'s: nothing in it counts', () => {
+    assert.deepStrictEqual(H.findTells('“It is not the copy, it is the list — and that is the real win.”'), []);
+    assert.deepStrictEqual(ids('“It is not the copy, it is the list.” So the copy is not the point, it is the list.'), ['not-but'], 'the writer\'s half is still read');
+    assert.strictEqual(H.dashCount('“The list — not the copy.” The list — not the copy.'), 1);
+  });
+
   test('judge: the shape the report reads', () => {
     const j = H.judge('Nothing yet — every edit steers the next run, and this is the highest-leverage thing you can do here.');
     assert.strictEqual(j.dashes, 1);
@@ -107,6 +116,7 @@ describe('the scanner', () => {
       '<h1>Find Leads.<br><span class="accent">That fit you.</span></h1>',
       '<p>Runs are <strong>unlimited</strong> &mdash; and <code>a — b</code> is code.</p>',
       '<input placeholder="Type your domain — acme.com">',
+      '<blockquote><p>It is not the <em>copy</em> — it is the list.</p><p>Jason Cohen</p></blockquote>',
       '<svg><text>not — read</text></svg><!-- not — read --></body></html>',
     ].join('\n');
     const blocks = H.htmlBlocks(html);
@@ -117,8 +127,12 @@ describe('the scanner', () => {
       'Who to pitch',
       'Find Leads. That fit you.',
       'Runs are unlimited — and `a — b` is code.',
+      '“It is not the copy — it is the list.”',
+      '“Jason Cohen”',
     ]);
-    assert.strictEqual(H.report(blocks.map(text => ({ text }))).dashes, 3, 'the title, the placeholder and the paragraph; the code span is exempt');
+    const r = H.report(blocks.map(text => ({ text })));
+    assert.strictEqual(r.dashes, 3, 'the title, the placeholder and the paragraph; the code span and the quotation are exempt');
+    assert.strictEqual(r.strong.length, 0, 'the contrast inside the blockquote is the speaker\'s (#649)');
   });
 
   test('literals reads sentences, not markup, CSS, comments or regexes', () => {

@@ -77,7 +77,7 @@ const site = require('../src/_data/site.json');
 const CEILING = {
   funnel: { dashes: 0, verbose: 17 },
   legal: { dashes: 189 },
-  resources: { dashes: 304, strong: 43 },
+  resources: { dashes: 182, strong: 27 },
   scripts: { dashes: 0, verbose: 6 },
   functions: { dashes: 0, verbose: 3 },
   es: { dashes: 135 },
