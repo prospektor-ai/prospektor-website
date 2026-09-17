@@ -23,7 +23,7 @@ those audiences produced at launch:
 | Rob Walling (Drip) | 20–30k | to **$7–8k MRR**, then *"plateaued hard with high churn"* |
 | Nathan Barry (ConvertKit) | large | stalled around **$1,500 MRR** |
 
-Two customers. Not two thousand — two. From an audience larger than the one you are
+Two customers. Not two thousand: two. From an audience larger than the one you are
 being advised to spend a year building.
 
 > There are folks out there who say, if you want to start a SaaS, just build an
@@ -39,9 +39,10 @@ being advised to spend a year building.
 >
 > Rob Walling
 
-Reach is people seeing a thing. Leverage is a specific person doing a specific thing
-because you asked them directly. An audience of twenty thousand cannot be asked for
-anything in particular; a network of forty can be asked for exactly one thing each.
+"Reach" is people seeing a thing. "Leverage" is a specific person doing a specific
+thing because you asked them directly. An audience of twenty thousand cannot be
+asked for anything in particular; a network of forty can be asked for exactly one
+thing each.
 
 > The way that all of us got past it was iterating, focusing, finding product-market
 > fit, and then using our network. Not an audience, not "here's a tweet by this
@@ -54,7 +55,7 @@ anything in particular; a network of forty can be asked for exactly one thing ea
 There is also a quality problem, and it is the part people find hardest to hear:
 
 > You're going to wind up selling to people who want to follow your entrepreneurial
-> journey — other aspiring entrepreneurs who tend to be super price sensitive, high
+> journey: other aspiring entrepreneurs who tend to be super price sensitive, high
 > churn, just want to check out new tools. Not an ideal customer base to build any
 > type of sustainable business around.
 >
@@ -67,30 +68,29 @@ audience, and no amount of growing it brings them closer.
 ## The number that settles it
 
 One anecdote is a story; this is a population. Across 210 funded bootstrapped
-software companies, **fewer than 5% ever built an audience** — and dozens of them
+software companies, **fewer than 5% ever built an audience**, and dozens of them
 are at seven and eight figures of revenue. Separately: only about **20% of founders
 should attempt founder-led marketing at all**, and only those who are intrinsically
 pulled to it.
 
-So the honest reading is not "audiences never work". It is that audience-building is
-a specialist path taken by a small minority, it takes years, and the overwhelming
-majority of successful companies in this data got their customers another way. If
-you are drawn to it, do it. If you are doing it because it seemed like the plan, it
-is not the plan.
+So the honest reading is that audience-building is a specialist path taken by a
+small minority, it takes years, and the overwhelming majority of successful
+companies in this data got their customers another way. If you are drawn to it, do
+it. If you are doing it because it seemed like the plan, it is not the plan.
 
 ## What replaces it: somebody else's audience
 
-The alternative is not "no distribution". It is borrowed distribution, and it works
-at a scale that is almost comic next to the audience numbers above.
+The alternative is borrowed distribution, and it works at a scale that is almost
+comic next to the audience numbers above.
 
 Rob's own worked example: **ten emails, eight yeses**, each producing dozens of
-customers and $1,000–2,000 in monthly recurring revenue per swap — with no code
+customers and $1,000–2,000 in monthly recurring revenue per swap, with no code
 written. Ten emails. To people who already had the audience.
 
 The mechanics are unglamorous and they are the whole method:
 
 - **List twenty people or companies who already talk to your buyer.** Not
-  competitors — anyone with their attention. Newsletter writers, podcast hosts,
+  competitors: anyone with their attention. Newsletter writers, podcast hosts,
   consultants, tool vendors whose customers are your customers, community
   organisers.
 - **Ask for one specific thing each.** A swap, a guest post, a joint webinar, an
@@ -101,8 +101,8 @@ The mechanics are unglamorous and they are the whole method:
 - **Do the work yourself.** The reason these get yeses is that you are offering to
   produce something they would otherwise have to make.
 
-Eight yeses out of ten is not a typical response rate to strangers — it is a typical
-response rate to people who can see immediately what is in it for them.
+Eight yeses out of ten is the typical response rate from people who can see
+immediately what is in it for them. Strangers do not answer at that rate.
 
 ## Keeping the relationship alive between deals
 
@@ -120,8 +120,8 @@ people who matter:
 The mechanism is that it makes the next ask normal rather than sudden.
 
 **The excuse to call.** An event, a briefing, a round-up, a small online
-conference — anything that gives you a legitimate reason to contact fifty people at
-once:
+conference, or anything else that gives you a legitimate reason to contact fifty
+people at once:
 
 > It's an excuse to invite everyone, to get top of mind with these agencies. Who
 > knows how many of them will do it? But it's an excuse.
@@ -137,8 +137,8 @@ person's broadband failing.
 
 1. **Write the list of twenty** who already have your buyer's attention. It exists
    whether or not you have written it down.
-2. **Send ten emails with one specific small ask each.** Not a partnership proposal
-   — one thing, this month.
+2. **Send ten emails with one specific small ask each.** Not a partnership proposal:
+   one thing, this month.
 3. **Stop counting followers as progress** unless you are in the 20% who genuinely
    want to do that work for years.
 4. **Put one recurring, useful note on the calendar** so the next ask is not the

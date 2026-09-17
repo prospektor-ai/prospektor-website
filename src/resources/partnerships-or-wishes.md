@@ -1,7 +1,7 @@
 ---
 title: "When a partnership is a strategy, and when it is a wish"
 seoTitle: "When a partnership is a strategy"
-dek: "Their customers love you. You win their app-store search. They still will not return your emails — and there is a structural reason that has nothing to do with your product."
+dek: "Their customers love you. You win their app-store search. They still will not return your emails, and there is a structural reason that has nothing to do with your product."
 description: "Two questions that predict whether a B2B partnership will ever happen: relative revenue scale, and whether the partner has a mandate you are the answer to."
 topic: partnerships
 learnings: partnership-or-wish
@@ -24,7 +24,7 @@ the actual mechanism:
 > It's hard to make partnerships with larger companies. There's usually not really
 > anything in it for them. With a smaller company, you can't bring them more
 > revenue. You're not really gonna move any needle. So the only time that works, I
-> find, is when they have some pre-existing strategic mandate — we have to get into
+> find, is when they have some pre-existing strategic mandate: we have to get into
 > this market, maybe because a competitor did it and they need an answer.
 >
 > Jason Cohen
@@ -41,19 +41,19 @@ Before you spend a quarter on a partnership, answer these:
 
 **1. Are we within one power of ten of their revenue?**
 
-Not the same size — within an order of magnitude. WP Engine partners with
+Not the same size: within an order of magnitude. WP Engine partners with
 BigCommerce, and Cohen is explicit about why it works: *"we're like in the same
 power of ten revenue. So there is a lot we can do for each other."* Two companies
 of comparable scale can each move the other's numbers, which is what makes the
 attention rational on both sides.
 
-A company two orders of magnitude smaller cannot. This is not a judgement about
-quality. It is arithmetic about whose quarter gets affected.
+A company two orders of magnitude smaller cannot, whatever the quality of what it
+sells. The arithmetic is about whose quarter gets affected.
 
 **2. If not, do they have a public strategic mandate we are the answer to?**
 
 This is the escape hatch, and it is real. Large companies periodically decide
-something must happen — a market they must enter, a story they must have, an answer
+something must happen: a market they must enter, a story they must have, an answer
 to a competitor's move. Once that decision exists, the attention is already
 allocated, and a small company that is a ready-made answer becomes interesting for
 reasons that have nothing to do with its size.
@@ -64,14 +64,14 @@ reasons that have nothing to do with its size.
 >
 > Jason Cohen
 
-The crucial property of a mandate is that it is **usually public**. It gets announced
-on an earnings call, in a keynote, in a press release, or in a sudden cluster of
-job postings. That makes it findable from outside — which turns partnership
-targeting from hope into research.
+The property of a mandate that matters most is that it is **usually public**. It
+gets announced on an earnings call, in a keynote, in a press release, or in a
+sudden cluster of job postings. That makes it findable from outside, which turns
+partnership targeting from hope into research.
 
-**If neither question gets a yes, it is not a partnership. It is a wish.** You may
-still get customers from their ecosystem — the app store still works, the SEO still
-works — but you will not get a relationship, and planning as though you will is how
+**If neither question gets a yes, what you have is a wish.** You may still get
+customers from their ecosystem (the app store still works, the SEO still works),
+but you will not get a relationship, and planning as though you will is how
 quarters disappear.
 
 ## What to do with a "no" on both
@@ -86,7 +86,7 @@ The mistake is to keep pitching. The alternatives are better:
   who serve that platform are within your power of ten, need what you have, and can
   each bring several accounts. They are also far easier to reach.
 - **Wait for the mandate and monitor for it.** Put the target on a watch list rather
-  than a pipeline. When the mandate appears — and it eventually does — you are the
+  than a pipeline. When the mandate appears, and it eventually does, you are the
   company that is already integrated and already loved by their users, and the
   conversation is completely different.
 
@@ -104,7 +104,7 @@ For each candidate, one row:
 | Verdict | Partner now · Watch for mandate · Go around |
 
 Most rows come back "go around", and that is a useful outcome rather than a
-disappointing one — it redirects a quarter's effort to something that can work.
+disappointing one: it redirects a quarter's effort to something that can work.
 
 ## The last thing worth saying
 
@@ -114,7 +114,6 @@ platform to like you.
 
 What it is a reason to avoid is the specific, expensive belief that **being
 genuinely good and genuinely loved by their customers will eventually earn a
-partnership.** It will not, on its own. The larger company is not evaluating you on
-merit. They are allocating attention against things that move numbers they are
-measured on, and your merit is not one of those numbers until the scale or the
-mandate makes it one.
+partnership.** It will not, on its own. The larger company is allocating attention
+against things that move numbers they are measured on, and your merit is not one
+of those numbers until the scale or the mandate makes it one.

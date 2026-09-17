@@ -30,7 +30,7 @@ The first-order effect is the obvious one, and it is real:
 
 > You find this niche and you talk only to them. And because you've been so
 > specific, you can be so compelling with things like your advertising and your
-> homepage message and what the price is and which features you choose to build —
+> homepage message and what the price is and which features you choose to build,
 > because it's so clear who you're building for that you know how to thrill them.
 >
 > Jason Cohen
@@ -45,8 +45,8 @@ But that is not the interesting part.
 
 ## The second-order effect almost nobody knows
 
-> Most of us are not the ideal customer for any product, and yet we buy them —
-> because you are so specific about what you are, the trade-offs are clear. And
+> Most of us are not the ideal customer for any product, and yet we buy them.
+> Because you are so specific about what you are, the trade-offs are clear. And
 > when the trade-offs are clear, people are more willing to accept the weaknesses.
 >
 > Jason Cohen
@@ -57,32 +57,32 @@ for and could judge for yourself whether its compromises hurt you.
 
 A product that describes itself broadly cannot be judged that way. "Flexible enough
 for any team" tells a buyer nothing about what will break, so the buyer assumes the
-worst and does nothing. **Vagueness does not widen your market. It makes your market
-unable to evaluate you.**
+worst and does nothing. **Vagueness leaves your market unable to evaluate you, and
+it adds nobody to it.**
 
 The supporting evidence is from an unrelated field and it is quietly convincing:
 
 > Products that have negative reviews that are specific about what is negative about
 > the product have higher sales and fewer returns than other products with the same
-> rating — because you were able to see what the weaknesses were.
+> rating, because you were able to see what the weaknesses were.
 >
 > Jason Cohen
 
-Specific criticism *raises* sales. Not because buyers enjoy bad news, but because a
-legible weakness is what makes the rest of the description credible, and lets
-someone decide whether that particular weakness applies to them.
+Specific criticism *raises* sales, because a legible weakness is what makes the
+rest of the description credible, and lets someone decide whether that particular
+weakness applies to them.
 
 Which produces the conclusion that reverses the objection entirely:
 
-> If I'm very specific about what I am, then my ideal customer will definitely buy
-> — but like a hundred times larger market than that will see that specificity as a
+> If I'm very specific about what I am, then my ideal customer will definitely buy,
+> but like a hundred times larger market than that will see that specificity as a
 > reason to buy your set of trade-offs, even though they're not "ideal", and they
 > buy anyway.
 >
 > Jason Cohen
 
-Narrowing the message does not narrow the market. It is the mechanism by which the
-wider market becomes able to say yes.
+Narrowing the message is the mechanism by which the wider market becomes able to
+say yes. The market itself gets no smaller.
 
 ## The cut that costs nothing
 
@@ -90,18 +90,18 @@ There are three ways to narrow, and they are not equally expensive.
 
 | Cut | What it means | What it costs |
 |---|---|---|
-| **Horizontal** | Anyone with this job to do | Nothing — it is where most products start, and it churns hardest |
-| **Vertical** | One industry: dentists, law firms, freight | Real product work, eventually — they expect industry specifics |
+| **Horizontal** | Anyone with this job to do | Nothing: it is where most products start, and it churns hardest |
+| **Vertical** | One industry: dentists, law firms, freight | Real product work, eventually: they expect industry specifics |
 | **Orthogonal** | One *role*, across industries: the agency new-business lead, the AE | Usually no code at all |
 
 Across a large portfolio of B2B software companies, both vertical and orthogonal
 positioning grow faster and churn lower than horizontal. The orthogonal cut is the
-one worth noticing, because it is available this afternoon: you are not changing
-what the product does, you are changing who the homepage is written to and which
-words it uses.
+one worth noticing, because it is available this afternoon: the product stays as
+it is, and what changes is who the homepage is written to and which words it
+uses.
 
-Same product. Same features. Same price. A different named reader — and the person
-who fits that description now recognises themselves, while everyone else can still
+Same product. Same features. Same price. A different named reader. The person who
+fits that description now recognises themselves, while everyone else can still
 see exactly what they would be buying.
 
 ## The honest limits
@@ -109,13 +109,13 @@ see exactly what they would be buying.
 Two things this argument does not say.
 
 **It does not say pick a tiny market.** The specificity is in the *message*, and the
-segment still has to be large enough to produce your revenue goal — which is four
+segment still has to be large enough to produce your revenue goal, which is four
 minutes of arithmetic you should do before committing to any cut.
 
 **It does not say refuse the customers who do not fit.** Nothing here requires
 turning anyone away. If someone outside the description wants to buy, sell to them.
-The narrowing is what you say, not who you cash cheques from — and the whole point
-is that clarity is what brought them.
+The narrowing is in what you say. Who you cash cheques from is untouched, and the
+whole point is that clarity is what brought them.
 
 ## Doing it this week
 
@@ -123,8 +123,8 @@ is that clarity is what brought them.
    know the industry. One sentence: *for the {role} who has to {the thing}.* The
    role is a proxy for [the job they are hiring you
    for](/resources/sell-the-job-not-the-persona/); if you know the job, name that.
-2. **Write down the trade-offs you actually make** — what you are worse at than the
-   obvious alternative — and put the important one somewhere a buyer will see it.
+2. **Write down the trade-offs you actually make** (what you are worse at than the
+   obvious alternative) and put the important one somewhere a buyer will see it.
    This is the counterintuitive move and it is the one that works.
 3. **Check the arithmetic before you commit.** Number of companies, share you could
    reach, what they pay. If it cannot reach your goal, narrow differently.

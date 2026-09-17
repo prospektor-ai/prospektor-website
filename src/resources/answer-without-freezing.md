@@ -1,7 +1,7 @@
 ---
 title: "How to answer a hard question on a call while you are still thinking"
 seoTitle: "Answering a hard question on a call"
-dek: "Someone asks the question you did not prepare for. There is a four-part shape that gets you through it sounding certain — and a rule about what goes in the middle that decides whether anyone believes you."
+dek: "Someone asks the question you did not prepare for. There is a four-part shape that gets you through it sounding certain, and a rule about what goes in the middle that decides whether anyone believes you."
 description: "The AREA framework for answering objections on a sales call, and why specific, real examples outperform capability claims every time."
 topic: the call
 learnings: specifics-only-real-ones, area-framework
@@ -11,9 +11,9 @@ ogImage: /assets/img/og/answer-without-freezing.png
 ---
 
 Every founder has had this moment. Forty minutes into a good call, someone asks
-something slightly sideways — *how is this different from what our agency already
-does?* — and there is a pause. Not because you have no answer, but because you have
-four, and you are sorting them in real time while a person waits.
+something slightly sideways (*how is this different from what our agency already
+does?*) and there is a pause. You have four answers, and the pause is you sorting
+them in real time while a person waits.
 
 What comes out is usually a list. Lists are the sound of thinking out loud, and a
 buyer hears a list as uncertainty even when every item is true.
@@ -24,23 +24,23 @@ thinking.**
 
 ## AREA
 
-**A — Angle.** State your position in one sentence. Not a preamble, not "that's a
-great question", not context. The claim, first.
+**A for Angle.** State your position in one sentence. Not a preamble, not context,
+not "that's a great question". The claim, first.
 
-**R — Reason.** *"The reason that's true is…"* — one mechanism, not three. This is
-where most people list, and the list is what costs you the room. Pick the single
-strongest reason and commit to it.
+**R for Reason.** *"The reason that's true is…"* and then one mechanism, not three.
+This is where most people list, and the list is what costs you the room. Pick the
+single strongest reason and commit to it.
 
-**E — Example.** One concrete case, with a name, a number or both. This is the part
+**E for Example.** One concrete case, with a name, a number or both. This is the part
 that does the actual persuading and the part most often skipped under pressure.
 
-**A — Angle again.** Return to the opening sentence, close the loop, stop talking.
+**A for Angle, again.** Return to the opening sentence, close the loop, stop talking.
 The second angle is what turns an answer into a position rather than a wander that
 happened to end.
 
 Worked through, on the agency question:
 
-> *"You'd still want the agency — this replaces the reading, not the judgement.*
+> *"You'd still want the agency: this replaces the reading, not the judgement.*
 > **(Angle)** *The reason is that most of the hours in that work go into finding out
 > what a company sells and to whom, and none of that is the part your agency is good
 > at.* **(Reason)** *One team we work with was doing about twelve researched
@@ -60,7 +60,7 @@ inert.
 
 Here is the reaction to a description that stayed at the capability level:
 
-> I mean, so much better — like, then we can get to "yeah, and also there's
+> I mean, so much better. Like, then we can get to "yeah, and also there's
 > categories and tags". Like, those are useful, but man, is that less interesting.
 >
 > Jason Cohen
@@ -81,7 +81,7 @@ not done the work.
 
 And the other half of the rule: **only real ones.** A specific example that is a
 composite invented for the call is the most dangerous sentence in your pitch,
-because the follow-up question — *who was that? can I talk to them?* — arrives about
+because the follow-up question (*who was that? can I talk to them?*) arrives about
 one time in five, and there is no recovery. If you do not have a customer example
 yet, use your own: *we ran this on ourselves and here is what happened* is specific,
 verifiable and completely honest.
@@ -91,14 +91,14 @@ verifiable and completely honest.
 You cannot compose a good example under pressure. You can look one up, if you wrote
 it down in advance.
 
-Keep a short document — one page, no formatting, ten entries. Each is three lines:
+Keep a short document: one page, no formatting, ten entries. Each is three lines:
 the situation, what changed, the number. Sources are ordinary: your own customers,
 your own company, a call you sat on, a before-and-after you can screenshot. Add one
 every time something works; delete any you cannot substantiate.
 
 Then map each entry to the questions it answers. When *how is this different from
-the agency* arrives, you are not composing, you are retrieving — which is the
-difference between fifteen confident seconds and forty vague ones.
+the agency* arrives, you retrieve it. Retrieving takes fifteen confident seconds
+where composing takes forty vague ones.
 
 This is the same discipline as writing your ten objections down in advance, and it
 pays in the same currency: on a call, the whole game is whether you are recalling or
@@ -108,7 +108,7 @@ inventing, and buyers can always tell.
 
 1. **Write your five hardest questions**, the ones that produce the pause. You know
    what they are.
-2. **Answer each in AREA, out loud, in under thirty seconds.** Out loud matters —
+2. **Answer each in AREA, out loud, in under thirty seconds.** Out loud matters:
    the failure is a spoken one and it does not show up on paper.
 3. **Check every E for a name or a number.** No name, no number, not an example.
 4. **Cut the reason down to one.** Two reasons is a list. A list is a wobble.

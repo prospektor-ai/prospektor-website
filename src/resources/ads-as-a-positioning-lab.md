@@ -1,7 +1,7 @@
 ---
 title: "Buy ads to learn the words, not to buy the customers"
 seoTitle: "Buy ads to learn the words"
-dek: "Advertising is the wrong acquisition channel for most small B2B companies and an extremely good research instrument. The deliverable is not customers. It is four words that make the right person click."
+dek: "Advertising is the wrong acquisition channel for most small B2B companies and an extremely good research instrument. The deliverable is four words that make the right person click."
 description: "How to run paid ads as a positioning experiment rather than an acquisition channel: what to budget, what to measure, and how to read the result honestly."
 topic: experiments
 learnings: ads-as-a-laboratory
@@ -26,14 +26,14 @@ ads do, which has nothing to do with acquisition:
 > Jason Cohen
 
 > It costs me a known amount of money to quickly iterate into the best positioning
-> I can get — which you can then use in any way.
+> I can get, which you can then use in any way.
 >
 > Jason Cohen
 
 **A known amount of money.** That is the part that changes the decision. As an
 acquisition channel, ads are an open-ended commitment against an unknown payback.
 As a laboratory, they are a fixed invoice for a specific answer, and the answer is
-words you then use everywhere — in cold email, on the homepage, on a call, in the
+words you then use everywhere: in cold email, on the homepage, on a call, in the
 first line of a proposal.
 
 ## Why nothing else answers this question
@@ -48,9 +48,9 @@ cannot:
 
 | Channel | Time to a readable signal | Can you attribute it? |
 |---|---|---|
-| **SEO / content** | Months to years | Barely — rankings move for reasons you did not cause |
+| **SEO / content** | Months to years | Barely: rankings move for reasons you did not cause |
 | **Cold email** | Days, but low volume | Yes, though a hundred sends is a thin sample |
-| **Sales calls** | Immediate, richest detail | Yes — but you only reach people who already replied |
+| **Sales calls** | Immediate, richest detail | Yes, but you only reach people who already replied |
 | **Paid ads** | Hours | Precisely, and at whatever volume you buy |
 
 Sales calls are the deepest instrument and they have a selection problem: everyone
@@ -63,11 +63,11 @@ addressing.
 The design matters, because an experiment run like a campaign produces a campaign's
 uninformative result.
 
-**Write hypotheses, not variations.** Not five headlines — three *claims* that
-imply different buyers or different problems. The career claim against the utility
-claim. The expensive-problem framing against the time-saving framing. A named role
-against a named industry. If two headlines could be true of the same reader, they
-are one hypothesis with two haircuts.
+**Write hypotheses, not variations.** Five headlines is the usual test. Run three
+*claims* instead, each implying a different buyer or a different problem. The
+career claim against the utility claim. The expensive-problem framing against the
+time-saving framing. A named role against a named industry. If two headlines could
+be true of the same reader, they are one hypothesis with two haircuts.
 
 **Fix the budget and the end date before you start.** This is a purchase, not a
 channel. Decide the number, decide the date, and let it end on the date whatever
@@ -98,7 +98,7 @@ Three results that are not "no signal", though they get filed that way:
 - **Everything performs badly.** The most useful outcome available, and the cheapest
   version of a lesson usually learned over two quarters of quiet cold email. Either
   the audience is wrong or the category is not something anyone is looking for.
-- **The winner is the one you least wanted.** Take it seriously — that is the entire
+- **The winner is the one you least wanted.** Take it seriously: that is the entire
   reason to run the test rather than argue in a meeting. Then check who clicked
   before you rebuild the company around it.
 
@@ -107,18 +107,18 @@ Always read the winner back against what you actually do before adopting it.
 
 ## What this is not
 
-It is not a plan to become an ads-driven business. It is not a reason to keep
-spending after the answer arrives — the moment you have the sentence, the experiment
-is over and the budget stops. And it does not replace talking to buyers. A hundred
-clicks tell you which words earn attention; they cannot tell you why, and only a
-conversation does that.
+This is not a plan to become an ads-driven business, and it is not a reason to
+keep spending after the answer arrives: the moment you have the sentence, the
+experiment is over and the budget stops. It does not replace talking to buyers,
+either. A hundred clicks tell you which words earn attention; they cannot tell you
+why, and only a conversation does that.
 
 ## Doing it
 
 1. **Write three genuinely different claims** about who this is for and what it
    changes for them.
-2. **Set a budget you would spend on a research project** — the fixed sum you would
-   pay a consultant for an answer — and an end date.
+2. **Set a budget you would spend on a research project** (the fixed sum you would
+   pay a consultant for an answer) and an end date.
 3. **Run one audience, three arms, identical everything else.**
 4. **Take the winning words into cold email and the homepage the same week.** The
    ads were the instrument; the copy is the product.

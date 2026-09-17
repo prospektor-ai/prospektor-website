@@ -1,7 +1,7 @@
 ---
 title: "The cold email sequence that expects no reply to the first email"
 seoTitle: "The cold email sequence that expects no reply"
-dek: "A four-email structure built by someone who sells to sales teams for a living. The first email is designed to get roughly zero responses — and that is what makes the other three work."
+dek: "A four-email structure built by someone who sells to sales teams for a living. The first email is designed to get roughly zero responses, and that is what makes the other three work."
 description: "A four-email B2B cold sequence: the two-problem opener, the free-resource follow-ups and the ask, plus why the list matters more than the copy."
 topic: cold email
 learnings: small-ask-immediate-value, four-email-sequence, price-on-the-first-call, objection-document, first-meeting-loss-rate
@@ -12,17 +12,17 @@ ogImage: /assets/img/og/cold-email-sequence.png
 
 Most cold sequences are the same email five times, with the politeness escalating
 and the desperation showing. Here is a different structure, from Damian Thompson,
-who has spent twenty-plus years in B2B software sales — including selling to sales
+who has spent twenty-plus years in B2B software sales, including selling to sales
 teams, which is the hardest audience for this because they recognise every move.
 
 The prerequisite matters more than the emails. Before you write anything, you need
 **the two biggest problems you solve, expressed in the customer's own language.**
-Not your category's language, not your positioning — the words a customer used on
-a call. Call them A and B.
+Your category's language and your positioning do not count; the words a customer
+used on a call do. Call them A and B.
 
 ## The four emails
 
-**Email 1 — the two-problem question.** Very short. No fluff, no thanking them for
+**Email 1: the two-problem question.** Very short. No fluff, no thanking them for
 their time, no introduction of yourself:
 
 > In talking to other *{role}*, the thing they tell us they're most frustrated about
@@ -33,13 +33,13 @@ doing two jobs: it lands two specific problems in their head in the customer's o
 vocabulary, and it earns the right for the next three to make sense. Judging it on
 reply rate is like judging a first date on the mortgage application.
 
-**Email 2 — if it's A, here's help.** No ask. A genuinely useful resource that
+**Email 2: if it's A, here's help.** No ask. A genuinely useful resource that
 helps with problem A whether or not they ever buy from you. A checklist, a
 teardown, a calculator, a short guide.
 
-**Email 3 — if it's B, here's help.** Same move, other problem.
+**Email 3: if it's B, here's help.** Same move, other problem.
 
-**Email 4 — the ask.** Now, and only now: *maybe we can help you solve this — why
+**Email 4: the ask.** Now, and only now: *maybe we can help you solve this, why
 don't we talk?*
 
 ## Why it works
@@ -51,7 +51,7 @@ and asks once.**
 That does three things:
 
 1. **It makes non-response cheap for them and informative for you.** Most people will
-   not answer email 1. Some will open email 2 and not email 3, or the reverse —
+   not answer email 1. Some will open email 2 and not email 3, or the reverse,
    which tells you which problem they have without them typing a word.
 2. **It earns the ask.** By email 4 you have given twice. The request is no longer
    cold; it is the natural next step in an exchange that already happened.
@@ -66,14 +66,14 @@ Thompson's expanded sequence runs across channels over about ten business days:
 | Day | Channel | Move |
 |---|---|---|
 | Mon | LinkedIn | Connection request, no pitch |
-| Tue | Email | Email 1 — the two-problem question |
+| Tue | Email | Email 1: the two-problem question |
 | Wed | Phone | One call |
 | Fri | Email | **Screen-recorded video made from their own website** + resource |
 | Next week | Email | Automated follow-up |
 | | LinkedIn | Light touch |
 
 The Friday step is the one worth stealing. A short screen recording walking through
-**their** site — what you noticed, what you would change, what it implies — is the
+**their** site (what you noticed, what you would change, what it implies) is the
 single most efficient trust transfer in cold outreach, because it is unfakeable
 evidence that a person looked. It is also the step everyone skips, because it does
 not scale, which is precisely why it works.
@@ -90,12 +90,12 @@ If your pricing is public, say it early and let the unqualified self-select out.
 **Expect to lose 75–85% of first meetings.** From Pete Kazanjy: a **25% win rate is
 very good**, and **10–15% is normal in a new category.** Worth writing on a wall,
 because founders reading a 12% win rate as evidence of a broken product is a common
-and expensive misreading — in a new category, 12% may be the market working
+and expensive misreading. In a new category, 12% may be the market working
 correctly.
 
 ## Write the objection document before you need it
 
-Two hours, once, from Steli Efti — and the constraint in step two is the whole
+Two hours, once, from Steli Efti, and the constraint in step two is the whole
 trick:
 
 1. **Twenty minutes:** write down the ten core objections you hear again and again.
@@ -112,7 +112,7 @@ mood and always run long, because thinking while talking expands.
 
 ## The part nobody wants to hear
 
-The copy is not where the leverage is.
+The copy is not what makes the difference.
 
 > The list is what takes the longest, and it's what actually makes the biggest
 > difference.
@@ -122,8 +122,8 @@ The copy is not where the leverage is.
 A structurally perfect sequence sent to people who are not in-market produces
 silence, and the silence looks exactly like a copywriting problem. It is not.
 Before you rewrite email 1 for the fourth time, check whether the people receiving
-it have any current reason to care — because reply rate is capped by what share of
-your list is actually in the market, not by your subject line.
+it have any current reason to care. Reply rate is capped by what share of your list
+is actually in the market, not by your subject line.
 
 ## The checklist
 
