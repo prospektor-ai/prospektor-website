@@ -265,13 +265,15 @@ describe('SEO — the #137 findings, pinned', () => {
       '/terms/ no longer mentions a refund, while /pricing/ and the Offer schema both promise one');
   });
 
-  test('/pricing/ invents no rating, no review and no shipment', () => {
+  test('/pricing/ invents no rating, no review, no shipment and no country list', () => {
     // This one guards against a FIX, not against a regression, and it is the
-    // reason the other two exist. Search Console also asks /pricing/ for
-    // `aggregateRating`, `review` and `shippingDetails`. All three are
-    // non-critical suggestions that suppress nothing, and all three are absent
-    // because they would be untrue: Prospektor has no customers yet, so it has
-    // no ratings and no reviews, and a workspace is not shipped anywhere.
+    // reason the other two exist. Search Console asks /pricing/ for five
+    // fields it does not carry: `aggregateRating` and `review` on the Product,
+    // `shippingDetails` on each Offer, and — since #748 read the enrichment
+    // tier of the same report — `applicableCountry` and `returnMethod` inside
+    // the return policy. All five are non-critical suggestions that suppress
+    // nothing. All five are absent because the page cannot honestly say them,
+    // and src/pricing.njk carries the argument for each one.
     //
     // Fabricated review markup is against Google's structured data policy and
     // is grounds for a manual action against the whole domain. So the day
@@ -283,9 +285,30 @@ describe('SEO — the #137 findings, pinned', () => {
       for (const field of ['aggregateRating', 'review', 'reviews'])
         assert.ok(!(field in product),
           `${p.url}: Product.${field} is set. If these are real customer reviews, delete this test with the commit that adds them; if they are not, Google calls this a policy violation.`);
-      for (const offer of [].concat(product.offers))
+      for (const offer of [].concat(product.offers)) {
         assert.ok(!('shippingDetails' in offer),
-          `${p.url}: the ${offer.name} Offer declares shippingDetails. Nothing is shipped — a workspace is a login.`);
+          `${p.url}: the ${offer.name} Offer declares shippingDetails. Nothing is shipped — a workspace is a login, and schema.org's only way to say so (doesNotShip) is per-destination, which reads as unavailable rather than as digital.`);
+
+        // #748. The two enrichment fields, and they fail for different
+        // reasons. `applicableCountry` is not a markup question at all: this
+        // page promises money back with no territory on it and /terms/ §02
+        // says the same, so a list here would narrow a headline commercial
+        // term in the one place no customer reads. That is the operator's to
+        // answer (#749) and the copy moves first if it ever changes.
+        const policy = offer.hasMerchantReturnPolicy || {};
+        assert.ok(!('applicableCountry' in policy),
+          `${p.url}: the ${offer.name} Offer's return policy names a country. Google has no wildcard, so a list narrows the unlimited refund /pricing/ and /terms/ both promise — by omission, and only to a machine. That narrowing is the operator's call (#749): the copy changes first, then this.`);
+        // `returnMethod` is a vocabulary gap rather than a decision.
+        // schema.org has the true value — KeepProduct, "the consumer can keep
+        // the product, even when receiving a refund" — and Google's
+        // return-policy documentation supports ReturnByMail, ReturnInStore
+        // and ReturnAtKiosk, none of which a refunded login is. Publishing
+        // KeepProduct clears no warning and puts a value Google does not list
+        // into a field it does read. If Google ever lists it, add it and
+        // delete this assertion in the same commit.
+        assert.ok(!('returnMethod' in policy),
+          `${p.url}: the ${offer.name} Offer's return policy declares a returnMethod. Nothing is returned. Google supports ReturnByMail, ReturnInStore and ReturnAtKiosk; if it has since added KeepProduct, that is the honest value and this assertion goes in the same commit.`);
+      }
     }
   });
 

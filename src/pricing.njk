@@ -50,19 +50,51 @@ permalink: "{{ language.prefix }}/pricing/"
     promise in Google's vocabulary and it is the honest one — the FAQ below
     says "write to us and we refund you" with no clock on it, which is a
     genuinely unlimited window rather than a generous finite one.
-    `applicableCountry` is absent on purpose: Stripe takes any country, Google
-    has no wildcard for that, and listing a handful would narrow a promise we
-    do not narrow. `merchantReturnLink` alone satisfies Google's stated
-    requirement, and it points here, where the guarantee is written out.
+    `applicableCountry` is absent on purpose — Stripe takes a card from any
+    country, Google has no wildcard for that, and listing a handful would
+    narrow a promise we do not narrow. That is Google's Option B: a
+    `merchantReturnLink` alone satisfies the requirement, and it points here,
+    where the guarantee is written out, localized per language. #748 re-argued
+    the same field on 17 Sep and put it to the operator; see below.
 
-    THREE FIELDS SEARCH CONSOLE ASKS FOR ARE MISSING ON PURPOSE. Do not
-    "fix" them. All three are non-critical suggestions — they suppress
-    nothing — and each one would mean publishing something untrue:
+    FIVE FIELDS SEARCH CONSOLE ASKS FOR ARE MISSING ON PURPOSE. Do not
+    "fix" them. Every one is a non-critical suggestion — it suppresses
+    nothing, and the console will keep listing it — and every one of them
+    would mean publishing something this page cannot honestly say. #748
+    re-argued all five on 17 Sep 2026, when the dashboard asked again, and
+    the answers below are what a later thread should read before typing a
+    field in to make a warning go away.
 
       - `shippingDetails`: nothing is shipped. The field exists so Google can
         print a delivery cost and a delivery date; a workspace has neither.
-        Inventing a $0 parcel to an invented country list models a thing that
-        does not exist.
+        And schema.org's own way of SAYING nothing ships does not fit either:
+        `doesNotShip` is defined per `shippingDestination`, "shipping to a
+        particular shippingDestination is not available", so publishing it
+        against everywhere is a negative shipping claim on a product that has
+        no shipping. It reads as unavailable rather than as digital, which is
+        worse than the warning.
+      - `returnMethod`: schema.org holds the true value and Google does not
+        read it. `KeepProduct` — "the consumer can keep the product, even when
+        receiving a refund" — is exactly what a refunded month here is: the
+        money goes back and nothing else moves. But Google's return-policy
+        documentation supports three values, `ReturnByMail`, `ReturnInStore`
+        and `ReturnAtKiosk`, and a refunded login is none of them. So
+        publishing `KeepProduct` would not clear the suggestion, and it would
+        put an enum value Google does not list into a field it does read —
+        the same class of defect as #674's unresolved `@id`, traded for
+        nothing. The day Google's supported list grows that fourth member this
+        becomes one line, and it is the honest one.
+      - `applicableCountry`: THE OPERATOR'S CALL, not a thread's, and filed as
+        #749. Google takes up to 50 ISO country codes here and has no wildcard
+        for "everywhere", so any list published tells Google the refund applies
+        in those countries and, by omission, nowhere else. `/pricing/` promises
+        money back with no territory on it, `/terms/` §02 carries the same
+        promise unnarrowed (#680, deliberately), and Stripe takes a card from
+        anywhere — so writing a list HERE would narrow a headline commercial
+        term in the one place no customer would ever read it. If the promise is
+        worldwide, this warning is permanent and correct. If it is not, the
+        copy on `/pricing/` and the clause in `/terms/` change first and this
+        markup follows them, never the other way round.
       - `aggregateRating` and `review`: Prospektor has no customers yet, so it
         has no ratings and no reviews. Writing either would be fabricated
         review markup — against Google's structured data policy, grounds for a
