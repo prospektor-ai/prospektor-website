@@ -391,6 +391,14 @@ async function sendOperatorNotice({ email, company, website, goal, language, cli
 // In the language the buyer bought in (#114): `language` is the code that
 // rode through checkout metadata, and every sentence goes through `t`, so an
 // English buyer's email is byte for byte the one this sent before.
+// The three lines under the button say what the first screen does, in the
+// walkthrough's own words (#721): signing in lands on the deck, three
+// companies one at a time, Glance the read and Prospekt the run (#725), and
+// the brief already holds the checkout sentence. Until 17 Sep 2026 the mail
+// told a first minute the studio had not had since #248: "confirm your target
+// sentence", which nothing on the screen asks. `test/stripe-webhook.test.js`
+// pins the names to the getting-started article in `data/help-corpus.json`,
+// so a renamed button goes red here rather than in a customer's inbox.
 async function sendWelcomeEmail(email, language) {
   if (!process.env.POSTMARK_SERVER_TOKEN) return;
   const L = language || '';
@@ -403,8 +411,8 @@ async function sendWelcomeEmail(email, language) {
     t('Sign in with Google, using this address (the one you paid with), or have the studio email you a sign-in link from that page. Either way, that is the whole setup.', L),
     '',
     t('While you were paying, your studio read your site and drafted your brief.', L),
-    t('First thing you’ll do is confirm your target sentence: one line, your words.', L),
-    t('Then three researched prospects are waiting to run your first pitches.', L),
+    t('Sign in and three companies are waiting, one at a time. Glance reads one in fifteen seconds. Prospekt writes the pitch.', L),
+    t('The line you typed at checkout is already in your brief. Change it any time on Getting started.', L),
     '',
     t('Paid with your work email? Every colleague on your domain can sign in the same way.', L),
     '',
@@ -422,8 +430,8 @@ async function sendWelcomeEmail(email, language) {
     <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;">
       ${[
         t('While you were paying, your studio read your site and drafted your brief.', L),
-        t('First thing you&#39;ll do is confirm your target sentence: one line, your words.', L),
-        t('Three researched prospects are waiting to run your first pitches.', L),
+        t('Sign in and three companies are waiting, one at a time. Glance reads one in fifteen seconds. Prospekt writes the pitch.', L),
+        t('The line you typed at checkout is already in your brief. Change it any time on Getting started.', L),
       ].map(li => `<tr><td style="width:16px;vertical-align:top;padding:5px 0;"><span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:${BRAND.accent};margin-bottom:2px;"></span></td><td style="font-size:14px;color:${BRAND.ink};line-height:1.6;padding:3px 0;">${li}</td></tr>`).join('')}
     </table>
     <p style="font-size:13px;color:${BRAND.inkFaint};line-height:1.65;margin:20px 0 0;">

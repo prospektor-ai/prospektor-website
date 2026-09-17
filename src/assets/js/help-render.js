@@ -84,6 +84,21 @@
     return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   }
 
+  /* A heading's text with its markdown taken out, and its numbering kept.
+     render() and plainText() both derive a heading's id from this, which is
+     the whole reason it exists: on 17 Sep 2026 the getting-started guide
+     gained `### 1. Check the brief`, render() slugged the raw line and the
+     search index slugged the line with its "1." stripped as a list marker,
+     and every hit on that guide jumped to an id on no element (#721). */
+  function headingKey(text) {
+    return String(text)
+      .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '$1')
+      .replace(/\*\*([^*]+)\*\*/g, '$1')
+      .replace(/(^|[\s(])\*([^*\n]+)\*/g, '$1$2')
+      .replace(/`([^`]+)`/g, '$1')
+      .trim();
+  }
+
   /* `08-workspace.md` → `workspace`. The number is ordering, not identity. */
   function slugOf(name) {
     return String(name).replace(/^\d+-/, '').replace(/\.md$/, '');
@@ -156,7 +171,7 @@
       if (h) {
         var level = h[1].length;
         var text = h[2];
-        var id = slug + '--' + slugify(text);
+        var id = slug + '--' + slugify(headingKey(text));
         if (level > 1) headings.push({ id: id, text: text });
         // The guide's own <h1> is rendered by the page, not here: on a hub
         // that stacks every guide there must be exactly one h1 on the
@@ -217,8 +232,10 @@
       if (text.indexOf('|') === 0) {
         text = text.replace(/^\||\|\s*$/g, '').split('|').map(function (c) { return c.trim(); }).join(' · ');
       }
+      // A heading keeps its numbering ("1. Check the brief" is the heading's
+      // text, and its id); only a list item sheds its marker.
+      if (!h) text = text.replace(/^\s*(?:[-*]|\d+\.)\s+/, '');
       text = text
-        .replace(/^\s*(?:[-*]|\d+\.)\s+/, '')
         .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '$1')
         .replace(/\*\*([^*]+)\*\*/g, '$1')
         .replace(/(^|[\s(])\*([^*\n]+)\*/g, '$1$2')

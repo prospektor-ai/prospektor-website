@@ -144,6 +144,34 @@ describe('stripe-webhook', () => {
     assert.ok(w.HtmlBody.includes('/?signin=' + encodeURIComponent('b@acme.com')), 'the button link prefills');
   });
 
+  // #721: the mail's three lines describe the first minute the studio actually
+  // has. Signing in lands on the deck, three companies one at a time, Glance
+  // the read and Prospekt the run (#725), the checkout sentence already in the
+  // brief. Every screen and button the mail names is pinned to the studio's
+  // own getting-started article, as snapshotted in data/help-corpus.json
+  // (`npm run help:snapshot` refreshes it), so a renamed button is red here
+  // rather than a wrong instruction in a customer's inbox. And the old first
+  // step, which nothing on screen asks for since #248, must not come back.
+  test('the welcome mail says what the first screen does, in the walkthrough\'s words (#721)', async () => {
+    const calls = stubFetch([provisioned({ goal: true }), ['postmarkapp', { status: 200, body: {} }]]);
+    await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({
+      email: 'b@acme.com', metadata: { domain: 'acme.com', company: 'Acme', goal: 'Property managers' } })));
+    const w = welcome(calls);
+    const corpus = require('../data/help-corpus.json');
+    const article = corpus.files.find(f => f.name === '01-getting-started.md');
+    assert.ok(article && article.text, 'data/help-corpus.json holds no getting-started article');
+    for (const name of ['Glance', 'Prospekt', 'Getting started']) {
+      assert.ok(w.TextBody.includes(name), `the text mail names ${name}`);
+      assert.ok(w.HtmlBody.includes(name), `the HTML mail names ${name}`);
+      assert.ok(article.text.includes(name),
+        `the mail names ${name} and the studio's getting-started article does not: the studio renamed it, `
+        + 'or the snapshot is stale (npm run help:snapshot). The mail says what the screen says, or it says nothing');
+    }
+    assert.ok(w.TextBody.includes('three companies'), 'the deck: three companies, one at a time');
+    for (const stale of [/confirm your target sentence/i, /researched prospects are waiting/i])
+      assert.doesNotMatch(w.TextBody + w.HtmlBody, stale, 'the first step #248 removed is back in the mail');
+  });
+
   // #114: a buyer who bought in Spanish is welcomed in Spanish, the operator is
   // told which language, and the studio is offered the language for the
   // workspace (it ignores the field until it learns it). An English buyer's

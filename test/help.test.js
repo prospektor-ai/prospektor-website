@@ -108,6 +108,20 @@ describe('every anchor search hands out is a real id on the page', () => {
   // The search and the renderer derive the anchor separately — one from the
   // plain-text index, one from the markdown — so they can disagree silently.
   // A wrong anchor is not an error anywhere: the browser just does nothing.
+  test('a numbered heading, and one carrying markdown, get one id in the page and in the index (#721)', () => {
+    // 17 Sep 2026: the studio's getting-started guide gained `### 1. Check
+    // the brief`. render() slugged the raw line and plainText() stripped the
+    // "1." as a list marker before slugging, so every search hit on the guide
+    // jumped to an id on no element. Both now derive the id from headingKey().
+    const g = H.buildIndex([{ name: '01-getting-started.md',
+      text: '# Getting started\n\n## Session 1: one email\n\n### 1. Check the brief\n\nRead it.\n\n### 2. Open [For you](/leads) and press **Glance**\n\nGo.\n' }])[0];
+    const ids = new Set([...g.html.matchAll(/ id="([^"]+)"/g)].map(m => m[1]));
+    assert.deepEqual(g.plainHeadings.map(h => h.id),
+      ['getting-started--session-1-one-email', 'getting-started--1-check-the-brief', 'getting-started--2-open-for-you-and-press-glance']);
+    for (const h of g.plainHeadings) assert.ok(ids.has(h.id), `#${h.id} is on no element`);
+    assert.equal(g.plainHeadings[1].text, '1. Check the brief', 'the index keeps the heading\'s numbering');
+  });
+
   test('across every guide and every heading', () => {
     for (const article of INDEX) {
       const ids = new Set([...article.html.matchAll(/ id="([^"]+)"/g)].map(m => m[1]));
