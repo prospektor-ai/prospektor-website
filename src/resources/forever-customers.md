@@ -12,21 +12,21 @@ ogImage: /assets/img/og/forever-customers.png
 
 Ask a founder why customers leave and you will get a list of product complaints.
 Ask which customers leave and you usually get a shrug. The second question is the
-useful one, because in most businesses the answer is not scattered — it is a
-segment, and it was predictable on the day they signed up.
+useful one, because in most businesses the answer is a segment, and it was
+predictable on the day they signed up.
 
 There is a clean way to draw the line. A **forever customer** is one for whom your
 product has been built into something *they* sell:
 
 > Unless they rip that feature out, they're gonna be a customer forever. Since it's
 > a built-in feature, they're just gonna stay forever unless they rip the feature
-> out — and typically features are not ripped out.
+> out, and typically features are not ripped out.
 >
 > Jason Cohen
 
-Everyone else is a **temporary customer**. Not a bad person, not a failed sale —
-someone with a finite job who will finish it. The mistake is treating the second
-group as a retention problem to be solved rather than a population to be
+Everyone else is a **temporary customer**: someone with a finite job who will finish
+it. That says nothing bad about the person or the sale. The mistake is treating the
+second group as a retention problem to be solved rather than a population to be
 recognised.
 
 ## The plateau this produces
@@ -41,7 +41,7 @@ exact shape:
 
 That is worth sitting with if you sell anything that helps someone work through a
 list. The customer signs up, works through the obvious items, gets the value you
-promised — and the subscription's job is finished. Nothing went wrong. The product
+promised, and the subscription's job is finished. Nothing went wrong. The product
 did precisely what it said. It simply had an end.
 
 The test that separates the two, from a teardown of a keyword tool, is unusually
@@ -54,8 +54,8 @@ crisp:
 
 Same product. Same price. Same quality. One of those customers has a structurally
 infinite need because their list refills every time they win a client; the other
-one has a list that runs out. **The forever customer is not the one who likes you
-most. It is the one whose work does not end.**
+one has a list that runs out. **The forever customer is the one whose work does not
+end. Liking you most has nothing to do with it.**
 
 ## The curve that has to flatten
 
@@ -70,8 +70,8 @@ signup cohort's retention over time.
 
 A curve that flattens at 60% means every month adds a durable floor to the
 business. A curve that keeps sliding toward zero means January's customers are
-gone by autumn and September is starting over — you are not building a base, you
-are running a series of unrelated quarters.
+gone by autumn and September is starting over. You are running a series of
+unrelated quarters, and no base ever forms.
 
 The flattening point is more informative than the headline churn number, because it
 tells you whether there is *any* cohort that stays. If the curve flattens for one
@@ -79,8 +79,8 @@ segment and decays for another, you have found your ICP, and it took no research
 
 ## What to do about the temporary ones
 
-The instinct is to try to fix them. Usually you can't — their need really was
-finite — and the effort is expensive. The more valuable move is to stop letting
+The instinct is to try to fix them. Usually you can't (their need really was
+finite), and the effort is expensive. The more valuable move is to stop letting
 them distort your decisions:
 
 > That's drowning out the other metrics, which are also important. You would tune
@@ -95,8 +95,8 @@ Concretely, three things:
 - **Segment the reporting at around 100 days.** Anyone who cancels inside that
   window is a different population; report them separately rather than blending
   them into a churn number that then describes nobody.
-- **Ask on signup what the work is for.** One question — a project, or an ongoing
-  motion — sorts most of it, and it is the cheapest data you will ever collect.
+- **Ask on signup what the work is for.** One question (a project, or an ongoing
+  motion) sorts most of it, and it is the cheapest data you will ever collect.
 - **Price so the two groups self-select.** If a short, intense use is genuinely
   worth serving, sell it as a short intense thing at a price that reflects it,
   rather than as a subscription that will end.
@@ -131,8 +131,8 @@ seriously to take their feature requests.
 3. **Report short-life cancellations separately** so the blended number stops
    describing an average customer who does not exist.
 4. **Stop spending equally.** Support, onboarding effort and acquisition budget
-   should follow the segment that stays — which is a decision you can only make
+   should follow the segment that stays, which is a decision you can only make
    once you can see the two groups apart.
 
-The reframe worth keeping: churn is often not a verdict on your product. It is a
-verdict on who you sold it to, delivered several months late.
+Churn is often a verdict on who you sold it to, delivered several months late. The
+product is only sometimes the reason.

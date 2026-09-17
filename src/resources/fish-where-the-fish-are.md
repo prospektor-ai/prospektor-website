@@ -16,7 +16,7 @@ and the whole thing looked exactly like marketing. Then somebody asked the obvio
 question about the people in the room:
 
 > If I polled them and said "how many of you identify primarily as a Laravel
-> developer" — it's not gonna be most of them, it's probably not gonna be even five
+> developer", it's not gonna be most of them, it's probably not gonna be even five
 > percent of them. So I don't understand why you're fishing in that pond.
 >
 > Jason Cohen
@@ -27,8 +27,8 @@ question about the people in the room:
 >
 > Jason Cohen
 
-The second sentence is the expensive part. A channel that does not work is not
-neutral — it consumes the hours that the working channel needed.
+The second sentence is the expensive part. A channel that does not work is worse
+than neutral: it consumes the hours that the working channel needed.
 
 ## The question that exposes it
 
@@ -36,8 +36,9 @@ For any channel you are spending on, write down the poll you would run in that r
 
 > *"How many of you are the person who decides about {the thing we sell}?"*
 
-Then estimate the honest answer. Not "could they benefit" — *are they the buyer*.
-Under about a fifth and you are subsidising an audience, however warm it feels.
+Then estimate the honest answer. "Could they benefit" is a different question; the
+one to answer is *are they the buyer*. Under about a fifth and you are subsidising
+an audience, however warm it feels.
 
 Affinity is a genuinely good reason to be somewhere. It is not a marketing reason,
 and the two get confused because the channel chosen from affinity produces the most
@@ -54,7 +55,7 @@ The rule is not "cut everything you enjoy":
 > Jason Cohen
 
 So run a budgeted column. Give the community you belong to an explicit, small,
-capped share of your time — and stop calling it pipeline. Once it is labelled
+capped share of your time, and stop calling it pipeline. Once it is labelled
 correctly, it stops competing with the work that produces customers, and you stop
 feeling guilty about the part of it you should keep.
 
@@ -64,7 +65,7 @@ It is a shorter list than the internet suggests. The approaches that reliably wo
 in B2B software:
 
 > Typical B2B SaaS marketing approaches can work. I call them my big five: content,
-> SEO, cold outreach, integrations and partnerships — and then of course,
+> SEO, cold outreach, integrations and partnerships, and then of course,
 > advertising.
 >
 > Rob Walling
@@ -84,17 +85,17 @@ strategy, or they run all six badly.
 
 ## Which ad platform your knowledge licenses
 
-If advertising is one of your two to four, the platform is not a taste question. It
-is decided by what you actually know about the buyer:
+If advertising is one of your two to four, what you actually know about the buyer
+decides the platform:
 
 | If you know… | Use | With the caveat |
 |---|---|---|
-| The buyer's **job title** | LinkedIn | The expensive one — *"tougher to make work, you have to do a lot more manual stuff"* |
-| **Demographics or psychographics** | Facebook | Cheap reach, weak intent — the creative does the qualifying |
+| The buyer's **job title** | LinkedIn | The expensive one: *"tougher to make work, you have to do a lot more manual stuff"* |
+| **Demographics or psychographics** | Facebook | Cheap reach, weak intent, so the creative does the qualifying |
 | Real **search intent**, with volume | Google | Only if the searches exist; check volume before you write a word |
 
 Two failure modes follow directly. Running Google ads for a problem nobody searches
-for spends money against no demand — if buyers do not know the category exists, they
+for spends money against no demand: if buyers do not know the category exists, they
 are not typing it. And running LinkedIn ads without a precise title filter pays
 LinkedIn's premium and throws away the only thing you are paying it for.
 
@@ -103,12 +104,13 @@ LinkedIn's premium and throws away the only thing you are paying it for.
 The uncomfortable case is a buyer who is not clustered anywhere: no conference, no
 subreddit, no obvious list. This is more common than the channel literature admits,
 and it has a specific answer rather than a shrug. When there is no pond, the channel
-is **one at a time** — outbound to named companies, and introductions through people
-who already know them. That is not a fallback for teams too small to do real
-marketing. For a high-value offer it is often the highest-converting channel available,
-and it is the one you fully control. It is also the one most founders have never
-run, which is a smaller problem than it looks — [a channel can be learned in
-days](/resources/learn-a-channel-fast/), and choosing it is the harder decision.
+is **one at a time**: outbound to named companies, and introductions through people
+who already know them. Founders tend to file that as a fallback for teams too small
+to do real marketing. For a high-value offer it is often the highest-converting
+channel available, and it is the one you fully control. It is also the one most
+founders have never run, which is a smaller problem than it looks: [a channel can be
+learned in days](/resources/learn-a-channel-fast/), and choosing it is the harder
+decision.
 
 ## Four things to do
 
@@ -117,6 +119,6 @@ days](/resources/learn-a-channel-fast/), and choosing it is the harder decision.
 2. **Pick two to four from the six.** Write down why each reaches your buyer. "We
    should be on X" without a reason is affinity wearing a strategy costume.
 3. **Label your fun column and cap it.** Keep it. Stop counting it as pipeline.
-4. **Check what you know about the buyer before choosing an ad platform** — title,
+4. **Check what you know about the buyer before choosing an ad platform**: title,
    demographics, or search intent. If the answer is none of the three, you are not
    ready to buy ads; you are ready to go and talk to twenty of them.

@@ -33,8 +33,8 @@ He chose the smaller one. The verdict on that choice:
 > Jason Cohen
 
 > The number of people who say "most of my customers in e-commerce are Shopify, so
-> we go Shopify" — without the analysis you just did, to say yes, by number, but
-> they're rubbish and I don't want them — that's so smart what you're saying.
+> we go Shopify", without the analysis you just did, to say yes, by number, but
+> they're rubbish and I don't want them. That's so smart what you're saying.
 >
 > Jason Cohen
 
@@ -59,7 +59,7 @@ It is where the largest number of your competitors' emails are also arriving.
 You do not need a research project. If you already have customers, the answer is in
 them, and the question is one line:
 
-> **Where do your happiest, longest-retained customers come from — and what is true
+> **Where do your happiest, longest-retained customers come from, and what is true
 > about that pond that is not true of the bigger one?**
 
 The second half is the part people skip. Knowing that your best customers are
@@ -74,7 +74,7 @@ have in common that the stalled ones didn't?
 
 ## Scoring two ponds honestly
 
-Score each candidate segment out of five on each line. Do it fast — precision is
+Score each candidate segment out of five on each line. Do it fast: precision is
 not the point, and a spread of three points is decisive.
 
 - **Ability to pay.** Do they have revenue, and is a budget for this kind of thing
@@ -99,11 +99,10 @@ to be comfortable and too low to be alarming, so nobody acts, and the good cohor
 economics are invisible under the bad cohort's noise. Split the reporting before you
 argue about the strategy.
 
-**Confusing the pond with the fish.** "Small business" is not a segment, it is a
-size band. A pond is a group whose members share a mechanism — the same buying
-trigger, the same budget line, the same reason your thing pays for itself. If you
-cannot say the mechanism in a sentence, you have not picked a pond, you have picked
-a filter.
+**Confusing the pond with the fish.** "Small business" is a size band. A pond is a
+group whose members share a mechanism: the same buying trigger, the same budget
+line, the same reason your thing pays for itself. If you cannot say the mechanism
+in a sentence, you have picked a filter.
 
 ## What to do
 
@@ -115,5 +114,5 @@ a filter.
 3. **Split the churn and support numbers by pond** before you decide anything. The
    average is hiding the answer.
 4. **Commit the message, not the company.** Choosing a pond means your homepage, your
-   outreach and your next three features speak to it. It does not mean refusing
-   anybody else's money.
+   outreach and your next three features speak to it. You can still take anybody
+   else's money.

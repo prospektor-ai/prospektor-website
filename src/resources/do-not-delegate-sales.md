@@ -1,7 +1,7 @@
 ---
 title: "The first salesperson you hire should be you, for longer than you want"
 seoTitle: "Founder-led sales, and when it ends"
-dek: "There is a revenue number below which nothing sales-related should leave the founder, and it is higher than most people expect. The gate before any hire is not a budget — it is a count."
+dek: "There is a revenue number below which nothing sales-related should leave the founder, and it is higher than most people expect. The gate before any hire is a count: ten full cycles, run yourself and written down."
 description: "How to run founder-led sales: the revenue thresholds that decide when it ends, why you hire two reps or none, and the script if you hate selling."
 topic: sales motion
 learnings: do-not-delegate-sales, two-reps-or-none, learning-before-scale, introvert-script, activity-model
@@ -27,23 +27,23 @@ One practitioner's thresholds for what may leave the founder, and when:
 | Revenue | What can be delegated |
 |---|---|
 | Below **$300k** | **Nothing sales-related** |
-| $300k – $1M | Appointment setting only |
-| $1M – $3M | Salespeople |
+| $300k to $1M | Appointment setting only |
+| $1M to $3M | Salespeople |
 | $3M+ | A VP of Sales |
 
-Below $300,000 you are not running a sales process, you are discovering one. Every
-call is teaching you which objection is real, which segment converts — and
-[it is a job they share, not an industry](/resources/sell-the-job-not-the-persona/)
-— what people call the problem, and what has to be true before anyone signs. A hired rep can
-execute a process. They cannot discover one, because discovering one requires
+Below $300,000 you are still discovering your sales process. Every call is teaching
+you which objection is real, which segment converts (and
+[it is a job they share, not an industry](/resources/sell-the-job-not-the-persona/)),
+what people call the problem, and what has to be true before anyone signs. A hired
+rep can execute a process. They cannot discover one, because discovering one requires
 changing the product and the positioning in response to what you hear, and that is
 not a thing you can delegate.
 
 And the universal gate, before any hire at any level: **run the full process
-yourself at least ten times and document it end to end.** Not ten calls — ten
-complete cycles, from first contact to signature or death, written down. If you
-cannot hand a new person that document, you are not hiring a salesperson. You are
-hiring someone to invent your sales process while being paid commission on it.
+yourself at least ten times and document it end to end.** Ten calls do not count;
+ten complete cycles do, from first contact to signature or death, written down. If
+you cannot hand a new person that document, you are hiring someone to invent your
+sales process while being paid commission on it.
 
 ## Hire two or none
 
@@ -57,7 +57,7 @@ One rep gives you an argument. Two give you a diagnosis:
 
 | Outcome | Diagnosis |
 |---|---|
-| **Both fail** | The market, the product or the process — not the person |
+| **Both fail** | Something other than the person: the market, the product or the process |
 | **Both succeed** | It works. Scale it |
 | **One of each** | A personnel issue, and now you know |
 
@@ -65,8 +65,8 @@ With a single rep, every disappointing quarter produces the same unresolvable
 debate: is it them, or is it us? You cannot answer it, so you either fire someone
 who was right or keep someone who was wrong, and both cost a year.
 
-One related rule: **never hire commission-only.** It reads as risk-free and it is
-not — it signals to the candidate that you do not trust your own process enough to
+One related rule: **never hire commission-only.** It reads as risk-free. The risk is
+that it signals to the candidate that you do not trust your own process enough to
 fund it, which selects for exactly the people who will not stay.
 
 ## Learning first, scale last
@@ -86,7 +86,7 @@ the most learning, from most context to least:
 
 This is the opposite of how most founders sequence it, because email is the one you
 can do without talking to anybody. It is also the one that teaches you the least per
-attempt — a non-reply carries no information at all. Fifty conversations tell you
+attempt: a non-reply carries no information at all. Fifty conversations tell you
 more than five thousand sends, and they take less calendar time than you think.
 Never having made a cold call is not a reason to start with email, either:
 [getting competent at a channel takes two days of reading and one bad first
@@ -96,13 +96,13 @@ call](/resources/learn-a-channel-fast/), not a course.
 
 Founder-led sales sounds vague until someone counts it. One worked example: **104
 conversations produced 24 sales calls**, which produced $10,000–20,000 a month in
-recurring revenue — a **23% conversation-to-call rate**.
+recurring revenue. That is a **23% conversation-to-call rate**.
 
 That is a usable model. It says roughly four conversations per booked call, and it
 sets an honest expectation for the top of the funnel: if you want two calls a week,
 you need about eight conversations a week, every week. It also reframes what the
-work is. The unit is not the email sent, it is the conversation had — and 104 of
-them is a quarter of deliberate effort, not a heroic year.
+work is. The unit is the conversation had, and 104 of them is a quarter of
+deliberate effort. It does not take a heroic year.
 
 Pair it with the win rate you should expect once the calls happen: you will lose
 75–85% of first meetings, and 25% is a very good win rate. Nothing in those numbers
@@ -110,21 +110,21 @@ is a sign that something is broken.
 
 ## If you hate selling
 
-The most common private objection is not about strategy. It is that the founder does
-not want to do this and does not believe they are any good at it.
+The most common private objection is that the founder does not want to do this and
+does not believe they are any good at it.
 
-The answer is not a personality transplant. It is a script:
+The answer is a script:
 
-> I'm the founder. I'm really not a salesperson, but I know you wanted a demo — talk
+> I'm the founder. I'm really not a salesperson, but I know you wanted a demo: talk
 > to me about your setup today.
 >
 > A founder's opening line
 
 Two sentences. It sets expectations, removes the pressure to perform, and hands the
 conversation to the buyer, which is where it should have been. Buyers on an early
-call are not looking for polish. They are looking for someone who knows the domain
-and will answer a direct question directly — and a founder outperforms a
-professional seller on both.
+call want someone who knows the domain and will answer a direct question directly,
+and a founder outperforms a professional seller on both. Polish is not what they
+came for.
 
 What actually makes this easier is preparation rather than charisma: the ten
 objections written down with short answers, a handful of specific examples you can
@@ -140,7 +140,7 @@ most expensive thing you own.
 ## Five things
 
 1. **Do not hire until you have run ten full cycles** and written the process down.
-2. **When you hire, hire two** — or wait until you can.
+2. **When you hire, hire two**, or wait until you can.
 3. **Sequence for learning**: in person, then calls, then email.
 4. **Count conversations, not sends.** Four conversations per booked call is a
    workable planning assumption until you have your own number.

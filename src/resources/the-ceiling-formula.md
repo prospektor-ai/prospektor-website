@@ -1,7 +1,7 @@
 ---
 title: "The one number that caps how big your company can get"
 seoTitle: "The one number that caps company size"
-dek: "Divide your new revenue each month by your churn rate. That number is the size your company stops growing at — and no marketing channel, however good, can push you past it."
+dek: "Divide your new revenue each month by your churn rate. That number is the size your company stops growing at, and no marketing channel, however good, can push you past it."
 description: "The MRR ceiling formula: why churn is a hard cap on company size rather than a health metric, and the benchmark ladder for monthly churn."
 topic: retention
 learnings: ceiling-formula, ceiling-convergence, churn-benchmarks
@@ -32,7 +32,7 @@ The mechanism is worth stating slowly, because it is the part that surprises
 people:
 
 > If marketing is adding one K of MRR per month in new revenue, but cancellation
-> is nine percent — as the company gets bigger and bigger, nine percent is nine
+> is nine percent: as the company gets bigger and bigger, nine percent is nine
 > percent of a bigger and bigger number. But marketing is still putting in 1K, 1K,
 > 1K each month. So at some point, you're at a size where the number of customers
 > or revenue that walks out the door in churn is equal to the amount that marketing
@@ -47,13 +47,13 @@ it today.
 
 ## Why this is not a health metric
 
-Most dashboards file churn next to NPS and support response time — things you keep
-an eye on. It doesn't belong there. It belongs next to your headcount plan, because
-it decides the maximum size of the company you are building.
+Most dashboards file churn next to NPS and support response time, things you keep
+an eye on. It belongs next to your headcount plan, because it decides the maximum
+size of the company you are building.
 
 Below the ceiling, every hour of acquisition work compounds: customers stack up and
 the base grows. At the ceiling, the identical hour of acquisition work is a
-treadmill — you are replacing people who left, at full cost, forever. The work
+treadmill: you are replacing people who left, at full cost, forever. The work
 looks the same from inside. The outcome is completely different.
 
 Which means the most important thing about the number is *when* you compute it. At
@@ -77,7 +77,7 @@ Two more pieces of arithmetic fall out of the same number and are worth having i
 your head:
 
 - **Average customer lifetime, in months, is 1 ÷ monthly churn.** At 5% that is
-  twenty months. At 10% it is ten — and roughly 90% of a cohort is gone inside
+  twenty months. At 10% it is ten, and roughly 90% of a cohort is gone inside
   eight.
 - **Your payback period has to fit inside that lifetime.** A four-month payback on
   a ten-month customer is a business; on a five-month customer it is a hobby with
@@ -94,17 +94,17 @@ easy to remember:
 | around 7–8% | *"company on fire"* |
 | over 10% | catastrophic |
 
-The gap between "great" and "on fire" is six percentage points. It does not feel
-like much on a dashboard. It is the difference between a $100K/month ceiling and a
-$25K one at identical sales effort.
+The gap between "great" and "on fire" is six percentage points. On a dashboard it
+looks small. At identical sales effort it is the difference between a $100K/month
+ceiling and a $25K one.
 
 ## The reason to trust this over most business advice
 
 Walling arrives at the same formula independently, in a different year, about a
-different company — *$4,000 in new MRR ÷ 4% churn = a $100,000/month ceiling* —
-and adds the line that removes the mystique from the whole phenomenon:
+different company (*$4,000 in new MRR ÷ 4% churn = a $100,000/month ceiling*), and
+adds the line that removes the mystique from the whole phenomenon:
 
-> There is no magic revenue level at which companies plateau — only this
+> There is no magic revenue level at which companies plateau, only this
 > arithmetic.
 
 Two operators who built at very different scales, working from different data,
@@ -115,18 +115,18 @@ than any single person's opinion about it.
 ## What to do this week
 
 1. **Compute it.** New MRR added last month, divided by last month's churn rate.
-   One line. If you cannot produce both numbers, that is the finding — go and
+   One line. If you cannot produce both numbers, that is the finding. Go and
    instrument the second one, because you already have the first.
 2. **Compare it to your goal.** If the ceiling is below the number you are
    planning around, no channel fixes it. Stop reading channel advice and go and
    look at who is leaving.
 3. **Split churn by cohort before you react to it.** A 10% blended rate that lives
-   entirely in one segment is not a churn problem, it is a targeting problem
-   wearing a churn costume — and the fix is the list, not the product.
+   entirely in one segment is a targeting problem wearing a churn costume, and the
+   fix is the list, not the product.
 4. **If you are pre-revenue, choose the cohort with the ceiling in mind.** The
    cheapest possible moment to fix churn is before anyone has churned.
 
 The uncomfortable version: if you are flat and busy, you are almost certainly at
 your ceiling, and every additional hour of prospecting is being spent to stand
-still. The way out is not more of it. The way out is a base that leaks less, which
-begins with picking different people to sell to.
+still. The way out is a base that leaks less, which begins with picking different
+people to sell to.

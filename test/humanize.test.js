@@ -13,10 +13,10 @@
 //    reader that reads the JSON-LD counts a dash nobody sees.
 // 2. **The copy carries no strong tell.** A strong tell is one the skill acts
 //    on at one sighting; there is no ceiling for those, only zero, and the
-//    failure names the string and where it lives so the fix is a search. The
-//    one exception is `/resources/`, which arrived at 43 across twenty-six
-//    articles on 13 Sep 2026 — a row of its own — and carries a ceiling that
-//    only goes down until it is zero.
+//    failure names the string and where it lives so the fix is a search. For
+//    four days `/resources/` was the one exception: it arrived at 43 across
+//    twenty-six articles on 13 Sep 2026 and carried a ceiling of its own that
+//    only went down, until #649 took it to zero on 17 Sep and the row went.
 // 3. **The dash count only goes down.** 124 connector dashes in the funnel's
 //    450 strings, 192 in the legal pages, 331 in the articles on 13 Sep 2026
 //    cannot all go to zero in one thread, and a check that demanded it would

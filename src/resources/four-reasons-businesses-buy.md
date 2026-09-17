@@ -1,5 +1,5 @@
 ---
-title: "The four reasons businesses buy — and why one pitch has to tell all four"
+title: "The four reasons businesses buy, and why one pitch has to tell all four"
 seoTitle: "The four reasons businesses buy"
 dek: "Roughly seven people have to agree before B2B software gets bought, and they are measured on different things. A pitch that makes one argument is a pitch that convinces one of them."
 description: "Make money, save money, increase efficiency, mitigate risk: why no single reason is the best one, and how to build a pitch pack that answers all four."
@@ -17,21 +17,22 @@ There are exactly four reasons a business buys anything:
 3. **Increase efficiency.**
 4. **Mitigate risk.**
 
-Most sales advice tells you to pick the strongest one and lead with it — usually
+Most sales advice tells you to pick the strongest one and lead with it, usually
 "make more money", on the theory that revenue beats cost. That advice is wrong,
 and the reason is structural rather than rhetorical. Here is Stephen Steers:
 
 > None is better than the others, because roughly seven people need to agree to buy
-> a software solution and each carries a different KPI — the CEO cares about making
+> a software solution and each carries a different KPI: the CEO cares about making
 > more money, the CFO about saving it, the end-user department about efficiency.
 > Your product must be able to tell all four stories, and you must know which one to
 > tell to whom.
 >
 > Stephen Steers
 
-The number is the important part. **Seven people.** Not one buyer with one motive —
-a committee, mostly invisible to you, each member of whom is measured on something
-different and none of whom is persuaded by the argument that persuades the others.
+The number is the important part. **Seven people** means a committee, mostly
+invisible to you, each member of whom is measured on something different and none
+of whom is persuaded by the argument that persuades the others. There is no single
+buyer with a single motive.
 
 ## Who is measured on what
 
@@ -43,7 +44,7 @@ different and none of whom is persuaded by the argument that persuades the other
 | **Mitigate risk** | Security, legal, compliance, and any exec who has been burned | "This does not become my problem later" |
 
 The two most commonly neglected are the ends of that table. **Efficiency** gets
-skipped because it feels unambitious next to revenue — but the person who feels it
+skipped because it feels unambitious next to revenue, but the person who feels it
 is the person whose sign-off you need to survive a trial. **Risk** gets skipped
 because it feels negative, and it is often the one that actually kills the deal:
 nobody says no because of risk, they simply stop replying.
@@ -53,11 +54,11 @@ nobody says no because of risk, they simply stop replying.
 There is a caveat that sits underneath this, and it is worth naming because
 "increase efficiency" is where most tooling pitches naturally land.
 
-A pitch built purely on saving time has two structural weaknesses. First, as
-Cohen puts it in a live teardown, *"something that saves money is not that
-interesting of a proposal"* — it competes with doing nothing, which is free.
-Second, and worse, it creates internal opposition. If the work you are automating
-is currently somebody's job, that somebody is on the evaluation call.
+A pitch built purely on saving time has two structural weaknesses. First, as Cohen
+puts it in a live teardown, *"something that saves money is not that interesting of a proposal"*,
+because it competes with doing nothing, which is free. Second, and worse, it
+creates internal opposition. If the work you are automating is currently
+somebody's job, that somebody is on the evaluation call.
 
 > On the one hand, you have something that saves money, which is not that
 > interesting of a proposal. And you just named people who will push back on this
@@ -66,19 +67,19 @@ is currently somebody's job, that somebody is on the evaluation call.
 >
 > Jason Cohen
 
-The fix is not to drop the efficiency argument. It is to **pair it** — efficiency
-for the team, revenue for the person above them — and to reframe efficiency as
-capacity rather than replacement. *Your people stop doing the reading and keep
-doing the judgement* is an efficiency argument that the affected team can support
-rather than resist.
+Keep the efficiency argument. The fix is to **pair it** (efficiency for the team,
+revenue for the person above them) and to reframe efficiency as capacity rather
+than replacement. *Your people stop doing the reading and keep doing the
+judgement* is an efficiency argument that the affected team can support rather
+than resist.
 
 ## The version that outperforms all four
 
-There is a fifth framing that is not on the list because it is not a business
-reason at all. It is a personal one, and in practice it beats the four:
+There is a fifth framing, kept off the list because it is a personal reason and the
+list holds business ones. In practice it beats the four:
 
 > If you can explain to the marketer in three words, you're gonna keep your job
-> because you're gonna be this critical person — that's what I'm talking about. Not
+> because you're gonna be this critical person, that's what I'm talking about. Not
 > just, you won't hate this as much as you hate the current thing.
 >
 > Jason Cohen
@@ -109,7 +110,7 @@ What travels well:
 
 - **A one-pager for the champion** built on the personal stake plus the reason that
   matches their function.
-- **A cost line for finance** — even a rough one. If you do not supply it, the champion
+- **A cost line for finance**, even a rough one. If you do not supply it, the champion
   invents it, and they will invent it badly.
 - **A "what could go wrong" section for the risk reader.** Counter-intuitively this
   strengthens the pitch: naming your own failure modes is the cheapest credibility
@@ -119,11 +120,11 @@ What travels well:
   showing what stops being their job.
 
 Four short blocks, not four documents. The test is whether the pack survives being
-forwarded — because it will be, and you will not be in the room when it is.
+forwarded, because it will be, and you will not be in the room when it is.
 
 ## Before your next first call
 
 Write one sentence for each of the four reasons, specific to the account, in that
 account's language. If any of the four is blank, that is the objection you are
-going to lose to — and you have found it for free, before the call, instead of
+going to lose to, and you have found it for free, before the call, instead of
 three weeks later when the thread goes quiet.

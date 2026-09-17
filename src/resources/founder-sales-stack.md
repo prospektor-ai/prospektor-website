@@ -27,7 +27,7 @@ Here is the arithmetic, from Rob Walling:
 Read that as a rate rather than as a total. A founder adding $1,000 of MRR a month
 is producing something like $60,000 of enterprise value in that month. Forty hours
 is a quarter of the month. Spending it to avoid a $40-a-month subscription is
-trading roughly $15,000 of value for $480 a year — and you have to keep paying the
+trading roughly $15,000 of value for $480 a year, and you have to keep paying the
 maintenance on it for ever, which the $480 does not ask of you.
 
 This is now the live question rather than a settled one, because building the thing
@@ -38,10 +38,10 @@ than it used to: the cost that decides it was never the code.
 
 Strip the category names away and founder-led sales needs software for four things:
 
-1. **A list** — who you are approaching, and why each name is on it.
-2. **A way to reach them** — email that sends and arrives, or a phone.
-3. **A memory** — what was said, when, and what happens next.
-4. **Preparation** — what you know about a company before the call starts.
+1. **A list** of who you are approaching, and why each name is on it.
+2. **A way to reach them**, which is email that sends and arrives, or a phone.
+3. **A memory** of what was said, when, and what happens next.
+4. **Preparation**, meaning what you know about a company before the call starts.
 
 That is the whole stack. Everything sold to sales teams is one of those four with
 more reporting on top, and the reporting is for managers. You are not a manager
@@ -56,21 +56,21 @@ coordinating people who are not you.
 The arithmetic above kills building to save money. It does not kill building
 entirely, and there are exactly two cases that survive it.
 
-**The thing is genuinely expensive.** Not $40 a month — $10,000 to $20,000 a year,
-where a weekend of work can take 90% off. At that size the maths inverts honestly,
-because the saving is a real fraction of what you are producing rather than a
-rounding error against it. Almost nothing in a founder's sales stack is in this
-bracket. If something in yours is, that is worth a second look on its own.
+**The tool is genuinely expensive.** $40 a month does not qualify; $10,000 to
+$20,000 a year does, if a weekend of work can take 90% off. At that size the maths
+inverts honestly, because the saving is a real fraction of what you are producing
+rather than a rounding error against it. Almost nothing in a founder's sales stack
+is in this bracket. If something in yours is, that is worth a second look on its own.
 
 **Nothing on the market does what you need.** This is the real one, and it is rarer
-than it feels at 11pm. The test is not *"nothing does it exactly how I want"* —
-that is preference, and preference is what the cheap tier costs you. The test is
-whether a competent person, given your requirement in one sentence, could find
-something that does it. Usually they can, in about four minutes.
+than it feels at 11pm. *"Nothing does it exactly how I want"* is preference, and
+preference is what the cheap tier costs you. The test is whether a competent
+person, given your requirement in one sentence, could find something that does it.
+Usually they can, in about four minutes.
 
 Notice what is not on that list: *it would be fun*, *I could do it in a weekend*,
 and *then I would own it*. The first two are true and are not reasons. The third is
-usually false — you own the maintenance, which is the part that costs.
+usually false: you own the maintenance, which is the part that costs.
 
 > At MicroConf and TinySeed we pay for, I'm going to just take a wild guess, 50
 > subscriptions. Who in their right mind is going to AI code and host 50 SaaS apps?
@@ -81,15 +81,14 @@ usually false — you own the maintenance, which is the part that costs.
 
 ## What to skip, and for how long
 
-**A CRM, until you are dropping things.** The trigger for buying one is not a
-revenue number, it is a symptom: you forgot to follow up with someone who was
-interested. Before that symptom appears, a spreadsheet is not a compromise — it is
-faster, it is free, and it will not have to be migrated because you have not built
-anything in it worth keeping.
+**A CRM, until you are dropping things.** The trigger for buying one is a symptom:
+you forgot to follow up with someone who was interested. Before that symptom
+appears, a spreadsheet is the better tool. It is faster, it is free, and it will
+not have to be migrated because you have not built anything in it worth keeping.
 
 **Anything sold on volume.** Tools that promise thousands of sends a month are
 priced for a motion you should not be running yet. The order that produces the most
-learning runs the other way — in person, then calls, then email — and
+learning runs the other way (in person, then calls, then email), and
 [the case for holding sales yourself](/resources/do-not-delegate-sales/) is the
 same case for not automating the part where you learn.
 
@@ -100,9 +99,9 @@ tool that will hand them that.
 
 ## The one line that decides it
 
-Before you buy or build anything, price your own hour honestly — not what you would
-charge a client, but the enterprise value your month produces divided by the hours
-in it. Then ask what the tool costs in those units.
+Before you buy or build anything, price your own hour honestly, as the enterprise
+value your month produces divided by the hours in it. What you would charge a
+client is a different number. Then ask what the tool costs in those units.
 
 Most founders find that a year of almost any sales tool costs less than a day of
 their own time. That is the answer, and it stays the answer even when building it
@@ -110,7 +109,7 @@ yourself would only take a weekend, because a weekend is two of those days and t
 maintenance is for ever.
 
 Where the arithmetic genuinely changes is at the other end of the price list, and
-that is a different question — what your price licenses you to do is decided by
+that is a different question: what your price licenses you to do is decided by
 your annual contract value, not by your tooling, and
 [the thresholds are worth knowing](/resources/what-your-price-licenses/) before you
 choose a motion at all.
