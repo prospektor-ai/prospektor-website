@@ -1,5 +1,9 @@
 [build]
-  command = "npm run build"
+  # The stamp first (#698): `tools/build-stamp.js` writes COMMIT_REF into
+  # `netlify/lib/build-stamp.js` before the functions are bundled, so
+  # `checkout-session-status` can name the build it is running. It is not part
+  # of `npm run build`, on purpose: a local build must not rewrite the file.
+  command = "node tools/build-stamp.js && npm run build"
   publish = "_site"
   functions = "netlify/functions"
 

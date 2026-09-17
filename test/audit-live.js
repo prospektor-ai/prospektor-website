@@ -258,6 +258,29 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
   check('/checkout/done/ is a confirmation, not a next-step card (#244)',
     await p4.isVisible('#confirmCard'));
 
+  // ── CLAIM (#698): production names the build it is running ──
+  // The website lane's `/api/me`: a bare GET on checkout-session-status is a
+  // 400 that carries `commit`, written from COMMIT_REF at build time. It is
+  // the one check a serverless-only change can be verified by, so it is
+  // asked here on every run, and compared with the checkout this audit runs
+  // from when that checkout is `main`'s tip.
+  {
+    let served = null, status = 0;
+    try {
+      const r = await fetch(SITE + '/.netlify/functions/checkout-session-status');
+      status = r.status;
+      served = ((await r.json().catch(() => ({}))) || {}).commit || null;
+    } catch (e) { RELAY_RETRIES.push(SITE + '/.netlify/functions/checkout-session-status'); }
+    check('checkout-session-status names the build it is running (#698)',
+      typeof served === 'string' && /^[0-9a-f]{7,40}$/.test(served), `status ${status}, commit ${served}`);
+    let local = null;
+    try { local = require('node:child_process').execFileSync('git', ['rev-parse', 'HEAD'], { cwd: __dirname, encoding: 'utf8' }).trim(); } catch (e) {}
+    if (local && served) {
+      check('and it is the commit this audit runs from (#698)', local.startsWith(served) || served.startsWith(local),
+        `served ${served.slice(0, 7)}, checkout ${local.slice(0, 7)}${local.startsWith(served) ? '' : ' (not the deploy yet, or this checkout is not main)'}`);
+    }
+  }
+
   // ── CLAIM: the website hosts its own fonts (no Google Fonts) ──
   check('website makes no third-party requests', thirdParty.size===0, [...thirdParty].join(', ') || 'none');
 

@@ -38,8 +38,24 @@
 // Env-gated like every Stripe call here: no key, 503, and the page keeps its
 // generic confirmation copy — a missing env var must never blank the page a
 // buyer lands on seconds after paying.
+//
+// #698 added one field that is not about the session at all: `commit`, the
+// sha this build was made from, on EVERY response this function gives,
+// including the 400 a bare GET earns and the 503 an unconfigured site earns.
+// It is the website lane's answer to the studio's `/api/me` (#306): a
+// serverless-only change has no page byte to ask production about, so a fix
+// to a function shipped on trust until there was one question production
+// could always answer. A build sha is not a secret (the studio serves its
+// own signed out), it reveals nothing about any buyer, and the bare GET that
+// reads it makes no call to Stripe. `netlify/lib/build-stamp.js` is written
+// at build time by `tools/build-stamp.js`; locally it is null.
+
+const { BUILD_COMMIT } = require('../lib/build-stamp');
 
 const SESSION_ID_RE = /^cs_[a-zA-Z0-9_]{10,250}$/;
+
+/** Every answer carries the build it came from, whatever else it says. */
+const reply = (statusCode, fields) => ({ statusCode, body: JSON.stringify({ ...fields, commit: BUILD_COMMIT }) });
 
 exports.handler = async function(event) {
   if (event.httpMethod !== 'GET') {
@@ -47,12 +63,12 @@ exports.handler = async function(event) {
   }
   const key = process.env.STRIPE_SECRET_KEY;
   if (!key) {
-    return { statusCode: 503, body: JSON.stringify({ error: 'Not configured' }) };
+    return reply(503, { error: 'Not configured' });
   }
 
   const id = ((event.queryStringParameters || {}).session_id || '').trim();
   if (!SESSION_ID_RE.test(id)) {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Bad session id' }) };
+    return reply(400, { error: 'Bad session id' });
   }
 
   let response, session;
@@ -63,15 +79,13 @@ exports.handler = async function(event) {
     session = await response.json();
   } catch (e) {
     console.error('Stripe unreachable:', e.message);
-    return { statusCode: 502, body: JSON.stringify({ error: 'Could not read the session' }) };
+    return reply(502, { error: 'Could not read the session' });
   }
   if (!response.ok || !session || session.object !== 'checkout.session') {
-    return { statusCode: 404, body: JSON.stringify({ error: 'No such session' }) };
+    return reply(404, { error: 'No such session' });
   }
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
+  return reply(200, {
       paid: session.payment_status === 'paid',
       // Still inside the free month (#622): the card is on file, the workspace
       // is real, and no money has moved. A different sentence, not a lesser
@@ -85,6 +99,5 @@ exports.handler = async function(event) {
       // Absent means monthly, which is what the checkout call writes: it sends
       // no `plan` for the default, so an older session reads correctly too.
       plan: ((session.metadata || {}).plan === 'year') ? 'year' : 'month',
-    }),
-  };
+  });
 };

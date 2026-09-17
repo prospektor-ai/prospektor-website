@@ -60,7 +60,23 @@ them without reading the studio's code.
    the changed copy is actually being served. A green build is not a deploy
    and the commit log is not verification: on 18 Aug the studio spent three
    days serving a build from three days earlier while every lane's board
-   said the work was shipped. If a deploy must wait on an operator decision
+   said the work was shipped.
+
+   **A change with no page byte to ask about has one anyway** (#698, out of
+   #684, where two serverless fixes shipped on trust). Every response from
+   `checkout-session-status` carries `commit`, the sha the build was made
+   from, written by `tools/build-stamp.js` from Netlify's `COMMIT_REF` before
+   the functions are bundled. So the check for a function-only ship is the
+   merge sha coming back from production:
+
+   ```bash
+   curl -s https://prospektor.ai/.netlify/functions/checkout-session-status | grep -o '"commit":"[0-9a-f]*"'
+   ```
+
+   Until it answers your sha the deploy has not landed. `npm run audit` asks
+   the same question on every run and compares it with the checkout it runs
+   from. The committed stamp is `null` and a test keeps it so; a local build
+   never writes a sha. If a deploy must wait on an operator decision
    or on keys that are not set, say so in the sign-off as an explicit
    hand-back — that is the only acceptable way to end a thread with work
    not live.

@@ -44,13 +44,13 @@ describe('checkout-session-status', () => {
     stubFetch([['api.stripe.com', { status: 200, body: SESSION }]]);
     const r = await get({ session_id: 'cs_test_abcdefghij' });
     assert.equal(r.statusCode, 200);
-    assert.deepEqual(body(r), { paid: true, trial: false, amount_total: 1, currency: 'usd', email: 'buyer@acme.com', plan: 'month' });
+    assert.deepEqual(body(r), { paid: true, trial: false, amount_total: 1, currency: 'usd', email: 'buyer@acme.com', plan: 'month', commit: null });
   });
 
   test('never leaks the rest of the session — metadata, subscription id, anything', async () => {
     stubFetch([['api.stripe.com', { status: 200, body: SESSION }]]);
     const r = await get({ session_id: 'cs_test_abcdefghij' });
-    assert.deepEqual(Object.keys(body(r)).sort(), ['amount_total', 'currency', 'email', 'paid', 'plan', 'trial']);
+    assert.deepEqual(Object.keys(body(r)).sort(), ['amount_total', 'commit', 'currency', 'email', 'paid', 'plan', 'trial']);
     assert.ok(!r.body.includes('secret goal sentence'));
     assert.ok(!r.body.includes('sub_123'));
   });
