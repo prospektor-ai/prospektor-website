@@ -50,6 +50,65 @@ describe('stripe-webhook', () => {
     assert.ok(welcome(calls), 'and welcomed like any other');
   });
 
+  // ── The free month reaches the studio (#689) ──
+  //
+  // `plan: 'paid'` means *came through checkout*, and a trial checks out like
+  // anything else — so the studio's ledger read a Close arrival on a free
+  // month as a customer paying list price, and a desk wrote that into a file
+  // before the operator corrected it. The day the month ends is read off the
+  // subscription, never computed from our own offer, and sent as `endsAt`.
+  test('a trial checkout tells the studio the day the free month ends, read off the subscription', async () => {
+    process.env.STRIPE_SECRET_KEY = 'rk_test_1';
+    const calls = stubFetch([
+      ['api.stripe.com/v1/subscriptions/sub_123', { status: 200, body: { id: 'sub_123', status: 'trialing', trial_end: 1791000000 } }],
+      provisioned({ endsAt: true }), ['postmarkapp', { status: 200, body: {} }],
+    ]);
+    const r = await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({
+      email: 'b@acme.com', paid: 'trial', metadata: { domain: 'acme.com', company: 'Acme', via: 'close' } })));
+    assert.equal(r.statusCode, 200);
+    const read = calls.find(c => c.url.includes('/v1/subscriptions/sub_123'));
+    assert.ok(read, 'the trial end is READ, not modelled');
+    assert.equal(read.headers.authorization, 'Bearer rk_test_1');
+    const body = JSON.parse(calls.find(c => c.url.includes('/api/provision')).body);
+    assert.equal(body.plan, 'paid', 'a free month is still a checkout');
+    assert.equal(body.endsAt, '2026-10-03', 'and the day it ends is Stripe’s trial_end, as a UTC calendar day');
+  });
+
+  test('a subscription the event carries expanded is read where it stands, with no second call', async () => {
+    const calls = stubFetch([provisioned(), ['postmarkapp', { status: 200, body: {} }]]);
+    const event = checkoutSessionCompleted({ email: 'b@acme.com', paid: 'trial', metadata: { domain: 'acme.com' } });
+    event.data.object.subscription = { id: 'sub_9', status: 'trialing', trial_end: 1791000000 };
+    await fn.handler(signedStripeEvent(SECRET, event));
+    assert.ok(!calls.find(c => c.url.includes('api.stripe.com')), 'nothing to ask Stripe');
+    assert.equal(JSON.parse(calls.find(c => c.url.includes('/api/provision')).body).endsAt, '2026-10-03');
+  });
+
+  test('a refused subscription read still provisions, and sends no day rather than a guessed one', async () => {
+    process.env.STRIPE_SECRET_KEY = 'rk_test_1';
+    const calls = stubFetch([
+      ['api.stripe.com/v1/subscriptions/sub_123', { status: 403, body: { error: { message: 'This API key (rk_test_1***) does not have the required permissions' } } }],
+      provisioned(), ['postmarkapp', { status: 200, body: {} }],
+    ]);
+    const r = await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({
+      email: 'b@acme.com', paid: 'trial', metadata: { domain: 'acme.com', company: 'Acme', via: 'close' } })));
+    assert.equal(r.statusCode, 200);
+    const body = JSON.parse(calls.find(c => c.url.includes('/api/provision')).body);
+    assert.ok(body.email, 'the buyer is provisioned whatever the read said');
+    assert.equal(body.endsAt, undefined, 'and nothing is asserted about a free month the read could not confirm');
+  });
+
+  test('a full-price checkout sends no end day, so nothing changes for every other buyer', async () => {
+    process.env.STRIPE_SECRET_KEY = 'rk_test_1';
+    const calls = stubFetch([
+      ['api.stripe.com/v1/subscriptions/sub_1', { status: 200, body: { id: 'sub_1', status: 'active', trial_end: null } }],
+      provisioned(), ['postmarkapp', { status: 200, body: {} }],
+    ]);
+    const event = checkoutSessionCompleted({ email: 'b@acme.com', metadata: { domain: 'acme.com' } });
+    event.data.object.subscription = 'sub_1';
+    await fn.handler(signedStripeEvent(SECRET, event));
+    assert.equal(JSON.parse(calls.find(c => c.url.includes('/api/provision')).body).endsAt, undefined);
+  });
+
   test('and provisions the second door too, so a billing anchor cannot strand a buyer', async () => {
     const calls = stubFetch([provisioned(), ['postmarkapp', { status: 200, body: {} }]]);
     await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({
@@ -250,6 +309,28 @@ describe('stripe-webhook billing gate', () => {
       assert.equal(r.statusCode, 200, type);
       assert.deepEqual(JSON.parse(patchCalls(calls)[0].body), want, type);
     }
+  });
+
+  // #689: a resume says what the invoice collected, so the studio can tell a
+  // free month that converted from one that ended. The $0 invoice that opens a
+  // trial is `paid` too, and must carry nothing — or the trial reads as
+  // converted on the day it began.
+  test('a paid renewal carries the money to the studio; the $0 trial invoice carries none', async () => {
+    let calls = stubFetch([['/api/provision', { status: 200, body: { action: 'resume', existed: true, paid: true } }]]);
+    await fn.handler(signedStripeEvent(SECRET, {
+      type: 'invoice.paid',
+      data: { object: { customer: 'cus_1', customer_email: 'b@acme.com', amount_paid: 99900, currency: 'usd', status_transitions: { paid_at: 1791000000 } } },
+    }));
+    assert.deepEqual(JSON.parse(patchCalls(calls)[0].body), {
+      email: 'b@acme.com', action: 'resume', paid: { at: '2026-10-03T04:00:00.000Z', amount: 99900, currency: 'usd' },
+    });
+
+    calls = stubFetch([['/api/provision', { status: 200, body: { action: 'resume', existed: true, paid: false } }]]);
+    await fn.handler(signedStripeEvent(SECRET, {
+      type: 'invoice.paid',
+      data: { object: { customer: 'cus_1', customer_email: 'b@acme.com', amount_paid: 0, currency: 'usd' } },
+    }));
+    assert.deepEqual(JSON.parse(patchCalls(calls)[0].body), { email: 'b@acme.com', action: 'resume' });
   });
 
   test('a chargeback suspends, resolving the customer when the event has no email', async () => {

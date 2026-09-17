@@ -95,8 +95,12 @@ function verifyStripeSignature(payload, header, secret) {
 // unlocks it. Addressed by the buyer's email; the studio resolves it with the
 // same function every sign-in uses. Idempotent both ways, so double-fired
 // events cost nothing.
-async function callSuspension({ email, action, reason, secret }) {
-  const body = JSON.stringify({ email, action, reason: reason || undefined });
+// `paid` rides a resume (#689): what the invoice behind it collected, when it
+// carried money at all — `{ at, amount, currency }`. The studio records it as
+// the workspace's last real payment, which is the one fact that tells a free
+// month that converted from one that ended. An older studio ignores the field.
+async function callSuspension({ email, action, reason, paid, secret }) {
+  const body = JSON.stringify({ email, action, reason: reason || undefined, paid: paid || undefined });
   for (let attempt = 0; ; attempt++) {
     try {
       const response = await fetch(PROVISION_URL, {
@@ -165,7 +169,59 @@ async function customerEmail(customerId) {
   return { email: String(customer.email || '').trim().toLowerCase(), failure: null };
 }
 
-async function callProvision({ email, company, website, goal, marketing, language, secret }) {
+/*
+ * When the free month behind a checkout ends (#689), as a calendar day, or
+ * null when there is no free month.
+ *
+ * Read off the subscription rather than computed from our own offer: the
+ * studio's whole defect was a screen asserting a fact about money it had no
+ * way to check, and `trialDays()` plus today's date is a model of what Stripe
+ * did, not a reading of it. A `checkout.session.completed` event carries the
+ * subscription as an id (or, expanded, as an object), and `trial_end` lives on
+ * the subscription — one `GET /v1/subscriptions/:id` with the same restricted
+ * key `customerEmail` reads with, which holds *Subscriptions → Read* since
+ * #676. The day is Stripe's `trial_end` in UTC.
+ *
+ * Never throws and never blocks the provision: a refused or failed read is a
+ * log line and a workspace that reads `paid` exactly as every workspace did
+ * before this, which is the honest fallback — the studio then says nothing
+ * about a free month rather than something wrong about one. `status` is
+ * checked as well as `trial_end`, because a subscription whose trial has
+ * already ended still carries the historical stamp.
+ */
+async function freeUntil(session) {
+  const inline = session.subscription && typeof session.subscription === 'object' ? session.subscription : null;
+  const id = inline ? inline.id : String(session.subscription || '');
+  const dayOf = sub => (sub && sub.status === 'trialing' && Number.isFinite(Number(sub.trial_end)) && Number(sub.trial_end) > 0
+    ? new Date(Number(sub.trial_end) * 1000).toISOString().slice(0, 10)
+    : null);
+  if (inline && inline.trial_end !== undefined) return dayOf(inline);
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key || !id) return null;
+  let response;
+  try {
+    response = await fetch('https://api.stripe.com/v1/subscriptions/' + encodeURIComponent(id), {
+      headers: { authorization: 'Bearer ' + key },
+    });
+  } catch (e) {
+    console.error('Subscription', id, 'could not be read for its trial end:', redactKeys(e.message), '- provisioning without it.');
+    return null;
+  }
+  const body = await response.json().catch(() => null);
+  if (!response.ok) {
+    console.error('Subscription', id, 'read refused with', response.status,
+      redactKeys((body && body.error && body.error.message) || ''), '- provisioning without its trial end.');
+    return null;
+  }
+  return dayOf(body);
+}
+
+// The day a free month ends (#689): `endsAt` is sent only when the
+// subscription behind the checkout is trialing, read off Stripe by
+// `freeUntil` below, so the studio's ledger can say *free until* instead of
+// reading a trial as a customer paying list price. Omitted on a full-price
+// checkout, so an older studio and every other buyer see nothing new.
+async function callProvision({ email, company, website, goal, marketing, language, endsAt, secret }) {
   // `plan: 'paid'` because this caller is the one door money actually came
   // through — the studio defaults everything else to 'comped', and without
   // this line every checkout-provisioned workspace was landing as comped
@@ -180,6 +236,7 @@ async function callProvision({ email, company, website, goal, marketing, languag
     email, company, website, goal: goal || undefined, plan: 'paid',
     marketing: marketing || undefined,
     language: language || undefined,
+    endsAt: endsAt || undefined,
   });
   for (let attempt = 0; ; attempt++) {
     try {
@@ -479,9 +536,22 @@ exports.handler = async function(event) {
         looked.failure ? `Stripe answered ${looked.failure.status}.` : '');
       return { statusCode: 200, body: JSON.stringify({ received: true, acted: false }) };
     }
+    /*
+     * What the invoice collected (#689), when it collected anything. Only an
+     * `invoice.paid` carries `amount_paid`, and only one above zero is a
+     * payment: the $0 invoice that opens a free month is processed as paid
+     * too, and relaying it would tell the studio a trial had converted on the
+     * day it began — the confusion this field exists to end. `paid_at` is
+     * Stripe's own stamp; the event's is the fallback.
+     */
+    const cents = Number(object.amount_paid);
+    const paidAt = Number((object.status_transitions || {}).paid_at) || Number(stripeEvent.created) || 0;
+    const paid = stripeEvent.type === 'invoice.paid' && Number.isInteger(cents) && cents > 0
+      ? { at: new Date((paidAt || Date.now() / 1000) * 1000).toISOString(), amount: cents, currency: String(object.currency || '').toLowerCase() || undefined }
+      : undefined;
     let result;
     try {
-      result = await callSuspension({ email, action: billing.action, reason: billing.reason, secret });
+      result = await callSuspension({ email, action: billing.action, reason: billing.reason, paid, secret });
     } catch (e) {
       console.error('Studio unreachable for', billing.action, 'after retries:', e.message);
       return { statusCode: 502, body: JSON.stringify({ error: 'Studio unreachable' }) };
@@ -556,9 +626,11 @@ exports.handler = async function(event) {
     return { statusCode: 502, body: JSON.stringify({ error: 'No buyer email on session' }) };
   }
 
+  const endsAt = await freeUntil(session);
+
   let provision;
   try {
-    provision = await callProvision({ email, company, website, goal, marketing, language, secret: provisionSecret });
+    provision = await callProvision({ email, company, website, goal, marketing, language, endsAt, secret: provisionSecret });
   } catch (e) {
     console.error('Studio unreachable after retries:', e.message);
     return { statusCode: 502, body: JSON.stringify({ error: 'Studio unreachable' }) };
@@ -588,6 +660,12 @@ exports.handler = async function(event) {
   // rather than a silent nothing. undefined is an older studio — not a drop.
   if (marketing && provision.data && provision.data.marketing === false) {
     console.error('Marketing tick for', email, 'was sent but the studio did not record it.');
+  }
+  // Same three-state read for the free month's end day (#689): false is a
+  // studio that took the field and dropped it; undefined is one that predates
+  // it, and on that studio the card reads `paid` as it always did.
+  if (endsAt && provision.data && provision.data.endsAt === false) {
+    console.error('Free month end', endsAt, 'for', email, 'was sent but the studio did not record it.');
   }
   await sendOperatorNotice({ email, company, website, goal, language, clientId, existing, resumed, goalRecorded });
   if (!existing) await sendWelcomeEmail(email, language);
