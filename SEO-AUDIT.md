@@ -143,6 +143,18 @@ Deliberately **not** added: `SoftwareApplication`. It wants an
 rich result — the wrong shape for a service sold by subscription. `Product` with
 a real `Offer` is the eligible one, and it is the one with the price in it.
 
+Also deliberately **not** added, and re-argued since: the five merchant-listing
+fields Search Console keeps suggesting for `/pricing/` — `aggregateRating` and
+`review` (#674), `shippingDetails` (#674), and `applicableCountry` and
+`returnMethod` (#748). Each is a non-critical suggestion that suppresses
+nothing, and each would publish something the page cannot honestly say; the
+argument for every one of them is in `src/pricing.njk`, above the `Product`
+block, and `test/seo.test.js` fails if one is quietly filled in. **A future
+audit should expect to see them open in the console.** That is the correct end
+state rather than an unfinished one — with one exception, `applicableCountry`,
+which waits on the operator (#749) because publishing a country list narrows a
+refund promise `/pricing/` and `/terms/` §02 both make without limit.
+
 ### F4 · Five of nine articles were reachable from one page · **major**
 
 The measured inbound-link distribution across the nine `/resources/` articles

@@ -621,6 +621,29 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
        !yearlyOffer && 'no P1Y Offer at 9990.00 in the structured data',
        !/assets\/js\/plan(?:\.[0-9a-f]+)?\.js/.test(pricing) && 'plan.js is not loaded',
       ].filter(Boolean).join('; '));
+    // ── CLAIM (#748): the refund promise reaches production with no territory ──
+    // The board row this answers asked for a judgement rather than three
+    // fields, and a judgement decays quietly: the fields Search Console keeps
+    // asking for are absent on purpose, and the console will keep asking for
+    // ever. So the claim asked of production is the ABSENCE. `applicableCountry`
+    // would narrow an unlimited promise to a machine and nowhere else (#749,
+    // the operator's), `returnMethod` has no value Google reads that is true of
+    // a refunded login, and nothing ships. If one of them ever appears in the
+    // served bytes, somebody cleared a warning rather than answering it.
+    const productBlock = [...pricing.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+      .map(m => { try { return JSON.parse(m[1]); } catch (e) { return null; } })
+      .find(v => v && v['@type'] === 'Product');
+    const invented = !productBlock ? [] :
+      ['applicableCountry', 'returnMethod', 'shippingDetails', 'aggregateRating', 'review']
+        .filter(k => JSON.stringify(productBlock).includes('"' + k + '"'));
+    check('/pricing/ still promises the refund without a territory, a return method or a shipment (#748)',
+      !!productBlock && invented.length === 0
+        && JSON.stringify(productBlock).includes('MerchantReturnUnlimitedWindow'),
+      [!productBlock && 'no Product block in the live page at all',
+       invented.length && 'the live markup now declares ' + invented.join(', '),
+       productBlock && !JSON.stringify(productBlock).includes('MerchantReturnUnlimitedWindow')
+         && 'the unlimited return window is gone from the live markup',
+      ].filter(Boolean).join('; '));
     const terms = await (await fetch(SITE + '/terms/')).text();
     check('and /terms/ §02 says a yearly price is fixed for the year (#542)',
       /fixed for the year/i.test(terms) && terms.includes('$9,990'),
