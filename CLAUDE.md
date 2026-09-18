@@ -356,7 +356,7 @@ own copy is §8, dashes as the universal connector, the same as the studio's.
   *under* its ceiling, naming the number to write, so a thread that rewrote
   a page records the gain and the next thread cannot spend it. The funnel,
   the scripts and the functions are at **zero** and stay there. The legal
-  pages hold at 189: two of them carry wording still unmerged on the
+  pages hold at 187: two of them carry wording still unmerged on the
   operator's desk (#529, #531), and nine of `/privacy/`'s sentences are pinned
   by name in the studio's `test/privacy-claims.test.js`, so a dash there is
   that row's to remove. The articles hold at 304 dashes and 43 strong tells,
@@ -413,6 +413,18 @@ the same.
   against a post-#114 one on the day it shipped: additions only (hreflang, the
   switcher, the payload), not one moved byte. Keep it that way: wrap a
   sentence, never rewrite it to make it wrappable.
+- **A string is a paragraph, never a source line (#738).** Until 18 Sep 2026
+  `htmlBlocks()` split a built page on raw newlines as well as on block tags,
+  so the 2,532 "strings" `/resources/` reported were markdown lines: a
+  not-X-but-Y that wrapped (*is not X.* ⏎ *It is Y*) was never matched, a
+  quoted phrase that wrapped lost its exemption, and a paragraph was measured
+  as its longest line. The reader now folds a block's newlines first. That
+  moved every page surface's count at once on the same copy (the funnel 483
+  strings to 368, 17 past forty words to 34; the articles 2,531 to 1,243; the
+  legal pages 395 to 353), so the ceilings were re-based in the same push, and
+  `test/humanize.test.js` pins a wrapped tell and a wrapped quotation. The
+  studio's readers already read paragraphs and text nodes, so nothing changed
+  there.
 - **A language exists exactly when its catalogue does.** `lib/i18n.js`'s
   `built()` is the list. The funnel templates paginate over it
   (`pagination: data: languages`) to write one page per language; the layout
