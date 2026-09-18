@@ -26,6 +26,7 @@ const ROOT = path.join(__dirname, '..');
 const ALLOWED = new Set([
   'prospektor.ai',                                    // ours
   'yourcompany.com', 'acme.com', 'example.com', 'example.org',  // placeholders in copy and doc comments
+  'company.com',                                      // `somebody@company.com`, the studio's own placeholder in data/studio-strings.json (#745)
   // GitHub's reserved noreply domain. `.github/workflows/gsc.yml` has to give
   // git a committer identity to commit the Search Console snapshot at all, and
   // this is the domain GitHub reserves for exactly that: it routes nowhere, it
