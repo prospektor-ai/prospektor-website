@@ -50,6 +50,15 @@
 // sentences — its lede, its search box, its FAQ — are this repo's, so they
 // join the funnel off the inventory rather than off the page.
 //
+// A string is a paragraph, not a source line, since #738: `htmlBlocks()`
+// folds a block's raw newlines before it splits on block tags, so a tell that
+// wraps is read whole and a quoted phrase that wraps stays exempt. Measured
+// on the same copy the day it changed, 18 Sep 2026: the funnel went from 483
+// strings to 368 and from 17 past forty words to 34; the articles from 2,531
+// strings to 1,243; the legal pages from 395 to 353 with the same 187 dashes;
+// nothing else moved, and no strong tell appeared. The ceilings were re-based
+// to those numbers in the same push, which is what a change of measure owes.
+//
 // The ceilings below are the ratchet. `test/humanize.test.js` fails when a
 // surface's dash count rises past its ceiling, and it also fails when the
 // count has fallen well under it, naming the number to write here, so a
@@ -75,8 +84,8 @@ const site = require('../src/_data/site.json');
  * copy has earned it; the test says which one and to what.
  */
 const CEILING = {
-  funnel: { dashes: 0, verbose: 17 },
-  legal: { dashes: 189 },
+  funnel: { dashes: 0, verbose: 34 },
+  legal: { dashes: 187 },
   resources: { dashes: 0 },
   scripts: { dashes: 0, verbose: 6 },
   functions: { dashes: 0, verbose: 3 },
