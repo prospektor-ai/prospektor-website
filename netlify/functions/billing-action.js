@@ -29,7 +29,7 @@ const crypto = require('node:crypto');
 const { redactKeys } = require('../../lib/stripe-error');
 
 const STRIPE = 'https://api.stripe.com/v1';
-const ACTIONS = ['pause', 'resume', 'cancel'];
+const ACTIONS = ['pause', 'resume', 'cancel', 'portal'];
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Same posture as the studio's own door: an unset or too-short secret means
@@ -69,7 +69,9 @@ async function subscriptionsFor(key, email) {
     }));
     for (const subscription of subscriptions.data || []) {
       if (subscription.status === 'canceled' || subscription.status === 'incomplete_expired') continue;
-      found.push(subscription);
+      // The customer it hangs off, for the portal: a session is minted per
+      // customer, and the one holding a live subscription is the one to open.
+      found.push(Object.assign({}, subscription, { customer: customer.id }));
     }
   }
   return found;
@@ -106,9 +108,37 @@ exports.handler = async function(event) {
   if (!ACTIONS.includes(action)) {
     return { statusCode: 400, body: JSON.stringify({ error: `action must be one of: ${ACTIONS.join(', ')}` }) };
   }
+  // Where Stripe sends the customer back when they close the portal. Refused
+  // before Stripe is asked, and https only: the studio passes its own origin.
+  const returnUrl = String(data.returnUrl || '').trim();
+  if (action === 'portal') {
+    let parsed = null;
+    try { parsed = new URL(returnUrl); } catch (e) { parsed = null; }
+    if (!parsed || parsed.protocol !== 'https:') {
+      return { statusCode: 400, body: JSON.stringify({ error: 'portal needs an https returnUrl' }) };
+    }
+  }
 
   try {
     let subscriptions = await subscriptionsFor(key, email);
+
+    if (action === 'portal') {
+      // No live subscription, no portal: matched 0 is the studio's cue to say
+      // so, and the same shape the three verbs above answer for an address
+      // Stripe does not know.
+      if (!subscriptions.length) {
+        console.log(`billing-action: portal for ${email} found no live subscription`);
+        return { statusCode: 200, body: JSON.stringify({ action, email, matched: 0, subscriptions: [] }) };
+      }
+      const customer = subscriptions[0].customer;
+      const session = await stripe(key, 'POST', '/billing_portal/sessions',
+        new URLSearchParams({ customer, return_url: returnUrl }));
+      console.log(`billing-action: portal for ${email} opened on ${customer}`);
+      return { statusCode: 200, body: JSON.stringify({
+        action, email, matched: 1, subscriptions: [subscriptions[0].id], customer, url: session.url,
+      }) };
+    }
+
     // Resuming only unpauses — a subscription that is not paused needs
     // nothing, and touching it would invent work out of idempotent retries.
     if (action === 'resume') subscriptions = subscriptions.filter(s => s.pause_collection);

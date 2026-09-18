@@ -144,4 +144,54 @@ describe('billing-action', () => {
     assert.equal(JSON.parse(r.body).error,
       'Stripe could not be asked. Finish this in the Stripe dashboard');
   });
+
+  // studio #686: the hosted portal. Its whole contract is that it reads and
+  // never writes a subscription, so the assertions are about what left the
+  // process as much as about what came back.
+  test('portal mints a Customer Portal session for the customer with the live subscription, and touches nothing', async () => {
+    const calls = stubFetch(stripeRoutes([
+      ['/v1/billing_portal/sessions', { status: 200, body: { id: 'bps_1', url: 'https://billing.stripe.com/p/session/x' } }],
+    ]));
+    const r = await post({ email: 'B@Acme.com', action: 'portal', returnUrl: 'https://studio.prospektor.ai/settings/workspace' });
+    assert.equal(r.statusCode, 200);
+    const body = JSON.parse(r.body);
+    assert.equal(body.matched, 1);
+    assert.equal(body.url, 'https://billing.stripe.com/p/session/x');
+    assert.equal(body.customer, 'cus_1', 'the customer whose subscription is live, not the first the address minted');
+    const minted = calls.find(c => c.url.includes('/v1/billing_portal/sessions'));
+    assert.equal(minted.method, 'POST');
+    assert.ok(String(minted.body).includes('customer=cus_1'));
+    assert.ok(String(minted.body).includes('return_url=https%3A%2F%2Fstudio.prospektor.ai%2Fsettings%2Fworkspace'));
+    assert.equal(acts(calls).length, 0, 'no subscription was written');
+  });
+
+  test('portal with nothing live behind the address answers matched 0 and mints nothing', async () => {
+    const calls = stubFetch([
+      ['/v1/customers?', { status: 200, body: { data: [{ id: 'cus_9' }] } }],
+      ['/v1/subscriptions?customer=cus_9', { status: 200, body: { data: [{ id: 'sub_dead', status: 'canceled' }] } }],
+    ]);
+    const r = await post({ email: 'b@acme.com', action: 'portal', returnUrl: 'https://studio.prospektor.ai/settings/workspace' });
+    assert.equal(r.statusCode, 200);
+    assert.equal(JSON.parse(r.body).matched, 0);
+    assert.ok(!calls.some(c => c.url.includes('/v1/billing_portal')), 'a canceled customer gets no portal');
+  });
+
+  test('portal refuses a missing or non-https returnUrl before Stripe is asked', async () => {
+    const calls = stubFetch(stripeRoutes());
+    assert.equal((await post({ email: 'b@acme.com', action: 'portal' })).statusCode, 400);
+    assert.equal((await post({ email: 'b@acme.com', action: 'portal', returnUrl: 'http://evil.example/' })).statusCode, 400);
+    assert.equal((await post({ email: 'b@acme.com', action: 'portal', returnUrl: 'not a url' })).statusCode, 400);
+    assert.equal(calls.length, 0);
+  });
+
+  test('a portal the key may not mint is the same loud 502, with the cause', async () => {
+    stubFetch(stripeRoutes([
+      ['/v1/billing_portal/sessions', { status: 403, body: { error: { message: 'This API key does not have the required permissions for this endpoint on account acct_1' } } }],
+    ]));
+    const r = await post({ email: 'b@acme.com', action: 'portal', returnUrl: 'https://studio.prospektor.ai/settings/workspace' });
+    assert.equal(r.statusCode, 502);
+    const body = JSON.parse(r.body);
+    assert.match(body.cause, /required permissions/);
+    assert.match(body.cause, /billing_portal/);
+  });
 });
