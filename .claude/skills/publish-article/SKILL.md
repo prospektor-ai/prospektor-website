@@ -85,6 +85,10 @@ learnings:   # comma-separated ledger ids
 date:        # YYYY-MM-DD
 readingTime: # minutes, integer
 ogImage:     # /assets/img/og/<slug>.png
+names:       # OPTIONAL — every screen, button or verb of the product the article
+             # names, as the product spells it (names: [Call prep, deck]). Leave it
+             # out when the article names none. tools/resources-coverage.js fails
+             # the suite on a name the product no longer says (#745).
 ```
 
 **`seoTitle` changes the search result only, never the `<h1>`** (#137 F1). It
@@ -146,7 +150,8 @@ fetched by social crawlers, which is why they are not content-hashed
 ## 5 · Validate — in this order, and read the output
 
 ```
-npm test                    # includes the ledger check and the SEO assertions
+npm test                    # includes the ledger check, resources coverage and the SEO assertions
+npm run resources:coverage  # the names the section declares against what the product says
 npm run drive               # a real browser over the built site
 node tools/seo-audit.js     # asks PRODUCTION — run it again after the deploy
 ```

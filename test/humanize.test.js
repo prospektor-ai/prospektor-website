@@ -135,6 +135,32 @@ describe('the scanner', () => {
     assert.strictEqual(r.strong.length, 0, 'the contrast inside the blockquote is the speaker\'s (#649)');
   });
 
+  // #738: a string is a paragraph. A built page keeps the markdown's line
+  // breaks inside a <p>, and until 18 Sep 2026 each one ended the string, so
+  // a tell that wrapped was never matched, a quoted phrase that wrapped lost
+  // its exemption, and a paragraph was measured as its longest line. The
+  // fixture is the row's own two cases, plus the blockquote wrapped the same way.
+  test('htmlBlocks reads a wrapped paragraph whole: a tell across a line break is caught, a quotation across one stays exempt', () => {
+    const blocks = H.htmlBlocks([
+      '<p>The answer is not a personality transplant.',
+      'It is a script.</p>',
+      '<p>He said "that is a',
+      'great question" and moved on — twice.</p>',
+      '<blockquote><p>It is not the copy,',
+      'it is the list.</p></blockquote>',
+    ].join('\n'));
+    assert.deepStrictEqual(blocks, [
+      'The answer is not a personality transplant. It is a script.',
+      'He said "that is a great question" and moved on — twice.',
+      '“It is not the copy, it is the list.”',
+    ]);
+    assert.deepStrictEqual(ids(blocks[0]), ['not-but'], 'the contrast split over two source lines is one contrast');
+    assert.deepStrictEqual(ids(blocks[1]), [], 'a quoted phrase that wraps is still discussed, not used');
+    assert.strictEqual(H.dashCount(blocks[1]), 1);
+    assert.deepStrictEqual(H.findTells(blocks[2]), [], 'a wrapped blockquote is still one quotation');
+    assert.strictEqual(H.wordCount(blocks[0]), 11, 'a paragraph is measured whole, not as its longest line');
+  });
+
   test('literals reads sentences, not markup, CSS, comments or regexes', () => {
     const source = [
       "const esc = s => String(s).replace(/[&<>\"']/g, c => map[c]);",
