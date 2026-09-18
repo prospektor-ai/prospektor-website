@@ -42,7 +42,17 @@ them without reading the studio's code.
    edited guide corrects itself on its own page), but it has no URL of its own
    until the next build. See *The help contract* below.
    **`npm run learnings`** prints the `/resources` coverage report — see
-   *The resources contract* below. **`npm run humanize`** prints the copy
+   *The resources contract* below. **`npm run resources:coverage`** asks whether
+   `/resources` still tells the truth about the product: every screen,
+   button or verb a surface declares in `names:` against the studio's
+   string inventory vendored in `data/studio-strings.json` and the help
+   snapshot, and every link into `/help/` and `/resources/` against
+   the pages that exist. It is the website half of one checkpoint whose
+   other enforcer is the studio's `dev/tour-coverage.js` (#744, #745):
+   a meaningful product change updates the tour there and the articles
+   here, checked rather than remembered. **`npm run strings:snapshot`**
+   refreshes the inventory from a studio checkout beside this repo; run it
+   when the studio renames something, and commit the result. **`npm run humanize`** prints the copy
    against the humanizer standard, surface by surface — see *The voice
    contract* below; `npm test` is red on a strong tell anywhere and on a dash
    count rising past its ceiling, so read the seven tells there before
@@ -156,6 +166,46 @@ articles; **#159 made the list derived**, because a fixed list drifts in silence
   suite red — that is the #131 lesson, where a pinned file count made adding a
   help article break an unrelated test, which is friction pointing exactly the
   wrong way.
+
+**The section is also held to the product it describes (#745, the website half
+of #744).** The operator's ask, 17 Sep 2026: *"yes also add /resources to the
+check"*, the check being the studio's tour coverage. `tools/resources-coverage.js`
+is the enforcer here, in the shape of the studio's `dev/tour-coverage.js` and
+`dev/course-coverage.js`, and it lives in this repo because the studio's
+`npm test` cannot see this one and Netlify builds each without the other.
+
+- **A surface declares what it names.** An article, the hub
+  (`src/resources.njk`) and the article layout's aside
+  (`src/_includes/article.njk`) list the product's screens, buttons and
+  verbs they name in `names:` in their frontmatter, spelled as the product
+  spells them. `npm test` fails by name when a declared name is nothing the
+  studio says or its help explains, and when the surface's own text has
+  stopped saying it. `names:` is optional: an article about method names
+  nothing and declares nothing, and the floor is the siblings' floor, that a
+  name still exists somewhere a customer meets it, not that it still labels
+  what the article describes.
+- **The product's list of what it says is vendored, not exported.**
+  `data/studio-strings.json` is the studio's `dev/i18n-strings.js#inventory()`
+  read out of a checkout beside this repo by `npm run strings:snapshot`, the
+  way `data/help-corpus.json` is the help corpus. The inventory is a scan of
+  the studio's source and is served at no URL, so exporting it would mean an
+  endpoint, a deploy and a build-time fetch whose fallback is this file; the
+  snapshot carries the studio commit and the date, and the report prints them.
+  A rename in the studio reaches this check at the next snapshot, and the
+  studio's own check catches it there the day it happens.
+- **Every link into `/help/` and `/resources/` names a page**, resolved
+  against the corpus snapshot's slugs and the article files without a build,
+  the way the studio's `dev/help-links.js` does. A link written the numbered
+  way carries the slug it should have been. `test/pages.test.js` asks the
+  same of every built page.
+- **What it does not do, said plainly.** #745 asked whether an article whose
+  subject is a product surface that has since changed could be caught. No
+  article's subject is a surface: every one is a learning from the playbook,
+  bound to it by the ledger, and the two paragraphs that describe the product
+  are the hub's and the layout's closing ones, which declare their names. So
+  there is no staleness stamp, because there is nothing for one to stamp.
+- **Nothing counts articles, names or strings.** An article that names nothing
+  adds nothing to check; a new name is one line in `names:`.
 
 **The one thing no test can catch, said plainly:** this repo cannot see the
 research. A learning added to the playbook and never entered in the ledger is
@@ -363,6 +413,18 @@ own copy is §8, dashes as the universal connector, the same as the studio's.
   the one surface with a ceiling on strong tells, because 43 across
   twenty-six articles is a row of its own and a check that demanded zero in
   one thread would be deleted.
+- **A string is a paragraph, never a source line (#738).** Until 18 Sep 2026
+  `htmlBlocks()` split a built page on raw newlines as well as on block tags,
+  so the 2,532 "strings" `/resources/` reported were markdown lines: a
+  not-X-but-Y that wrapped (*is not X.* ⏎ *It is Y*) was never matched, a
+  quoted phrase that wrapped lost its exemption, and a paragraph was measured
+  as its longest line. The reader now folds a block's newlines first. That
+  moved every page surface's count at once on the same copy (the funnel 483
+  strings to 368, 17 past forty words to 34; the articles 2,531 to 1,243; the
+  legal pages 395 to 353), so the ceilings were re-based in the same push, and
+  `test/humanize.test.js` pins a wrapped tell and a wrapped quotation. The
+  studio's readers already read paragraphs and text nodes, so nothing changed
+  there.
 - **A translation keeps its own language's punctuation.** The raya and the
   Gedankenstrich are those languages' punctuation, not a tell; the rule lives
   on the English key, and rewriting an English sentence RE-KEYS its three
@@ -413,18 +475,6 @@ the same.
   against a post-#114 one on the day it shipped: additions only (hreflang, the
   switcher, the payload), not one moved byte. Keep it that way: wrap a
   sentence, never rewrite it to make it wrappable.
-- **A string is a paragraph, never a source line (#738).** Until 18 Sep 2026
-  `htmlBlocks()` split a built page on raw newlines as well as on block tags,
-  so the 2,532 "strings" `/resources/` reported were markdown lines: a
-  not-X-but-Y that wrapped (*is not X.* ⏎ *It is Y*) was never matched, a
-  quoted phrase that wrapped lost its exemption, and a paragraph was measured
-  as its longest line. The reader now folds a block's newlines first. That
-  moved every page surface's count at once on the same copy (the funnel 483
-  strings to 368, 17 past forty words to 34; the articles 2,531 to 1,243; the
-  legal pages 395 to 353), so the ceilings were re-based in the same push, and
-  `test/humanize.test.js` pins a wrapped tell and a wrapped quotation. The
-  studio's readers already read paragraphs and text nodes, so nothing changed
-  there.
 - **A language exists exactly when its catalogue does.** `lib/i18n.js`'s
   `built()` is the list. The funnel templates paginate over it
   (`pagination: data: languages`) to write one page per language; the layout
