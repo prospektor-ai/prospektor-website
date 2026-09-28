@@ -19,7 +19,8 @@
     "gsc:report": "node tools/gsc.js report",
     "gsc:opportunities": "node tools/gsc.js opportunities",
     "gsc:cannibals": "node tools/gsc.js cannibals",
-    "humanize": "node tools/humanize.js"
+    "humanize": "node tools/humanize.js",
+    "demo:capture": "node tools/demo-capture.js"
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1"

@@ -258,6 +258,22 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
   check('/checkout/done/ is a confirmation, not a next-step card (#244)',
     await p4.isVisible('#confirmCard'));
 
+  // ── CLAIM (#767): the clickable demo is served, screens and all ──
+  // The page is a capture, so the thing to ask production is that the
+  // figures and the first screen behind them are actually there.
+  {
+    const p5 = await ctx.newPage();
+    const demoRes = await p5.goto(SITE+'/demo/', { waitUntil: 'domcontentloaded' });
+    check('/demo/ serves 200', !!demoRes && demoRes.status()===200, 'HTTP '+(demoRes && demoRes.status()));
+    const figures = await p5.locator('figure.demo-step').count().catch(() => 0);
+    check('/demo/ carries the tour\u2019s screens, one figure per step (#767)', figures >= 5, figures + ' figures');
+    const firstShot = await p5.getAttribute('figure.demo-step img', 'src').catch(() => null);
+    let shotStatus = 0;
+    try { shotStatus = (await fetch(SITE + firstShot, { method: 'HEAD' })).status; } catch (e) { RELAY_RETRIES.push(SITE + firstShot); }
+    check('and the first screen is served', shotStatus === 200, `${firstShot} → ${shotStatus}`);
+    await p5.close();
+  }
+
   // ── CLAIM (#698): production names the build it is running ──
   // The website lane's `/api/me`: a bare GET on checkout-session-status is a
   // 400 that carries `commit`, written from COMMIT_REF at build time. It is

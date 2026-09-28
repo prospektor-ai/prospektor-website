@@ -90,6 +90,11 @@ permalink: "{{ language.prefix }}/"
       <ul class="scan-suggest" id="scanSuggest" role="listbox" hidden></ul>
     </form>
     <p class="scan-hint" id="scanHint">{% t %}Free · no sign-up · it reads your site and shows you who it would go after, in ~30 seconds{% endt %}</p>
+    {#- #767: the clickable demo's door, where Reevo puts *Start demo*, beside
+        the scan (which is this site's live demo: a real result on the
+        visitor's own domain). One quiet line, never a second button; it goes
+        with the rest of the hero the moment a scan starts. -#}
+    <p class="scan-demo" id="scanDemo"><a href="{{ '/demo/' | localize }}">{% t %}Or click through the demo first →{% endt %}</a></p>
     <p class="scan-error" id="scanError" hidden></p>
 
     <div aria-live="polite">
