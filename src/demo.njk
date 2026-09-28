@@ -1,0 +1,117 @@
+---
+layout: base.njk
+title: Demo
+description: "Click through Prospektor's real screens, one lit at a time with one sentence each, without an account. Pick a chapter and press Next."
+# One page per language (#535) — see src/index.njk for the reasoning. The
+# chrome is this site's and goes through the catalogues; each step's title and
+# sentence are the studio's, in the language it holds them in, and fall back
+# to English the way a help guide's title does.
+pagination:
+  data: languages
+  size: 1
+  alias: language
+  addAllPagesToCollections: true
+permalink: "{{ language.prefix }}/demo/"
+---
+
+{#- #767, 28 Sep 2026. The operator: *"We should also have a clickable demo
+    like this: https://app.storylane.io/share/7dnsrqniygbj"*. Reevo's demo is
+    a title card, three chapters to pick from, then the real product greyed
+    with one element lit and one sentence per screen, Next.
+
+    Nothing on this page is written here. Every screen, every ring and every
+    sentence is the studio's one-minute tour (`TOUR_STEPS`, reshaped by #766
+    into Find, Engage and Teach), read off the real product by
+    `npm run demo:capture` into data/demo.json and src/assets/img/demo/. So
+    the demo cannot say a sentence the tour does not, and test/demo.test.js
+    goes red the day the strings snapshot stops holding one of them.
+
+    Less is more, applied: no wall of chapters and no paragraph of preamble.
+    One h1, then the first screen with its one card, which is the tour's own
+    opening card and already the three chapters to pick from. Every step is
+    one figure: the screen, the lit element (a link that is also Next), and
+    the card below it with the count, the title, the sentence and Back/Next.
+    demo.js shows one figure at a time and drives the hash; with no script
+    the ten figures stand in order and every link still lands.
+
+    The card sits BELOW the screen rather than over it, on purpose: the rings
+    are mostly the right-hand panel of the screen, so a card over the screen
+    would cover what it points at, and a card below scales down to a phone
+    without covering anything.
+
+    The end card is the free scan, which is this site's *Book a live demo*
+    (ROADMAP.md #766): a stranger gets a real result on their own domain
+    where Reevo shows somebody else's. -#}
+
+{%- set total = demo.steps | length -%}
+
+<header class="page-hero demo-hero">
+  <div class="page-hero-inner">
+    <span class="tag">{% t %}the demo{% endt %}</span>
+    <h1 class="page-h1">{% t %}The real screens, no account.{% endt %}</h1>
+  </div>
+</header>
+
+<section class="demo">
+  <div class="demo-stage" id="demoStage" data-total="{{ total }}">
+    {%- for step in demo.steps %}
+    {%- set next = 'step-' + (step.n + 1) if not loop.last else 'demo-end' %}
+    {%- set chapter = demo.chapterNames[step.chapter] if step.chapter else null %}
+    <figure class="demo-step" id="step-{{ step.n }}" data-n="{{ step.n }}"{% if step.chapter %} data-chapter="{{ step.chapter }}"{% endif %}>
+      <div class="demo-shot">
+        <img src="{{ step.image | asset }}" width="{{ demo.viewport.width }}" height="{{ demo.viewport.height }}" alt="{{ step.title[language.code] or step.title.en }}"{% if not loop.first %} loading="lazy"{% endif %}>
+        {%- if step.ring %}
+        {#- The lit element. A link, so it is the press that moves the walk
+            on, with or without demo.js; the dimming around it is its own
+            box-shadow, so the screen needs no second layer. -#}
+        <a class="demo-ring" href="#{{ next }}" aria-label="{{ 'Next' | t }}"
+           style="left:{{ step.ring.x * 100 }}%;top:{{ step.ring.y * 100 }}%;width:{{ step.ring.w * 100 }}%;height:{{ step.ring.h * 100 }}%"></a>
+        {%- endif %}
+      </div>
+      <figcaption class="demo-card">
+        <div class="demo-card-text">
+          <p class="demo-count">{% if chapter %}<span class="demo-chapter {{ step.chapter }}">{{ chapter[language.code] or chapter.en }}</span> · {% endif %}{{ 'Step {n} of {total}' | t({ n: step.n, total: total }) }}</p>
+          <h2>{{ step.title[language.code] or step.title.en }}</h2>
+          <p>{{ step.body[language.code] or step.body.en }}</p>
+          {%- if loop.first and demo.chapters | length %}
+          {#- The tour's opening card is the three verbs to pick from (#766);
+              each lands on its chapter's first step. -#}
+          {#- A div, not a <nav>: main.css fixes every <nav> to the top of the
+              page, because the header is the only one it expected. -#}
+          <div class="demo-chapters" role="group" aria-label="{{ step.title[language.code] or step.title.en }}">
+            {%- for c in demo.chapters %}
+            <a class="demo-chapter-btn {{ c.id }}" href="#step-{{ c.first }}" data-chapter="{{ c.id }}">{{ c.name[language.code] or c.name.en }}</a>
+            {%- endfor %}
+          </div>
+          {%- endif %}
+        </div>
+        <div class="demo-actions">
+          <ol class="demo-dots" aria-hidden="true">
+            {%- for k in range(1, total + 1) %}<li{% if k == step.n %} class="is-on"{% endif %}></li>{% endfor %}
+          </ol>
+          {%- if not loop.first %}
+          <a class="btn-ghost demo-back" href="#step-{{ step.n - 1 }}">{% t %}Back{% endt %}</a>
+          {%- endif %}
+          <a class="demo-next" href="#{{ next }}">{% t %}Next{% endt %}</a>
+        </div>
+      </figcaption>
+    </figure>
+    {%- endfor %}
+
+    {#- The way out is the free scan: their own domain, a real result, no
+        sign-up. One primary action, and Back. -#}
+    <div class="demo-step demo-end" id="demo-end">
+      <h2>{% t %}Now on your own site.{% endt %}</h2>
+      <p>{% t %}The scan reads your site and shows you who it would go after, in about thirty seconds. No sign-up.{% endt %}</p>
+      <div class="demo-end-actions">
+        <a class="btn-cta" href="{{ '/#scan' | localize }}">{% t %}Scan your site for free{% endt %}</a>
+        {%- if total %}
+        <a class="btn-ghost demo-back" href="#step-{{ total }}">{% t %}Back{% endt %}</a>
+        {%- endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{#- defer (#137): an IIFE that looks its stage up by id and returns if it is
+    absent; with the DOM complete it hides every figure but the current one. -#}
+<script src="{{ '/assets/js/demo.js' | asset }}" defer></script>

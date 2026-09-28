@@ -60,7 +60,11 @@ them without reading the studio's code.
    Open Graph cards with Playwright and commits the PNGs; run it after adding
    or retitling an article, or after changing a `topic:`, since the card shows
    it. It is an authoring step, never a build step — the Netlify build must
-   not need a browser.
+   not need a browser. **`npm run demo:capture`** is the same kind of step for
+   `/demo/`: it walks the studio's one-minute tour over the real screens from
+   a checkout beside this repo and commits the screens and the sentences; run
+   it when the studio ships a tour change, and `npm test` names it when the
+   strings snapshot says the tour has moved on — see *The demo contract*.
 4. A deliverable is not shipped until the handover file in the studio repo
    is updated to record what was built and what was decided — that update
    is a STUDIO-repo commit, named in the sign-off.
@@ -363,6 +367,56 @@ year. Four surfaces carry a figure and exactly one of them decides it.
 - **Nothing counts plans.** A third one can only turn the suite red by having
   no `Offer`, no `billingPeriod`, or a figure `/llms.txt` contradicts — the
   #131 rule, that friction points at the defect and never at the work.
+
+## The demo contract — the tour, captured, and held to the product (#767)
+
+`/demo/` is Reevo's Storylane shape on this site (the operator, 18 Sep 2026:
+*"We should also have a clickable demo like this"*): the real screens, one
+element lit, one sentence, Next, no account. **Nothing on it is written here.**
+The studio's one-minute tour (`TOUR_STEPS` in `public/studio.js`, three chapters
+since #766) is the one source, and `tools/demo-capture.js` reads it off the
+running product: it starts the studio from the sibling checkout the way the
+studio's own `dev/drive-tour.js` does, signs in through the dev door as the
+example's own seller (Ledgerpost, pitching Harborline Freight), walks the ten
+steps, and writes `data/demo.json` (the ring as fractions of the screen, the
+title and sentence in every language the studio's catalogues hold, the chapter,
+the names each step declares, the studio commit) and one PNG per step under
+`src/assets/img/demo/`. `src/demo.njk` renders one figure per step and
+`demo.js` shows one at a time, the hash the only state; every control is a
+link, so the page walks with no script too.
+
+- **Why a capture and not a public door on the studio.** `ROADMAP.md` #766
+  recommended serving the demo from the studio over the example workspace.
+  There is no example workspace: the example is a front-end constant drawn
+  inside a signed-in shell that renders no screen without a session, so a demo
+  door is a new anonymous surface on the product's auth layer, a studio row
+  with a security pass. What that recommendation was for was rot, and rot is
+  held here another way.
+- **Every sentence the demo says is one the studio says.** Each step's title
+  and body are `t('…')` strings in the studio, so they are in the vendored
+  inventory `data/studio-strings.json` (#745). `test/demo.test.js` fails by
+  name, saying `npm run demo:capture`, the day `npm run strings:snapshot`
+  brings back a catalogue without one of them: a tour rewrite reaches this
+  repo with the same lag and the same catch as the articles' names. The names
+  a step declares are checked the way the studio's `dev/tour-coverage.js`
+  checks them, with the same `says`.
+- **The capture hides three things and nothing else**, all of them true of the
+  capture and of nothing a visitor looks at: the dev server's own notice that
+  runs are simulated, the simulated tiles on Leads for you, and a fresh
+  member's account nudge. The tour's own overlay is hidden for the shot
+  because the page draws its own ring and card.
+- **The card sits under the screen, never over it.** The rings are mostly the
+  right-hand panel, so a card over the screen would cover what it points at,
+  and a card below scales to a phone without covering anything. The end card
+  is the free scan, this site's *Book a live demo*: a stranger gets a real
+  result on their own domain where Reevo shows somebody else's.
+- **The PNGs live under `/assets/img/`**, which the asset contract leaves
+  unhashed on purpose, so a re-capture rewrites them in place and a day's cache
+  picks them up. A build needs neither a browser nor a second checkout.
+- **Nothing counts steps, chapters or languages.** A twelve-step tour builds a
+  twelve-figure demo; a fourth catalogue in the studio lands in the JSON at the
+  next capture; the only red is a sentence the studio no longer says, a name
+  nothing says, a screen missing from disk, or a ring off the screen.
 
 ## The voice contract — the humanizer standard (#640, out of the studio's #634)
 

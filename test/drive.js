@@ -814,7 +814,10 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
                     // a static page like the rest, listed here for the reason
                     // the comment above gives, and its language twins are
                     // derived below like everybody else's.
-                    'https://prospektor.ai/integrations/close/'];
+                    'https://prospektor.ai/integrations/close/',
+                    // #767. The clickable demo: ten real screens with a
+                    // sentence each, the page "prospektor demo" wants.
+                    'https://prospektor.ai/demo/'];
     // #114: each static page is followed by its twins in every language the
     // build wrote it in — derived from lib/i18n.js and the built tree, the
     // same way sitemap.njk derives them, so a new language or a newly
@@ -1874,6 +1877,64 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
       ns => ns.map(n => n.textContent.replace(/\s+/g, ' ').trim()))).join(' | ');
     check('a paying buyer still reads the sentence they always read',
       /payment confirmed/i.test(paid) && !/nothing charged/i.test(paid), paid);
+    await page.close();
+  }
+
+  // ── §18 THE CLICKABLE DEMO (#767) ────────────────────────────────────────
+  // The studio's tour on the real screens: one figure at a time, the hash
+  // the only state, every control a link. Driven rather than read off the
+  // build because the one thing the build cannot show is that the page
+  // moves: that a chapter button lands on its chapter, that the lit element
+  // is the press that moves the walk on, that the arrow keys walk, and that
+  // the browser asks nobody for anything while it does.
+  {
+    const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    const asked = new Set();
+    await page.route('**/*', route => {
+      const u = new URL(route.request().url());
+      if (u.hostname !== 'localhost') asked.add(u.hostname);
+      return route.continue();
+    });
+    const errors = [];
+    page.on('pageerror', e => errors.push(String(e)));
+    await page.goto('http://localhost:8899/demo/');
+    await page.waitForSelector('#demoStage.is-live', { timeout: 5000 });
+    const showing = () => page.$$eval('.demo-step:not([hidden])', ns => ns.map(n => n.id));
+    check('the demo opens on the first screen and only that one', JSON.stringify(await showing()) === '["step-1"]', await showing());
+    check('the opening card offers the chapters', (await page.locator('#step-1 .demo-chapter-btn').count()) >= 2);
+    await page.click('#step-1 .demo-chapter-btn[data-chapter="engage"]');
+    await page.waitForTimeout(200);
+    const engage = await page.$eval('#demoStage', n => n.dataset.at);
+    const landed = await showing();
+    check('pressing Engage lands on that chapter\u2019s first step',
+      landed.length === 1 && (await page.$eval(`#${landed[0]}`, n => n.dataset.chapter)) === 'engage', landed);
+    check('and the URL carries the step, so the link can be sent', page.url().endsWith(`#${landed[0]}`), page.url());
+    await page.click(`#${landed[0]} .demo-ring`);
+    await page.waitForTimeout(200);
+    check('pressing the lit element moves the walk on', await page.$eval('#demoStage', n => n.dataset.at) === String(Number(engage) + 1), await showing());
+    await page.keyboard.press('ArrowLeft');
+    await page.waitForTimeout(200);
+    check('the left arrow is Back', await page.$eval('#demoStage', n => n.dataset.at) === engage, await showing());
+    await page.keyboard.press('ArrowRight');
+    await page.waitForTimeout(200);
+    check('the right arrow is Next', await page.$eval('#demoStage', n => n.dataset.at) === String(Number(engage) + 1));
+    const total = Number(await page.$eval('#demoStage', n => n.dataset.total));
+    for (let i = 0; i < total; i++) {
+      if ((await showing())[0] === 'demo-end') break;
+      await page.click('.demo-step:not([hidden]) .demo-next');
+      await page.waitForTimeout(120);
+    }
+    check('Next all the way ends on the free scan', JSON.stringify(await showing()) === '["demo-end"]', await showing());
+    check('and the scan is where it points', (await page.getAttribute('#demo-end .btn-cta', 'href')) === '/#scan');
+    await page.click('#demo-end .demo-back');
+    await page.waitForTimeout(200);
+    check('Back from the end is the last step', (await showing())[0] === `step-${total}`, await showing());
+    check('the browser asked nobody outside this origin', asked.size === 0, [...asked].join(', '));
+    check('no script error on the demo', errors.length === 0, errors);
+    // A link straight to a step opens on it.
+    await page.goto('http://localhost:8899/demo/#step-3');
+    await page.waitForSelector('#demoStage.is-live', { timeout: 5000 });
+    check('a link to #step-3 opens on step 3', JSON.stringify(await showing()) === '["step-3"]', await showing());
     await page.close();
   }
 
