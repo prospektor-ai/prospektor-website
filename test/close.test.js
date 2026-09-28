@@ -65,10 +65,22 @@ describe('/integrations/close/ — the page, and the offer it may print', () => 
     }
   });
 
-  test('the census it leads with is dated, because a shelf grows', () => {
-    const body = text(read(DARK, PAGE));
-    assert.match(body, /\b39\b/, 'the count is the argument (#567, read 9 Sep 2026)');
-    assert.match(body, /2026/, 'an undated count is a sentence that goes false without anybody editing it');
+  test('it leads with the fit, and names the four records a push writes', () => {
+    // #830: the census #620 led with (39 tools on Close's shelf, none writes
+    // the email) is gone at the operator's ask — "not 'compare us to all the
+    // other tools blabla', just: here is why Prospektor + Close work super
+    // well together". So the page is held to that instead: the <h1> names
+    // both products, and every record lib/crm-close.js writes is on the page
+    // by name, because a page that promises a record the push does not write
+    // is wrong, not modest.
+    const html = read(DARK, PAGE);
+    const h1 = (html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i) || [])[1] || '';
+    assert.match(text(h1), /Prospektor/, 'the headline is the two products together');
+    assert.match(text(h1), /Close/, 'the headline is the two products together');
+    const body = text(html);
+    for (const record of ['lead', 'contacts', 'opportunity', 'note'])
+      assert.match(body, new RegExp(`\\b${record}\\b`, 'i'), `the push writes a ${record}, and the page should say so`);
+    assert.ok(!/\b39\b/.test(body), 'the census is gone: the page is about the fit, not about the other tools on the shelf');
   });
 
   test('the buy form is this page\'s own, and it says which arrival it is', () => {
@@ -114,7 +126,7 @@ describe('/integrations/close/ — the page, and the offer it may print', () => 
       // The page is what Close's listing form needs. Holding it back to hold
       // back the offer would cost a day on the listing to fix nothing.
       const body = text(read(ARMED, PAGE));
-      assert.match(body, /\b39\b/);
+      assert.match(body, /Close/);
       assert.match(body, /\$999/, 'it still sells the workspace at list price');
     });
   } else {
