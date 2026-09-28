@@ -27,6 +27,10 @@ const ALLOWED = new Set([
   'prospektor.ai',                                    // ours
   'yourcompany.com', 'acme.com', 'example.com', 'example.org',  // placeholders in copy and doc comments
   'company.com',                                      // `somebody@company.com`, the studio's own placeholder in data/studio-strings.json (#745)
+  // `Mara@ledgerpost.example` in tools/demo-capture.js: the studio's own example
+  // seller (`EXAMPLE_SELLER` in its public/example-pitch.js), on the TLD IANA
+  // reserves for exactly this, so it routes nowhere and names nobody. (#767)
+  'ledgerpost.example',
   // GitHub's reserved noreply domain. `.github/workflows/gsc.yml` has to give
   // git a committer identity to commit the Search Console snapshot at all, and
   // this is the domain GitHub reserves for exactly that: it routes nowhere, it
