@@ -713,7 +713,9 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
                        // #620. The page Close's integration directory points
                        // at, appended here because it was appended to the
                        // sitemap — the paragraph above is the whole rule.
-                       'https://prospektor.ai/integrations/close/'];
+                       'https://prospektor.ai/integrations/close/',
+                       // #767. The clickable demo, a static page like the rest.
+                       'https://prospektor.ai/demo/'];
   // #114: each static page is followed by its twin in every language this
   // repo has a catalogue for — asked of lib/i18n.js and of the live site (a
   // twin that answers 200 is listed; one that 404s is not), never listed here.
