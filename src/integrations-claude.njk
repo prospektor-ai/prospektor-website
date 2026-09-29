@@ -1,0 +1,55 @@
+---
+layout: base.njk
+title: Claude integration
+description: "Your own Claude can read a company, write the pitch, prep the call and record what happened in your Prospektor workspace. One connector address, no token."
+# One page per language (#114/#535) — see src/index.njk for the reasoning.
+pagination:
+  data: languages
+  size: 1
+  alias: language
+  addAllPagesToCollections: true
+permalink: "{{ language.prefix }}/integrations/claude/"
+---
+
+{#- #841, 29 Sep 2026. One landing page per integration, in the Close page's
+    shape (`_includes/integration-page.njk`), at the operator's ask: "the LP
+    should explain the benefit of Prospektor + INTEGRATION - and it should
+    link to a KB 'how to use it'". Every sentence below is what the studio's
+    help says this connection does (docs/help/12-connect-your-claude.md); the KB link is that section.
+    If the help changes what a push writes, this page is wrong, not modest. -#}
+
+{% set intId = 'claude' %}
+{% set intName = 'Claude' %}
+{% set intLogo = '/assets/img/integrations/claude.svg' %}
+{% set intSub %}{% t %}Ask your own Claude. Prospektor does the work.{% endt %}{% endset %}
+{% set intCtaHref = '/pricing/' | localize %}
+{% set intCtaLabel %}{% t %}Start my studio →{% endt %}{% endset %}
+{% set intDoc = ('/help/connect-your-claude/' | localize) + '' %}
+
+{% set dgTitle %}{% t %}Your own Claude asks, and the workspace does the work{% endt %}{% endset %}
+{% set dgLeftLabel = 'CLAUDE.AI' %}
+{% set dgLeftTitle = 'Your Claude' %}
+{% set dgLeftButton %}{% t %}Ask{% endt %}{% endset %}
+{% set dgRightLabel = 'PROSPEKTOR' %}
+{% set dgR1L %}{% t %}Read a company{% endt %}{% endset %}
+{% set dgR1D %}{% t %}what it sells, and to whom{% endt %}{% endset %}
+{% set dgR2L %}{% t %}Write the pitch{% endt %}{% endset %}
+{% set dgR2D %}{% t %}in your voice, with sources{% endt %}{% endset %}
+{% set dgR3L %}{% t %}Prep the call{% endt %}{% endset %}
+{% set dgR3D %}{% t %}what they will say, and your answer{% endt %}{% endset %}
+{% set dgR4L %}{% t %}Record what happened{% endt %}{% endset %}
+{% set dgR4D %}{% t %}it teaches the next run{% endt %}{% endset %}
+{% set dgCaption %}{% t %}Every answer carries its sources. It never adds a fact the workspace does not hold.{% endt %}{% endset %}
+
+{% set shotSrc = '/assets/img/demo/step-08.png' %}
+{% set shotAlt %}{% t %}A call sheet in Prospektor: what they will object to and what to say back, which your own Claude can write for you.{% endt %}{% endset %}
+{% set shotCaption %}{% t %}Meeting prep in Prospektor, one of the things your own Claude can ask for.{% endt %}{% endset %}
+
+{% set p1 %}{% t %}Your own Claude can do the work in this workspace: read a company, write the pitch, prep the call, map who you know, say what to do next, record what happened.{% endt %}{% endset %}
+{% set p2 %}{% t %}In claude.ai, add one custom connector with the workspace's address. Prospektor asks what the app may do, mints the token itself and puts it on your Claude tile. There is nothing to copy and nothing to paste.{% endt %}{% endset %}
+{% set p3 %}{% t %}Claude Code, Claude Desktop and Cursor take a token instead: mint one under <strong>Your own agent</strong>, press <strong>Copy setup for your agent</strong>, and paste it in.{% endt %}{% endset %}
+{% set s1 %}{% t %}In claude.ai, add a custom connector with the address <strong>studio.prospektor.ai/api/mcp</strong>.{% endt %}{% endset %}
+{% set s2 %}{% t %}Approve what it may do. The token lands on your Claude tile in Prospektor.{% endt %}{% endset %}
+{% set s3 %}{% t %}Ask it to read a company, write the pitch or prep a call.{% endt %}{% endset %}
+
+{% include "integration-page.njk" %}

@@ -12,31 +12,22 @@ pagination:
 permalink: "{{ language.prefix }}/integrations/close/"
 ---
 
-{#- #620, 10 Sep 2026; rewritten by #830 and reshaped by #838, 28 Sep 2026.
-    The page Close's integration directory points at
-    (close.com/integrations/prospektor) and the answer to two required fields
-    on their listing form (#9 Marketing URL, and "do you promote Close on your
-    website in any way?").
+{#- #620, 10 Sep 2026; rewritten by #830, reshaped by #838 (28 Sep) and moved
+    onto the shared shape by #841 (29 Sep). The page Close's integration
+    directory points at (close.com/integrations/prospektor) and the answer to
+    two required fields on their listing form (#9 Marketing URL, and "do you
+    promote Close on your website in any way?").
 
-    THE SHAPE is Close's own integration page (close.com/integrations/addtocrm),
-    at the operator's ask (#838): "It should look something like this and not
-    a long AI-written page. More visual, less text, clear CTA." So: a back
-    link and the mark, a sidebar that holds the one action and the support
-    links, two visuals, about a hundred words and three numbered steps, the
-    buy card, and the other integrations under it. #830's ask still binds
-    every sentence: humanized, the free month on every screen, and no census
-    of the other tools on Close's shelf.
+    THE SHAPE is `_includes/integration-page.njk`, Close's own integration
+    page: a back link and the mark, the name as the <h1> with the fit sentence
+    under it, a sidebar with the one action and the way into the help, two
+    visuals, three paragraphs, three steps. This page adds one thing the
+    others do not: the direct-to-Stripe card (`intExtra`), because the free
+    month is sold here and nowhere else (#622).
 
     THE ONE THING THIS PAGE MUST NOT DO: sell whom to chase. Its visitor
     already has a CRM and already believes in it. Everything here is the half
     Close does not have, and where it lands when it is done.
-
-    `/integrations/` rather than `/partners/` (which implies a programme the
-    product does not have and would collide with the unbuilt affiliate scheme,
-    #87) and rather than `/close/` (a common English word that tells a visitor
-    nothing). It mirrors Close's own `close.com/integrations/<name>`, so it
-    reads as native from their directory, and since #838 it is the directory
-    `/integrations/` sits over.
 
     Every claim here is the studio's code, read on 28 Sep 2026, and if one of
     them stops being true this page is wrong, not modest:
@@ -46,9 +37,6 @@ permalink: "{{ language.prefix }}/integrations/close/"
         by the operator's own press on 10 Sep): the lead found by domain, its
         contacts, an opportunity whose CONFIDENCE is the fit score, and a
         note that renders; a second press updates by id.
-    The first visual is drawn here, in the site's tokens, and names those
-    four records and nothing else; the second is a real screen off the demo's
-    capture (#767), the fit thesis that becomes the note.
 
     THE OFFER IS WRITTEN ONLY WHEN THIS BUILD ARMS IT (#622). Every sentence
     that says "free", "30 days" or "$0" sits inside `{% if offer.close %}`, so
@@ -56,113 +44,49 @@ permalink: "{{ language.prefix }}/integrations/close/"
     dark build is the same page at list price. `test/close.test.js` builds
     both and reads every "N days" against `lib/trial.js`. -#}
 
-<section class="int-page">
-  <a class="int-back" href="{{ '/integrations/' | localize }}">{% t %}← All integrations{% endt %}</a>
-  <div class="int-head">
-    <span class="int-mark" aria-hidden="true">Cs</span>
-    <div>
-      <h1>Close</h1>
-      <p class="int-sub">{% t %}Prospektor writes the pitch. Close works the deal.{% endt %}</p>
-    </div>
-  </div>
+{% set intId = 'close' %}
+{% set intName = 'Close' %}
+{% set intLogo = '/assets/img/integrations/close.svg' %}
+{% set intSub %}{% t %}Prospektor writes the pitch. Close works the deal.{% endt %}{% endset %}
+{% set intCtaHref = '#start' %}
+{%- if offer.close %}
+{% set intCtaLabel %}{% t %}Start my free month →{% endt %}{% endset %}
+{% set intOffer %}{% t %}<strong>One month free for Close users.</strong> Card on file, nothing charged for 30 days, and one email cancels.{% endt %}{% endset %}
+{%- else %}
+{% set intCtaLabel %}{% t %}Start my studio →{% endt %}{% endset %}
+{%- endif %}
+{% set intDoc = ('/help/workspace/' | localize) + '#workspace--crm-a-finished-pitch-pushed-into-hubspot-affinity-close-or-lightfield' %}
 
-  <div class="int-body">
-    <aside class="int-side">
-      {%- if offer.close %}
-      <a class="btn-cta" href="#start">{% t %}Start my free month →{% endt %}</a>
-      <p class="int-side-offer">{% t %}<strong>One month free for Close users.</strong> Card on file, nothing charged for 30 days, and one email cancels.{% endt %}</p>
-      {%- else %}
-      <a class="btn-cta" href="#start">{% t %}Start my studio →{% endt %}</a>
-      {%- endif %}
-      <a class="btn-ghost" href="mailto:hello@prospektor.ai">{% t %}Integration support{% endt %}</a>
-      <ul class="int-links">
-        <li><a href="{{ '/help/workspace/' | localize }}#workspace--crm-a-finished-pitch-pushed-into-hubspot-affinity-close-or-lightfield">{% t %}Documentation{% endt %}</a></li>
-        <li><a href="{{ '/terms/' | localize }}">{% t %}Terms of service{% endt %}</a></li>
-        <li><a href="{{ '/privacy/' | localize }}">{% t %}Privacy policy{% endt %}</a></li>
-      </ul>
-      <p class="int-built">{% t %}Built by Prospektor{% endt %}</p>
-    </aside>
+{% set dgTitle %}{% t %}One press in Prospektor writes four records in Close{% endt %}{% endset %}
+{% set dgLeftLabel = 'PROSPEKTOR' %}
+{% set dgLeftTitle = 'Harborline Freight' %}
+{% set dgLeftButton %}{% t %}Push to Close{% endt %}{% endset %}
+{% set dgRightLabel = 'CLOSE' %}
+{% set dgR1L %}{% t %}Lead{% endt %}{% endset %}
+{% set dgR1D %}{% t %}matched on its web domain{% endt %}{% endset %}
+{% set dgR2L %}{% t %}Contacts{% endt %}{% endset %}
+{% set dgR2D %}{% t %}the decision-makers, with sources{% endt %}{% endset %}
+{% set dgR3L %}{% t %}Opportunity{% endt %}{% endset %}
+{% set dgR3D %}{% t %}confidence = the fit score{% endt %}{% endset %}
+{% set dgR4L %}{% t %}Note{% endt %}{% endset %}
+{% set dgR4D %}{% t %}the fit, the angle, the sources, a link back{% endt %}{% endset %}
+{% set dgCaption %}{% t %}One press, four records. Push again and the same four update.{% endt %}{% endset %}
 
-    <div class="int-main">
-      {#- Visual 1: what one press writes into Close, drawn in the site's own
-          tokens. Four rows, one per record lib/crm-close.js writes, and the
-          press that writes them. Text as text, so it reads in every language
-          and to a screen reader. -#}
-      <figure class="int-visual">
-        <svg viewBox="0 0 720 300" role="img" aria-labelledby="intPushTitle" xmlns="http://www.w3.org/2000/svg">
-          <title id="intPushTitle">{% t %}One press in Prospektor writes four records in Close{% endt %}</title>
-          <rect width="720" height="300" style="fill:var(--off-white)"/>
-          <!-- the pitch, on the left -->
-          <rect x="34" y="60" width="200" height="180" rx="14" style="fill:var(--white);stroke:var(--border)"/>
-          <text x="54" y="92" style="font-family:var(--mono);font-size:11px;fill:var(--accent-dim);letter-spacing:.06em">PROSPEKTOR</text>
-          <text x="54" y="122" style="font-family:var(--font);font-size:17px;font-weight:800;fill:var(--ink)">Harborline Freight</text>
-          <rect x="54" y="140" width="120" height="8" rx="4" style="fill:var(--stone)"/>
-          <rect x="54" y="156" width="150" height="8" rx="4" style="fill:var(--stone)"/>
-          <rect x="54" y="172" width="96" height="8" rx="4" style="fill:var(--stone)"/>
-          <rect x="54" y="198" width="118" height="28" rx="14" style="fill:var(--coral)"/>
-          <text x="113" y="216" text-anchor="middle" style="font-family:var(--font);font-size:12px;font-weight:700;fill:#fff">{% t %}Push to Close{% endt %}</text>
-          <!-- the arrow -->
-          <path d="M248 150 H298" style="stroke:var(--ink-faint);stroke-width:2;fill:none"/>
-          <path d="M292 143 L300 150 L292 157" style="stroke:var(--ink-faint);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round"/>
-          <!-- the lead in Close, on the right -->
-          <rect x="316" y="30" width="370" height="240" rx="14" style="fill:var(--white);stroke:var(--border)"/>
-          <text x="338" y="60" style="font-family:var(--mono);font-size:11px;fill:var(--ink-faint);letter-spacing:.06em">CLOSE</text>
-          <g style="font-family:var(--font);font-size:13px">
-            <rect x="338" y="78" width="326" height="1" style="fill:var(--border)"/>
-            <text x="338" y="106" style="font-weight:800;fill:var(--ink)">{% t %}Lead{% endt %}</text>
-            <text x="440" y="106" style="fill:var(--ink-mid)">{% t %}matched on its web domain{% endt %}</text>
-            <rect x="338" y="122" width="326" height="1" style="fill:var(--border)"/>
-            <text x="338" y="150" style="font-weight:800;fill:var(--ink)">{% t %}Contacts{% endt %}</text>
-            <text x="440" y="150" style="fill:var(--ink-mid)">{% t %}the decision-makers, with sources{% endt %}</text>
-            <rect x="338" y="166" width="326" height="1" style="fill:var(--border)"/>
-            <text x="338" y="194" style="font-weight:800;fill:var(--ink)">{% t %}Opportunity{% endt %}</text>
-            <text x="440" y="194" style="fill:var(--ink-mid)">{% t %}confidence = the fit score{% endt %}</text>
-            <rect x="338" y="210" width="326" height="1" style="fill:var(--border)"/>
-            <text x="338" y="238" style="font-weight:800;fill:var(--ink)">{% t %}Note{% endt %}</text>
-            <text x="440" y="238" style="fill:var(--ink-mid)">{% t %}the fit, the angle, the sources, a link back{% endt %}</text>
-          </g>
-        </svg>
-        <figcaption>{% t %}One press, four records. Push again and the same four update.{% endt %}</figcaption>
-      </figure>
-      <figure class="int-visual">
-        <img src="{{ '/assets/img/demo/step-03.png' | asset }}" width="1280" height="800" loading="lazy"
-             alt="{% t %}A finished pitch in Prospektor: the fit thesis, with the case for the company, the case against it, and what they will say.{% endt %}">
-        <figcaption>{% t %}The fit thesis in Prospektor, which is what the note in Close holds.{% endt %}</figcaption>
-      </figure>
+{% set shotSrc = '/assets/img/demo/step-03.png' %}
+{% set shotAlt %}{% t %}A finished pitch in Prospektor: the fit thesis, with the case for the company, the case against it, and what they will say.{% endt %}{% endset %}
+{% set shotCaption %}{% t %}The fit thesis in Prospektor, which is what the note in Close holds.{% endt %}{% endset %}
 
-      <div class="int-text">
-        <p>
-          {% t %}Prospektor finds the companies worth approaching, names who to talk to
-          and writes what you send them, in your voice. One press files all of it in
-          Close, where your team already works.{% endt %}
-        </p>
-        <p>
-          {% t %}Four records, the way Close models a deal: the <strong>lead</strong>,
-          matched on its web domain, its <strong>contacts</strong>, an
-          <strong>opportunity</strong> with the fit score as its confidence, and a
-          <strong>note</strong>.{% endt %}
-        </p>
-        <p>
-          {% t %}The note holds the fit, the angle, the sources and a link back to the
-          full pitch. Push again and the same records update; nothing is created
-          twice.{% endt %}
-        </p>
-        <ol>
-          <li>{% t %}Press <strong>Connect Close</strong> in your workspace settings and approve it on Close's screen. There is no API key.{% endt %}</li>
-          <li>{% t %}Run a pitch on a company you want.{% endt %}</li>
-          <li>{% t %}Press <strong>Push to Close</strong>.{% endt %}</li>
-        </ol>
-        {%- if offer.close %}
-        <p>
-          {% t %}<strong>One month free for Close users.</strong> Card on file, nothing charged
-          for 30 days, and one email to
-          <a href="mailto:hello@prospektor.ai">hello@prospektor.ai</a> cancels.{% endt %}
-        </p>
-        {%- endif %}
-      </div>
-    </div>
-  </div>
+{% set p1 %}{% t %}Prospektor finds the companies worth approaching, names who to talk to and writes what you send them, in your voice. One press files all of it in Close, where your team already works.{% endt %}{% endset %}
+{% set p2 %}{% t %}Four records, the way Close models a deal: the <strong>lead</strong>, matched on its web domain, its <strong>contacts</strong>, an <strong>opportunity</strong> with the fit score as its confidence, and a <strong>note</strong>.{% endt %}{% endset %}
+{% set p3 %}{% t %}The note holds the fit, the angle, the sources and a link back to the full pitch. Push again and the same records update; nothing is created twice.{% endt %}{% endset %}
+{% set s1 %}{% t %}Press <strong>Connect Close</strong> in your workspace settings and approve it on Close's screen. There is no API key.{% endt %}{% endset %}
+{% set s2 %}{% t %}Run a pitch on a company you want.{% endt %}{% endset %}
+{% set s3 %}{% t %}Press <strong>Push to Close</strong>.{% endt %}{% endset %}
+{%- if offer.close %}
+{% set pExtra %}{% t %}<strong>One month free for Close users.</strong> Card on file, nothing charged for 30 days, and one email to <a href="mailto:hello@prospektor.ai">hello@prospektor.ai</a> cancels.{% endt %}{% endset %}
+{%- endif %}
 
+{% set intExtra %}
   <section class="pricing pricing-page" id="start">
     <div class="pricing-card">
       {#- Monthly only, deliberately: the offer below is a free month converting to
@@ -223,16 +147,11 @@ permalink: "{{ language.prefix }}/integrations/close/"
       </div>
     </div>
   </section>
-</section>
+{% endset %}
+
+{% include "integration-page.njk" %}
 {#- defer, like every script this site serves (#137/#170). buy.js looks its
     elements up by id and returns if they are absent, so this page and
     /pricing/ share it without either knowing about the other. No plan.js:
     there is no switch on this page to drive. -#}
 <script src="{{ '/assets/js/buy.js' | asset }}" defer></script>
-
-<section class="int-more">
-  <h2 class="sec-mid">{% t %}More integrations from Prospektor{% endt %}</h2>
-  {% set skipApp = 'close' %}
-  {% include "integrations-grid.njk" %}
-  <p class="int-more-all"><a class="btn-ghost" href="{{ '/integrations/' | localize }}">{% t %}See all integrations →{% endt %}</a></p>
-</section>

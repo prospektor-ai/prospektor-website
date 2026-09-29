@@ -1721,7 +1721,10 @@ footer {
   font-family: var(--mono); font-size: 0.82rem; font-weight: 700;
   letter-spacing: 0.02em; margin-bottom: 0.35rem;
 }
+.int-mark.has-logo { background: var(--white); border: 1px solid var(--border); }
+.int-mark img { width: 62%; height: 62%; object-fit: contain; display: block; }
 .int-card.is-static .int-mark { color: var(--ink-faint); }
+.int-card.is-static .int-mark img { opacity: .55; }
 .int-card.is-static .card-title { color: var(--ink-mid); }
 .int-hub { max-width: 1080px; margin: 0 auto; padding: 3.5rem 2.5rem 1rem; }
 .int-hub-more {

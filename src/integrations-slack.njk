@@ -1,0 +1,55 @@
+---
+layout: base.njk
+title: Slack integration
+description: "Every finished pitch, prep sheet and warm-intro search posts one short message in the Slack channel you pick: company, fit score, the angle, a link back."
+# One page per language (#114/#535) — see src/index.njk for the reasoning.
+pagination:
+  data: languages
+  size: 1
+  alias: language
+  addAllPagesToCollections: true
+permalink: "{{ language.prefix }}/integrations/slack/"
+---
+
+{#- #841, 29 Sep 2026. One landing page per integration, in the Close page's
+    shape (`_includes/integration-page.njk`), at the operator's ask: "the LP
+    should explain the benefit of Prospektor + INTEGRATION - and it should
+    link to a KB 'how to use it'". Every sentence below is what the studio's
+    help says this connection does (docs/help/08-workspace.md, the Slack section); the KB link is that section.
+    If the help changes what a push writes, this page is wrong, not modest. -#}
+
+{% set intId = 'slack' %}
+{% set intName = 'Slack' %}
+{% set intLogo = '/assets/img/integrations/slack.svg' %}
+{% set intSub %}{% t %}Prospektor does the work. Slack tells the team.{% endt %}{% endset %}
+{% set intCtaHref = '/pricing/' | localize %}
+{% set intCtaLabel %}{% t %}Start my studio →{% endt %}{% endset %}
+{% set intDoc = ('/help/workspace/' | localize) + '#workspace--slack-finished-work-posted-where-the-team-already-is' %}
+
+{% set dgTitle %}{% t %}A finished pitch in Prospektor posts one message in Slack{% endt %}{% endset %}
+{% set dgLeftLabel = 'PROSPEKTOR' %}
+{% set dgLeftTitle = 'Harborline Freight' %}
+{% set dgLeftButton %}{% t %}Pitch finished{% endt %}{% endset %}
+{% set dgRightLabel = 'SLACK' %}
+{% set dgR1L %}{% t %}Company{% endt %}{% endset %}
+{% set dgR1D %}{% t %}and its fit score{% endt %}{% endset %}
+{% set dgR2L %}{% t %}The angle{% endt %}{% endset %}
+{% set dgR2D %}{% t %}in one line{% endt %}{% endset %}
+{% set dgR3L %}{% t %}Opening lines{% endt %}{% endset %}
+{% set dgR3D %}{% t %}of the cold email{% endt %}{% endset %}
+{% set dgR4L %}{% t %}Link{% endt %}{% endset %}
+{% set dgR4D %}{% t %}back into the studio{% endt %}{% endset %}
+{% set dgCaption %}{% t %}One message per finished run. A batch posts one summary.{% endt %}{% endset %}
+
+{% set shotSrc = '/assets/img/demo/step-07.png' %}
+{% set shotAlt %}{% t %}A finished pitch in Prospektor: the cold email, in your voice, with the opening lines the Slack message quotes.{% endt %}{% endset %}
+{% set shotCaption %}{% t %}The cold email in Prospektor; its opening lines are what the Slack message quotes.{% endt %}{% endset %}
+
+{% set p1 %}{% t %}Every finished pitch, prep sheet and warm-intro search posts one short message where the team already is: the company, its fit score, the angle, the opening lines, and a link back into the studio.{% endt %}{% endset %}
+{% set p2 %}{% t %}A batch of runs posts one summary, never one message per company. Through a webhook the studio can only post; it reads nothing from Slack.{% endt %}{% endset %}
+{% set p3 %}{% t %}Where the studio's own Slack app is offered, invite @Prospektor to a channel and it reads along: what your team said about a company rides into that company's next pitch as context.{% endt %}{% endset %}
+{% set s1 %}{% t %}In Slack, open <strong>Apps → Incoming WebHooks → Add to Slack</strong>, pick the channel and copy the URL it shows.{% endt %}{% endset %}
+{% set s2 %}{% t %}Paste it under <strong>Connect your apps → Slack</strong> in your workspace settings and press <strong>Connect</strong>. A hello line lands in the channel straight away.{% endt %}{% endset %}
+{% set s3 %}{% t %}Run a pitch. The message is in the channel when it finishes.{% endt %}{% endset %}
+
+{% include "integration-page.njk" %}

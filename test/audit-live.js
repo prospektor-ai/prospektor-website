@@ -717,6 +717,14 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
                        // at, appended here because it was appended to the
                        // sitemap — the paragraph above is the whole rule.
                        'https://prospektor.ai/integrations/close/',
+                       // #841. One landing page per integration, after the Close page.
+                       'https://prospektor.ai/integrations/hubspot/',
+                       'https://prospektor.ai/integrations/affinity/',
+                       'https://prospektor.ai/integrations/lightfield/',
+                       'https://prospektor.ai/integrations/slack/',
+                       'https://prospektor.ai/integrations/claude/',
+                       'https://prospektor.ai/integrations/chatgpt/',
+                       'https://prospektor.ai/integrations/your-own-agent/',
                        // #767. The clickable demo, a static page like the rest.
                        'https://prospektor.ai/demo/'];
   // #114: each static page is followed by its twin in every language this

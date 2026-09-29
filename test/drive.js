@@ -817,6 +817,14 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
                     // the comment above gives, and its language twins are
                     // derived below like everybody else's.
                     'https://prospektor.ai/integrations/close/',
+                    // #841. One landing page per integration, after the Close page.
+                    'https://prospektor.ai/integrations/hubspot/',
+                    'https://prospektor.ai/integrations/affinity/',
+                    'https://prospektor.ai/integrations/lightfield/',
+                    'https://prospektor.ai/integrations/slack/',
+                    'https://prospektor.ai/integrations/claude/',
+                    'https://prospektor.ai/integrations/chatgpt/',
+                    'https://prospektor.ai/integrations/your-own-agent/',
                     // #767. The clickable demo: ten real screens with a
                     // sentence each, the page "prospektor demo" wants.
                     'https://prospektor.ai/demo/'];

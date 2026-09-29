@@ -1,16 +1,21 @@
-{#- #838, 28 Sep 2026. The nine tiles the studio's own *Connect your apps*
-    grid holds (`APPS` in the studio's public/studio.js), one card each, in the
-    studio's order: the five that work, the one that is coming, then the
-    three doors into an agent. Shared by /integrations/ (all nine) and by
-    /integrations/close/ (the other eight, under *More integrations*): set
-    `skipApp` before including to leave one out.
+{#- #838, 28 Sep 2026; logos and one page per card, #841, 29 Sep 2026. The
+    nine tiles the studio's own *Connect your apps* grid holds (`APPS` in the
+    studio's public/studio.js), one card each, in the studio's order: the five
+    that work, the one that is coming, then the three doors into an agent.
+    Shared by /integrations/ (all nine) and by every integration page (the
+    other eight, under *More integrations*): set `skipApp` before including
+    to leave one out.
 
     Every sentence here is what the studio's help says a connection does
     (docs/help/08-workspace.md, 12-connect-your-claude.md), one line each.
-    The mark is the studio's own neutral monogram, on purpose (#572): HubSpot's
-    and Slack's brand terms allow their logos only once a listing has earned
-    them, and a drawn-from-memory sprocket is worse than two letters. The
-    vendor's name is never translated; a category is, in the studio's words.
+
+    The marks are the vendors' own (#841, the operator's call over #572's
+    monograms): Close's from close.com's own header logo, Affinity's and
+    Lightfield's from their own sites, HubSpot's, Slack's, Salesforce's,
+    Claude's and OpenAI's as the Simple Icons project carries them (CC0),
+    each in the vendor's own colour and never redrawn. The vendor's name is
+    never translated; a category is, in the studio's words. Nominative use;
+    what a vendor's brand terms ask beyond that is #572's row.
 
     Written as markup rather than as a data file because the translation
     inventory reads `{% t %}` blocks and frontmatter `faqs:`, not a list in a
@@ -20,7 +25,7 @@
   {%- if skipApp != 'close' %}
   <li class="card int-card">
     <a href="{{ '/integrations/close/' | localize }}">
-      <span class="int-mark" aria-hidden="true">Cs</span>
+      <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/close.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}CRM{% endt %}</span>
       <h3 class="card-title">Close</h3>
       <p class="card-dek">{% t %}A finished pitch lands as a lead, its contacts, an opportunity and a note. Push again and the same records update.{% endt %}</p>
@@ -32,71 +37,84 @@
     </a>
   </li>
   {%- endif %}
+  {%- if skipApp != 'hubspot' %}
   <li class="card int-card">
-    <a href="{{ '/help/workspace/' | localize }}#workspace--crm-a-finished-pitch-pushed-into-hubspot-affinity-close-or-lightfield">
-      <span class="int-mark" aria-hidden="true">Hu</span>
+    <a href="{{ '/integrations/hubspot/' | localize }}">
+      <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/hubspot.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}CRM{% endt %}</span>
       <h3 class="card-title">HubSpot</h3>
       <p class="card-dek">{% t %}A Company, its Contacts, a Deal in your first stage and a Note. Connect with one button, or paste a private app token.{% endt %}</p>
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
   </li>
+  {%- endif %}
+  {%- if skipApp != 'affinity' %}
   <li class="card int-card">
-    <a href="{{ '/help/workspace/' | localize }}#workspace--crm-a-finished-pitch-pushed-into-hubspot-affinity-close-or-lightfield">
-      <span class="int-mark" aria-hidden="true">Af</span>
+    <a href="{{ '/integrations/affinity/' | localize }}">
+      <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/affinity.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}CRM{% endt %}</span>
       <h3 class="card-title">Affinity</h3>
       <p class="card-dek">{% t %}The organization on the list you pick, its people and a note. Paste an API key and press Connect.{% endt %}</p>
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
   </li>
+  {%- endif %}
+  {%- if skipApp != 'lightfield' %}
   <li class="card int-card">
-    <a href="{{ '/help/workspace/' | localize }}#workspace--crm-a-finished-pitch-pushed-into-hubspot-affinity-close-or-lightfield">
-      <span class="int-mark" aria-hidden="true">Li</span>
+    <a href="{{ '/integrations/lightfield/' | localize }}">
+      <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/lightfield.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}CRM{% endt %}</span>
       <h3 class="card-title">Lightfield</h3>
       <p class="card-dek">{% t %}An account, the contacts with a work email, an opportunity and a note. Paste a key and press Connect.{% endt %}</p>
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
   </li>
+  {%- endif %}
   <li class="card int-card is-static">
     <div class="card-body">
-      <span class="int-mark" aria-hidden="true">Sf</span>
+      <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/salesforce.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}CRM{% endt %}</span>
       <h3 class="card-title">Salesforce</h3>
       <p class="card-dek">{% t %}Next in line. Say so under Request an integration in your workspace settings and it moves up.{% endt %}</p>
       <span class="card-cta">{% t %}Soon{% endt %}</span>
     </div>
   </li>
+  {%- if skipApp != 'slack' %}
   <li class="card int-card">
-    <a href="{{ '/help/workspace/' | localize }}#workspace--slack-finished-work-posted-where-the-team-already-is">
-      <span class="int-mark" aria-hidden="true">Sl</span>
+    <a href="{{ '/integrations/slack/' | localize }}">
+      <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/slack.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}Team chat{% endt %}</span>
       <h3 class="card-title">Slack</h3>
       <p class="card-dek">{% t %}Every finished pitch posts one short message where the team already is: company, fit score, the angle, a link back.{% endt %}</p>
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
   </li>
+  {%- endif %}
+  {%- if skipApp != 'claude' %}
   <li class="card int-card">
-    <a href="{{ '/help/connect-your-claude/' | localize }}">
-      <span class="int-mark" aria-hidden="true">Cl</span>
+    <a href="{{ '/integrations/claude/' | localize }}">
+      <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/claude.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}AI assistant{% endt %}</span>
       <h3 class="card-title">Claude</h3>
       <p class="card-dek">{% t %}Your own Claude does the work here: reads a company, writes the pitch, preps the call. One connector address in claude.ai, a token in Claude Code, Desktop or Cursor.{% endt %}</p>
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
   </li>
+  {%- endif %}
+  {%- if skipApp != 'chatgpt' %}
   <li class="card int-card">
-    <a href="{{ '/help/connect-your-claude/' | localize }}">
-      <span class="int-mark" aria-hidden="true">Ch</span>
+    <a href="{{ '/integrations/chatgpt/' | localize }}">
+      <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/chatgpt.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}AI assistant{% endt %}</span>
       <h3 class="card-title">ChatGPT</h3>
       <p class="card-dek">{% t %}Add one connector address in ChatGPT and it reads a company, writes the pitch and records what happened. There is no token to paste.{% endt %}</p>
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
   </li>
+  {%- endif %}
+  {%- if skipApp != 'agent' %}
   <li class="card int-card">
-    <a href="{{ '/help/workspace/' | localize }}#workspace--api-tokens-letting-another-system-call-your-workspace">
+    <a href="{{ '/integrations/your-own-agent/' | localize }}">
       <span class="int-mark" aria-hidden="true">{}</span>
       <span class="card-topic">{% t %}API token{% endt %}</span>
       <h3 class="card-title">{% t %}Your own agent{% endt %}</h3>
@@ -104,4 +122,5 @@
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
   </li>
+  {%- endif %}
 </ul>
