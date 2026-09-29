@@ -700,6 +700,8 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
                        // like a guide or an article.
                        'https://prospektor.ai/dpa/',
                        'https://prospektor.ai/resources/',
+                       // #742. The course as pages; its lessons are derived below.
+                       'https://prospektor.ai/learn/',
                        'https://prospektor.ai/help/',
                        // #456. Ordered as sitemap.njk lists it — this block is
                        // compared as a PREFIX, in order, so a page appended to
@@ -748,7 +750,10 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
   // A guide URL lives under /help/ in any built language's prefix (#535).
   const isGuide = l => i18n.built().some(x => l.startsWith('https://prospektor.ai' + x.prefix + '/help/'));
   const guideLocs = derivedLocs.filter(isGuide);
-  const articleLocs = derivedLocs.filter(l => !isGuide(l));
+  // A lesson of /learn/ (#742), derived from data/lessons.json like the articles from their collection.
+  const isLesson = l => l.startsWith('https://prospektor.ai/learn/');
+  const lessonLocs = derivedLocs.filter(isLesson);
+  const articleLocs = derivedLocs.filter(l => !isGuide(l) && !isLesson(l));
   check('sitemap.xml serves exactly the static pages we want ranked, each with its live twins (#114)',
     mapRes.status === 200 && JSON.stringify(liveLocs.slice(0, STATIC_WITH_TWINS.length)) === JSON.stringify(STATIC_WITH_TWINS),
     liveLocs.slice(0, STATIC_WITH_TWINS.length).join(' '));
@@ -817,12 +822,18 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
         own.length > 0 && own.every(f => liveLocs.includes('https://prospektor.ai' + l.prefix + '/help/' + f.name.replace(/^\d+-/, '').replace(/\.md$/, '') + '/')));
     }
   }
-  check('everything else in the sitemap is a help guide or a published article',
-    // A guide URL may sit under a language's prefix (#535); an article never does.
+  check('everything else in the sitemap is a help guide, a published article or a lesson of /learn/',
+    // A guide URL may sit under a language's prefix (#535); an article or a lesson never does.
     derivedLocs.length > 0 && derivedLocs.every(l =>
       /^https:\/\/prospektor\.ai\/resources\/[a-z0-9-]+\/$/.test(l)
+      || /^https:\/\/prospektor\.ai\/learn\/day-\d+\/$/.test(l)
       || i18n.built().some(x => new RegExp(`^https://prospektor\\.ai${x.prefix}/help/[a-z0-9-]+/$`).test(l))),
-    `${guideLocs.length} guide URL(s), ${articleLocs.length} article URL(s)`);
+    `${guideLocs.length} guide URL(s), ${articleLocs.length} article URL(s), ${lessonLocs.length} lesson URL(s)`);
+  const lessons = JSON.parse(require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'data', 'lessons.json'), 'utf8')).lessons;
+  check('and every lesson of the course is among them, and each is served (#742)',
+    lessonLocs.length === lessons.length && lessons.every(l => lessonLocs.includes(`https://prospektor.ai/learn/day-${l.day}/`))
+    && (await Promise.all(lessonLocs.map(async l => (await fetch(l)).status === 200))).every(Boolean),
+    `sitemap ${lessonLocs.length}, snapshot ${lessons.length}`);
   check('and every guide the studio publishes is among them (#166)',
     guideLocs.length > 0 && liveSlugs.length > 0 &&
     liveSlugs.every(sl => guideLocs.includes('https://prospektor.ai/help/' + sl + '/')),
