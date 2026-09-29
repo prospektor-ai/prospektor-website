@@ -1,0 +1,62 @@
+---
+layout: base.njk
+permalink: /learn/
+title: Learn Prospektor
+seoTitle: "Learn Prospektor: the course, in eight short lessons"
+description: "The getting-started course every new workspace is mailed, one lesson a day, readable here in ten minutes: what the studio does and the one press that does it."
+# The screens and buttons this page names, as the product spells them:
+# tools/resources-coverage.js checks each is still something the studio or
+# its help says (#745, #742).
+names: [Getting started]
+---
+
+{#- /learn/ (#742): the getting-started course as pages, for somebody who has
+    not signed up. The operator's words, 17 Sep 2026: *"or even on the homepage
+    as kind of pre-sales documentation. For someone coming to the page cold.
+    I could be something like prospektor.ai/learn"*. The words are the mails'
+    own (`data/lessons.json`, out of the studio's `public/lessons.js`), drawn
+    in the /resources/ idiom: the same hub hero, the same card grid, the same
+    ending at the free scan. Three groups named by when a customer meets the
+    lessons, the way Getting started draws them in the product (#741). -#}
+
+<header class="res-hub-hero">
+  <div class="res-hub-hero-inner">
+    <span class="tag">learn</span>
+    <h1 class="res-hub-h1">Eight lessons, one press each</h1>
+    <p class="res-hub-lede">
+      This is the course a new workspace is mailed, one lesson a day. Each one
+      is a thing the studio does and the press that does it, from the box on
+      Getting started to the token that lets your own tools call it. Ten minutes
+      to read; a week to do.
+    </p>
+  </div>
+</header>
+
+<section class="res-hub">
+  {%- for group in lessons.groups %}
+  <h2 class="learn-group">{{ group.name }}</h2>
+  <ul class="res-grid learn-grid">
+    {%- for lesson in group.lessons %}
+    <li class="res-card">
+      <a href="{{ lesson.url }}">
+        <span class="res-card-topic">{{ lesson.topic }}</span>
+        <h3 class="res-card-title">{{ lesson.subject }}</h3>
+        <p class="res-card-dek">{{ lesson.opener }}</p>
+        <span class="res-card-meta">Day {{ lesson.day }} of {{ lessons.count }}</span>
+      </a>
+    </li>
+    {%- endfor %}
+  </ul>
+  {%- endfor %}
+</section>
+
+<section class="res-hub-cta">
+  <div class="res-hub-cta-inner">
+    <span class="tag">try it</span>
+    <h2>Read day one on your own company</h2>
+    <p>The scan reads your site and says who the studio would go after for you
+      and why. It is free, takes about ninety seconds, and is what the first
+      lesson opens on.</p>
+    <a class="btn-cta" href="/#scan">Scan your site</a>
+  </div>
+</section>

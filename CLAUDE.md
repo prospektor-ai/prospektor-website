@@ -197,6 +197,15 @@ is the enforcer here, in the shape of the studio's `dev/tour-coverage.js` and
   snapshot carries the studio commit and the date, and the report prints them.
   A rename in the studio reaches this check at the next snapshot, and the
   studio's own check catches it there the day it happens.
+- **The course is vendored the same way, and `/learn/` is drawn from it (#742).**
+  `data/lessons.json` is the studio's `public/lessons.js`, the eight lessons
+  the studio mails one a day, read out of the sibling checkout by
+  `npm run lessons:snapshot`; the hub at `/learn/` and one page per lesson at
+  `/learn/day-N/` are the mail's own words and nothing else, and the sitemap
+  derives their URLs from the snapshot. The coverage tool reads each lesson as
+  a surface, its `names` against the vendored strings, so a lesson rewritten
+  in the studio and not re-snapshotted here fails `npm test` by name. Run the
+  snapshot when the studio changes a lesson, and commit the result.
 - **Every link into `/help/` and `/resources/` names a page**, resolved
   against the corpus snapshot's slugs and the article files without a build,
   the way the studio's `dev/help-links.js` does. A link written the numbered
