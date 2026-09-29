@@ -1,0 +1,55 @@
+---
+layout: base.njk
+title: ChatGPT integration
+description: "ChatGPT can read a company, write the pitch, prep the call and record what happened in your Prospektor workspace. One connector address, no token."
+# One page per language (#114/#535) — see src/index.njk for the reasoning.
+pagination:
+  data: languages
+  size: 1
+  alias: language
+  addAllPagesToCollections: true
+permalink: "{{ language.prefix }}/integrations/chatgpt/"
+---
+
+{#- #841, 29 Sep 2026. One landing page per integration, in the Close page's
+    shape (`_includes/integration-page.njk`), at the operator's ask: "the LP
+    should explain the benefit of Prospektor + INTEGRATION - and it should
+    link to a KB 'how to use it'". Every sentence below is what the studio's
+    help says this connection does (docs/help/12-connect-your-claude.md, the claude.ai and ChatGPT rows); the KB link is that section.
+    If the help changes what a push writes, this page is wrong, not modest. -#}
+
+{% set intId = 'chatgpt' %}
+{% set intName = 'ChatGPT' %}
+{% set intLogo = '/assets/img/integrations/chatgpt.svg' %}
+{% set intSub %}{% t %}Ask ChatGPT. Prospektor does the work.{% endt %}{% endset %}
+{% set intCtaHref = '/pricing/' | localize %}
+{% set intCtaLabel %}{% t %}Start my studio →{% endt %}{% endset %}
+{% set intDoc = ('/help/connect-your-claude/' | localize) + '' %}
+
+{% set dgTitle %}{% t %}ChatGPT asks, and the workspace does the work{% endt %}{% endset %}
+{% set dgLeftLabel = 'CHATGPT' %}
+{% set dgLeftTitle = 'Your ChatGPT' %}
+{% set dgLeftButton %}{% t %}Ask{% endt %}{% endset %}
+{% set dgRightLabel = 'PROSPEKTOR' %}
+{% set dgR1L %}{% t %}Read a company{% endt %}{% endset %}
+{% set dgR1D %}{% t %}what it sells, and to whom{% endt %}{% endset %}
+{% set dgR2L %}{% t %}Write the pitch{% endt %}{% endset %}
+{% set dgR2D %}{% t %}in your voice, with sources{% endt %}{% endset %}
+{% set dgR3L %}{% t %}Prep the call{% endt %}{% endset %}
+{% set dgR3D %}{% t %}what they will say, and your answer{% endt %}{% endset %}
+{% set dgR4L %}{% t %}Record what happened{% endt %}{% endset %}
+{% set dgR4D %}{% t %}it teaches the next run{% endt %}{% endset %}
+{% set dgCaption %}{% t %}Every answer carries its sources. It never adds a fact the workspace does not hold.{% endt %}{% endset %}
+
+{% set shotSrc = '/assets/img/demo/step-06.png' %}
+{% set shotAlt %}{% t %}A pitch deck in Prospektor: their business, your case, in your structure, which ChatGPT can ask for.{% endt %}{% endset %}
+{% set shotCaption %}{% t %}The pitch deck in Prospektor, one of the things ChatGPT can ask for.{% endt %}{% endset %}
+
+{% set p1 %}{% t %}Add one custom connector in ChatGPT and it can do the work in this workspace: read a company, write the pitch, prep the call, map who you know, say what to do next, record what happened.{% endt %}{% endset %}
+{% set p2 %}{% t %}Prospektor asks what ChatGPT may do, mints the token itself and puts it on your ChatGPT tile. There is nothing to copy and nothing to paste.{% endt %}{% endset %}
+{% set p3 %}{% t %}Every answer carries its sources, so you can quote them. It never adds a fact the workspace does not hold, and a job that takes minutes answers with a job to check on.{% endt %}{% endset %}
+{% set s1 %}{% t %}In ChatGPT, add a custom connector with the address <strong>studio.prospektor.ai/api/mcp</strong>.{% endt %}{% endset %}
+{% set s2 %}{% t %}Approve what it may do. The token lands on your ChatGPT tile in Prospektor.{% endt %}{% endset %}
+{% set s3 %}{% t %}Ask it to read a company, write the pitch or prep a call.{% endt %}{% endset %}
+
+{% include "integration-page.njk" %}

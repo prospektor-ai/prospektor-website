@@ -90,6 +90,42 @@ describe('/integrations/ — the directory, held to the product', () => {
     assert.match(more, /href="\/integrations\/"/, 'and the way to all of them');
   });
 
+  test('every card with a mark shows a file the build serves', () => {
+    // #841: the vendors' own marks, one file each under /assets/img/, which
+    // the asset contract serves verbatim. A card naming a file the build did
+    // not copy is a broken image beside a real name.
+    const srcs = [...read(HUB).matchAll(/class="int-mark has-logo"><img src="([^"]+)"/g)].map(m => m[1]);
+    assert.ok(srcs.length >= 2, 'the hub shows marks');
+    for (const src of srcs)
+      assert.ok(fs.existsSync(path.join(DIR, src.replace(/^\//, ''))), `${src} is not in the build`);
+  });
+
+  test('every integration page is headed by its name, links into the help, and leaves itself out of "more"', () => {
+    // #841: the operator's ask was a landing page per integration that
+    // "explains the benefit of Prospektor + INTEGRATION and links to a KB
+    // 'how to use it'". Derived from the hub's own cards, so a tenth page is
+    // checked with nobody editing this.
+    const hub = read(HUB);
+    const cards = [...hub.matchAll(/class="card int-card">\s*<a href="(\/integrations\/[^"]+\/)">[\s\S]*?<h3 class="card-title">([^<]+)<\/h3>/g)];
+    assert.ok(cards.length >= 2, 'the hub has cards leading to integration pages');
+    for (const [, href, name] of cards) {
+      const html = read(path.join(href.replace(/^\//, ''), 'index.html'));
+      const h1 = (html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i) || [])[1] || '';
+      assert.strictEqual(text(h1).trim(), name.trim(), `${href} is headed "${text(h1).trim()}", the card says "${name}"`);
+      const doc = (html.match(/class="btn-ghost int-doc" href="([^"]+)"/) || [])[1];
+      assert.ok(doc && /^\/help\//.test(doc), `${href} has no "How to set it up" link into the help`);
+      const guideFile = path.join(DIR, doc.replace(/#.*$/, '').replace(/^\//, ''), 'index.html');
+      assert.ok(fs.existsSync(guideFile), `${href} links to ${doc}, which the build did not write`);
+      const anchor = (doc.match(/#(.+)$/) || [])[1];
+      if (anchor) assert.ok(fs.readFileSync(guideFile, 'utf8').includes(`id="${anchor}"`), `${href} links to ${doc}, and that guide has no heading with the id ${anchor}`);
+      assert.match(html, /class="int-back" href="\/integrations\/"/, `${href} has no way back up`);
+      const more = html.slice(html.indexOf('class="int-more"'));
+      assert.ok(!more.includes(`href="${href}"`), `${href} lists itself under "more integrations"`);
+      for (const l of i18n.built())
+        assert.ok(fs.existsSync(path.join(DIR, l.prefix.replace(/^\//, ''), href.replace(/^\//, ''), 'index.html')), `${l.code}: ${href} was not written`);
+    }
+  });
+
   test('every page carries one way into the directory', () => {
     // The header is full (site.json measures a seventh item as an overflow),
     // so the footer is the hub's inbound link on every page.

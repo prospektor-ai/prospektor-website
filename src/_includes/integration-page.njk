@@ -1,0 +1,117 @@
+{#- #838/#841, 28–29 Sep 2026. The one shape every integration page takes:
+    Close's own integration page (close.com/integrations/<name>), at the
+    operator's ask. A back link and the vendor's mark, the name as the <h1>
+    with the fit sentence under it, a sidebar holding the one action and the
+    way into the help, two visuals (a drawing of what crosses, and a real
+    screen off #767's demo capture), three short paragraphs, three numbered
+    steps, an optional block after (the Close page's buy card), and the other
+    integrations under it.
+
+    Every sentence is set by the page that includes this, in `{% set %}`
+    blocks wrapped in `{% t %}`, so the extractor reads them where they are
+    written and the catalogues key them as any other sentence. The variables:
+
+      intId, intName, intLogo ('' draws the {} mark), intSub
+      intCtaHref, intCtaLabel, intOffer (optional), intDoc, intSupport
+      dgTitle, dgLeftLabel, dgLeftTitle, dgLeftButton, dgRightLabel,
+      dgR1L … dgR4L, dgR1D … dgR4D, dgCaption
+      shotSrc, shotAlt, shotCaption
+      p1, p2, p3, s1, s2, s3, pExtra (optional), intExtra (optional) -#}
+<section class="int-page">
+  <a class="int-back" href="{{ '/integrations/' | localize }}">{% t %}← All integrations{% endt %}</a>
+  <div class="int-head">
+    {%- if intLogo %}
+    <span class="int-mark has-logo"><img src="{{ intLogo | asset }}" alt="" width="36" height="36"></span>
+    {%- else %}
+    <span class="int-mark" aria-hidden="true">{}</span>
+    {%- endif %}
+    <div>
+      <h1>{{ intName }}</h1>
+      <p class="int-sub">{{ intSub | safe }}</p>
+    </div>
+  </div>
+
+  <div class="int-body">
+    <aside class="int-side">
+      <a class="btn-cta" href="{{ intCtaHref }}">{{ intCtaLabel | safe }}</a>
+      {%- if intOffer %}
+      <p class="int-side-offer">{{ intOffer | safe }}</p>
+      {%- endif %}
+      <a class="btn-ghost int-doc" href="{{ intDoc }}">{% t %}How to set it up →{% endt %}</a>
+      <ul class="int-links">
+        <li><a href="{{ intDoc }}">{% t %}Documentation{% endt %}</a></li>
+        <li><a href="mailto:hello@prospektor.ai">{% t %}Integration support{% endt %}</a></li>
+        <li><a href="{{ '/terms/' | localize }}">{% t %}Terms of service{% endt %}</a></li>
+        <li><a href="{{ '/privacy/' | localize }}">{% t %}Privacy policy{% endt %}</a></li>
+      </ul>
+      <p class="int-built">{% t %}Built by Prospektor{% endt %}</p>
+    </aside>
+
+    <div class="int-main">
+      {#- Visual 1: what crosses, drawn in the site's own tokens. Text as text,
+          so it reads in every language and to a screen reader. -#}
+      <figure class="int-visual">
+        <svg viewBox="0 0 720 300" role="img" aria-labelledby="intDgTitle" xmlns="http://www.w3.org/2000/svg">
+          <title id="intDgTitle">{{ dgTitle }}</title>
+          <rect width="720" height="300" style="fill:var(--off-white)"/>
+          <rect x="24" y="60" width="190" height="180" rx="14" style="fill:var(--white);stroke:var(--border)"/>
+          <text x="44" y="92" style="font-family:var(--mono);font-size:11px;fill:var(--accent-dim);letter-spacing:.06em">{{ dgLeftLabel }}</text>
+          <text x="44" y="122" style="font-family:var(--font);font-size:17px;font-weight:800;fill:var(--ink)">{{ dgLeftTitle }}</text>
+          <rect x="44" y="140" width="110" height="8" rx="4" style="fill:var(--stone)"/>
+          <rect x="44" y="156" width="140" height="8" rx="4" style="fill:var(--stone)"/>
+          <rect x="44" y="172" width="86" height="8" rx="4" style="fill:var(--stone)"/>
+          <rect x="40" y="198" width="154" height="28" rx="14" style="fill:var(--coral)"/>
+          <text x="117" y="216" text-anchor="middle" style="font-family:var(--font);font-size:11.5px;font-weight:700;fill:#fff">{{ dgLeftButton }}</text>
+          <path d="M226 150 H276" style="stroke:var(--ink-faint);stroke-width:2;fill:none"/>
+          <path d="M270 143 L278 150 L270 157" style="stroke:var(--ink-faint);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round"/>
+          <rect x="290" y="30" width="406" height="240" rx="14" style="fill:var(--white);stroke:var(--border)"/>
+          <text x="312" y="58" style="font-family:var(--mono);font-size:11px;fill:var(--ink-faint);letter-spacing:.06em">{{ dgRightLabel }}</text>
+          <g style="font-family:var(--font)">
+            <rect x="312" y="74" width="362" height="1" style="fill:var(--border)"/>
+            <text x="312" y="98" style="font-size:13px;font-weight:800;fill:var(--ink)">{{ dgR1L }}</text>
+            <text x="312" y="114" style="font-size:12px;fill:var(--ink-mid)">{{ dgR1D }}</text>
+            <rect x="312" y="122" width="362" height="1" style="fill:var(--border)"/>
+            <text x="312" y="145" style="font-size:13px;font-weight:800;fill:var(--ink)">{{ dgR2L }}</text>
+            <text x="312" y="161" style="font-size:12px;fill:var(--ink-mid)">{{ dgR2D }}</text>
+            <rect x="312" y="169" width="362" height="1" style="fill:var(--border)"/>
+            <text x="312" y="192" style="font-size:13px;font-weight:800;fill:var(--ink)">{{ dgR3L }}</text>
+            <text x="312" y="208" style="font-size:12px;fill:var(--ink-mid)">{{ dgR3D }}</text>
+            <rect x="312" y="216" width="362" height="1" style="fill:var(--border)"/>
+            <text x="312" y="239" style="font-size:13px;font-weight:800;fill:var(--ink)">{{ dgR4L }}</text>
+            <text x="312" y="255" style="font-size:12px;fill:var(--ink-mid)">{{ dgR4D }}</text>
+          </g>
+        </svg>
+        <figcaption>{{ dgCaption }}</figcaption>
+      </figure>
+      <figure class="int-visual">
+        <img src="{{ shotSrc | asset }}" width="1280" height="800" loading="lazy" alt="{{ shotAlt }}">
+        <figcaption>{{ shotCaption }}</figcaption>
+      </figure>
+
+      <div class="int-text">
+        <p>{{ p1 | safe }}</p>
+        <p>{{ p2 | safe }}</p>
+        <p>{{ p3 | safe }}</p>
+        <ol>
+          <li>{{ s1 | safe }}</li>
+          <li>{{ s2 | safe }}</li>
+          <li>{{ s3 | safe }}</li>
+        </ol>
+        {%- if pExtra %}
+        <p>{{ pExtra | safe }}</p>
+        {%- endif %}
+      </div>
+    </div>
+  </div>
+
+  {%- if intExtra %}
+  {{ intExtra | safe }}
+  {%- endif %}
+</section>
+
+<section class="int-more">
+  <h2 class="sec-mid">{% t %}More integrations from Prospektor{% endt %}</h2>
+  {% set skipApp = intId %}
+  {% include "integrations-grid.njk" %}
+  <p class="int-more-all"><a class="btn-ghost" href="{{ '/integrations/' | localize }}">{% t %}See all integrations →{% endt %}</a></p>
+</section>

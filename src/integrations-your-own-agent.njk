@@ -1,0 +1,55 @@
+---
+layout: base.njk
+title: Your own agent
+description: "A token lets a script, an agent or your CRM call your Prospektor workspace: read a company, start a pitch, read a saved one, record an outcome."
+# One page per language (#114/#535) — see src/index.njk for the reasoning.
+pagination:
+  data: languages
+  size: 1
+  alias: language
+  addAllPagesToCollections: true
+permalink: "{{ language.prefix }}/integrations/your-own-agent/"
+---
+
+{#- #841, 29 Sep 2026. One landing page per integration, in the Close page's
+    shape (`_includes/integration-page.njk`), at the operator's ask: "the LP
+    should explain the benefit of Prospektor + INTEGRATION - and it should
+    link to a KB 'how to use it'". Every sentence below is what the studio's
+    help says this connection does (docs/help/08-workspace.md, the API tokens section); the KB link is that section.
+    If the help changes what a push writes, this page is wrong, not modest. -#}
+
+{% set intId = 'agent' %}
+{% set intName = 'Your own agent' %}
+{% set intLogo = '' %}
+{% set intSub %}{% t %}Anything that is not a browser can call your workspace.{% endt %}{% endset %}
+{% set intCtaHref = '/pricing/' | localize %}
+{% set intCtaLabel %}{% t %}Start my studio →{% endt %}{% endset %}
+{% set intDoc = ('/help/workspace/' | localize) + '#workspace--api-tokens-letting-another-system-call-your-workspace' %}
+
+{% set dgTitle %}{% t %}A token lets your own code call the workspace{% endt %}{% endset %}
+{% set dgLeftLabel = 'YOUR SCRIPT OR AGENT' %}
+{% set dgLeftTitle = 'Token' %}
+{% set dgLeftButton %}{% t %}Call{% endt %}{% endset %}
+{% set dgRightLabel = 'YOUR WORKSPACE' %}
+{% set dgR1L = 'scan:run' %}
+{% set dgR1D %}{% t %}read a company from its website{% endt %}{% endset %}
+{% set dgR2L = 'work:run' %}
+{% set dgR2D %}{% t %}a pitch, a call sheet, a push{% endt %}{% endset %}
+{% set dgR3L = 'library:read' %}
+{% set dgR3D %}{% t %}a saved pitch, by name{% endt %}{% endset %}
+{% set dgR4L = 'context:write' %}
+{% set dgR4D %}{% t %}an outcome, a next step ticked{% endt %}{% endset %}
+{% set dgCaption %}{% t %}You tick the scopes at mint. A token never gains one later.{% endt %}{% endset %}
+
+{% set shotSrc = '/assets/img/demo/step-10.png' %}
+{% set shotAlt %}{% t %}Workspace settings in Prospektor, where the owner mints a token and ticks what it may do.{% endt %}{% endset %}
+{% set shotCaption %}{% t %}Workspace settings in Prospektor, where a token is minted.{% endt %}{% endset %}
+
+{% set p1 %}{% t %}A token lets something that is not a browser talk to your workspace: your CRM, an agent you are building, a script. Read a company, start a pitch, read a saved one, record an outcome, take a copy out.{% endt %}{% endset %}
+{% set p2 %}{% t %}You tick what a token may do when you mint it, and it never gains a scope later. It expires when you say. The secret is shown once; losing it costs one revoke and one mint.{% endt %}{% endset %}
+{% set p3 %}{% t %}Only the workspace's owner can mint one, because a token acts as the whole workspace with nobody watching. The card names each token, who minted it and when it expires.{% endt %}{% endset %}
+{% set s1 %}{% t %}Open <strong>Connect your apps → Your own agent → New token</strong> in your workspace settings.{% endt %}{% endset %}
+{% set s2 %}{% t %}Label it with what will hold it, tick what it may do, set when it expires, press <strong>Mint</strong>.{% endt %}{% endset %}
+{% set s3 %}{% t %}Copy the secret now; nothing can show it again. <strong>Copy setup for your agent</strong> gives your own Claude the whole of it.{% endt %}{% endset %}
+
+{% include "integration-page.njk" %}
