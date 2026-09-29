@@ -810,6 +810,8 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
                     // here fails as "one article too many, and it has no date",
                     // which names neither the page nor the cause.
                     'https://prospektor.ai/contact/',
+                    // #838. The integrations directory the Close page sits under.
+                    'https://prospektor.ai/integrations/',
                     // #620. The page Close's integration directory points at —
                     // a static page like the rest, listed here for the reason
                     // the comment above gives, and its language twins are
@@ -1814,8 +1816,9 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
 
     await page.goto('http://localhost:8899/integrations/close/'
       + '?utm_source=close&utm_medium=directory&utm_campaign=integrations&gclid=nope');
-    check('the Close page leads with the fit: both products in the headline (#830)',
-      /Prospektor/.test((await page.textContent('h1')) || '') && /Close/.test((await page.textContent('h1')) || ''),
+    check('the Close page is headed by the integration, with the fit under it (#830, #838)',
+      ((await page.textContent('h1')) || '').trim() === 'Close'
+      && /Prospektor writes the pitch/.test((await page.textContent('.int-sub')) || ''),
       await page.textContent('h1'));
     await page.waitForSelector('#buyForm:not([hidden])', { timeout: 5000 });
     check('and its buy form is the direct pay path, revealed by the keys probe',
@@ -1838,8 +1841,8 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     await page.goto('http://localhost:8899/es/integrations/close/');
     check('the Spanish twin is served, in Spanish',
       (await page.getAttribute('html', 'lang')) === 'es'
-      && ((await page.textContent('h1')) || '').toLowerCase().includes('escribe'),
-      await page.textContent('h1'));
+      && ((await page.textContent('.int-sub')) || '').toLowerCase().includes('escribe'),
+      await page.textContent('.int-sub'));
     check('and its no-keys fallback link stays on the Spanish checkout',
       ((await page.getAttribute('#buyLink', 'href')) || '').startsWith('/es/checkout/'),
       await page.getAttribute('#buyLink', 'href'));
