@@ -73,11 +73,14 @@ describe('/integrations/close/ — the page, and the offer it may print', () => 
     // both products, and every record lib/crm-close.js writes is on the page
     // by name, because a page that promises a record the push does not write
     // is wrong, not modest.
+    // #838 gave the page Close's own integration-page shape: the <h1> is the
+    // integration's name, as on close.com/integrations/<name>, and the fit
+    // sentence is the line under it.
     const html = read(DARK, PAGE);
     const h1 = (html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i) || [])[1] || '';
-    assert.match(text(h1), /Prospektor/, 'the headline is the two products together');
-    assert.match(text(h1), /Close/, 'the headline is the two products together');
+    assert.strictEqual(text(h1).trim(), 'Close', 'the headline is the integration, the way Close\'s own pages are headed');
     const body = text(html);
+    assert.match(body, /Prospektor writes the pitch\. Close works the deal\./, 'the fit sentence is under the name');
     for (const record of ['lead', 'contacts', 'opportunity', 'note'])
       assert.match(body, new RegExp(`\\b${record}\\b`, 'i'), `the push writes a ${record}, and the page should say so`);
     assert.ok(!/\b39\b/.test(body), 'the census is gone: the page is about the fit, not about the other tools on the shelf');

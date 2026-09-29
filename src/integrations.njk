@@ -1,0 +1,52 @@
+---
+layout: base.njk
+title: Integrations
+description: "Every app a Prospektor workspace connects to: Close, HubSpot, Affinity, Lightfield and Slack, your own Claude or ChatGPT, and a token for anything else."
+# One page per language (#114/#535), the shape every funnel page takes; see
+# src/index.njk for the reasoning.
+pagination:
+  data: languages
+  size: 1
+  alias: language
+  addAllPagesToCollections: true
+permalink: "{{ language.prefix }}/integrations/"
+---
+
+{#- #838, 28 Sep 2026. The operator: "we need prospektor.ai/integrations to
+    exist, not only prospektor.ai/integrations/close - and it should be styled
+    similarily to Close's. We should mention all the integrations we already
+    have as well as a short description why Close users should care."
+
+    Close's directory (close.com/integrations) is a title, a grid of cards
+    with a mark, a name and one line, and a category rail. This is that in the
+    site's own tokens, minus the rail: nine cards do not need one (the
+    studio's own grid decided the same, CLAUDE.md → Less is more), so the
+    category is the card's subtitle. The cards are one include, shared with
+    the Close page's *More integrations*, and every line on them is what the
+    studio's help says the connection does. Nothing here lists an app the
+    studio's Connect your apps grid does not hold. -#}
+
+<header class="page-hero">
+  <div class="page-hero-inner">
+    <span class="tag">{% t %}integrations{% endt %}</span>
+    <h1 class="page-h1">{% t %}Prospektor integrations{% endt %}</h1>
+    <p class="page-lede">
+      {% t %}Every door out of your workspace and into it. A finished pitch lands in
+      the CRM your team already works in, Slack gets the message, and your own
+      Claude or ChatGPT can do the work here.{% endt %}
+    </p>
+  </div>
+</header>
+
+<section class="int-hub">
+  {% include "integrations-grid.njk" %}
+</section>
+
+<section class="int-hub-more">
+  <p>
+    {% t %}Missing one? Name it under Request an integration in your workspace
+    settings, or <a href="mailto:hello@prospektor.ai">write to us</a>. The one
+    asked for most is the one we build next.{% endt %}
+  </p>
+  <a class="btn-ghost" href="{{ '/pricing/' | localize }}">{% t %}One price, the whole box →{% endt %}</a>
+</section>

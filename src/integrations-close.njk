@@ -12,18 +12,20 @@ pagination:
 permalink: "{{ language.prefix }}/integrations/close/"
 ---
 
-{#- #620, 10 Sep 2026; rewritten by #830, 28 Sep 2026. The page Close's
-    integration directory points at (close.com/integrations/prospektor) and
-    the answer to two required fields on their listing form (#9 Marketing URL,
-    and "do you promote Close on your website in any way?").
+{#- #620, 10 Sep 2026; rewritten by #830 and reshaped by #838, 28 Sep 2026.
+    The page Close's integration directory points at
+    (close.com/integrations/prospektor) and the answer to two required fields
+    on their listing form (#9 Marketing URL, and "do you promote Close on your
+    website in any way?").
 
-    WHAT THIS PAGE IS FOR, in the operator's words (#830): "much less
-    AI-sounding and more humanized. Clear CTAs. 'One month free for Close
-    users' should be all over the page. Not 'compare us to all the other
-    tools blabla' - just: here is why Prospektor + Close work super well
-    together." So the census that #620 led with (39 tools on Close's shelf,
-    none writes the email) is gone, and every screen of the page carries the
-    offer, one primary action, and one reason the two products fit.
+    THE SHAPE is Close's own integration page (close.com/integrations/addtocrm),
+    at the operator's ask (#838): "It should look something like this and not
+    a long AI-written page. More visual, less text, clear CTA." So: a back
+    link and the mark, a sidebar that holds the one action and the support
+    links, two visuals, about a hundred words and three numbered steps, the
+    buy card, and the other integrations under it. #830's ask still binds
+    every sentence: humanized, the free month on every screen, and no census
+    of the other tools on Close's shelf.
 
     THE ONE THING THIS PAGE MUST NOT DO: sell whom to chase. Its visitor
     already has a CRM and already believes in it. Everything here is the half
@@ -33,8 +35,8 @@ permalink: "{{ language.prefix }}/integrations/close/"
     product does not have and would collide with the unbuilt affiliate scheme,
     #87) and rather than `/close/` (a common English word that tells a visitor
     nothing). It mirrors Close's own `close.com/integrations/<name>`, so it
-    reads as native from their directory, and it is a namespace that scales to
-    HubSpot and Affinity.
+    reads as native from their directory, and since #838 it is the directory
+    `/integrations/` sits over.
 
     Every claim here is the studio's code, read on 28 Sep 2026, and if one of
     them stops being true this page is wrong, not modest:
@@ -43,10 +45,10 @@ permalink: "{{ language.prefix }}/integrations/close/"
       - what a push writes is `lib/crm-close.js` (#582, proven in production
         by the operator's own press on 10 Sep): the lead found by domain, its
         contacts, an opportunity whose CONFIDENCE is the fit score, and a
-        note that renders; a second press updates by id; an address is added
-        beside the ones Close holds and never in place of them;
-      - the import is #693's pull: a lead Smart View the owner picks, `name`
-        and `url` only, and the companies on it are suppressed from every hunt.
+        note that renders; a second press updates by id.
+    The first visual is drawn here, in the site's tokens, and names those
+    four records and nothing else; the second is a real screen off the demo's
+    capture (#767), the fit thesis that becomes the note.
 
     THE OFFER IS WRITTEN ONLY WHEN THIS BUILD ARMS IT (#622). Every sentence
     that says "free", "30 days" or "$0" sits inside `{% if offer.close %}`, so
@@ -54,160 +56,173 @@ permalink: "{{ language.prefix }}/integrations/close/"
     dark build is the same page at list price. `test/close.test.js` builds
     both and reads every "N days" against `lib/trial.js`. -#}
 
-<header class="page-hero">
-  <div class="page-hero-inner">
-    {%- if offer.close %}
-    <span class="tag">{% t %}One month free for Close users{% endt %}</span>
-    {%- else %}
-    <span class="tag">{% t %}Close integration{% endt %}</span>
-    {%- endif %}
-    <h1 class="page-h1">{% t %}Prospektor writes the pitch. Close works the deal.{% endt %}</h1>
-    <p class="page-lede">
-      {% t %}Prospektor finds the companies worth approaching, names who to talk to
-      and writes what you send them, in your voice. One press files all of it in
-      Close, where your team already works.{% endt %}
-    </p>
-    <div class="page-hero-actions">
+<section class="int-page">
+  <a class="int-back" href="{{ '/integrations/' | localize }}">{% t %}← All integrations{% endt %}</a>
+  <div class="int-head">
+    <span class="int-mark" aria-hidden="true">Cs</span>
+    <div>
+      <h1>Close</h1>
+      <p class="int-sub">{% t %}Prospektor writes the pitch. Close works the deal.{% endt %}</p>
+    </div>
+  </div>
+
+  <div class="int-body">
+    <aside class="int-side">
       {%- if offer.close %}
       <a class="btn-cta" href="#start">{% t %}Start my free month →{% endt %}</a>
+      <p class="int-side-offer">{% t %}<strong>One month free for Close users.</strong> Card on file, nothing charged for 30 days, and one email cancels.{% endt %}</p>
       {%- else %}
       <a class="btn-cta" href="#start">{% t %}Start my studio →{% endt %}</a>
       {%- endif %}
-      <a class="btn-ghost" href="#how">{% t %}How the two fit ↓{% endt %}</a>
+      <a class="btn-ghost" href="mailto:hello@prospektor.ai">{% t %}Integration support{% endt %}</a>
+      <ul class="int-links">
+        <li><a href="{{ '/help/workspace/' | localize }}#workspace--crm-a-finished-pitch-pushed-into-hubspot-affinity-close-or-lightfield">{% t %}Documentation{% endt %}</a></li>
+        <li><a href="{{ '/terms/' | localize }}">{% t %}Terms of service{% endt %}</a></li>
+        <li><a href="{{ '/privacy/' | localize }}">{% t %}Privacy policy{% endt %}</a></li>
+      </ul>
+      <p class="int-built">{% t %}Built by Prospektor{% endt %}</p>
+    </aside>
+
+    <div class="int-main">
+      {#- Visual 1: what one press writes into Close, drawn in the site's own
+          tokens. Four rows, one per record lib/crm-close.js writes, and the
+          press that writes them. Text as text, so it reads in every language
+          and to a screen reader. -#}
+      <figure class="int-visual">
+        <svg viewBox="0 0 720 300" role="img" aria-labelledby="intPushTitle" xmlns="http://www.w3.org/2000/svg">
+          <title id="intPushTitle">{% t %}One press in Prospektor writes four records in Close{% endt %}</title>
+          <rect width="720" height="300" style="fill:var(--off-white)"/>
+          <!-- the pitch, on the left -->
+          <rect x="34" y="60" width="200" height="180" rx="14" style="fill:var(--white);stroke:var(--border)"/>
+          <text x="54" y="92" style="font-family:var(--mono);font-size:11px;fill:var(--accent-dim);letter-spacing:.06em">PROSPEKTOR</text>
+          <text x="54" y="122" style="font-family:var(--font);font-size:17px;font-weight:800;fill:var(--ink)">Harborline Freight</text>
+          <rect x="54" y="140" width="120" height="8" rx="4" style="fill:var(--stone)"/>
+          <rect x="54" y="156" width="150" height="8" rx="4" style="fill:var(--stone)"/>
+          <rect x="54" y="172" width="96" height="8" rx="4" style="fill:var(--stone)"/>
+          <rect x="54" y="198" width="118" height="28" rx="14" style="fill:var(--coral)"/>
+          <text x="113" y="216" text-anchor="middle" style="font-family:var(--font);font-size:12px;font-weight:700;fill:#fff">{% t %}Push to Close{% endt %}</text>
+          <!-- the arrow -->
+          <path d="M248 150 H298" style="stroke:var(--ink-faint);stroke-width:2;fill:none"/>
+          <path d="M292 143 L300 150 L292 157" style="stroke:var(--ink-faint);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round"/>
+          <!-- the lead in Close, on the right -->
+          <rect x="316" y="30" width="370" height="240" rx="14" style="fill:var(--white);stroke:var(--border)"/>
+          <text x="338" y="60" style="font-family:var(--mono);font-size:11px;fill:var(--ink-faint);letter-spacing:.06em">CLOSE</text>
+          <g style="font-family:var(--font);font-size:13px">
+            <rect x="338" y="78" width="326" height="1" style="fill:var(--border)"/>
+            <text x="338" y="106" style="font-weight:800;fill:var(--ink)">{% t %}Lead{% endt %}</text>
+            <text x="440" y="106" style="fill:var(--ink-mid)">{% t %}matched on its web domain{% endt %}</text>
+            <rect x="338" y="122" width="326" height="1" style="fill:var(--border)"/>
+            <text x="338" y="150" style="font-weight:800;fill:var(--ink)">{% t %}Contacts{% endt %}</text>
+            <text x="440" y="150" style="fill:var(--ink-mid)">{% t %}the decision-makers, with sources{% endt %}</text>
+            <rect x="338" y="166" width="326" height="1" style="fill:var(--border)"/>
+            <text x="338" y="194" style="font-weight:800;fill:var(--ink)">{% t %}Opportunity{% endt %}</text>
+            <text x="440" y="194" style="fill:var(--ink-mid)">{% t %}confidence = the fit score{% endt %}</text>
+            <rect x="338" y="210" width="326" height="1" style="fill:var(--border)"/>
+            <text x="338" y="238" style="font-weight:800;fill:var(--ink)">{% t %}Note{% endt %}</text>
+            <text x="440" y="238" style="fill:var(--ink-mid)">{% t %}the fit, the angle, the sources, a link back{% endt %}</text>
+          </g>
+        </svg>
+        <figcaption>{% t %}One press, four records. Push again and the same four update.{% endt %}</figcaption>
+      </figure>
+      <figure class="int-visual">
+        <img src="{{ '/assets/img/demo/step-03.png' | asset }}" width="1280" height="800" loading="lazy"
+             alt="{% t %}A finished pitch in Prospektor: the fit thesis, with the case for the company, the case against it, and what they will say.{% endt %}">
+        <figcaption>{% t %}The fit thesis in Prospektor, which is what the note in Close holds.{% endt %}</figcaption>
+      </figure>
+
+      <div class="int-text">
+        <p>
+          {% t %}Prospektor finds the companies worth approaching, names who to talk to
+          and writes what you send them, in your voice. One press files all of it in
+          Close, where your team already works.{% endt %}
+        </p>
+        <p>
+          {% t %}Four records, the way Close models a deal: the <strong>lead</strong>,
+          matched on its web domain, its <strong>contacts</strong>, an
+          <strong>opportunity</strong> with the fit score as its confidence, and a
+          <strong>note</strong>.{% endt %}
+        </p>
+        <p>
+          {% t %}The note holds the fit, the angle, the sources and a link back to the
+          full pitch. Push again and the same records update; nothing is created
+          twice.{% endt %}
+        </p>
+        <ol>
+          <li>{% t %}Press <strong>Connect Close</strong> in your workspace settings and approve it on Close's screen. There is no API key.{% endt %}</li>
+          <li>{% t %}Run a pitch on a company you want.{% endt %}</li>
+          <li>{% t %}Press <strong>Push to Close</strong>.{% endt %}</li>
+        </ol>
+        {%- if offer.close %}
+        <p>
+          {% t %}<strong>One month free for Close users.</strong> Card on file, nothing charged
+          for 30 days, and one email to
+          <a href="mailto:hello@prospektor.ai">hello@prospektor.ai</a> cancels.{% endt %}
+        </p>
+        {%- endif %}
+      </div>
     </div>
-    {%- if offer.close %}
-    <p class="page-hero-note">{% t %}Card on file, nothing charged for 30 days, and one email cancels.{% endt %}</p>
-    {%- endif %}
   </div>
-</header>
 
-<section class="flow" id="how">
-  <div class="flow-inner">
-
-    <article class="flowstep">
-      <span class="flowstep-n">01</span>
-      <div class="flowstep-body">
-        <h2>{% t %}Connect Close with one press.{% endt %}</h2>
-        <p>
-          {% t %}Press Connect Close in your workspace settings and approve it on
-          Close's own screen. There is no API key to paste. Prospektor writes to
-          the organization you approved and reads nothing out of it unless you
-          ask.{% endt %}
-        </p>
-        <p class="flowstep-proof">{% t %}Disconnect from the same panel and the grant is revoked at Close. The steps are in <a href="/help/workspace/">the workspace guide</a>.{% endt %}</p>
+  <section class="pricing pricing-page" id="start">
+    <div class="pricing-card">
+      {#- Monthly only, deliberately: the offer below is a free month converting to
+          a monthly subscription, and a plan switch beside it would be a second
+          decision on a page that already has one (the style skill, rule 8). The
+          yearly plan is one click away on /pricing/. -#}
+      <div class="price-row">
+        <span class="price-num">$999</span>
+        <span class="price-per">{% t %}/ month · per workspace{% endt %}</span>
       </div>
-    </article>
 
-    <article class="flowstep">
-      <span class="flowstep-n">02</span>
-      <div class="flowstep-body">
-        <h2>{% t %}One press files the whole pitch in Close.{% endt %}</h2>
-        <p>{% t %}Four records, written the way Close models a deal:{% endt %}</p>
-        <ul class="pricing-list">
-          <li>{% t %}The company as a <strong>lead</strong>, matched on its web domain{% endt %}</li>
-          <li>{% t %}Its named decision-makers as <strong>contacts</strong> of that lead{% endt %}</li>
-          <li>{% t %}An <strong>opportunity</strong> carrying the fit score as its confidence{% endt %}</li>
-          <li>{% t %}A <strong>note</strong> holding the fit, the angle, the sources and a link back{% endt %}</li>
-        </ul>
-        <p class="flowstep-proof">{% t %}Push the same pitch again and those records update. Nothing is duplicated.{% endt %}</p>
-      </div>
-    </article>
-
-    <article class="flowstep">
-      <span class="flowstep-n">03</span>
-      <div class="flowstep-body">
-        <h2>{% t %}Every line in the note has a source.{% endt %}</h2>
-        <p>
-          {% t %}The fit score comes with the case for the company and the case
-          against it. Each decision-maker carries the source that named them, and
-          a name nothing backs is left blank.{% endt %}
-        </p>
-        <p>
-          {% t %}Where somebody in your network can open the door, the note says
-          who. The link back opens the deck, the one-pager, the cold emails and
-          the proposal, drafted in your voice from what has already worked for
-          you.{% endt %}
-        </p>
-        <p class="flowstep-proof">{% t %}Addresses already in Close stay as they are. Prospektor adds its own beside them.{% endt %}</p>
-      </div>
-    </article>
-
-    <article class="flowstep">
-      <span class="flowstep-n">04</span>
-      <div class="flowstep-body">
-        <h2>{% t %}Your customers in Close teach it who to look for.{% endt %}</h2>
-        <p>
-          {% t %}Press Import your customers on the Close card and pick the Smart
-          View they are in. Prospektor reads each company's name and website,
-          never pitches them, and looks for more like them. Nothing else in Close
-          is read.{% endt %}
-        </p>
-        <p class="flowstep-proof">{% t %}Only lead views are offered. A contact view is a list of people, and Prospektor has no business holding one.{% endt %}</p>
-      </div>
-    </article>
-
-  </div>
-</section>
-
-<section class="pricing pricing-page" id="start">
-  <div class="pricing-card">
-    {#- Monthly only, deliberately: the offer below is a free month converting to
-        a monthly subscription, and a plan switch beside it would be a second
-        decision on a page that already has one (the style skill, rule 8). The
-        yearly plan is one click away on /pricing/. -#}
-    <div class="price-row">
-      <span class="price-num">$999</span>
-      <span class="price-per">{% t %}/ month · per workspace{% endt %}</span>
-    </div>
-
-    {%- if offer.close %}
-    {#- #622. Written ONLY when this build's environment arms the offer, so the
-        page cannot advertise a trial the checkout call would not grant — and
-        the number below is `lib/trial.js`'s constant, which is also the only
-        value `CLOSE_TRIAL_DAYS` will accept. test/close.test.js pins the two
-        together in both directions. -#}
-    <div class="onboard-note">
-      <p>{% t %}<strong>First month free for Close users.</strong> Card on file, nothing
-        charged for 30 days. Cancel inside them with one email to
-        <a href="mailto:hello@prospektor.ai">hello@prospektor.ai</a> and you are
-        never charged.{% endt %}</p>
-    </div>
-    {%- endif %}
-
-    <ul class="pricing-list">
-      <li>{% t %}Unlimited pitch runs: research, scoring and every deliverable{% endt %}</li>
-      <li>{% t %}Up to 100 companies in one batch, drafted while the tab is closed{% endt %}</li>
-      <li>{% t %}Every colleague on your work-email domain, at no extra cost{% endt %}</li>
-      <li>{% t %}Every finished pitch pushed to Close with one press{% endt %}</li>
-    </ul>
-
-    {#- The same markup, ids and script as /pricing/'s tile: one field, then
-        Stripe. `data-via` is what makes this arrival the Close one — it is on
-        the FORM rather than read from the URL, so the offer belongs to the page
-        that states it and no query parameter a stranger types can claim it.
-        `data-from` sends a cancelled checkout back here instead of to /#pricing. -#}
-    <div class="buy" id="buy">
       {%- if offer.close %}
-      <a href="{{ '/checkout/' | localize }}" class="btn-cta" id="buyLink">{% t %}Start my free month →{% endt %}</a>
-      {%- else %}
-      <a href="{{ '/checkout/' | localize }}" class="btn-cta" id="buyLink">{% t %}Start my studio →{% endt %}</a>
+      {#- #622. Written ONLY when this build's environment arms the offer, so the
+          page cannot advertise a trial the checkout call would not grant — and
+          the number below is `lib/trial.js`'s constant, which is also the only
+          value `CLOSE_TRIAL_DAYS` will accept. test/close.test.js pins the two
+          together in both directions. -#}
+      <div class="onboard-note">
+        <p>{% t %}<strong>First month free for Close users.</strong> Card on file, nothing
+          charged for 30 days. Cancel inside them with one email to
+          <a href="mailto:hello@prospektor.ai">hello@prospektor.ai</a> and you are
+          never charged.{% endt %}</p>
+      </div>
       {%- endif %}
-      <form class="reserve-form buy-form" id="buyForm" data-via="close" data-from="close" hidden novalidate>
-        <input class="reserve-input" id="buyEmail" type="email" autocomplete="email"
-               placeholder="you@yourcompany.com" aria-label="{% t %}Your work email{% endt %}">
-        <button class="btn-cta" type="submit" id="buyBtn">
-          {%- if offer.close %}{% t %}Start my free month · $0 today →{% endt %}{% else %}{% t %}Pay &amp; start · $999/mo →{% endt %}{% endif -%}
-        </button>
-      </form>
-      <input class="reserve-input buy-site" id="buySite" type="text" inputmode="url" autocomplete="url"
-             placeholder="yourcompany.com" aria-label="{% t %}Your company website{% endt %}" hidden>
-      <p class="reserve-msg is-error" id="buyMsg" hidden></p>
-      <p class="buy-note">
-        <span id="buyLive" hidden>{% t %}Next stop is Stripe. This address becomes your studio's sign-in, and a work email brings your whole team in with you.{% endt %} </span>
-        {%- if offer.close %}{% t %}Nothing is charged for 30 days. After that, money back any month it doesn't earn its keep.{% endt %}{% else %}{% t %}Money back if it doesn't earn its keep, with no fourteen days of hoping you remember to cancel.{% endt %}{% endif %}
-      </p>
+
+      <ul class="pricing-list">
+        <li>{% t %}Unlimited pitch runs: research, scoring and every deliverable{% endt %}</li>
+        <li>{% t %}Up to 100 companies in one batch, drafted while the tab is closed{% endt %}</li>
+        <li>{% t %}Every colleague on your work-email domain, at no extra cost{% endt %}</li>
+        <li>{% t %}Every finished pitch pushed to Close with one press{% endt %}</li>
+      </ul>
+
+      {#- The same markup, ids and script as /pricing/'s tile: one field, then
+          Stripe. `data-via` is what makes this arrival the Close one — it is on
+          the FORM rather than read from the URL, so the offer belongs to the page
+          that states it and no query parameter a stranger types can claim it.
+          `data-from` sends a cancelled checkout back here instead of to /#pricing. -#}
+      <div class="buy" id="buy">
+        {%- if offer.close %}
+        <a href="{{ '/checkout/' | localize }}" class="btn-cta" id="buyLink">{% t %}Start my free month →{% endt %}</a>
+        {%- else %}
+        <a href="{{ '/checkout/' | localize }}" class="btn-cta" id="buyLink">{% t %}Start my studio →{% endt %}</a>
+        {%- endif %}
+        <form class="reserve-form buy-form" id="buyForm" data-via="close" data-from="close" hidden novalidate>
+          <input class="reserve-input" id="buyEmail" type="email" autocomplete="email"
+                 placeholder="you@yourcompany.com" aria-label="{% t %}Your work email{% endt %}">
+          <button class="btn-cta" type="submit" id="buyBtn">
+            {%- if offer.close %}{% t %}Start my free month · $0 today →{% endt %}{% else %}{% t %}Pay &amp; start · $999/mo →{% endt %}{% endif -%}
+          </button>
+        </form>
+        <input class="reserve-input buy-site" id="buySite" type="text" inputmode="url" autocomplete="url"
+               placeholder="yourcompany.com" aria-label="{% t %}Your company website{% endt %}" hidden>
+        <p class="reserve-msg is-error" id="buyMsg" hidden></p>
+        <p class="buy-note">
+          <span id="buyLive" hidden>{% t %}Next stop is Stripe. This address becomes your studio's sign-in, and a work email brings your whole team in with you.{% endt %} </span>
+          {%- if offer.close %}{% t %}Nothing is charged for 30 days. After that, money back any month it doesn't earn its keep.{% endt %}{% else %}{% t %}Money back if it doesn't earn its keep, with no fourteen days of hoping you remember to cancel.{% endt %}{% endif %}
+        </p>
+      </div>
     </div>
-  </div>
+  </section>
 </section>
 {#- defer, like every script this site serves (#137/#170). buy.js looks its
     elements up by id and returns if they are absent, so this page and
@@ -215,60 +230,9 @@ permalink: "{{ language.prefix }}/integrations/close/"
     there is no switch on this page to drive. -#}
 <script src="{{ '/assets/js/buy.js' | asset }}" defer></script>
 
-<section class="pricing-faq">
-  <div class="pricing-faq-inner">
-    <h2 class="sec-mid">{% t %}The small print.{% endt %}</h2>
-    <dl class="pricing-faq-list">
-      {%- if offer.close %}
-      <div class="pricing-faq-item">
-        <dt>{% t %}How does the free month work?{% endt %}</dt>
-        <dd>{% t %}Start here with your work email and a card. Stripe charges
-          nothing for 30 days. On day 31 it becomes a normal subscription at
-          $999 a month. Cancel before then with one email to
-          <a href="mailto:hello@prospektor.ai">hello@prospektor.ai</a> and
-          nothing is charged.{% endt %}</dd>
-      </div>
-      {%- endif %}
-      <div class="pricing-faq-item">
-        <dt>{% t %}Who on my team gets in?{% endt %}</dt>
-        <dd>{% t %}Everyone on your work-email domain. Pay with your work email and
-          every colleague on it signs straight in. There is nothing to count and
-          nothing to upgrade.{% endt %}</dd>
-      </div>
-      <div class="pricing-faq-item">
-        <dt>{% t %}What does Prospektor read out of Close?{% endt %}</dt>
-        <dd>{% t %}Your organization's name when you connect, and the lead and
-          contacts a push is about to update. If you import your customers, the
-          name and website of each company in the Smart View you picked, and
-          nothing else.{% endt %}</dd>
-      </div>
-      <div class="pricing-faq-item">
-        <dt>{% t %}What if it doesn't earn its keep?{% endt %}</dt>
-        <dd>{% t %}Write to <a href="mailto:hello@prospektor.ai">hello@prospektor.ai</a>
-          and we refund the month. There is no clock on it and no form.{% endt %}</dd>
-      </div>
-    </dl>
-  </div>
-</section>
-
-<section class="page-split">
-  <div class="page-split-inner">
-    {%- if offer.close %}
-    <span class="tag">{% t %}for Close users{% endt %}</span>
-    <h2>{% t %}Your first month is free.{% endt %}</h2>
-    <p>
-      {% t %}Connect Close, run a pitch on a company you want, push it, and see
-      what lands. Nothing is charged for 30 days, and one email cancels.{% endt %}
-    </p>
-    <a class="btn-cta" href="#start">{% t %}Start my free month →{% endt %}</a>
-    {%- else %}
-    <span class="tag">{% t %}try it{% endt %}</span>
-    <h2>{% t %}Free tells you who to chase. Paid gives you what to send.{% endt %}</h2>
-    <p>
-      {% t %}The scan is free and always will be. Point it at your own site and see who
-      it would hunt for you. Everything on this page starts when you do.{% endt %}
-    </p>
-    <a class="btn-cta" href="#start">{% t %}Start my studio →{% endt %}</a>
-    {%- endif %}
-  </div>
+<section class="int-more">
+  <h2 class="sec-mid">{% t %}More integrations from Prospektor{% endt %}</h2>
+  {% set skipApp = 'close' %}
+  {% include "integrations-grid.njk" %}
+  <p class="int-more-all"><a class="btn-ghost" href="{{ '/integrations/' | localize }}">{% t %}See all integrations →{% endt %}</a></p>
 </section>

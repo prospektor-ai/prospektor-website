@@ -1,0 +1,107 @@
+{#- #838, 28 Sep 2026. The nine tiles the studio's own *Connect your apps*
+    grid holds (`APPS` in the studio's public/studio.js), one card each, in the
+    studio's order: the five that work, the one that is coming, then the
+    three doors into an agent. Shared by /integrations/ (all nine) and by
+    /integrations/close/ (the other eight, under *More integrations*): set
+    `skipApp` before including to leave one out.
+
+    Every sentence here is what the studio's help says a connection does
+    (docs/help/08-workspace.md, 12-connect-your-claude.md), one line each.
+    The mark is the studio's own neutral monogram, on purpose (#572): HubSpot's
+    and Slack's brand terms allow their logos only once a listing has earned
+    them, and a drawn-from-memory sprocket is worse than two letters. The
+    vendor's name is never translated; a category is, in the studio's words.
+
+    Written as markup rather than as a data file because the translation
+    inventory reads `{% t %}` blocks and frontmatter `faqs:`, not a list in a
+    data file (lib/i18n.js): a sentence in a data file could be translated
+    and the catalogue entry would read as stale. -#}
+<ul class="card-grid int-grid">
+  {%- if skipApp != 'close' %}
+  <li class="card int-card">
+    <a href="{{ '/integrations/close/' | localize }}">
+      <span class="int-mark" aria-hidden="true">Cs</span>
+      <span class="card-topic">{% t %}CRM{% endt %}</span>
+      <h3 class="card-title">Close</h3>
+      <p class="card-dek">{% t %}A finished pitch lands as a lead, its contacts, an opportunity and a note. Push again and the same records update.{% endt %}</p>
+      {%- if offer.close %}
+      <span class="card-cta">{% t %}One month free for Close users →{% endt %}</span>
+      {%- else %}
+      <span class="card-cta">{% t %}How it works →{% endt %}</span>
+      {%- endif %}
+    </a>
+  </li>
+  {%- endif %}
+  <li class="card int-card">
+    <a href="{{ '/help/workspace/' | localize }}#workspace--crm-a-finished-pitch-pushed-into-hubspot-affinity-close-or-lightfield">
+      <span class="int-mark" aria-hidden="true">Hu</span>
+      <span class="card-topic">{% t %}CRM{% endt %}</span>
+      <h3 class="card-title">HubSpot</h3>
+      <p class="card-dek">{% t %}A Company, its Contacts, a Deal in your first stage and a Note. Connect with one button, or paste a private app token.{% endt %}</p>
+      <span class="card-cta">{% t %}How it works →{% endt %}</span>
+    </a>
+  </li>
+  <li class="card int-card">
+    <a href="{{ '/help/workspace/' | localize }}#workspace--crm-a-finished-pitch-pushed-into-hubspot-affinity-close-or-lightfield">
+      <span class="int-mark" aria-hidden="true">Af</span>
+      <span class="card-topic">{% t %}CRM{% endt %}</span>
+      <h3 class="card-title">Affinity</h3>
+      <p class="card-dek">{% t %}The organization on the list you pick, its people and a note. Paste an API key and press Connect.{% endt %}</p>
+      <span class="card-cta">{% t %}How it works →{% endt %}</span>
+    </a>
+  </li>
+  <li class="card int-card">
+    <a href="{{ '/help/workspace/' | localize }}#workspace--crm-a-finished-pitch-pushed-into-hubspot-affinity-close-or-lightfield">
+      <span class="int-mark" aria-hidden="true">Li</span>
+      <span class="card-topic">{% t %}CRM{% endt %}</span>
+      <h3 class="card-title">Lightfield</h3>
+      <p class="card-dek">{% t %}An account, the contacts with a work email, an opportunity and a note. Paste a key and press Connect.{% endt %}</p>
+      <span class="card-cta">{% t %}How it works →{% endt %}</span>
+    </a>
+  </li>
+  <li class="card int-card is-static">
+    <div class="card-body">
+      <span class="int-mark" aria-hidden="true">Sf</span>
+      <span class="card-topic">{% t %}CRM{% endt %}</span>
+      <h3 class="card-title">Salesforce</h3>
+      <p class="card-dek">{% t %}Next in line. Say so under Request an integration in your workspace settings and it moves up.{% endt %}</p>
+      <span class="card-cta">{% t %}Soon{% endt %}</span>
+    </div>
+  </li>
+  <li class="card int-card">
+    <a href="{{ '/help/workspace/' | localize }}#workspace--slack-finished-work-posted-where-the-team-already-is">
+      <span class="int-mark" aria-hidden="true">Sl</span>
+      <span class="card-topic">{% t %}Team chat{% endt %}</span>
+      <h3 class="card-title">Slack</h3>
+      <p class="card-dek">{% t %}Every finished pitch posts one short message where the team already is: company, fit score, the angle, a link back.{% endt %}</p>
+      <span class="card-cta">{% t %}How it works →{% endt %}</span>
+    </a>
+  </li>
+  <li class="card int-card">
+    <a href="{{ '/help/connect-your-claude/' | localize }}">
+      <span class="int-mark" aria-hidden="true">Cl</span>
+      <span class="card-topic">{% t %}AI assistant{% endt %}</span>
+      <h3 class="card-title">Claude</h3>
+      <p class="card-dek">{% t %}Your own Claude does the work here: reads a company, writes the pitch, preps the call. One connector address in claude.ai, a token in Claude Code, Desktop or Cursor.{% endt %}</p>
+      <span class="card-cta">{% t %}How it works →{% endt %}</span>
+    </a>
+  </li>
+  <li class="card int-card">
+    <a href="{{ '/help/connect-your-claude/' | localize }}">
+      <span class="int-mark" aria-hidden="true">Ch</span>
+      <span class="card-topic">{% t %}AI assistant{% endt %}</span>
+      <h3 class="card-title">ChatGPT</h3>
+      <p class="card-dek">{% t %}Add one connector address in ChatGPT and it reads a company, writes the pitch and records what happened. There is no token to paste.{% endt %}</p>
+      <span class="card-cta">{% t %}How it works →{% endt %}</span>
+    </a>
+  </li>
+  <li class="card int-card">
+    <a href="{{ '/help/workspace/' | localize }}#workspace--api-tokens-letting-another-system-call-your-workspace">
+      <span class="int-mark" aria-hidden="true">{}</span>
+      <span class="card-topic">{% t %}API token{% endt %}</span>
+      <h3 class="card-title">{% t %}Your own agent{% endt %}</h3>
+      <p class="card-dek">{% t %}A token lets a script, an agent or your CRM call the workspace. Tick what it may do and when it expires; the secret is shown once.{% endt %}</p>
+      <span class="card-cta">{% t %}How it works →{% endt %}</span>
+    </a>
+  </li>
+</ul>

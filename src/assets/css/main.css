@@ -1707,18 +1707,97 @@ footer {
   margin-top: 1.35rem !important;
 }
 
-/* #830 — /integrations/close/. The one line under the hero's buttons that
-   says what the free month costs (nothing, for 30 days), and a link inside a
-   step's proof line, which had only the browser's default before. */
-.page-hero-note {
-  font-size: 0.82rem; color: var(--ink-mid); line-height: 1.6;
-  margin-top: 1.1rem;
+/* ── /integrations/ AND /integrations/close/ (#830, #838) ──
+   Close's own directory shape, in this site's tokens: a hub of cards, and an
+   integration page with a sidebar that holds the one action, visuals on the
+   right, a few lines, and the other integrations under it. The cards are the
+   `.card` component the hubs already share; the monogram is the studio's own
+   neutral mark (#572: a vendor's logo needs a listing first). */
+.int-card > a, .int-card > .card-body { gap: 0.45rem; }
+.int-mark {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.4rem; height: 2.4rem; border-radius: 9px;
+  background: var(--stone); color: var(--ink);
+  font-family: var(--mono); font-size: 0.82rem; font-weight: 700;
+  letter-spacing: 0.02em; margin-bottom: 0.35rem;
 }
-.flowstep-body a {
-  color: var(--ink); text-decoration: none;
-  border-bottom: 1px solid var(--accent); font-weight: 600;
+.int-card.is-static .int-mark { color: var(--ink-faint); }
+.int-card.is-static .card-title { color: var(--ink-mid); }
+.int-hub { max-width: 1080px; margin: 0 auto; padding: 3.5rem 2.5rem 1rem; }
+.int-hub-more {
+  max-width: 1080px; margin: 0 auto; padding: 2.5rem 2.5rem 4.5rem;
+  text-align: center;
 }
-.flowstep-body a:hover { color: var(--accent-dim); }
+.int-hub-more p { font-size: 0.93rem; color: var(--ink-mid); line-height: 1.7; }
+.int-hub-more .btn-ghost { margin-top: 1.1rem; display: inline-block; }
+
+/* the integration page */
+.int-page { max-width: 1080px; margin: 0 auto; padding: 7.5rem 2.5rem 1rem; }
+.int-back {
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--ink-faint); text-decoration: none;
+}
+.int-back:hover { color: var(--ink); }
+.int-head {
+  display: flex; align-items: center; gap: 1.1rem;
+  margin-top: 1.6rem; padding-bottom: 1.6rem; border-bottom: 1px solid var(--border);
+}
+.int-head .int-mark { width: 3.6rem; height: 3.6rem; font-size: 1.15rem; border-radius: 13px; margin: 0; }
+.int-head h1 {
+  font-size: clamp(1.9rem, 3.6vw, 2.6rem); font-weight: 800;
+  letter-spacing: -0.035em; line-height: 1.05;
+}
+.int-sub { font-size: 0.95rem; color: var(--ink-mid); margin-top: 0.3rem; }
+.int-body {
+  display: grid; grid-template-columns: 280px 1fr; gap: 2rem;
+  margin-top: 2.25rem; align-items: start;
+}
+.int-side {
+  position: sticky; top: 5rem;
+  border: 1px solid var(--border); border-radius: 14px; background: var(--white);
+  padding: 1.35rem; display: flex; flex-direction: column; gap: 0.7rem;
+}
+.int-side .btn-cta, .int-side .btn-ghost { display: block; text-align: center; margin: 0; }
+.int-side-offer { font-size: 0.82rem; color: var(--ink-mid); line-height: 1.6; }
+.int-side-offer strong { color: var(--ink); }
+.int-links { list-style: none; margin: 0.4rem 0 0; padding: 0.9rem 0 0; border-top: 1px solid var(--border); }
+.int-links li { font-size: 0.85rem; line-height: 2; }
+.int-links a { color: var(--ink-mid); text-decoration: none; }
+.int-links a:hover { color: var(--ink); }
+.int-built { font-family: var(--mono); font-size: 0.68rem; color: var(--ink-faint); margin-top: 0.4rem; }
+.int-main { min-width: 0; }
+.int-visual {
+  border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+  background: var(--off-white); margin: 0;
+}
+.int-visual + .int-visual { margin-top: 1.1rem; }
+.int-visual img, .int-visual svg { display: block; width: 100%; height: auto; }
+.int-visual figcaption {
+  font-family: var(--mono); font-size: 0.68rem; color: var(--ink-faint);
+  padding: 0.7rem 1rem; border-top: 1px solid var(--border); background: var(--white);
+}
+.int-text { margin-top: 1.9rem; max-width: 620px; }
+.int-text p { font-size: 0.95rem; color: var(--ink-mid); line-height: 1.75; margin-top: 0.9rem; }
+.int-text p:first-child { margin-top: 0; }
+.int-text ol { margin: 0.9rem 0 0 1.25rem; padding: 0; }
+.int-text li { font-size: 0.95rem; color: var(--ink-mid); line-height: 1.75; }
+.int-text strong, .int-text li strong { color: var(--ink); font-weight: 700; }
+.int-text a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--accent); font-weight: 600; }
+.int-text a:hover { color: var(--accent-dim); }
+.int-more { max-width: 1080px; margin: 0 auto; padding: 4.5rem 2.5rem 4rem; }
+.int-more .sec-mid { text-align: center; margin-bottom: 2rem; }
+.int-more-all { text-align: center; margin-top: 2rem; }
+.int-page .pricing-page { padding: 3.5rem 0 0; background: none; }
+@media (max-width: 860px) {
+  /* One column, the sidebar first: on a phone the button is the first thing
+     under the name, the way it is on Close's own pages, never under the text. */
+  .int-body { grid-template-columns: 1fr; }
+  .int-side { position: static; }
+}
+@media (max-width: 640px) {
+  .int-page, .int-hub, .int-more, .int-hub-more { padding-left: 1.4rem; padding-right: 1.4rem; }
+  .int-page { padding-top: 6.5rem; }
+}
 
 /* ── THE CLOSING SPLIT (both product pages) ── */
 .page-split {

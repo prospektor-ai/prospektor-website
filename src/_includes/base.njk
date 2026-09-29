@@ -199,6 +199,10 @@
         their own mail client. The five other places that publish the address
         (help hub, each guide, /pricing/, /terms/) are untouched — there it
         reads as a courtesy in context, not as a competing route. -#}
+    {#- #838. The integrations directory's one inbound link on every page: a
+        page nothing links to is an orphan, and the header is full (site.json
+        measures a seventh item as an overflow). -#}
+    <li><a href="{{ '/integrations/' | localize }}">{% t %}Integrations{% endt %}</a></li>
     <li><a href="{{ '/contact/' | localize }}">{% t %}Contact{% endt %}</a></li>
   </ul>
   {#- The language switcher (#114): each language in its own name, so the

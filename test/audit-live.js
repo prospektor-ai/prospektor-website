@@ -710,6 +710,9 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
                        // nor the cause. test/drive.js keeps the same list for
                        // the built sitemap and needs the same edit.
                        'https://prospektor.ai/contact/',
+                       // #838. The integrations directory, before the Close
+                       // page that sits under it, in the sitemap's own order.
+                       'https://prospektor.ai/integrations/',
                        // #620. The page Close's integration directory points
                        // at, appended here because it was appended to the
                        // sitemap — the paragraph above is the whole rule.
