@@ -85,6 +85,9 @@ const ROOT = path.join(__dirname, '..');
 const ARTICLES = path.join(ROOT, 'src', 'resources');
 const HUB = path.join(ROOT, 'src', 'resources.njk');
 const LAYOUT = path.join(ROOT, 'src', '_includes', 'article.njk');
+const LEARN_HUB = path.join(ROOT, 'src', 'learn.njk');
+const LEARN_LAYOUT = path.join(ROOT, 'src', 'learn-lesson.njk');
+const LESSONS = path.join(ROOT, 'data', 'lessons.json');
 const SNAPSHOT = path.join(ROOT, 'data', 'studio-strings.json');
 const CORPUS = path.join(ROOT, 'data', 'help-corpus.json');
 
@@ -145,11 +148,34 @@ function readSurface(file, kind) {
   };
 }
 
-/** The real surfaces: every article, the hub and the layout. */
+/**
+ * The lessons of /learn/ (#742), one surface each, out of the snapshot the
+ * pages are drawn from. A lesson's `names` is what it teaches by name, the
+ * same list the studio's `dev/course-coverage.js` checks on its side; here it
+ * is checked against the vendored strings the way an article's is, so a
+ * lesson the studio rewrote and this repo has not re-snapshotted fails by
+ * name rather than going on teaching a button that is gone.
+ */
+function readLessons() {
+  if (!fs.existsSync(LESSONS)) return [];
+  const raw = JSON.parse(fs.readFileSync(LESSONS, 'utf8'));
+  return (raw.lessons || []).map(l => ({
+    file: `data/lessons.json#day-${l.day}`,
+    kind: 'lesson',
+    slug: null,
+    names: Array.isArray(l.names) ? l.names : [],
+    text: [l.subject, l.opener, ...(l.bullets || []), l.close, l.label].filter(Boolean).join('\n'),
+  }));
+}
+
+/** The real surfaces: every article, the hub and the layout, and /learn/'s hub, layout and lessons. */
 function readSurfaces() {
   const out = fs.readdirSync(ARTICLES).filter(f => f.endsWith('.md')).sort().map(f => readSurface(path.join(ARTICLES, f), 'article'));
   out.push(readSurface(HUB, 'hub'));
   out.push(readSurface(LAYOUT, 'layout'));
+  if (fs.existsSync(LEARN_HUB)) out.push(readSurface(LEARN_HUB, 'hub'));
+  if (fs.existsSync(LEARN_LAYOUT)) out.push(readSurface(LEARN_LAYOUT, 'layout'));
+  out.push(...readLessons());
   return out;
 }
 
@@ -290,8 +316,9 @@ function resourcesFailures(report) {
 function print(report) {
   const failures = resourcesFailures(report);
   const articles = report.surfaces.filter(s => s.kind === 'article').length;
+  const lessons = report.surfaces.filter(s => s.kind === 'lesson').length;
   const age = report.snapshot ? `studio strings as of ${report.snapshot.fetchedAt || '?'}${report.snapshot.commit ? ` (${report.snapshot.commit.slice(0, 7)})` : ''}, ${report.strings.length} of them` : 'no studio strings snapshot';
-  console.log(`  ${articles} articles, the hub and the layout · ${age} · ${report.corpus.length} help guides\n`);
+  console.log(`  ${articles} articles, the hub and the layout, ${lessons} lessons of /learn/ · ${age} · ${report.corpus.length} help guides\n`);
   for (const s of report.surfaces) {
     const names = Array.isArray(s.names) ? s.names : [];
     if (!names.length) continue;
@@ -310,7 +337,7 @@ function print(report) {
   return failures;
 }
 
-module.exports = { EXCLUSIONS, slugOf, says, linksIn, readSurface, readSurfaces, readSnapshot, readCorpus, resourcesCoverage, resourcesFailures };
+module.exports = { EXCLUSIONS, slugOf, says, linksIn, readSurface, readSurfaces, readLessons, readSnapshot, readCorpus, resourcesCoverage, resourcesFailures };
 
 if (require.main === module) {
   const report = resourcesCoverage();

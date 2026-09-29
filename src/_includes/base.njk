@@ -203,6 +203,9 @@
         page nothing links to is an orphan, and the header is full (site.json
         measures a seventh item as an overflow). -#}
     <li><a href="{{ '/integrations/' | localize }}">{% t %}Integrations{% endt %}</a></li>
+    {#- #742. The course as pages has the same one inbound link the directory
+        has, for the same reason: the header is full. -#}
+    <li><a href="{{ '/learn/' | localize }}">{% t %}Learn{% endt %}</a></li>
     <li><a href="{{ '/contact/' | localize }}">{% t %}Contact{% endt %}</a></li>
   </ul>
   {#- The language switcher (#114): each language in its own name, so the

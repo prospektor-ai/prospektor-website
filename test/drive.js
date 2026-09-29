@@ -802,6 +802,9 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
                     // procurement types, and this is the site's own answer.
                     'https://prospektor.ai/dpa/',
                     'https://prospektor.ai/resources/',
+                    // #742. The course as pages; its eight lessons are derived
+                    // below from data/lessons.json, the way the articles are.
+                    'https://prospektor.ai/learn/',
                     'https://prospektor.ai/help/',
                     // #456. A static page like the rest, and it carries no
                     // <lastmod> for the same reason they don't. It is listed
@@ -841,7 +844,10 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     // A guide URL lives under /help/ in any built language's prefix (#535).
     const isGuide = l => i18n.built().some(x => l.startsWith('https://prospektor.ai' + x.prefix + '/help/'));
     const guideLocs = derived.filter(isGuide);
-    const articleLocs = derived.filter(l => !isGuide(l));
+    // A lesson of /learn/ (#742): derived from the snapshot, never listed.
+    const isLesson = l => l.startsWith('https://prospektor.ai/learn/');
+    const lessonLocs = derived.filter(isLesson);
+    const articleLocs = derived.filter(l => !isGuide(l) && !isLesson(l));
     check('sitemap lists exactly the static pages we want ranked, each with its built twins',
       JSON.stringify(locs.slice(0, staticWithTwins.length)) === JSON.stringify(staticWithTwins), locs);
     check('the Spanish funnel is in the sitemap beside its English pages (#114)',
@@ -868,6 +874,11 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
       articleLocs.length === slugs.length
       && slugs.every(s => articleLocs.includes('https://prospektor.ai/resources/' + s + '/')),
       { listed: articleLocs.length, onDisk: slugs.length });
+    const lessons = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'lessons.json'), 'utf8')).lessons;
+    check('sitemap lists every lesson of /learn/ and nothing else under it (#742)',
+      lessonLocs.length === lessons.length
+      && lessons.every(l => lessonLocs.includes(`https://prospektor.ai/learn/day-${l.day}/`)),
+      { listed: lessonLocs.length, inSnapshot: lessons.length });
 
     // The guide URLs, the same way (#166): derived from the corpus rather than
     // listed, so a guide the studio adds is submitted at the next build and one
@@ -890,9 +901,11 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     // rather than a build stamp — the terms #135 set for adding them at all.
     // The guides carry none, and deliberately: the corpus has no dates, and a
     // stamp taken at build time would claim every guide changed on every deploy.
-    check('every article carries a real lastmod, and no static or guide page does',
+    // A lesson of /learn/ carries none either (#742): the snapshot's date is
+    // when the words were copied, not when they changed.
+    check('every article carries a real lastmod, and no static, guide or lesson page does',
       [...xml.matchAll(/<loc>([^<]+)<\/loc>(<lastmod>[^<]+<\/lastmod>)?/g)]
-        .every(([, loc, mod]) => staticWithTwins.includes(loc) || guideLocs.includes(loc)
+        .every(([, loc, mod]) => staticWithTwins.includes(loc) || guideLocs.includes(loc) || lessonLocs.includes(loc)
           ? mod === undefined
           : /<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/.test(mod || '')), xml);
 

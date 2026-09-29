@@ -1,0 +1,188 @@
+{
+  "//": "The getting-started course, as `public/lessons.js` in prospektor-ai/studio holds it, read out of that checkout by `npm run lessons:snapshot`. Do not hand-edit: `/learn/` draws these pages from it (#742) and `tools/resources-coverage.js` checks their names against the product.",
+  "fetchedAt": "2026-09-29",
+  "source": {
+    "repo": "prospektor-ai/studio",
+    "file": "public/lessons.js",
+    "commit": "08b6e5bef17a4f2697c4e0b90693e051e29fdc52"
+  },
+  "groups": [
+    {
+      "id": "day",
+      "name": "Your first day",
+      "days": [
+        1,
+        3
+      ]
+    },
+    {
+      "id": "week",
+      "name": "Your first week",
+      "days": [
+        4,
+        6
+      ]
+    },
+    {
+      "id": "after",
+      "name": "After that",
+      "days": [
+        7,
+        8
+      ]
+    }
+  ],
+  "lessons": [
+    {
+      "day": 1,
+      "topic": "Getting started",
+      "subject": "Where the studio starts you",
+      "opener": "Every sign-in lands on Getting started: your name, and one box asking what you want to do today.",
+      "bullets": [
+        "Type it in your own words. Name a company, or say the kind you are after.",
+        "The studio opens the screen that does it, with what you typed already in its box.",
+        "Nothing runs until you press the button there, and a question opens the support chat."
+      ],
+      "close": "Under the box, Find and Engage: the seven things the studio can do. Press one, or type instead.",
+      "path": "/start",
+      "label": "Open Getting started",
+      "names": [
+        "Getting started",
+        "Find",
+        "Engage"
+      ]
+    },
+    {
+      "day": 2,
+      "topic": "Leads for you",
+      "subject": "The companies waiting under Leads for you",
+      "opener": "Leads for you holds companies the studio thinks you should approach, each with a fit score out of 100 and one line on why.",
+      "bullets": [
+        "Glance reads one in fifteen seconds. Prospekt writes the rest.",
+        "Skip teaches the studio what not to bring back. The shelf refills on its own.",
+        "Who we hunt, on the sidebar, is the sentence the shelf is built from."
+      ],
+      "close": "Change that sentence and the shelf changes with it.",
+      "path": "/leads",
+      "label": "Open Leads for you",
+      "names": [
+        "Leads for you",
+        "fit score",
+        "Glance",
+        "Prospekt",
+        "Skip",
+        "Who we hunt"
+      ]
+    },
+    {
+      "day": 3,
+      "topic": "Prospekt",
+      "subject": "What one Prospekt gives you",
+      "opener": "One press on Prospekt buys the research, the fit case, who decides, and every deliverable your workspace has switched on, written in your voice.",
+      "bullets": [
+        "It runs in the background. Leave the screen and it finishes without you.",
+        "Every claim carries the page it came from.",
+        "The finished pitch lands in the Library and, if you want, in your inbox."
+      ],
+      "close": "Read one all the way to the end today. Tomorrow you fix a line in it.",
+      "path": "/library",
+      "label": "Open the Library",
+      "names": [
+        "Prospekt",
+        "Library"
+      ]
+    },
+    {
+      "day": 4,
+      "topic": "Your voice",
+      "subject": "One edit teaches the studio your voice",
+      "opener": "A saved edit is a lesson. Fix one sentence you would never send, save it, and every later pitch is written with that in mind.",
+      "bullets": [
+        "Open a pitch in the Library and press Edit on any deliverable.",
+        "Change the one line that is not you. Leave the rest.",
+        "Save. The studio keeps the before and the after as a voice record."
+      ],
+      "close": "Eight of those and the pitches stop needing the edit.",
+      "path": "/library",
+      "label": "Open the Library",
+      "names": [
+        "Library",
+        "Edit",
+        "Save"
+      ]
+    },
+    {
+      "day": 5,
+      "topic": "Outcomes",
+      "subject": "Say what happened, and the next pitch is better",
+      "opener": "Outcomes is the part of the studio that compounds. A recorded outcome is what every later pitch, prep sheet and evaluation is written from.",
+      "bullets": [
+        "Press the badge on any lead: replied, meeting, won, lost, or never answered. Or open Outcomes and type any company, found here or not.",
+        "Add one line in your own words. That line is worth more than the badge.",
+        "Make sense of this reads the record back: what won, what lost, and what to ask next."
+      ],
+      "close": "A workspace that records nothing gets run 1 on run 100. Record one today.",
+      "path": "/outcomes",
+      "label": "Open Outcomes",
+      "names": [
+        "Outcomes",
+        "Make sense of this"
+      ]
+    },
+    {
+      "day": 6,
+      "topic": "Your network",
+      "subject": "Import who your team knows",
+      "opener": "Your network turns a cold pitch into a warm one. Import it once and every pitch after it checks who already knows the way in.",
+      "bullets": [
+        "Export your LinkedIn connections as Connections.csv and drop it on Your network.",
+        "Or paste a list of names and companies. Either works.",
+        "Email addresses are dropped at import. Only you can remove what you imported."
+      ],
+      "close": "Five minutes, once. Tomorrow you see what it finds.",
+      "path": "/network",
+      "label": "Open Your network",
+      "names": [
+        "Your network",
+        "Connections.csv"
+      ]
+    },
+    {
+      "day": 7,
+      "topic": "Warm paths",
+      "subject": "Warm paths: you, a connector, the target",
+      "opener": "Every finished pitch now has a Warm paths panel: who you know that knows the decision-makers, ranked, with the evidence beside each route.",
+      "bullets": [
+        "It opens with who you already know there, before any search.",
+        "Each path comes with a forwardable intro request, written in your voice.",
+        "A pitch that predates your import finds its paths on demand."
+      ],
+      "close": "Open your best pitch and read the panel. That is the email to send first.",
+      "path": "/library",
+      "label": "Open the Library",
+      "names": [
+        "Warm paths"
+      ]
+    },
+    {
+      "day": 8,
+      "topic": "Your own agent",
+      "subject": "Let your own tools call the studio",
+      "opener": "A token lets something that is not a browser talk to your workspace: your CRM, a script, an agent you are building.",
+      "bullets": [
+        "Workspace settings, Connect your apps, Your own agent, New token. Tick what it may do and when it expires.",
+        "The secret is shown once. Copy it then.",
+        "Every call answers with the same sources the studio shows you."
+      ],
+      "close": "Only the workspace owner sees it. That is the whole course. Reply to this email and a person reads it.",
+      "path": "/settings/workspace",
+      "label": "Open Workspace settings",
+      "names": [
+        "Workspace settings",
+        "Connect your apps",
+        "Your own agent",
+        "New token"
+      ]
+    }
+  ]
+}

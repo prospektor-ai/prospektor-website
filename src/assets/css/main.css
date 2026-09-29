@@ -1335,6 +1335,31 @@ footer {
 .res-filter-count:empty { display: none; }
 .res-card[hidden] { display: none; }
 
+/* ── /learn/ (#742): the course as pages, on the resources components ──
+   A group heading between two card grids, and the previous/next pair at the
+   foot of a lesson; everything else is `.res-*`. */
+.learn-group {
+  font-family: var(--mono); font-size: 0.68rem; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint);
+  margin: 2.25rem 0 0.9rem;
+}
+.learn-group:first-child { margin-top: 0; }
+.learn-grid { margin-bottom: 0.5rem; }
+.learn-nav {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  margin: 2.5rem 0 0; padding-top: 1.5rem; border-top: 1px solid var(--border);
+}
+.learn-nav-link {
+  display: flex; flex-direction: column; gap: 0.3rem; text-decoration: none;
+}
+.learn-nav-next { text-align: right; align-items: flex-end; }
+.learn-nav-link:hover .res-more-title { color: var(--accent-dim); }
+.learn-where { font-size: 0.92rem; color: var(--ink-mid); }
+@media (max-width: 600px) {
+  .learn-nav { grid-template-columns: 1fr; }
+  .learn-nav-next { text-align: left; align-items: flex-start; }
+}
+
 .res-hub-cta {
   border-top: 1px solid var(--border); margin-top: 3.5rem;
   background: var(--off-white); padding: 4rem 2.5rem; text-align: center;

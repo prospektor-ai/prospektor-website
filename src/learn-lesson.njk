@@ -1,0 +1,115 @@
+---
+layout: base.njk
+pagination:
+  data: lessons.lessons
+  size: 1
+  alias: lesson
+permalink: "/learn/{{ lesson.slug }}/"
+eleventyComputed:
+  title: "{{ lesson.title }}"
+  seoTitle: "{{ lesson.title }}"
+  description: "{{ lesson.description }}"
+# The screens and buttons the closing line of every lesson page names, as the
+# product spells them; each lesson's own names ride in data/lessons.json and
+# tools/resources-coverage.js reads them from there (#742).
+names: [Getting started]
+---
+
+{#- One lesson of the course as a page (#742): the mail's own words, in the
+    article idiom. The subject is the title, the opener the first paragraph,
+    the bullets a list, the close the last line, and then the same ending
+    every article has, the free scan, because a reader here has no workspace
+    to open the lesson's screen in. The lesson's own button lives in the
+    product and in the mail; here its screen is named once, in the last
+    line, so a reader who does have a workspace knows where to go. -#}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": {{ lesson.title | dump | safe }},
+  "description": {{ lesson.description | dump | safe }},
+  "datePublished": "{{ lessons.fetchedAt }}",
+  "dateModified": "{{ lessons.fetchedAt }}",
+  "author": { "@id": "{{ site.url }}/#organization" },
+  "publisher": { "@id": "{{ site.url }}/#organization" },
+  "image": "{{ site.url }}{{ '/assets/img/og.png' | asset }}",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ site.url }}{{ page.url }}" },
+  "isAccessibleForFree": true,
+  "isPartOf": { "@type": "WebPage", "@id": "{{ site.url }}/learn/", "name": "Learn Prospektor" },
+  "articleSection": "learn",
+  "inLanguage": "en"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "{{ site.name }}", "item": "{{ site.url }}/" },
+    { "@type": "ListItem", "position": 2, "name": "Learn", "item": "{{ site.url }}/learn/" },
+    { "@type": "ListItem", "position": 3, "name": {{ lesson.subject | dump | safe }} }
+  ]
+}
+</script>
+
+<article class="res-article learn-lesson">
+
+  <header class="res-hero">
+    <div class="res-hero-inner">
+      <a class="res-back" href="/learn/">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5L5 8l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Learn
+      </a>
+      <span class="tag">{{ lesson.topic }}</span>
+      <h1 class="res-h1">{{ lesson.subject }}</h1>
+      <div class="res-meta">
+        <span>Day {{ lesson.day }} of {{ lessons.count }}</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="res-body">
+    <div class="res-prose">
+      <p>{{ lesson.opener }}</p>
+      <ul>
+        {%- for bullet in lesson.bullets %}
+        <li>{{ bullet }}</li>
+        {%- endfor %}
+      </ul>
+      <p>{{ lesson.close }}</p>
+      <p class="learn-where">In the studio this is <a href="https://studio.prospektor.ai{{ lesson.path }}">{{ lesson.label | replace("Open the ", "the ") | replace("Open ", "") }}</a>. New here? Every workspace starts on Getting started.</p>
+    </div>
+
+    <aside class="res-cta">
+      <span class="tag">try it</span>
+      <h2>See this run on your own company</h2>
+      <p>Prospektor reads a company's own website before it says anything about
+        them (what they sell, to whom, and what changed recently), then scores fit
+        and drafts what to send. The scan is free and takes about ninety seconds.</p>
+      <a class="btn-cta" href="/#scan">Scan your site</a>
+      <span class="res-cta-note">No account. No card. Nothing to install.</span>
+    </aside>
+
+    <nav class="learn-nav" aria-label="The course, in order">
+      {%- if lesson.previous %}
+      <a class="learn-nav-link" href="{{ lesson.previous.url }}">
+        <span class="res-card-topic">Day {{ lesson.previous.day }}</span>
+        <span class="res-more-title">{{ lesson.previous.subject }}</span>
+      </a>
+      {%- else %}<span></span>{%- endif %}
+      {%- if lesson.next %}
+      <a class="learn-nav-link learn-nav-next" href="{{ lesson.next.url }}">
+        <span class="res-card-topic">Day {{ lesson.next.day }}</span>
+        <span class="res-more-title">{{ lesson.next.subject }}</span>
+      </a>
+      {%- else %}
+      <a class="learn-nav-link learn-nav-next" href="/learn/">
+        <span class="res-card-topic">That is the course</span>
+        <span class="res-more-title">Back to all eight</span>
+      </a>
+      {%- endif %}
+    </nav>
+  </div>
+
+</article>

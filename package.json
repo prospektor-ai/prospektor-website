@@ -13,6 +13,7 @@
     "learnings": "node tools/learning-coverage.js",
     "resources:coverage": "node tools/resources-coverage.js",
     "strings:snapshot": "node tools/strings-snapshot.js",
+    "lessons:snapshot": "node tools/lessons-snapshot.js",
     "i18n:coverage": "node tools/i18n-strings.js",
     "gsc": "node tools/gsc.js",
     "gsc:check": "node tools/gsc.js check",
