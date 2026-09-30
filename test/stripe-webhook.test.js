@@ -518,3 +518,36 @@ describe('stripe-webhook resume notice', () => {
     assert.equal(welcome(calls), undefined, 'no second welcome for a studio they already know');
   });
 });
+
+// ── The partner marker (#885, the #126 ask): metadata[ref] becomes `ref` ──
+describe('the partner marker reaches provisioning', () => {
+  const SECRET = 'whsec_test';
+  const provisioned = () => ['/api/provision', { status: 200, body: { client: { id: 'acme' } } }];
+  beforeEach(() => {
+    resetEnv();
+    process.env.STRIPE_WEBHOOK_SECRET = SECRET;
+    process.env.STUDIO_PROVISION_SECRET = 'shh';
+    process.env.POSTMARK_SERVER_TOKEN = 'pm';
+  });
+
+  test('a session that carried metadata[ref] provisions with `ref`, and the operator is told', async () => {
+    const calls = stubFetch([provisioned(), ['postmarkapp', { status: 200, body: {} }]]);
+    const r = await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({
+      email: 'b@acme.com', metadata: { domain: 'acme.com', ref: 'bffa8b94-b25a-45a4-97a0-1c8ecb8018b9' } })));
+    assert.equal(r.statusCode, 200);
+    const body = JSON.parse(calls.find(c => c.url.includes('/api/provision')).body);
+    assert.equal(body.ref, 'bffa8b94-b25a-45a4-97a0-1c8ecb8018b9');
+    const notice = calls.filter(c => c.url.includes('postmarkapp')).map(c => JSON.parse(c.body)).find(m => /order/i.test(m.Subject));
+    assert.match(notice.TextBody, /Referred: bffa8b94-b25a-45a4-97a0-1c8ecb8018b9/);
+  });
+
+  test('a session with no marker sends no `ref`, so every other buyer\'s call is unchanged', async () => {
+    const calls = stubFetch([provisioned(), ['postmarkapp', { status: 200, body: {} }]]);
+    await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({ email: 'b@acme.com', metadata: { domain: 'acme.com' } })));
+    const body = JSON.parse(calls.find(c => c.url.includes('/api/provision')).body);
+    assert.equal(body.ref, undefined);
+    assert.ok(!('ref' in body));
+    const notice = calls.filter(c => c.url.includes('postmarkapp')).map(c => JSON.parse(c.body)).find(m => /order/i.test(m.Subject));
+    assert.ok(!/Referred/.test(notice.TextBody));
+  });
+});

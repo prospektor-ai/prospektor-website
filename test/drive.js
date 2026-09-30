@@ -1963,6 +1963,130 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     await page.close();
   }
 
+  // ── §19 THE PARTNER PROGRAMME, DARK AND LIT (#885) ────────────────────────
+  //
+  // The absent-key test that matters, in a real browser: with the programme
+  // dark, accepting every cookie category loads no Rewardful, sets no cookie
+  // and the buy request carries no marker. Then the same site built lit, on a
+  // second port, with r.wdfl.co answered by a stub: nothing loads before an
+  // answer or after Reject; Accept creates the script from the handoff, the
+  // stub's referral is read at the press, and the panel names the cookie.
+  {
+    const UUID = 'bffa8b94-b25a-45a4-97a0-1c8ecb8018b9';
+    const watch = page => {
+      const hosts = new Set();
+      page.on('request', r => { const h = new URL(r.url()).host; if (!/^localhost:889[89]$/.test(h)) hosts.add(h); });
+      return hosts;
+    };
+    const buyPage = async (origin) => {
+      const page = await browser.newPage();
+      const posts = [];
+      await page.route('**/.netlify/functions/create-checkout-session', async route => {
+        if (route.request().method() === 'GET')
+          return route.fulfill({ status: 200, body: JSON.stringify({ configured: true }) });
+        posts.push(JSON.parse(route.request().postData()));
+        return route.fulfill({ status: 200, contentType: 'application/json',
+          body: JSON.stringify({ url: 'https://checkout.stripe.com/c/pay/cs_live_1' }) });
+      });
+      await page.route('https://checkout.stripe.com/**', route =>
+        route.fulfill({ status: 200, contentType: 'text/html', body: '<h1>STRIPE CHECKOUT</h1>' }));
+      const hosts = watch(page);
+      return { page, posts, hosts };
+    };
+    const buy = async page => {
+      await page.waitForSelector('#buyForm:not([hidden])', { timeout: 5000 });
+      await page.fill('#buyEmail', 'buyer@acme.com');
+      await page.click('#buyBtn');
+      await page.waitForURL(/checkout\.stripe\.com/, { timeout: 5000 });
+    };
+    const panelRows = async page => {
+      await page.click('footer a[data-cookies]');
+      await page.waitForSelector('.ppsc-panel', { timeout: 5000 });
+      return page.$$eval('.ppsc-table td:first-child', ns => ns.map(n => n.textContent));
+    };
+
+    // 19a — dark, which is production today
+    {
+      const { page, posts, hosts } = await buyPage('http://localhost:8899');
+      await page.goto('http://localhost:8899/pricing/?via=agency');
+      await page.waitForSelector('.ppsc-bar', { timeout: 5000 });
+      check('dark: no handoff for Rewardful on the page', !(await page.$('#ppsc-gated-rewardful')));
+      await page.click('.ppsc-bar .ppsc-btn-primary');
+      await page.waitForTimeout(400);
+      check('dark: accepting everything creates no Rewardful script',
+        !(await page.$('script[data-rewardful]')) && ![...hosts].some(h => /wdfl/.test(h)), [...hosts]);
+      check('dark: no cookie of any kind', (await page.context().cookies()).length === 0, await page.context().cookies());
+      check('dark: the buyer has no Rewardful object to read', await page.evaluate(() => typeof window.Rewardful === 'undefined'));
+      await buy(page);
+      check('dark: the checkout call carries no referral', posts.length === 1 && !('referral' in posts[0]), posts);
+      check('dark: the browser asked nobody outside this origin but the mocked Stripe',
+        [...hosts].every(h => h === 'checkout.stripe.com'), [...hosts]);
+      await page.goto('http://localhost:8899/pricing/');
+      const rows = await panelRows(page);
+      check('dark: the panel names no cookie', !rows.some(r => /rewardful/i.test(r)), rows);
+      await page.goto('http://localhost:8899/partners/');
+      check('dark: /partners/ is Coming soon', ((await page.textContent('h1')) || '').trim() === 'Coming soon.');
+      check('and says nothing else', !(await page.$('.partner-terms')));
+      await page.close();
+    }
+
+    // 19b — lit: the same site with the key set, on port 8898
+    const LIT = fs.mkdtempSync(path.join(require('os').tmpdir(), 'drive-rewardful-lit-'));
+    require('./helpers.js').buildInto(LIT, { REWARDFUL_API_KEY: 'rwf-test-key-885',
+      REWARDFUL_SIGNUP_URL: 'https://prospektor.getrewardful.com/signup', HELP_CORPUS_OFFLINE: '1' });
+    const litServer = await serve(LIT, 8898);
+    try {
+      const { page, posts, hosts } = await buyPage('http://localhost:8898');
+      const rwHits = [];
+      await page.route('https://r.wdfl.co/rw.js', route => {
+        rwHits.push(route.request().url());
+        return route.fulfill({ status: 200, contentType: 'application/javascript',
+          body: `window.Rewardful = { referral: '${UUID}' }; document.cookie = 'rewardful.referral=${UUID}; path=/';` });
+      });
+      await page.goto('http://localhost:8898/pricing/?via=agency');
+      await page.waitForSelector('.ppsc-bar', { timeout: 5000 });
+      const handoff = await page.$eval('#ppsc-gated-rewardful', n => JSON.parse(n.textContent));
+      check('lit: the handoff is on the page, inert, with the key', handoff['data-rewardful'] === 'rwf-test-key-885', handoff);
+      check('lit: nothing is fetched from Rewardful before an answer', rwHits.length === 0 && (await page.context().cookies()).length === 0);
+      const buttons = await page.$$eval('.ppsc-bar .ppsc-btn', ns => ns.map(n => n.textContent));
+      check('lit: the banner is still the same two-button choice', buttons.join('|') === 'Reject|Accept', buttons);
+      await page.click('.ppsc-bar .ppsc-btn-equal');
+      await page.waitForTimeout(400);
+      check('lit: Reject loads nothing and sets nothing', rwHits.length === 0 && (await page.context().cookies()).length === 0);
+      await buy(page);
+      check('lit: a buyer who rejected sends no referral', posts.length === 1 && !('referral' in posts[0]), posts);
+      // A fresh visitor on the same lit site: Accept. (Back on this origin
+      // first: the buy left the page on the mocked Stripe origin, whose
+      // storage is not ours to clear.)
+      await page.goto('http://localhost:8898/pricing/');
+      await page.evaluate(() => { try { localStorage.clear(); } catch (e) {} });
+      await page.goto('http://localhost:8898/pricing/?via=agency');
+      await page.waitForSelector('.ppsc-bar', { timeout: 5000 });
+      await page.click('.ppsc-bar .ppsc-btn-primary');
+      await page.waitForFunction(() => window.Rewardful && window.Rewardful.referral, null, { timeout: 5000 }).catch(() => {});
+      check('lit: Accept creates the script from the handoff, once', rwHits.length === 1
+        && (await page.$$('script[data-rewardful]')).length === 1, rwHits);
+      check('lit: the queue stub is defined for rewardful(\'ready\', …)', await page.evaluate(() => typeof window.rewardful === 'function' && window._rwq === 'rewardful'));
+      const cookies = await page.context().cookies();
+      check('lit: the referral cookie is first-party on this origin', cookies.length === 1 && cookies[0].name === 'rewardful.referral', cookies);
+      await buy(page);
+      check('lit: the checkout call carries the referral read at the press', posts.length === 2 && posts[1].referral === UUID, posts[1]);
+      await page.goto('http://localhost:8898/pricing/');
+      const rows = await panelRows(page);
+      check('lit: the panel names the cookie', rows.includes('rewardful.referral'), rows);
+      await page.goto('http://localhost:8898/partners/');
+      check('lit: /partners/ carries the seven terms',
+        (await page.$$('.partner-terms li')).length === 7);
+      check('and the signup link', (await page.getAttribute('.partner-terms + p a', 'href')) === 'https://prospektor.getrewardful.com/signup');
+      check('lit: the only host outside this origin was Rewardful\'s script, and only after Accept',
+        [...hosts].every(h => h === 'r.wdfl.co' || h === 'checkout.stripe.com'), [...hosts]);
+      await page.close();
+    } finally {
+      litServer.close();
+      fs.rmSync(LIT, { recursive: true, force: true });
+    }
+  }
+
   await browser.close();
   server.close();
   console.log('\n' + pass + ' passed, ' + fail + ' failed');

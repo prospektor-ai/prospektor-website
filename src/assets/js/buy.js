@@ -42,6 +42,14 @@
   // the welcome email speak it too. Nothing is sent for English, so an
   // English purchase is the request it always was.
   const LANG = document.documentElement.lang || 'en';
+  // #885: the partner marker, read at the press. `Rewardful.referral` exists
+  // only on a page where the programme is on AND the visitor allowed
+  // marketing (consent.js creates the script inside its gate), so on every
+  // other page this adds nothing and the request is the one it always was.
+  const referral = () => {
+    try { const r = window.Rewardful && window.Rewardful.referral; return r ? { referral: String(r) } : {}; }
+    catch (e) { return {}; }
+  };
   // #620: which page this form is on, and which partner arrival it speaks for.
   // Both come off the markup, never off the URL — the offer belongs to the page
   // that states it, so no query parameter a stranger types can claim it. The
@@ -117,7 +125,7 @@
           // #542: monthly sends nothing, the way English sends no locale — so
           // a monthly purchase is the request this has always made.
         }, plan === 'year' ? { plan: 'year' } : {}, LANG === 'en' ? {} : { locale: LANG },
-           VIA ? { via: VIA } : {}, utm ? { utm: utm } : {})),
+           VIA ? { via: VIA } : {}, utm ? { utm: utm } : {}, referral())),
       });
       data = await response.json().catch(() => null);
     } catch (err) {

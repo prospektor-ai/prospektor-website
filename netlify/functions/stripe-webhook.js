@@ -221,7 +221,12 @@ async function freeUntil(session) {
 // `freeUntil` below, so the studio's ledger can say *free until* instead of
 // reading a trial as a customer paying list price. Omitted on a full-price
 // checkout, so an older studio and every other buyer see nothing new.
-async function callProvision({ email, company, website, goal, marketing, language, endsAt, secret }) {
+// `ref` (#885, the 24 Aug #126 ask) is the partner marker that rode through
+// checkout as `metadata[ref]`: Rewardful's referral id, a UUID, and never a
+// name or an address (create-checkout-session refuses any other shape). The
+// studio files the workspace as `referred` on it; omitted when there is none,
+// so every other buyer's provision call is the call it always was.
+async function callProvision({ email, company, website, goal, marketing, language, endsAt, ref, secret }) {
   // `plan: 'paid'` because this caller is the one door money actually came
   // through — the studio defaults everything else to 'comped', and without
   // this line every checkout-provisioned workspace was landing as comped
@@ -237,6 +242,7 @@ async function callProvision({ email, company, website, goal, marketing, languag
     marketing: marketing || undefined,
     language: language || undefined,
     endsAt: endsAt || undefined,
+    ref: ref || undefined,
   });
   for (let attempt = 0; ; attempt++) {
     try {
@@ -328,7 +334,7 @@ async function sendMail({ to, subject, textBody, htmlBody, replyTo }) {
 // and asks the buyer to confirm it on first sign-in. Treating that as a
 // failure would fire a warning on every direct purchase, which is the fastest
 // way to teach someone to ignore the warning.
-async function sendOperatorNotice({ email, company, website, goal, language, clientId, existing, resumed, goalRecorded }) {
+async function sendOperatorNotice({ email, company, website, goal, language, ref, clientId, existing, resumed, goalRecorded }) {
   const operator = process.env.OPERATOR_EMAIL || 'hello@prospektor.ai';
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   // Sent a sentence and the studio did not record it — the one case worth
@@ -359,6 +365,9 @@ async function sendOperatorNotice({ email, company, website, goal, language, cli
     // #114: which language they bought in, so the operator knows before
     // writing back. Absent for English, which is the case with nothing to say.
     ['Language', language ? languageName(language) : ''],
+    // #885: which partner sent them, as Rewardful's referral id. Absent for
+    // every buyer nobody referred, which is the case with nothing to say.
+    ['Referred', ref],
     ['Workspace', clientId ? `${clientId} (${resumed ? 'RESUMED: was suspended, this payment reopened it' : existing ? 'EXISTING: no new workspace was created' : 'newly created'})` : ''],
   ];
   const textBody = [
@@ -621,6 +630,8 @@ exports.handler = async function(event) {
   // #114: the language the buyer read the funnel in — a code from the closed
   // set or nothing; English was never written, so it reads as nothing too.
   const language = (l => (l && l !== 'en' ? l : ''))(languageOf(metadata.language));
+  // #885: the partner marker, exactly as create-checkout-session wrote it.
+  const ref = String(metadata.ref || '').trim();
 
   const provisionSecret = process.env.STUDIO_PROVISION_SECRET;
   if (!provisionSecret) {
@@ -638,7 +649,7 @@ exports.handler = async function(event) {
 
   let provision;
   try {
-    provision = await callProvision({ email, company, website, goal, marketing, language, endsAt, secret: provisionSecret });
+    provision = await callProvision({ email, company, website, goal, marketing, language, endsAt, ref, secret: provisionSecret });
   } catch (e) {
     console.error('Studio unreachable after retries:', e.message);
     return { statusCode: 502, body: JSON.stringify({ error: 'Studio unreachable' }) };
@@ -675,7 +686,7 @@ exports.handler = async function(event) {
   if (endsAt && provision.data && provision.data.endsAt === false) {
     console.error('Free month end', endsAt, 'for', email, 'was sent but the studio did not record it.');
   }
-  await sendOperatorNotice({ email, company, website, goal, language, clientId, existing, resumed, goalRecorded });
+  await sendOperatorNotice({ email, company, website, goal, language, ref, clientId, existing, resumed, goalRecorded });
   if (!existing) await sendWelcomeEmail(email, language);
 
   return { statusCode: 200, body: JSON.stringify({ received: true }) };

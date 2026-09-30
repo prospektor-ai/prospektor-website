@@ -41,6 +41,7 @@ const { checkOwnership, ownershipMessage } = require('../lib/ownership');
 const { companyDomainFromEmail, cleanDomain } = require('../lib/email-domain');
 const { languageOf, LANGUAGES } = require('../../lib/i18n');
 const { trialDays, partnerOf } = require('../../lib/trial');
+const { rewardfulKey, referralOf } = require('../../lib/rewardful');
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -123,6 +124,13 @@ exports.handler = async function(event) {
   // an unarmed deploy sends Stripe the request it always sent.
   const partner = partnerOf(data.via);
   const trial = partner === 'close' ? trialDays() : 0;
+  // #885: the partner programme's marker, Rewardful's referral id, read by
+  // the page at the press. Honoured ONLY while the programme is on
+  // (`REWARDFUL_API_KEY` set) and only in the shape Stripe accepts for
+  // `client_reference_id`, so a dark deploy sends Stripe the request it
+  // always sent whatever a browser puts in the field, and a lit one can
+  // never put an address or a name where a marker belongs.
+  const referral = rewardfulKey() ? referralOf(data.referral) : '';
 
   // Required now, where it used to be optional. Stripe can collect an address
   // itself, but an address Stripe collects is one nothing has checked — and
@@ -207,6 +215,12 @@ exports.handler = async function(event) {
   // the subscription is cancelled first, which is exactly the sentence the page
   // is allowed to print when this is set.
   if (trial) params.set('subscription_data[trial_period_days]', String(trial));
+  // #885. `client_reference_id` is where Rewardful's Stripe integration reads
+  // the referral off a completed session (their server-side checkout guide,
+  // read 30 Sep 2026), and it is set only when there is one: Stripe refuses a
+  // blank. Mirrored as `metadata[ref]` below so the webhook can hand the same
+  // marker to /api/provision, which files the workspace as referred (#126).
+  if (referral) params.set('client_reference_id', referral);
   // #204: the optional marketing box. Only a literal true becomes metadata —
   // "false" from a form, or anything else truthy-looking, must never ride
   // through checkout and come out the other side as consent. Absent means
@@ -218,7 +232,7 @@ exports.handler = async function(event) {
   // they are what lets the operator answer "did the directory send anyone?"
   // from the Stripe dashboard on a site that sets no cookie and runs no tag.
   const tags = UTM.map(k => [k, meta((data.utm || {})[k])]);
-  for (const [k, v] of [['domain', website], ['company', company], ['goal', goal], ['marketing', marketing], ['language', lang ? lang.code : ''], ['plan', plan === 'month' ? '' : plan], ['via', partner], ...tags]) {
+  for (const [k, v] of [['domain', website], ['company', company], ['goal', goal], ['marketing', marketing], ['language', lang ? lang.code : ''], ['plan', plan === 'month' ? '' : plan], ['via', partner], ['ref', referral], ...tags]) {
     if (v) {
       params.set('metadata[' + k + ']', v);
       params.set('subscription_data[metadata][' + k + ']', v);

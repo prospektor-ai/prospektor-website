@@ -156,10 +156,36 @@
       retention: t('Nothing is kept on this device; Netlify keeps the metrics'),
     },
     /* No advertising. No session recording. No third party other than the one
-       named above, and nothing at all before consent. When that changes it
-       changes HERE first — the banner turns itself into the right shape,
-       and `gate()` is the only way in. */
+       named above and the one below, and nothing at all before consent. When
+       that changes it changes HERE first — the banner turns itself into the
+       right shape, and `gate()` is the only way in. */
   ];
+
+  /* ── The partner programme (#885): declared only where the build lit it ──
+     Rewardful's script resolves which partner sent a visitor and keeps the
+     answer in a first-party cookie, so the sale can be credited to them. It
+     is a marketing tracker, and it is DARK until the operator turns the
+     programme on (#886): the build writes the handoff node below only when
+     `REWARDFUL_API_KEY` is set (lib/rewardful.js), and this entry exists only
+     when that node does. So on a dark build the inventory is the four keys
+     and the one script above, byte for byte what it was, and the panel lists
+     no cookie — this origin sets none. Lit, the entry is what the visitor
+     reads, the banner gains the Marketing row, and `loadRewardful` at the
+     foot of this file is the only thing that ever creates the script.
+     `kind` and `category` share a line on purpose: test/drive.js counts the
+     inventory's `kind:` lines against the rows the dark panel shows. */
+  var REWARDFUL_TAG_ID = 'ppsc-gated-rewardful';
+  var rewardfulNode = document.getElementById(REWARDFUL_TAG_ID);
+  if (rewardfulNode) {
+    INVENTORY.push({
+      id: 'rewardful.referral',
+      name: 'rewardful.referral',
+      kind: t('Cookie'), category: 'marketing',
+      provider: 'Rewardful',
+      purpose: t('Which partner’s link brought you here, so that if you buy a workspace they are credited for it. Set by Rewardful’s script on this site, and read by Rewardful when a purchase completes. Off unless you turn it on.'),
+      retention: t('60 days'),
+    });
+  }
 
   /* The categories a person can answer for, in the order they are shown.
      `necessary` is not among them — it is disclosed, not negotiated. */
@@ -172,7 +198,7 @@
     {
       id: 'marketing',
       label: t('Marketing'),
-      blurb: t('Measuring which adverts brought someone here. Off unless you turn it on.'),
+      blurb: t('Measuring which adverts or partner links brought someone here. Off unless you turn it on.'),
     },
   ];
 
@@ -180,6 +206,13 @@
      vendor, a new category, a materially different use — never for wording.
      Consent to version N is not consent to version N+1's new tracker. */
   var POLICY_VERSION = 1;
+  /* The day the partner programme is turned on (#885/#886), Rewardful is a
+     new vendor in a category nobody has been asked about, which is exactly
+     the case the comment above describes: consent to version 1 is not consent
+     to it. So the version follows the build rather than waiting for somebody
+     to remember a one-line commit: a lit build asks everyone again, once, and
+     a dark build is still version 1 and asks nobody anything new. */
+  if (rewardfulNode) POLICY_VERSION = 2;
 
   /* A decision goes stale. Twelve months is the interval most European
      authorities land on (CNIL says at most 13), and re-asking is cheap. */
@@ -873,5 +906,46 @@
   api.gate('analytics', function () {
     if (document.body) reviveGatedScript();
     else document.addEventListener('DOMContentLoaded', reviveGatedScript);
+  });
+
+  /* ─────────────────── the partner programme's script (#885) ───────────────
+     The second gated thing, and the first in the marketing category. The
+     build writes the handoff only when the programme is on:
+
+       <script type="application/json" id="ppsc-gated-rewardful">
+         {"src":"https://r.wdfl.co/rw.js","data-rewardful":"<key>"}</script>
+
+     and this is the only route to a live tag, inside `gate('marketing', …)`.
+     Filtered harder than the RUM handoff, because this one names a third
+     party: the `src` has to be Rewardful's script and nothing else, the key
+     has to be the shape of a key, and no other attribute is carried over.
+     The queue stub Rewardful asks for in the head is defined here, just
+     before the script, so `rewardful('ready', fn)` works for anyone who
+     needs it and no inline script is ever served. `Rewardful.referral` is
+     what buy.js and checkout.js read at the press. */
+
+  var REWARDFUL_SRC = 'https://r.wdfl.co/rw.js';
+
+  function loadRewardful() {
+    var node = document.getElementById(REWARDFUL_TAG_ID);
+    if (!node) return;
+    var attrs;
+    try { attrs = JSON.parse(node.textContent || 'null'); } catch (e) { return; }
+    if (!attrs || typeof attrs !== 'object') return;
+    if (attrs.src !== REWARDFUL_SRC) return;
+    var key = attrs['data-rewardful'];
+    if (typeof key !== 'string' || !/^[A-Za-z0-9_-]{4,64}$/.test(key)) return;
+    if (document.querySelector('script[data-rewardful]')) return;
+    (function (w, r) { w._rwq = r; w[r] = w[r] || function () { (w[r].q = w[r].q || []).push(arguments); }; }(window, 'rewardful'));
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = REWARDFUL_SRC;
+    script.setAttribute('data-rewardful', key);
+    (document.head || document.documentElement).appendChild(script);
+  }
+
+  api.gate('marketing', function () {
+    if (document.body) loadRewardful();
+    else document.addEventListener('DOMContentLoaded', loadRewardful);
   });
 }());
