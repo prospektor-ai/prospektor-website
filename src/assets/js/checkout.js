@@ -18,6 +18,12 @@
   // #114: the language this checkout is read in — Stripe's hosted page,
   // the return URLs and the welcome email follow it. English sends nothing.
   const LANG = document.documentElement.lang || 'en';
+  // #885: the partner marker, read at the press — see buy.js. Nothing on a
+  // page where the programme is dark or marketing was not allowed.
+  const referral = () => {
+    try { const r = window.Rewardful && window.Rewardful.referral; return r ? { referral: String(r) } : {}; }
+    catch (e) { return {}; }
+  };
   // #542: monthly or yearly, chosen on the order card (or carried here as
   // `?plan=year` from /pricing/). plan.js owns the switch and announces the
   // choice; this only remembers which one to send. Monthly sends nothing, the
@@ -172,7 +178,7 @@
         body: JSON.stringify(Object.assign({
           domain: domain, company: company, goal: goal, email: email,
           marketing: !!(marketingBox && marketingBox.checked),
-        }, plan === 'year' ? { plan: 'year' } : {}, LANG === 'en' ? {} : { locale: LANG })),
+        }, plan === 'year' ? { plan: 'year' } : {}, LANG === 'en' ? {} : { locale: LANG }, referral())),
       });
       if (r.status === 503) { showFallback(); return; } // keys pulled since the probe
       const data = await r.json().catch(() => null);

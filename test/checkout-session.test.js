@@ -338,3 +338,54 @@ describe('create-checkout-session', () => {
     assert.equal((await post(fn, { email: 'f@acme.com', from: 'pricing' })).statusCode, 502);
   });
 });
+
+// ── The partner marker (#885): honoured only while the programme is on ──
+//
+// Rewardful's referral id reaches this function as `referral`, read by the
+// page at the press. Dark (no REWARDFUL_API_KEY), the field is ignored
+// whatever a browser sends and the Stripe request is byte for byte the one
+// this always sent. Lit, it becomes `client_reference_id` (where Rewardful's
+// Stripe integration reads it) and `metadata[ref]` (what the webhook hands to
+// /api/provision), and only in the shape Stripe accepts.
+describe('the partner marker', () => {
+  const REF = 'bffa8b94-b25a-45a4-97a0-1c8ecb8018b9';
+  beforeEach(() => { resetEnv(); delete process.env.REWARDFUL_API_KEY; process.env.STRIPE_SECRET_KEY = 'sk_test_x'; process.env.STUDIO_PROVISION_SECRET = 'shh'; });
+
+  test('dark: a referral in the body changes nothing about the Stripe request', async () => {
+    const calls = stubFetch([STRIPE_OK, FREE]);
+    await post(fn, { email: 'b@acme.com', from: 'pricing' });
+    await post(fn, { email: 'b@acme.com', from: 'pricing', referral: REF });
+    const [plain, withRef] = stripeCalls(calls).map(c => c.body);
+    assert.equal(withRef, plain, 'the request must be identical with the programme dark');
+    assert.ok(!plain.includes('client_reference_id') && !plain.includes('metadata%5Bref%5D'));
+  });
+
+  test('lit: the marker goes on the session as client_reference_id and as metadata[ref]', async () => {
+    process.env.REWARDFUL_API_KEY = 'rwf-test-key-885';
+    const calls = stubFetch([STRIPE_OK, FREE]);
+    await post(fn, { email: 'b@acme.com', from: 'pricing', referral: REF });
+    const p = new URLSearchParams(stripeCalls(calls)[0].body);
+    assert.equal(p.get('client_reference_id'), REF);
+    assert.equal(p.get('metadata[ref]'), REF);
+    assert.equal(p.get('subscription_data[metadata][ref]'), REF, 'mirrored onto the subscription like every other marker');
+  });
+
+  test('lit: no referral means no client_reference_id at all, because Stripe refuses a blank', async () => {
+    process.env.REWARDFUL_API_KEY = 'rwf-test-key-885';
+    const calls = stubFetch([STRIPE_OK, FREE]);
+    await post(fn, { email: 'b@acme.com', from: 'pricing' });
+    const body = stripeCalls(calls)[0].body;
+    assert.ok(!body.includes('client_reference_id') && !body.includes('metadata%5Bref%5D'), body);
+  });
+
+  test('lit: nothing but a marker passes — never an address, a name or a sentence', async () => {
+    process.env.REWARDFUL_API_KEY = 'rwf-test-key-885';
+    for (const bad of ['mara@ledgerpost.example', 'Mara Voss', 'acme.com', '', 'a'.repeat(201), 42, { id: REF }, '<b>x</b>']) {
+      const calls = stubFetch([STRIPE_OK, FREE]);
+      await post(fn, { email: 'b@acme.com', from: 'pricing', referral: bad });
+      const body = stripeCalls(calls)[0].body;
+      assert.ok(!body.includes('client_reference_id') && !body.includes('metadata%5Bref%5D'),
+        `referral=${JSON.stringify(bad)} must not reach Stripe`);
+    }
+  });
+});

@@ -86,6 +86,16 @@
      <body>, and netlify/edge-functions/rum-consent.js hands it to this script
      rather than to the browser. Deferred, dependency-free, first-party. -->
 <script src="{{ '/assets/js/consent.js' | asset }}" defer></script>
+{#- The partner programme's script, dark until REWARDFUL_API_KEY is set (#885,
+    lib/rewardful.js). Even lit, Rewardful's rw.js is never written here as a
+    live tag: it sets a first-party cookie and talks to Rewardful, which is a
+    marketing tracker under this site's consent contract, so the build leaves
+    the same inert JSON handoff the RUM edge function leaves for Netlify's
+    tag, and consent.js re-creates the script from it only inside
+    `gate('marketing', …)`. Absent the key, not a byte of this is written. -#}
+{%- if rewardful.on %}
+<script type="application/json" id="ppsc-gated-rewardful">{{ { src: rewardful.script, "data-rewardful": rewardful.key } | dump | replace('<', '\\u003c') | safe }}</script>
+{%- endif %}
 
 {#- Sitewide structured data (#137). The audit found none of this: eight of the
     seventeen indexable pages carried no structured data at all, and the only
@@ -206,6 +216,10 @@
     {#- #742. The course as pages has the same one inbound link the directory
         has, for the same reason: the header is full. -#}
     <li><a href="{{ '/learn/' | localize }}">{% t %}Learn{% endt %}</a></li>
+    {#- #885. The partner programme's one inbound link, for the same reason
+        the two above have theirs. It reads *Coming soon* until the operator
+        turns the programme on (#886), which is what the page says. -#}
+    <li><a href="{{ '/partners/' | localize }}">{% t %}Partners{% endt %}</a></li>
     <li><a href="{{ '/contact/' | localize }}">{% t %}Contact{% endt %}</a></li>
   </ul>
   {#- The language switcher (#114): each language in its own name, so the

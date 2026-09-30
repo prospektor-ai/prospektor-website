@@ -1963,6 +1963,18 @@ footer {
 }
 .contact-note a { color: var(--ink); }
 
+/* /partners/ (#885): the seven terms as a numbered list in the legal list's
+   voice, and the note under them in the contact note's. */
+.partner-terms {
+  margin: 1.25rem 0 2rem; padding-left: 1.4rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.partner-terms li { font-size: 0.92rem; color: var(--ink-mid); line-height: 1.7; }
+.partner-note {
+  margin-top: 2rem; font-size: 0.8rem; line-height: 1.7; color: var(--ink-mid);
+}
+.partner-note a { color: var(--ink); }
+
 @media (max-width: 860px) {
   .contact-section { padding: 3rem 1.25rem 4rem; }
   .contact-submit { align-self: stretch; text-align: center; }

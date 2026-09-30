@@ -120,6 +120,14 @@ pages:
   <url><loc>{{ site.url }}{{ a.url }}</loc></url>
 {%- endfor %}
 {%- endfor %}
+{#- /partners/ (#885) is listed exactly when the programme is on: dark, the
+    page is one line and noindex (src/partners.11tydata.js), and a sitemap
+    must not ask for a URL the page itself declines. -#}
+{%- if rewardful.on %}
+{%- for a in '/partners/' | alternates %}
+  <url><loc>{{ site.url }}{{ a.url }}</loc></url>
+{%- endfor %}
+{%- endif %}
 {%- for e in help.editions %}{%- for g in e.guides %}{%- if g.language == e.code %}
   <url><loc>{{ site.url }}{{ e.prefix }}/help/{{ g.slug }}/</loc></url>
 {%- endif %}{%- endfor %}{%- endfor %}

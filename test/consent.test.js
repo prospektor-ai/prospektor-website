@@ -104,7 +104,14 @@ describe('consent gate', () => {
     // The studio's copy declared the studio's cookies. This origin sets none
     // at all — measured against production, no `set-cookie` on any response —
     // so an entry of kind `Cookie` here would be an invented disclosure.
-    assert.ok(!/kind: 'Cookie'/.test(CONSENT_SRC), 'this origin sets no cookies; nothing may claim to');
+    // #885 is the one exception, and it is an exception only where the build
+    // lit the programme: the Rewardful cookie entry is pushed onto the
+    // inventory inside `if (rewardfulNode)`, so a dark page still declares
+    // no cookie. Any Cookie entry outside that block is an invented one.
+    const cookieEntries = [...CONSENT_SRC.matchAll(/kind: (?:t\()?'Cookie'/g)];
+    assert.equal(cookieEntries.length, 1, 'one cookie entry, Rewardful\'s, and no other');
+    const guarded = CONSENT_SRC.slice(CONSENT_SRC.indexOf('if (rewardfulNode) {'), cookieEntries[0].index);
+    assert.ok(guarded.length > 0 && !guarded.includes('\n  }\n'), 'the Cookie entry must sit inside the rewardfulNode guard');
     for (const studioOnly of ['pps_session', 'pps_oauth_state', 'pps_share', 'pps-theme', 'pps-library-sort'])
       assert.ok(!declared().includes(studioOnly), `${studioOnly} belongs to the studio origin, not this one`);
   });

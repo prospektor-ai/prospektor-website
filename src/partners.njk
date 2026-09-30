@@ -1,0 +1,67 @@
+---
+layout: base.njk
+title: Partners
+seoTitle: Partner programme
+description: "Refer a client to Prospektor and earn 20% of what they pay for a year, or run workspaces for your clients at 20% off. The terms, in plain words."
+permalink: /partners/
+---
+
+{#- #885, out of #87. The partner programme, rented from Rewardful (operator,
+    29 Sep 2026: "we can build out rewardful but put a 'coming soon' notice
+    when I actually onboard with them and have customers, rather than beta").
+
+    Two states, decided by one build-time fact, `rewardful.on`
+    (src/_data/rewardful.js, true only when REWARDFUL_API_KEY is set):
+
+      DARK  one line, *Coming soon*, nothing else. The page is noindex
+            (partners.11tydata.js) and out of the sitemap, so search is not
+            asked to rank a sentence.
+      LIT   the seven terms from docs/research/partner-programme.md in the
+            studio repo, in the words a partner reads, and one way in: the
+            Rewardful signup link when REWARDFUL_SIGNUP_URL is set, else our
+            address.
+
+    The rate, the twelve months and the thirty-day hold are set inside
+    Rewardful by #886 and quoted here; the cookie window and the attribution
+    rule are set there too, which is why rule 3 states no number of days.
+    English only, like the legal pages: these are terms, and a translation
+    of terms is a compliance job, not a catalogue entry. -#}
+
+<header class="page-hero">
+  <div class="page-hero-inner">
+    <span class="tag">partners</span>
+    {%- if rewardful.on %}
+    <h1 class="page-h1">Refer a client, earn 20% for a year.</h1>
+    <p class="page-lede">
+      An agency gets 20% either way, and a workspace only ever earns one of the two.
+      Pay for a workspace you run for your own clients and it is 20% off.
+      Send a client who pays us directly and you get 20% of what they pay, for their first twelve months.
+    </p>
+    {%- else %}
+    <h1 class="page-h1">Coming soon.</h1>
+    {%- endif %}
+  </div>
+</header>
+
+{%- if rewardful.on %}
+<section class="section">
+  <div class="legal-inner">
+    <h2 class="section-h2">The terms</h2>
+    <ol class="partner-terms">
+      <li>You cannot refer yourself: not your own domain, your own workspace, your own card, or an address at your company.</li>
+      <li>A company that has ever had a workspace cannot be referred. Deleted counts as ever.</li>
+      <li>The first partner link a buyer used is the one that counts. One partner per workspace.</li>
+      <li>A workspace you pay for at 20% off does not also earn 20% back.</li>
+      <li>No ads on our name, and no coupon sites.</li>
+      <li>We can end a partnership and cancel unpaid earnings if the rules are broken.</li>
+      <li>Earnings become payable thirty days after the invoice they come from is paid, and are paid out through Rewardful.</li>
+    </ol>
+    {%- if rewardful.signup %}
+    <p><a class="btn-cta" href="{{ rewardful.signup }}" rel="noopener">Sign up as a partner</a></p>
+    {%- else %}
+    <p>Write to <a href="mailto:{{ site.email }}">{{ site.email }}</a> and we send you your link.</p>
+    {%- endif %}
+    <p class="partner-note">Your link and your balance are in Rewardful, which runs the programme for us. What its cookie records, and how to switch it off, is in <a href="/privacy/#cookies">the privacy notice</a>.</p>
+  </div>
+</section>
+{%- endif %}
