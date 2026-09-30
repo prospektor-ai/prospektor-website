@@ -262,13 +262,15 @@ updated: 30 September 2026
           <li><code>pps_oauth_state</code> — 10 minutes, protects the sign-in against cross-site request forgery.</li>
           <li><code>pps_share</code> — 10 minutes, remembers which share link sent you to the sign-in page.</li>
         </ul>
-        <p>The last two are cleared as soon as sign-in finishes. It keeps six more things in your browser; five of them never leave it, and the first is also written to your account while you are signed in:</p>
+        <p>The last two are cleared as soon as sign-in finishes. It keeps eight more things in your browser; seven of them never leave it, and the first is also written to your account while you are signed in:</p>
         <ul class="legal-list">
           <li><code>pps-theme</code> — this device's light/dark choice, and when you made it. While you are signed in it is also written to your account profile, so your other devices start the same way; nobody else reads it, and nothing in the product is decided by it. Until you clear site data.</li>
           <li><code>pps-library-sort</code> — how this device likes the library sorted. Until you clear site data.</li>
           <li><code>pps-consent</code> — your answer to the studio's own cookie notice, with the date. 12 months, then it asks again.</li>
           <li><code>pps-example-gone</code> — that you removed the example pitch from your library, so it stays removed. Until you clear site data.</li>
           <li><code>pps-language</code>: the language this device last read the studio in, so the next visit loads its words at once. Absent for English. Until you clear site data.</li>
+          <li><code>pps-steps-skipped</code>: which Next steps you pressed Skip on, so they stay hidden on this device. Until you clear site data.</li>
+          <li><code>pps-report</code>: which week's report this device has already seen, and which of its blockers you marked not relevant, so neither comes back on this device. Until you clear site data.</li>
           <li><code>pps-draft</code> — what you have typed into a box and not yet sent, so a reload gives it back. It lives in that one tab and is forgotten the moment you send it or close the tab.</li>
         </ul>
         <p>And one thing that is not a cookie of ours and is off unless you switch it on: <strong>Microsoft Clarity</strong>, session replay and heatmaps of the studio, so we can see where it confuses people. It runs only on a deployment that names a Clarity project, only after you allow analytics in the studio's cookie notice, and with every word on the screen masked before a replay leaves your browser, so nothing you research, nobody's name and no draft you are writing reaches Microsoft. Its own cookies, which tell one session from the next, are kept a year. Withdraw at the Cookies link and nothing more is sent.</p>
