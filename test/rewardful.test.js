@@ -69,7 +69,9 @@ describe('lib/rewardful.js — the switch and the marker', () => {
 
 describe('the dark build — the one that matters', () => {
   let site;
-  before(() => { site = siteBuild('rewardful-dark'); });
+  // Offline corpus, the way test/run.js builds: standalone, a live-corpus
+  // dark build and an offline malformed-key build would differ on /help/.
+  before(() => { process.env.HELP_CORPUS_OFFLINE = '1'; site = siteBuild('rewardful-dark'); });
   after(() => site.cleanup());
 
   test('no page carries Rewardful: no script, no handoff, no key', () => {

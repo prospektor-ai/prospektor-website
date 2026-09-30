@@ -28,6 +28,7 @@
 const crypto = require('node:crypto');
 const i18n = require('../../lib/i18n');
 const { redactKeys, worthRetrying } = require('../../lib/stripe-error');
+const { referralOf } = require('../../lib/rewardful');
 // The catalogues, as literal requires the bundler can see (#114).
 i18n.load(require('../lib/strings'));
 const { languageOf, languageName } = i18n;
@@ -630,8 +631,10 @@ exports.handler = async function(event) {
   // #114: the language the buyer read the funnel in — a code from the closed
   // set or nothing; English was never written, so it reads as nothing too.
   const language = (l => (l && l !== 'en' ? l : ''))(languageOf(metadata.language));
-  // #885: the partner marker, exactly as create-checkout-session wrote it.
-  const ref = String(metadata.ref || '').trim();
+  // #885: the partner marker, in the grammar create-checkout-session wrote it
+  // in, applied again here because Stripe's dashboard can edit metadata and
+  // the studio should meet the same shape from both sides of the seam.
+  const ref = referralOf(metadata.ref);
 
   const provisionSecret = process.env.STUDIO_PROVISION_SECRET;
   if (!provisionSecret) {

@@ -94,7 +94,7 @@
     tag, and consent.js re-creates the script from it only inside
     `gate('marketing', …)`. Absent the key, not a byte of this is written. -#}
 {%- if rewardful.on %}
-<script type="application/json" id="ppsc-gated-rewardful">{{ { src: rewardful.script, "data-rewardful": rewardful.key } | dump | safe }}</script>
+<script type="application/json" id="ppsc-gated-rewardful">{{ { src: rewardful.script, "data-rewardful": rewardful.key } | dump | replace('<', '\\u003c') | safe }}</script>
 {%- endif %}
 
 {#- Sitewide structured data (#137). The audit found none of this: eight of the
