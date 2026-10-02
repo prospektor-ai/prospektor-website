@@ -2087,6 +2087,39 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     }
   }
 
+  // ── §20 THE STATUS LINE (#980) ─────────────────────────────────────────────
+  // One line read off the studio's /api/status, answered here by a stub so the
+  // four words it can say are each driven: degraded with its since, back, up,
+  // and the studio not answering at all. The build test shows the page exists;
+  // only a browser shows the line change.
+  {
+    const page = await browser.newPage();
+    let answer = () => ({ status: 200, contentType: 'application/json', body: JSON.stringify({
+      status: 'down', since: '2026-10-02T09:00:00.000Z', back: null, checked: '2026-10-02T09:40:00.000Z', now: '2026-10-02T09:42:00.000Z', tick: 5 }) });
+    await page.route('https://studio.prospektor.ai/api/status**', route => { const a = answer(); return a ? route.fulfill(a) : route.abort(); });
+    await page.goto('http://localhost:8899/status/');
+    await page.waitForSelector('#status[data-state]', { timeout: 5000 });
+    check('degraded: the line says so', (await page.textContent('#statusLine')) === 'Prospektor is degraded.', await page.textContent('#statusLine'));
+    check('and the note says since when, in a clock and a duration',
+      /since 09:00 UTC, 42 minutes ago/.test(await page.textContent('#statusNote')), await page.textContent('#statusNote'));
+    answer = () => ({ status: 200, contentType: 'application/json', body: JSON.stringify({
+      status: 'back', since: '2026-10-02T09:50:00.000Z', back: '2026-10-02T09:45:00.000Z', checked: '2026-10-02T09:50:00.000Z', now: '2026-10-02T10:00:00.000Z', tick: 5 }) });
+    await page.reload();
+    await page.waitForSelector('#status[data-state="back"]', { timeout: 5000 });
+    check('back: the line and the clock', /^Back since 09:50 UTC, 10 minutes ago/.test(await page.textContent('#statusNote')), await page.textContent('#statusNote'));
+    answer = () => ({ status: 200, contentType: 'application/json', body: JSON.stringify({
+      status: 'unknown', since: null, back: null, checked: '2026-10-02T06:00:00.000Z', now: '2026-10-02T10:00:00.000Z', tick: 5 }) });
+    await page.reload();
+    await page.waitForSelector('#status[data-state="unknown"]', { timeout: 5000 });
+    check('a stale record reads as unsure, never as up', /unsure, not as up/.test(await page.textContent('#statusNote')), await page.textContent('#statusNote'));
+    answer = () => null;
+    await page.reload();
+    await page.waitForSelector('#status[data-state="unreachable"]', { timeout: 5000 });
+    check('a studio that does not answer at all is said as that', (await page.textContent('#statusLine')) === 'Prospektor is not answering.', await page.textContent('#statusLine'));
+    check('the footer of the page itself links the status line', (await page.getAttribute('footer a[href="/status/"]', 'href')) === '/status/');
+    await page.close();
+  }
+
   await browser.close();
   server.close();
   console.log('\n' + pass + ' passed, ' + fail + ' failed');

@@ -594,6 +594,21 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
    */
   const robotsRes = await fetch(SITE + '/robots.txt');
   const robotsTxt = await robotsRes.text();
+  // ── CLAIM: the status line is served and reads the studio (#980) ──
+  //    Asked of production because the row is about the one page somebody opens
+  //    when the studio will not boot: it has to be there, out of the index, and
+  //    the studio's /api/status has to answer it a word the page knows.
+  {
+    const r = await fetch(SITE + '/status/');
+    const html = r.ok ? await r.text() : '';
+    check('/status/ is served', r.ok, 'HTTP ' + r.status);
+    check('and names the studio’s status route as its one source', html.includes('data-api="https://studio.prospektor.ai/api/status"'));
+    check('and is out of the index', /name="robots"[^>]+noindex/.test(html));
+    const s = await fetch('https://studio.prospektor.ai/api/status').then(x => x.json()).catch(e => ({ error: String(e) }));
+    check('studio.prospektor.ai/api/status answers a word the page knows',
+      ['up', 'back', 'down', 'unknown'].includes(s.status), JSON.stringify(s));
+  }
+
   // ── CLAIM: the header is pages, not anchors (#153) ──
   //    Asked of production because the whole row was a header that looked
   //    finished and went nowhere. The nav is read off the served homepage, so
