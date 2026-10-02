@@ -112,7 +112,7 @@ describe('consent gate', () => {
     assert.equal(cookieEntries.length, 1, 'one cookie entry, Rewardful\'s, and no other');
     const guarded = CONSENT_SRC.slice(CONSENT_SRC.indexOf('if (rewardfulNode) {'), cookieEntries[0].index);
     assert.ok(guarded.length > 0 && !guarded.includes('\n  }\n'), 'the Cookie entry must sit inside the rewardfulNode guard');
-    for (const studioOnly of ['pps_session', 'pps_oauth_state', 'pps_share', 'pps-theme', 'pps-library-sort'])
+    for (const studioOnly of ['pps_session', 'pps_oauth_state', 'pps_share', 'pps-theme', 'pps-example-gone'])
       assert.ok(!declared().includes(studioOnly), `${studioOnly} belongs to the studio origin, not this one`);
   });
 
