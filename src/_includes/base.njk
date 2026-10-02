@@ -221,6 +221,10 @@
         turns the programme on (#886), which is what the page says. -#}
     <li><a href="{{ '/partners/' | localize }}">{% t %}Partners{% endt %}</a></li>
     <li><a href="{{ '/contact/' | localize }}">{% t %}Contact{% endt %}</a></li>
+    {#- #980. The status line's one inbound link on every page, so somebody
+        whose studio tab says *reconnecting* can find out from here whether it
+        is them or us. The studio's own banner links the same page. -#}
+    <li><a href="{{ '/status/' | localize }}">{% t %}Status{% endt %}</a></li>
   </ul>
   {#- The language switcher (#114): each language in its own name, so the
       right one is findable by somebody who reads none of the others, linking

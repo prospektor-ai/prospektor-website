@@ -1,0 +1,29 @@
+---
+layout: base.njk
+title: Status
+description: Is Prospektor up right now? One line, read from the studio every half minute.
+permalink: /status/
+noindex: true
+eleventyExcludeFromCollections: true
+---
+
+{#- #980. One line, no dashboard. Origami's members learned of every outage
+    from a Slack message after the fact; a Prospektor member whose screen said
+    *reconnecting* had nowhere to look. This page reads the studio's own
+    heartbeat record (GET studio.prospektor.ai/api/status, written every five
+    minutes) and says up, degraded since when, back since when, or that nobody
+    has checked lately. status.js writes the two lines; the words a visitor
+    sees before it answers are the ones below. Out of the sitemap and noindex
+    on purpose: it is a utility, not a page to rank. -#}
+<section class="onboard">
+  <div class="onboard-inner">
+    <div class="onboard-panel" id="status" data-api="https://studio.prospektor.ai/api/status">
+      <div class="scan-result-meta" id="statusMeta">status · studio.prospektor.ai</div>
+      <h1 class="onboard-h1" id="statusLine">Checking.</h1>
+      <p class="onboard-sub" id="statusNote">Asking the studio now.</p>
+      <p class="onboard-sub">Signed in and stuck while this says up? <a href="mailto:{{ site.email }}">{{ site.email }}</a> reaches a human.</p>
+    </div>
+  </div>
+</section>
+
+<script src="{{ '/assets/js/status.js' | asset }}" defer></script>
