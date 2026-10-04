@@ -1,0 +1,51 @@
+---
+layout: base.njk
+title: Reevo CRM integration
+description: "Prospektor finds the companies worth approaching and writes the pitch. One press files it in Reevo as an account, its contacts, an opportunity and an activity."
+# One page per language (#114/#535) — see src/index.njk for the reasoning.
+pagination:
+  data: languages
+  size: 1
+  alias: language
+  addAllPagesToCollections: true
+permalink: "{{ language.prefix }}/integrations/reevo/"
+---
+
+{#- #1046, 4 Oct 2026. The operator, on this card landing in the help: "this is
+    the terrible non-marketing page ... It should used the same template used on
+    LIghtfield, for example. Marketing benefits, how it works. Not robot talk".
+    So this is #841's shape. Every claim about what a push writes is what the
+    studio's help says (docs/help/08-workspace.md, the Reevo section), which
+    the documentation link opens. -#}
+
+{% set intId = 'reevo' %}
+{% set intName = 'Reevo' %}
+{% set intLogo = '/assets/img/integrations/reevo.svg' %}
+{% set intCtaHref = '/pricing/' | localize %}
+{% set intCtaLabel %}{% t %}Start my studio →{% endt %}{% endset %}
+{% set intDoc = ('/help/workspace/' | localize) + '#workspace--reevo' %}
+{% set dgLeftLabel = 'PROSPEKTOR' %}
+{% set dgLeftTitle = 'Harborline Freight' %}
+{% set dgLeftButton %}{% t %}Push to Reevo{% endt %}{% endset %}
+{% set dgRightLabel = 'REEVO' %}
+{% set shotSrc = '/assets/img/demo/step-03.png' %}
+{% set shotAlt %}{% t %}A finished pitch in Prospektor: the fit thesis, with the case for the company, the case against it, and what they will say.{% endt %}{% endset %}
+{% set intSub %}{% t %}Prospektor writes the pitch. Reevo works the deal.{% endt %}{% endset %}
+{% set dgTitle %}{% t %}One press in Prospektor writes four records in Reevo{% endt %}{% endset %}
+{% set dgR1L %}{% t %}Account{% endt %}{% endset %}
+{% set dgR1D %}{% t %}found by its domain first{% endt %}{% endset %}
+{% set dgR2L %}{% t %}Contacts{% endt %}{% endset %}
+{% set dgR2D %}{% t %}the people with a work email{% endt %}{% endset %}
+{% set dgR3L %}{% t %}Opportunity{% endt %}{% endset %}
+{% set dgR3D %}{% t %}named after the company and your workspace{% endt %}{% endset %}
+{% set dgR4L %}{% t %}Activity{% endt %}{% endset %}
+{% set dgR4D %}{% t %}the fit, the angle, the sources, a link back{% endt %}{% endset %}
+{% set dgCaption %}{% t %}One press, four records. Push again and a dated activity joins the timeline.{% endt %}{% endset %}
+{% set shotCaption %}{% t %}The fit thesis in Prospektor, which is what the activity in Reevo holds.{% endt %}{% endset %}
+{% set p1 %}{% t %}Prospektor finds the companies worth approaching, names who to talk to and writes what you send them, in your voice. One press files all of it in Reevo, where your team already works.{% endt %}{% endset %}
+{% set p2 %}{% t %}Four records: the <strong>Account</strong>, found by its domain before anything new is made, the people with a work email as <strong>Contacts</strong>, an <strong>Opportunity</strong> named after the company and your workspace, and an <strong>Activity</strong> on all three.{% endt %}{% endset %}
+{% set p3 %}{% t %}The activity holds the fit score, the angle, the people and the sources, with a link back to the pitch. An account or contact already in your Reevo is used as it is and never written over.{% endt %}{% endset %}
+{% set s1 %}{% t %}In Reevo, open <strong>Settings → API Keys</strong> and create a key with write on Accounts, Contacts, Opportunities and Activities. An admin has to make it, and Reevo shows it once.{% endt %}{% endset %}
+{% set s2 %}{% t %}Paste it under <strong>Connect your apps</strong> in your workspace settings and press <strong>Connect</strong>.{% endt %}{% endset %}
+{% set s3 %}{% t %}Run a pitch on a company you want, then press <strong>Push to Reevo</strong>.{% endt %}{% endset %}
+{% include "integration-page.njk" %}

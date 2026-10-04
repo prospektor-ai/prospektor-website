@@ -71,10 +71,10 @@
     </a>
   </li>
   {%- endif %}
-  {#- Reevo, Attio and HighLevel (#1045): no page of their own yet, so the
-      card opens the help that says what each push writes. -#}
+  {#- Reevo, Attio and HighLevel (#1045), each with its own page since #1046. -#}
+  {%- if skipApp != 'reevo' %}
   <li class="card int-card">
-    <a href="{{ '/help/workspace/' | localize }}">
+    <a href="{{ '/integrations/reevo/' | localize }}">
       <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/reevo.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}CRM{% endt %}</span>
       <h3 class="card-title">Reevo</h3>
@@ -82,8 +82,10 @@
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
   </li>
+  {%- endif %}
+  {%- if skipApp != 'attio' %}
   <li class="card int-card">
-    <a href="{{ '/help/workspace/' | localize }}">
+    <a href="{{ '/integrations/attio/' | localize }}">
       <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/attio.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}CRM{% endt %}</span>
       <h3 class="card-title">Attio</h3>
@@ -91,8 +93,10 @@
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
   </li>
+  {%- endif %}
+  {%- if skipApp != 'highlevel' %}
   <li class="card int-card">
-    <a href="{{ '/help/workspace/' | localize }}">
+    <a href="{{ '/integrations/highlevel/' | localize }}">
       <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/highlevel.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}CRM{% endt %}</span>
       <h3 class="card-title">HighLevel</h3>
@@ -100,6 +104,7 @@
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
   </li>
+  {%- endif %}
   <li class="card int-card is-static">
     <div class="card-body">
       <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/salesforce.svg' | asset }}" alt="" width="24" height="24"></span>
