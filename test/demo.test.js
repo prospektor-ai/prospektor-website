@@ -31,7 +31,7 @@ const path = require('node:path');
 const ROOT = path.join(__dirname, '..');
 const i18n = require('../lib/i18n.js');
 const { says } = require('../tools/resources-coverage.js');
-const { everyLanguage } = require('../tools/demo-capture.js');
+const { everyLanguage, NAMED } = require('../tools/demo-capture.js');
 const { siteBuild } = require('./helpers.js');
 
 const DATA = path.join(ROOT, 'data', 'demo.json');
@@ -70,6 +70,40 @@ describe('the capture', () => {
     assert.deepStrictEqual(stale, [],
       'the demo says sentences the studio no longer says (data/studio-strings.json), so the tour has moved on and the screens with it — '
       + `${RECAPTURE}:\n  ${stale.join('\n  ')}`);
+  });
+
+  // The screens can rot with every sentence intact: between 28 Sep and 4 Oct
+  // Home lost its doors, the rail was redrawn and the tour went from ten
+  // steps to eight, and the check above stayed green because nobody re-ran
+  // the snapshot it reads (#1061). So the two vendored reads of the studio
+  // move together: whoever refreshes the strings, for an article or for
+  // anything else, recaptures the demo in the same push, and the screens
+  // are never older than the catalogue they are checked against.
+  test('the demo is captured from the same studio commit as the strings it is checked against', () => {
+    const shot = demo().source && demo().source.commit;
+    const read = (JSON.parse(fs.readFileSync(STRINGS, 'utf8')).source || {}).commit;
+    assert.ok(read, 'data/studio-strings.json names no studio commit — run `npm run strings:snapshot`');
+    assert.strictEqual(shot, read,
+      `the demo was captured from studio ${String(shot).slice(0, 7)} and the strings were read from ${String(read).slice(0, 7)}, `
+      + `so the screens may show a studio the catalogue no longer describes — ${RECAPTURE}`);
+  });
+
+  // A page outside /demo/ that shows a Prospektor screen names it, never a
+  // step number: a tour that loses or reorders a step would otherwise swap
+  // the picture under a caption that still describes the old one (#1061).
+  test('every other page shows a named screen the capture writes, never a numbered step', () => {
+    const src = path.join(ROOT, 'src');
+    const wrong = [];
+    for (const f of fs.readdirSync(src).filter(f => f.endsWith('.njk') && f !== 'demo.njk')) {
+      const text = fs.readFileSync(path.join(src, f), 'utf8');
+      for (const m of text.matchAll(/\/assets\/img\/demo\/([a-z0-9-]+)\.png/g)) {
+        const named = m[1].match(/^screen-([a-z-]+)$/);
+        if (!named) wrong.push(`${f}: ${m[0]} is a tour step, whose picture changes when the tour does — use a screen-<name>.png`);
+        else if (!NAMED.includes(named[1])) wrong.push(`${f}: ${m[0]} is not a screen \`npm run demo:capture\` writes (it writes ${NAMED.join(', ')})`);
+        else if (!fs.existsSync(path.join(src, 'assets', 'img', 'demo', `${m[1]}.png`))) wrong.push(`${f}: ${m[0]} is not on disk — ${RECAPTURE}`);
+      }
+    }
+    assert.deepStrictEqual(wrong, []);
   });
 
   test('every name a step declares is in its own words, and something the product says', () => {

@@ -151,15 +151,19 @@ async function signIn(page, helpers) {
   const consent = await page.locator('.ppsc-bar button.ppsc-btn-primary').count();
   if (consent) { await page.click('.ppsc-bar button.ppsc-btn-primary'); await page.waitForSelector('.ppsc-bar', { state: 'detached', timeout: 8000 }).catch(() => {}); }
   // The capture runs with no API key, so the shelf on Leads for you holds
-  // simulated tiles that say so on their face. They are hidden BEFORE the tour
+  // simulated tiles that say so on their face, and so does Home's own row of
+  // three (`#start-leads`), and Counterprospekt's two readings that never land
+  // without a key (`#rivals-slot`, `#ranking-slot`). They are hidden BEFORE the tour
   // reaches that step, so the tour places its ring on the screen as shot; the
   // ring is on the ask box either way, and a visitor sees the box and the
   // sentence, never a placeholder company. The account nudge (a recovery
   // number and a passkey) is a fresh member's chore and goes the same way.
-  await page.addStyleTag({ content: '#view-suggested .tiles, #shelf-task, #shelf-state, #account-nudge { display: none !important; }' });
+  await page.addStyleTag({ content: '#view-suggested .tiles, #start-leads, #rivals-slot, #ranking-slot, #shelf-task, #shelf-state, #account-nudge { display: none !important; }' });
   await page.waitForSelector('#tour:not(.hidden)', { timeout: 15000 });
+  // Step 1's anchor is the ask box on Home since the studio's #877 took the
+  // doors away; the studio's own `dev/drive-tour.js` waits on the same box.
   await page.waitForFunction(() => {
-    const box = document.getElementById('start-doors')?.getBoundingClientRect();
+    const box = document.getElementById('start-ask-form')?.getBoundingClientRect();
     return Boolean(box && box.width && box.height);
   }, { timeout: 30000 });
 }
@@ -199,6 +203,39 @@ const reading = page => page.evaluate(() => {
     } : null,
   };
 });
+
+/*
+ * The screens other pages show, by name rather than by step number (#1061).
+ * The integration pages put a Prospektor screen beside their copy, and they
+ * used to point at `step-NN.png`: when the tour went from ten steps to eight,
+ * `step-10.png` stopped existing and `step-06.png` turned from the pitch deck
+ * into the call form under a caption that still said deck. So the screens a
+ * page names are written here under a name that says what they show,
+ * `screen-<name>.png`, from whichever step happens to open that view, and the
+ * pitch's tabs are opened in turn while the tour stands on the example pitch.
+ * `test/demo.test.js` holds every page to a file this list writes.
+ */
+const NAMED_TABS = { 'fit-thesis': 'fit', 'decision-makers': 'people', 'pitch-deck': 'asset:deck', 'cold-email': 'asset:emailSequence' };
+const NAMED_VIEWS = { prep: 'meeting-prep', workspace: 'settings' };
+const NAMED = [...Object.keys(NAMED_TABS), ...Object.values(NAMED_VIEWS)];
+
+async function shootNamed(page, view, stepFile) {
+  if (NAMED_VIEWS[view]) fs.copyFileSync(path.join(SHOTS, stepFile), path.join(SHOTS, `screen-${NAMED_VIEWS[view]}.png`));
+  if (view !== 'result') return;
+  const was = await page.evaluate(() => document.querySelector('#result-tabs button.active, #result-tabs button[aria-selected="true"]')?.dataset.tab || null);
+  for (const [name, tab] of Object.entries(NAMED_TABS)) {
+    const hit = await page.evaluate(t => {
+      const b = document.querySelector(`#result-tabs button[data-tab="${t}"], #asset-tabs button[data-tab="${t}"]`);
+      if (b) b.click();
+      return Boolean(b);
+    }, tab);
+    if (!hit) throw new Error(`the example pitch has no tab ${tab} to shoot as screen-${name}.png`);
+    await page.waitForTimeout(400);
+    await shoot(page, path.join(SHOTS, `screen-${name}.png`));
+  }
+  if (was) await page.evaluate(t => document.querySelector(`#result-tabs button[data-tab="${t}"]`)?.click(), was);
+  await page.waitForTimeout(300);
+}
 
 /** The screen with the tour's own overlay out of the way (the page draws its
  *  own ring and card), and without the dev server's own notices (`#banners`
@@ -240,7 +277,7 @@ async function main() {
   try {
     await signIn(page, helpers);
     fs.mkdirSync(SHOTS, { recursive: true });
-    for (const stale of fs.readdirSync(SHOTS)) if (/^step-\d+\.png$/.test(stale)) fs.unlinkSync(path.join(SHOTS, stale));
+    for (const stale of fs.readdirSync(SHOTS)) if (/^(step-\d+|screen-[a-z-]+)\.png$/.test(stale)) fs.unlinkSync(path.join(SHOTS, stale));
     const total = await page.locator('#tour-dots i').count();
     if (total !== steps.length) throw new Error(`the page draws ${total} steps and the source parses ${steps.length}`);
     // What each step past the pitch must have drawn before it is read, the
@@ -270,6 +307,7 @@ async function main() {
         body: everyLanguage(cats, step.body),
         names: step.names,
       });
+      await shootNamed(page, seen.view, file);
       console.log(`  ${String(i + 1).padStart(2)}  ${seen.chapter || 'start '}  ${seen.view}${step.tab ? ' · ' + step.tab : ''}  ${seen.ring ? 'ringed' : 'no ring'}  ${step.title}`);
     }
     // The chapters, in the studio's order and names, off the opening card.
@@ -295,6 +333,6 @@ async function main() {
   }
 }
 
-module.exports = { everyLanguage };
+module.exports = { everyLanguage, NAMED };
 
 if (require.main === module) main().catch(error => { console.error(error); process.exit(1); });

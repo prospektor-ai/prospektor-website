@@ -57,7 +57,12 @@ async function main() {
   process.stdout.write(`Reading ${INVENTORY}#inventory() in ${dir} … `);
   const { inventory } = await import(pathToFileURL(file).href);
   const found = await inventory();
-  const strings = [...found.keys].sort();
+  // A placeholder that carries an address (the studio's network box shows one
+  // as a format example) is never a name an article declares, and this repo is
+  // public: `test/no-secrets.test.js` refuses an address on a domain that is not
+  // ours. So such strings stay in the studio and out of the snapshot (#1061).
+  const ADDRESS = /[\w.+-]+@[\w-]+(\.[\w-]+)+/;
+  const strings = [...found.keys].filter(s => !ADDRESS.test(s)).sort();
   if (strings.length < 200) {
     console.error(`\n✗ only ${strings.length} strings came back, and the studio says thousands — the extractor could not read it.\n  The snapshot was NOT changed.`);
     process.exit(1);
