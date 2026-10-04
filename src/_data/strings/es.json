@@ -538,7 +538,6 @@
   "Label it with what will hold it, tick what it may do, set when it expires, press <strong>Mint</strong>.": "Ponle la etiqueta de lo que lo va a usar, marca qué puede hacer, fija cuándo caduca, pulsa <strong>Emitir</strong>.",
   "Copy the secret now; nothing can show it again. <strong>Copy setup for your agent</strong> gives your own Claude the whole of it.": "Copia el secreto ahora; nada puede volver a mostrarlo. <strong>Copiar la configuración para tu agente</strong> le da a tu propio Claude todo lo necesario.",
   "Integrations": "Integraciones",
-  "Every app a Prospektor workspace connects to: Close, HubSpot, Affinity, Lightfield and Slack, your own Claude or ChatGPT, and a token for anything else.": "Todo lo que conecta un espacio de trabajo de Prospektor: Close, HubSpot, Affinity, Lightfield y Slack, tu propio Claude o ChatGPT, y un token para el resto.",
   "CRM": "CRM",
   "A finished pitch lands as a lead, its contacts, an opportunity and a note. Push again and the same records update.": "Un pitch terminado aterriza como lead, sus contactos, una oportunidad y una nota. Vuelve a enviarlo y los mismos registros se actualizan.",
   "One month free for Close users →": "Un mes gratis para usuarios de Close →",
@@ -607,5 +606,9 @@
   "Next": "Siguiente",
   "Now on your own site.": "Ahora en tu propia web.",
   "The scan reads your site and shows you who it would go after, in about thirty seconds. No sign-up.": "El escaneo lee tu web y te enseña a quién iría a buscar, en unos treinta segundos. Sin registro.",
-  "Or click through the demo first →": "O recorre antes la demo →"
+  "Or click through the demo first →": "O recorre antes la demo →",
+  "An account, the contacts with a work email, an opportunity and an activity saying why. Paste a key and press Connect.": "Una cuenta, los contactos con email de trabajo, una oportunidad y una actividad que dice por qué. Pega una clave y pulsa Conectar.",
+  "A company, the people with a work email and a dated note. Paste an access token and press Connect.": "Una empresa, las personas con email de trabajo y una nota con fecha. Pega un token de acceso y pulsa Conectar.",
+  "A contact for each person with a work email, tagged prospektor, and a note. Paste a token and your Location ID.": "Un contacto por cada persona con email de trabajo, con la etiqueta prospektor, y una nota. Pega un token y tu Location ID.",
+  "Every app a Prospektor workspace connects to: seven CRMs from Close to HighLevel, Slack, your own Claude or ChatGPT, and a token for anything else.": "Todo lo que conecta un espacio de trabajo de Prospektor: siete CRM, de Close a HighLevel, Slack, tu propio Claude o ChatGPT, y un token para todo lo demás."
 }

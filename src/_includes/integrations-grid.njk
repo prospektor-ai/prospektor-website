@@ -11,7 +11,8 @@
 
     The marks are the vendors' own (#841, the operator's call over #572's
     monograms): Close's from close.com's own header logo, Affinity's and
-    Lightfield's from their own sites, HubSpot's, Slack's, Salesforce's,
+    Lightfield's from their own sites, Reevo's from reevo.ai's header, Attio's
+    from attio.com's header wordmark, HighLevel's from its own brand kit (#1045), HubSpot's, Slack's, Salesforce's,
     Claude's and OpenAI's as the Simple Icons project carries them (CC0),
     each in the vendor's own colour and never redrawn. The vendor's name is
     never translated; a category is, in the studio's words. Nominative use;
@@ -70,6 +71,35 @@
     </a>
   </li>
   {%- endif %}
+  {#- Reevo, Attio and HighLevel (#1045): no page of their own yet, so the
+      card opens the help that says what each push writes. -#}
+  <li class="card int-card">
+    <a href="{{ '/help/workspace/' | localize }}">
+      <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/reevo.svg' | asset }}" alt="" width="24" height="24"></span>
+      <span class="card-topic">{% t %}CRM{% endt %}</span>
+      <h3 class="card-title">Reevo</h3>
+      <p class="card-dek">{% t %}An account, the contacts with a work email, an opportunity and an activity saying why. Paste a key and press Connect.{% endt %}</p>
+      <span class="card-cta">{% t %}How it works →{% endt %}</span>
+    </a>
+  </li>
+  <li class="card int-card">
+    <a href="{{ '/help/workspace/' | localize }}">
+      <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/attio.svg' | asset }}" alt="" width="24" height="24"></span>
+      <span class="card-topic">{% t %}CRM{% endt %}</span>
+      <h3 class="card-title">Attio</h3>
+      <p class="card-dek">{% t %}A company, the people with a work email and a dated note. Paste an access token and press Connect.{% endt %}</p>
+      <span class="card-cta">{% t %}How it works →{% endt %}</span>
+    </a>
+  </li>
+  <li class="card int-card">
+    <a href="{{ '/help/workspace/' | localize }}">
+      <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/highlevel.svg' | asset }}" alt="" width="24" height="24"></span>
+      <span class="card-topic">{% t %}CRM{% endt %}</span>
+      <h3 class="card-title">HighLevel</h3>
+      <p class="card-dek">{% t %}A contact for each person with a work email, tagged prospektor, and a note. Paste a token and your Location ID.{% endt %}</p>
+      <span class="card-cta">{% t %}How it works →{% endt %}</span>
+    </a>
+  </li>
   <li class="card int-card is-static">
     <div class="card-body">
       <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/salesforce.svg' | asset }}" alt="" width="24" height="24"></span>

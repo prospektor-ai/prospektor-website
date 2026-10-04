@@ -538,7 +538,6 @@
   "Label it with what will hold it, tick what it may do, set when it expires, press <strong>Mint</strong>.": "Geef het een label met wat het gaat bewaren, vink aan wat het mag, stel in wanneer het verloopt, druk op <strong>Aanmaken</strong>.",
   "Copy the secret now; nothing can show it again. <strong>Copy setup for your agent</strong> gives your own Claude the whole of it.": "Kopieer het geheim nu; niets kan het opnieuw tonen. <strong>Setup voor je agent kopiëren</strong> geeft je eigen Claude het geheel.",
   "Integrations": "Integraties",
-  "Every app a Prospektor workspace connects to: Close, HubSpot, Affinity, Lightfield and Slack, your own Claude or ChatGPT, and a token for anything else.": "Alles waar een Prospektor-workspace mee koppelt: Close, HubSpot, Affinity, Lightfield en Slack, je eigen Claude of ChatGPT, en een token voor de rest.",
   "CRM": "CRM",
   "A finished pitch lands as a lead, its contacts, an opportunity and a note. Push again and the same records update.": "Een afgeronde pitch landt als lead, zijn contacten, een opportunity en een notitie. Stuur hem opnieuw en dezelfde records worden bijgewerkt.",
   "One month free for Close users →": "Een maand gratis voor Close-gebruikers →",
@@ -607,5 +606,9 @@
   "Next": "Volgende",
   "Now on your own site.": "Nu op je eigen website.",
   "The scan reads your site and shows you who it would go after, in about thirty seconds. No sign-up.": "De scan leest je website en laat in ongeveer dertig seconden zien wie hij zou benaderen. Zonder registratie.",
-  "Or click through the demo first →": "Of klik eerst door de demo →"
+  "Or click through the demo first →": "Of klik eerst door de demo →",
+  "An account, the contacts with a work email, an opportunity and an activity saying why. Paste a key and press Connect.": "Een account, de contacten met een werkmail, een opportunity en een activiteit die zegt waarom. Plak een sleutel en druk op Koppelen.",
+  "A company, the people with a work email and a dated note. Paste an access token and press Connect.": "Een bedrijf, de mensen met een werkmail en een gedateerde notitie. Plak een toegangstoken en druk op Koppelen.",
+  "A contact for each person with a work email, tagged prospektor, and a note. Paste a token and your Location ID.": "Een contact voor elke persoon met een werkmail, met de tag prospektor, en een notitie. Plak een token en je Location ID.",
+  "Every app a Prospektor workspace connects to: seven CRMs from Close to HighLevel, Slack, your own Claude or ChatGPT, and a token for anything else.": "Alles waar een Prospektor-workspace mee koppelt: zeven CRM's van Close tot HighLevel, Slack, je eigen Claude of ChatGPT, en een token voor al het andere."
 }
