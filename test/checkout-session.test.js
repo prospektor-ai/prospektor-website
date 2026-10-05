@@ -259,6 +259,34 @@ describe('create-checkout-session', () => {
     assert.equal(p.get('cancel_url'), 'https://studio.prospektor.ai/', 'cancelling lands on the locked screen, not the onboarding interview');
   });
 
+  // #1097: a buyer who signed in to the studio first goes back to the studio
+  // both ways, signed in, and the webhook is told which door they used.
+  test('a studio sign-up returns to the studio\'s own sign-up page, both ways out', async () => {
+    const calls = stubFetch([STRIPE_OK, FREE]);
+    const r = await post(fn, { email: 'b@acme.com', domain: 'acme.com', company: 'Acme', from: 'studio' });
+    assert.equal(r.statusCode, 200);
+    const p = new URLSearchParams(stripeCalls(calls)[0].body);
+    assert.equal(p.get('success_url'), 'https://studio.prospektor.ai/signup?paid=1');
+    assert.equal(p.get('cancel_url'), 'https://studio.prospektor.ai/signup?website=acme.com', 'cancelling keeps the website they typed');
+    assert.equal(p.get('metadata[door]'), 'studio');
+    assert.equal(p.get('subscription_data[metadata][door]'), 'studio');
+  });
+
+  test('a studio sign-up in Spanish comes back in Spanish, and nothing else can steer the URL', async () => {
+    const calls = stubFetch([STRIPE_OK, FREE]);
+    await post(fn, { email: 'b@acme.com', domain: 'https://evil.example/x?y=1#z', from: 'studio', locale: 'es' });
+    const p = new URLSearchParams(stripeCalls(calls)[0].body);
+    assert.equal(p.get('success_url'), 'https://studio.prospektor.ai/signup?paid=1&lang=es');
+    assert.equal(p.get('cancel_url'), 'https://studio.prospektor.ai/signup?website=evil.example&lang=es', 'a domain is cleaned before it rides');
+  });
+
+  test('every other door writes no door into the metadata', async () => {
+    const calls = stubFetch([STRIPE_OK, FREE]);
+    await post(fn, { email: 'b@acme.com', domain: 'acme.com', from: 'pricing' });
+    const p = new URLSearchParams(stripeCalls(calls)[0].body);
+    assert.equal(p.get('metadata[door]'), null);
+  });
+
   test('carries the goal and mirrors metadata onto the subscription', async () => {
     const calls = stubFetch([STRIPE_OK, FREE]);
     await post(fn, { email: 'b@acme.com', domain: 'acme.com', company: 'Acme', goal: 'Property managers' });

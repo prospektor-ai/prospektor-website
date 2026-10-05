@@ -172,6 +172,33 @@ describe('stripe-webhook', () => {
       assert.doesNotMatch(w.TextBody + w.HtmlBody, stale, 'the first step #248 removed is back in the mail');
   });
 
+  // #1097: a buyer who signed in to the studio before paying is already in
+  // their workspace, so the one mail says it is open and asks for no sign-in.
+  test('a studio sign-up is told the workspace is open, with no sign-in step', async () => {
+    const calls = stubFetch([provisioned({ goal: true }), ['postmarkapp', { status: 200, body: {} }]]);
+    await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({
+      email: 'b@acme.com', metadata: { domain: 'acme.com', company: 'Acme', door: 'studio' } })));
+    const all = mail(calls);
+    assert.equal(welcome(calls), undefined, 'not the sign-in welcome');
+    const open = all.find(m => /workspace is open/.test(m.Subject));
+    assert.ok(open, 'the open mail went out');
+    assert.equal(open.Subject, "Acme's workspace is open");
+    assert.match(open.TextBody, /opened in your browser as soon as you paid/);
+    assert.match(open.TextBody, /Anyone at acme\.com can sign in/);
+    assert.doesNotMatch(open.TextBody + open.HtmlBody, /signin=/, 'no sign-in link: they are already signed in');
+    assert.ok(open.HtmlBody.includes('https://studio.prospektor.ai/'));
+  });
+
+  test('the open mail says nothing about colleagues for a personal address, and escapes the name', async () => {
+    const calls = stubFetch([provisioned({ goal: true }), ['postmarkapp', { status: 200, body: {} }]]);
+    await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({
+      email: 'b@gmail.com', metadata: { domain: 'acme.com', company: 'A<b>', door: 'studio' } })));
+    const open = mail(calls).find(m => /workspace is open/.test(m.Subject));
+    assert.doesNotMatch(open.TextBody, /Anyone at/);
+    assert.ok(open.HtmlBody.includes('A&lt;b&gt;'), 'the name is escaped in the HTML');
+    assert.ok(!open.HtmlBody.includes('A<b>'));
+  });
+
   // #114: a buyer who bought in Spanish is welcomed in Spanish, the operator is
   // told which language, and the studio is offered the language for the
   // workspace (it ignores the field until it learns it). An English buyer's

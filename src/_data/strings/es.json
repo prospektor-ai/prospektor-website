@@ -658,5 +658,12 @@
   "Run a pitch on a company you want, then press <strong>Push to Attio</strong>.": "Lanza un pitch sobre una empresa que te interese y pulsa <strong>Enviar a Attio</strong>.",
   "Run a pitch on a company you want, then press <strong>Push to Reevo</strong>.": "Lanza un pitch sobre una empresa que te interese y pulsa <strong>Enviar a Reevo</strong>.",
   "Every press adds a dated note, so the company's timeline shows how the pitch has changed.": "Cada clic añade una nota con fecha, así que la cronología de la empresa muestra cómo ha cambiado el pitch.",
-  "Running an agency? Connect the sub-account of the client you prospect for, and their pitches land in their own HighLevel.": "¿Llevas una agencia? Conecta la subcuenta del cliente para el que prospectas y sus pitches llegan a su propio HighLevel."
+  "Running an agency? Connect the sub-account of the client you prospect for, and their pitches land in their own HighLevel.": "¿Llevas una agencia? Conecta la subcuenta del cliente para el que prospectas y sus pitches llegan a su propio HighLevel.",
+  "Anyone at {site} can sign in with their work address.": "Cualquier persona de {site} puede iniciar sesión con su dirección de trabajo.",
+  "Stripe sends the receipt separately. Reply to this email with any question.": "Stripe envía el recibo por separado. Responde a este correo con cualquier pregunta.",
+  "You started {company}'s workspace on Prospektor. It opened in your browser as soon as you paid, and its first leads are waiting.": "Has creado el espacio de trabajo de {company} en Prospektor. Se abrió en tu navegador en cuanto pagaste, y sus primeros leads te esperan.",
+  "Open it: {url}": "Ábrelo: {url}",
+  "Your workspace is open": "Tu espacio de trabajo está abierto",
+  "Open {company}'s workspace": "Abrir el espacio de trabajo de {company}",
+  "{company}'s workspace is open": "El espacio de trabajo de {company} está abierto"
 }

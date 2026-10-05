@@ -658,5 +658,12 @@
   "Run a pitch on a company you want, then press <strong>Push to Attio</strong>.": "Draai een pitch op een bedrijf dat je wilt en druk op <strong>Naar Attio sturen</strong>.",
   "Run a pitch on a company you want, then press <strong>Push to Reevo</strong>.": "Draai een pitch op een bedrijf dat je wilt en druk op <strong>Naar Reevo sturen</strong>.",
   "Every press adds a dated note, so the company's timeline shows how the pitch has changed.": "Elke klik voegt een gedateerde notitie toe, zodat de tijdlijn van het bedrijf laat zien hoe de pitch is veranderd.",
-  "Running an agency? Connect the sub-account of the client you prospect for, and their pitches land in their own HighLevel.": "Run je een bureau? Koppel het subaccount van de klant voor wie je prospecteert, en hun pitches komen in hun eigen HighLevel."
+  "Running an agency? Connect the sub-account of the client you prospect for, and their pitches land in their own HighLevel.": "Run je een bureau? Koppel het subaccount van de klant voor wie je prospecteert, en hun pitches komen in hun eigen HighLevel.",
+  "Anyone at {site} can sign in with their work address.": "Iedereen bij {site} kan inloggen met het werkadres.",
+  "Stripe sends the receipt separately. Reply to this email with any question.": "Stripe stuurt de kwitantie apart. Beantwoord deze e-mail als je een vraag hebt.",
+  "You started {company}'s workspace on Prospektor. It opened in your browser as soon as you paid, and its first leads are waiting.": "Je hebt de workspace van {company} op Prospektor gestart. Hij ging in je browser open zodra je betaalde, en de eerste leads staan klaar.",
+  "Open it: {url}": "Openen: {url}",
+  "Your workspace is open": "Je workspace is open",
+  "Open {company}'s workspace": "Workspace van {company} openen",
+  "{company}'s workspace is open": "De workspace van {company} is open"
 }

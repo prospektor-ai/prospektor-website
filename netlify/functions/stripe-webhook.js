@@ -29,6 +29,7 @@ const crypto = require('node:crypto');
 const i18n = require('../../lib/i18n');
 const { redactKeys, worthRetrying } = require('../../lib/stripe-error');
 const { referralOf } = require('../../lib/rewardful');
+const { companyDomainFromEmail } = require('../lib/email-domain');
 // The catalogues, as literal requires the bundler can see (#114).
 i18n.load(require('../lib/strings'));
 const { languageOf, languageName } = i18n;
@@ -53,6 +54,8 @@ const BRAND = {
 };
 
 // Shared shell: off-white ground, white card, wordmark header, footer line.
+const escHtml = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
 function emailShell(inner, footnote) {
   return `
 <body style="margin:0;padding:32px 16px;background:${BRAND.offWhite};font-family:${BRAND.font};">
@@ -452,6 +455,43 @@ async function sendWelcomeEmail(email, language) {
   await sendMail({ to: email, subject: t('Your studio is ready: sign in', L), textBody, htmlBody });
 }
 
+// #1097: the welcome for a buyer who signed in to the studio BEFORE paying.
+// They came back from Stripe already inside their workspace, so the mail has
+// no sign-in step to describe: it says the workspace is open and gives the one
+// link back to it. Who else can sign in is said only when it is true, which is
+// when the address paid with names a company; a personal address is the only
+// address on a workspace's list.
+async function sendOpenEmail(email, language, { company, website }) {
+  if (!process.env.POSTMARK_SERVER_TOKEN) return;
+  const L = language || '';
+  const studio = 'https://studio.prospektor.ai/';
+  const name = company || website || 'Prospektor';
+  const domain = companyDomainFromEmail(email);
+  const team = domain ? t('Anyone at {site} can sign in with their work address.', L, { site: domain }) : '';
+  const fine = [team, t('Stripe sends the receipt separately. Reply to this email with any question.', L)].filter(Boolean).join(' ');
+  const said = t("You started {company}'s workspace on Prospektor. It opened in your browser as soon as you paid, and its first leads are waiting.", L, { company: name });
+
+  const textBody = [
+    said,
+    '',
+    t('Open it: {url}', L, { url: studio }),
+    '',
+    fine,
+    '',
+    'Prospektor',
+  ].join('\n');
+  const htmlBody = emailShell(`
+    <p style="font-size:22px;font-weight:800;letter-spacing:-0.02em;color:${BRAND.ink};line-height:1.25;margin:0 0 14px;">${t('Your workspace is open', L)}</p>
+    <p style="font-size:14px;color:${BRAND.ink};line-height:1.7;margin:0 0 22px;">${escHtml(said)}</p>
+    <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 26px;"><tr><td style="border-radius:100px;background:${BRAND.coral};">
+      <a href="${studio}" style="display:inline-block;padding:13px 28px;font-size:14px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:100px;">${escHtml(t("Open {company}'s workspace", L, { company: name }))}</a>
+    </td></tr></table>
+    <p style="font-size:13px;color:${BRAND.inkFaint};line-height:1.65;margin:0;">${escHtml(fine)}</p>`,
+    t('You&#39;re getting this one email because you started a Prospektor workspace. Questions? Just reply. It reaches a human at hello@prospektor.ai.', L));
+
+  await sendMail({ to: email, subject: t("{company}'s workspace is open", L, { company: name }), textBody, htmlBody });
+}
+
 exports.handler = async function(event) {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method not allowed' };
@@ -690,7 +730,10 @@ exports.handler = async function(event) {
     console.error('Free month end', endsAt, 'for', email, 'was sent but the studio did not record it.');
   }
   await sendOperatorNotice({ email, company, website, goal, language, ref, clientId, existing, resumed, goalRecorded });
-  if (!existing) await sendWelcomeEmail(email, language);
+  if (!existing) {
+    if (metadata.door === 'studio') await sendOpenEmail(email, language, { company, website });
+    else await sendWelcomeEmail(email, language);
+  }
 
   return { statusCode: 200, body: JSON.stringify({ received: true }) };
 };

@@ -44,6 +44,7 @@ const { trialDays, partnerOf } = require('../../lib/trial');
 const { rewardfulKey, referralOf } = require('../../lib/rewardful');
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const STUDIO = 'https://studio.prospektor.ai';
 
 // The two plans, and the only place either figure is written (#542). Yearly is
 // ten months' money for twelve months of workspace — $9,990 against $11,988,
@@ -188,9 +189,25 @@ exports.handler = async function(event) {
   // A Map rather than an object literal, for `planOf`'s reason one line up:
   // `RETURNS['constructor']` on an object is a function, and a truthy one.
   const RETURNS = new Map([['pricing', '/#pricing'], ['close', '/integrations/close/']]);
+  // #1097: a buyer who started in the studio signed in there before paying,
+  // so both ways out of Stripe go back to the studio's own sign-up page:
+  // paying lands on it saying the workspace is opening (the session they
+  // signed in with is still in that browser, so there is no second sign-in),
+  // and cancelling lands on it with the website they typed still in the
+  // field. Fixed origin and fixed path; the two values on the query are a
+  // cleaned domain and a language from the closed set, so neither can steer
+  // the URL anywhere else.
+  const studioDoor = data.from === 'studio';
+  const studioBack = extra => {
+    const q = new URLSearchParams(extra);
+    if (lang) q.set('lang', lang.code);
+    const text = q.toString();
+    return STUDIO + '/signup' + (text ? '?' + text : '');
+  };
   const cancelUrl = data.from === 'resubscribe'
-    ? 'https://studio.prospektor.ai/'
-    : site + prefix + (RETURNS.get(data.from) || '/checkout/');
+    ? STUDIO + '/'
+    : studioDoor ? studioBack(website ? { website } : {})
+      : site + prefix + (RETURNS.get(data.from) || '/checkout/');
 
   const params = new URLSearchParams({
     mode: 'subscription',
@@ -203,8 +220,9 @@ exports.handler = async function(event) {
     // {CHECKOUT_SESSION_ID} is Stripe's template literal — Stripe substitutes
     // the real cs_… id on redirect, and /checkout/done/ trades it back for
     // the paid amount and sign-in address via checkout-session-status (#244).
-    success_url: data.from === 'resubscribe' ? 'https://studio.prospektor.ai/'
-      : site + prefix + '/checkout/done/?session_id={CHECKOUT_SESSION_ID}',
+    success_url: data.from === 'resubscribe' ? STUDIO + '/'
+      : studioDoor ? studioBack({ paid: '1' })
+        : site + prefix + '/checkout/done/?session_id={CHECKOUT_SESSION_ID}',
     cancel_url: cancelUrl,
   });
   if (lang) params.set('locale', lang.code);
@@ -232,7 +250,9 @@ exports.handler = async function(event) {
   // they are what lets the operator answer "did the directory send anyone?"
   // from the Stripe dashboard on a site that sets no cookie and runs no tag.
   const tags = UTM.map(k => [k, meta((data.utm || {})[k])]);
-  for (const [k, v] of [['domain', website], ['company', company], ['goal', goal], ['marketing', marketing], ['language', lang ? lang.code : ''], ['plan', plan === 'month' ? '' : plan], ['via', partner], ['ref', referral], ...tags]) {
+  // #1097: which door the buyer came through, so the webhook's welcome mail
+  // can say the workspace is already open instead of asking them to sign in.
+  for (const [k, v] of [['door', studioDoor ? 'studio' : ''], ['domain', website], ['company', company], ['goal', goal], ['marketing', marketing], ['language', lang ? lang.code : ''], ['plan', plan === 'month' ? '' : plan], ['via', partner], ['ref', referral], ...tags]) {
     if (v) {
       params.set('metadata[' + k + ']', v);
       params.set('subscription_data[metadata][' + k + ']', v);
