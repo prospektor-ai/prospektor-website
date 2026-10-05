@@ -14,11 +14,16 @@ it, never by editing a Routine. Every run writes its outcome to
 `docs/seo/publishing-log.md`, which is the record. A run that leaves only a
 conversation behind has done nothing (#293).
 
-| Run | When (UTC) | What it ships |
+The Routines fire into the Prospektor project thread *Learn the whole Prospektor
+project* (`session_01QTZrQH4NiEPDvQTr6jmGDd`), because a private project cannot
+create a Routine that starts a fresh session each time. Each run posts its
+result there in one reply. Archiving that thread stops all three.
+
+| Run · Routine | When (UTC) | What it ships |
 |---|---|---|
-| **Daily article** | every day, 08:50 | one article on `/resources/`, live |
-| **Weekly SEO pass** | Mondays, 06:45 | fixes from the audit, a week of queued topics, one refreshed article |
-| **Monthly AI search pass** | the 1st, 05:40 | the site made easy for answer engines to read and cite |
+| **Daily article** · `trig_01QaYgUjeQ84eQ1zLw1q21GY` | every day, 08:50 | one article on `/resources/`, live |
+| **Weekly SEO pass** · `trig_01TKrfPUS1YDkp2qEGzhFVVp` | Mondays, 06:45 | fixes from the audit, a week of queued topics, one refreshed article |
+| **Monthly AI search pass** · `trig_01VupQAS8n6cnFcgkFSZEVJs` | the 1st, 05:40 | the site made easy for answer engines to read and cite |
 
 ## Rules every run keeps
 
