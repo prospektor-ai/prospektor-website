@@ -137,14 +137,14 @@ permalink: "{{ language.prefix }}/"
            two of the run itself, before anybody pays. -#}
           <div class="scan-cta-row">
             <a class="btn-cta" id="scanRunCta" href="https://studio.prospektor.ai/r">{% t %}Show me the companies →{% endt %}</a>
-            <p class="scan-cta-note">{% t %}Free, no sign-up.{% endt %} <a id="scanCta" href="{{ '/checkout/' | localize }}">{% t %}Start my studio →{% endt %}</a></p>
+            <p class="scan-cta-note">{% t %}Free, no sign-up.{% endt %} <a id="scanCta" data-signup href="{{ site.studio }}/signup{% if language.code != 'en' %}?lang={{ language.code }}{% endif %}">{% t %}Start my studio →{% endt %}</a></p>
           </div>
         </div>
       </div>
 
       <div class="scan-fallback" id="scanFallback" hidden>
         <p class="scan-fallback-msg" id="scanFallbackMsg" hidden></p>
-        <a class="btn-cta" id="scanFallbackCta" href="{{ '/checkout/' | localize }}">{% t %}Start my studio →{% endt %}</a>
+        <a class="btn-cta" id="scanFallbackCta" data-signup href="{{ site.studio }}/signup{% if language.code != 'en' %}?lang={{ language.code }}{% endif %}">{% t %}Start my studio →{% endt %}</a>
       </div>
     </div>
   </div>
@@ -425,34 +425,23 @@ permalink: "{{ language.prefix }}/"
       <span class="price-per">{% t %}/ month · per workspace{% endt %}</span>
     </div>
     <p class="price-line">{% t %}Unlimited runs · your whole team in · money back if it doesn't earn its keep{% endt %}</p>
-    <!-- The price buys the thing: this submits straight into a Stripe
-         Checkout Session, no onboarding page in between. The one field is
-         the address that becomes the studio's sign-in — collected here
-         rather than at Stripe so the ownership guard has somewhere to run
-         before $999 moves (server enforces it either way). -->
+    {#- #1097. The price opens the studio's sign-up, not a form here: the
+        buyer signs in there, says what to find and picks a plan, and only then
+        meets Stripe, so the address that owns the workspace is the one they
+        signed in with and the ownership check runs before $999 moves. One
+        link, no field. signup.js adds the referral and the utm_* keys at the
+        press; the Close page keeps its own path (/checkout/ and buy.js). -#}
     <div class="buy" id="buy">
-      <a href="{{ '/checkout/' | localize }}" class="btn-cta" id="buyLink">{% t %}Start my studio →{% endt %}</a>
-      <form class="reserve-form buy-form" id="buyForm" hidden novalidate>
-        <input class="reserve-input" id="buyEmail" type="email" autocomplete="email"
-               placeholder="you@yourcompany.com" aria-label="{% t %}Your work email{% endt %}">
-        <button class="btn-cta" type="submit" id="buyBtn">{% t %}Pay &amp; start · $999/mo →{% endt %}</button>
-      </form>
-      <input class="reserve-input buy-site" id="buySite" type="text" inputmode="url" autocomplete="url"
-             placeholder="yourcompany.com" aria-label="{% t %}Your company website{% endt %}" hidden>
-      <p class="reserve-msg is-error" id="buyMsg" hidden></p>
+      <a href="{{ site.studio }}/signup{% if language.code != 'en' %}?lang={{ language.code }}{% endif %}" class="btn-cta" id="buyLink" data-signup>{% t %}Start my studio →{% endt %}</a>
       <p class="buy-note">
         {#- #423. This line used to end "Pay first … — no trial theater", and
             both halves were hostages. #422 built a free tier: a workspace that
-            runs one full pitch before it asks for the card. The door is still
-            shut in production (`/api/me` answers "onboarding":"allowlist"), so
-            the old sentence is not false *today* — it goes false the moment the
-            operator sets ONBOARDING_OPEN=1, with no deploy here to catch it.
-            What "no trial theater" was actually promising is the fourteen-day
-            clock we do not run, and that survives the free tier intact: one
-            full pitch is not a countdown. So the promise is kept and the
-            absolute is dropped, and the sentence now needs no edit in either
-            state. test/pages.test.js fails on the absolutes coming back. -#}
-        <span id="buyLive" hidden>{% t %}Next stop is Stripe. This address becomes your studio's sign-in, and a work email brings your whole team in with you.{% endt %} </span>{% t %}Money back if it doesn't earn its keep, with no fourteen days of hoping you remember to cancel.{% endt %}
+            runs one full pitch before it asks for the card. What "no trial
+            theater" was actually promising is the fourteen-day clock we do not
+            run, and that survives the free tier intact: one full pitch is not a
+            countdown. So the promise is kept and the absolute is dropped.
+            test/pages.test.js fails on the absolutes coming back. -#}
+        {% t %}Money back if it doesn't earn its keep, with no fourteen days of hoping you remember to cancel.{% endt %}
       </p>
       <p class="buy-note"><a href="{{ '/pricing/' | localize }}">{% t %}What a workspace is, what's included, what happens if you stop →{% endt %}</a></p>
     </div>
@@ -463,7 +452,7 @@ permalink: "{{ language.prefix }}/"
     run. Every one of these is an IIFE that looks its elements up by id and
     returns if they are absent, so deferring is not only cheaper — it is the
     case the guard was written for, with the DOM guaranteed complete. -#}
-<script src="{{ '/assets/js/buy.js' | asset }}" defer></script>
+<script src="{{ '/assets/js/signup.js' | asset }}" defer></script>
 
 <!-- FAQ -->
 <section class="section-big faq">

@@ -12,10 +12,11 @@
 // to update would rot the same silent way the nav did.
 //
 // What the rest guard, in the order they would break:
-//   - /pricing/ still goes STRAIGHT TO STRIPE. CLAUDE.md records this exact
-//     regression happening once already (asked for direct pay, built as a link
-//     to an onboarding page, recorded as shipped) — so every id buy.js binds
-//     to is asserted present, not just "there is a CTA somewhere";
+//   - /pricing/'s buy button is one press to where money is taken. CLAUDE.md
+//     records the regression of building it as a detour once already. Since
+//     #1097 that place is the studio's sign-up (sign in, then the plan, then
+//     Stripe), so the link and the script that finishes its query are asserted
+//     present, not just "there is a CTA somewhere";
 //   - the homepage keeps #what / #how / #pricing. Stripe's own cancel_url is
 //     `/#pricing` (test/checkout-session.test.js pins it) and deep links from
 //     old emails and search results still point at all three;
@@ -121,19 +122,26 @@ describe('the header, and the pages behind it', () => {
     assert.match(read('what-to-send/index.html'), /href="\/pricing\/"/, 'the WHAT page never reaches the price');
   });
 
-  // The trap CLAUDE.md names by name. buy.js binds by id and silently does
-  // nothing if one is missing — which degrades to the multi-step /checkout/
-  // page, i.e. exactly the regression that was shipped and called done.
-  test('/pricing/ carries the direct-to-Stripe buy form, whole', () => {
-    const html = read('pricing/index.html');
-    for (const id of ['buy', 'buyLink', 'buyForm', 'buyEmail', 'buyBtn', 'buySite', 'buyMsg', 'buyLive'])
-      assert.match(html, new RegExp(`id="${id}"`), `/pricing/ is missing #${id} — buy.js will not bind`);
-    // Attributes allowed — the claim is that the page LOADS buy.js, which is
-    // the regression CLAUDE.md names. #137 added `defer` to it, and pinning
-    // the exact tag turned that into a failure about the wrong thing.
-    assert.match(html, new RegExp(`<script src="${served('/assets/js/buy.js')}"[^>]*></script>`),
-      '/pricing/ never loads buy.js');
-    assert.match(html, /\$999/, '/pricing/ does not name the price');
+  // #1097: the buy button is one link to the studio's sign-up, where the buyer
+  // signs in, picks the plan and then meets Stripe. signup.js finishes its
+  // query (plan, referral, utm) and must load BEFORE plan.js, which announces
+  // the plan on load; deferred scripts run in document order.
+  test('/pricing/ sends the buyer to the studio sign-up, in the page\'s language', () => {
+    for (const [file, href] of [
+      ['pricing/index.html', 'https://studio.prospektor.ai/signup'],
+      ['es/pricing/index.html', 'https://studio.prospektor.ai/signup?lang=es'],
+    ]) {
+      const html = read(file);
+      assert.match(html, new RegExp(`<a href="${href.replace(/[?.]/g, '\\$&')}" class="btn-cta" id="buyLink" data-signup>`),
+        `${file}'s buy button no longer opens ${href}`);
+      assert.doesNotMatch(html, /id="buyForm"|buy\.[0-9a-f]+\.js|\/assets\/js\/buy\.js/,
+        `${file} still carries the old email form; the studio asks for the address now`);
+      const signup = html.indexOf(served('/assets/js/signup.js'));
+      const plan = html.indexOf(served('/assets/js/plan.js'));
+      assert.ok(signup > 0, `${file} never loads signup.js`);
+      assert.ok(plan > signup, `${file} loads plan.js before signup.js, so a ?plan=year is announced to nobody`);
+    }
+    assert.match(read('pricing/index.html'), /\$999/, '/pricing/ does not name the price');
   });
 
   test('the homepage still carries its three section ids', () => {
@@ -345,8 +353,9 @@ describe('the header, and the pages behind it', () => {
       'the free run is no longer the primary action on the scan result (#418/#419)');
     // Demoted, never removed — the reader who is already sold must not have to
     // hunt for the way to pay.
-    assert.match(card[0], /id="scanCta" href="\/checkout\/"/,
-      'checkout has fallen off the scan result entirely — #419 demoted it, it did not delete it');
+    // Since #1097 the way to pay is the studio's sign-up.
+    assert.match(card[0], /id="scanCta" data-signup href="https:\/\/studio\.prospektor\.ai\/signup"/,
+      'the way to pay has fallen off the scan result entirely — #419 demoted it, it did not delete it');
   });
 
   // The run page starts on arrival from ?domain=, so nobody types their site

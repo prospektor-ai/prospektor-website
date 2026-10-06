@@ -21,6 +21,9 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
   const browser = await chromium.launch({ executablePath: CHROME });
 
   // `session` decides what the mocked create-checkout-session POST returns.
+  // #1097: the one-field form (buy.js) lives on the Close page alone now; the
+  // homepage and /pricing/ open the studio's sign-up, driven further down. So the
+  // form's own behaviour is driven where it still ships.
   async function open(session, { probeOk = true } = {}) {
     const page = await browser.newPage();
     const posts = [];
@@ -37,7 +40,7 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     // Nothing should ever leave for Stripe in a test.
     await page.route('https://checkout.stripe.com/**', route =>
       route.fulfill({ status: 200, contentType: 'text/html', body: '<h1>STRIPE CHECKOUT</h1>' }));
-    await page.goto('http://localhost:8899/#pricing');
+    await page.goto('http://localhost:8899/integrations/close/');
     return { page, posts };
   }
 
@@ -56,7 +59,7 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     await page.waitForURL(/checkout\.stripe\.com/, { timeout: 5000 });
     check('a work email lands on Stripe', page.url().startsWith('https://checkout.stripe.com/'), page.url());
     check('one POST, carrying the email', posts.length === 1 && posts[0].email === 'buyer@acme.com', posts);
-    check('marked as the pricing entry point', posts[0].from === 'pricing');
+    check('marked as the Close entry point', posts[0].from === 'close');
     check('no goal sentence collected', !posts[0].goal);
     await page.close();
   }
@@ -150,13 +153,27 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     await page.close();
   }
 
-  // 6 — the scan path is untouched
+  // 6 — #1097: every buy button off the Close page opens the studio sign-up.
+  //     The homepage tile and both scan CTAs, with nothing on the URL yet; the
+  //     scan CTA gains `website` further down, once a scan resolves one.
   {
-    const { page } = await open(() => OK);
-    check('scan result CTA still goes to /checkout/',
-      (await page.getAttribute('#scanCta', 'href')) === '/checkout/');
-    check('scan fallback CTA still goes to /checkout/',
-      (await page.getAttribute('#scanFallbackCta', 'href')) === '/checkout/');
+    const page = await browser.newPage();
+    let probed = 0;
+    await page.route('**/.netlify/functions/create-checkout-session', route => {
+      probed++;
+      return route.fulfill({ status: 200, body: JSON.stringify({ configured: true }) });
+    });
+    await page.goto('http://localhost:8899/#pricing');
+    await page.waitForTimeout(400);
+    const SIGNUP = 'https://studio.prospektor.ai/signup';
+    check('the homepage tile opens the studio sign-up',
+      (await page.getAttribute('#buyLink', 'href')) === SIGNUP, await page.getAttribute('#buyLink', 'href'));
+    check('and there is no form on the homepage to fill', (await page.locator('#buyForm').count()) === 0);
+    check('and nothing asks the checkout function anything', probed === 0, probed);
+    check('scan result CTA opens the studio sign-up',
+      (await page.getAttribute('#scanCta', 'href')) === SIGNUP, await page.getAttribute('#scanCta', 'href'));
+    check('scan fallback CTA opens the studio sign-up',
+      (await page.getAttribute('#scanFallbackCta', 'href')) === SIGNUP, await page.getAttribute('#scanFallbackCta', 'href'));
     await page.close();
   }
 
@@ -254,8 +271,9 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     check('the evidence bullets are gone — the client knows themselves (#240)',
       m.signals === 0, m);
     check('the proposal still leads the card', m.guess.length > 0, m);
-    check('the CTA carries the scan into checkout',
-      (await page.getAttribute('#scanCta', 'href')) === '/checkout/?domain=acme.com&company=Acme+GmbH');
+    check('the CTA carries the scanned website into the studio sign-up (#1097)',
+      (await page.getAttribute('#scanCta', 'href')) === 'https://studio.prospektor.ai/signup?website=acme.com',
+      await page.getAttribute('#scanCta', 'href'));
     // #419: the free run is the card's primary action, and it opens on the
     // company the card is describing — the run page starts from ?domain= on
     // arrival, so nobody types their site twice. The resolved domain is sent,
@@ -1158,42 +1176,61 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     await page.close();
   }
 
-  // 11 — /pricing/ pays. Same mock as block 1, aimed at the new page.
+  // 11 — #1097: /pricing/ opens the studio's sign-up, and the query the studio
+  //      reads is finished here: the plan the switch shows, the referral id
+  //      the partner programme set, and the listing's utm_* keys, read at the
+  //      press. `via` and anything else off the URL never ride.
   {
+    const SIGNUP = 'https://studio.prospektor.ai/signup';
     const page = await browser.newPage();
-    const posts = [];
-    await page.route('**/.netlify/functions/create-checkout-session', async route => {
-      if (route.request().method() === 'GET')
-        return route.fulfill({ status: 200, body: JSON.stringify({ configured: true }) });
-      posts.push(JSON.parse(route.request().postData()));
-      return route.fulfill({ status: 200, contentType: 'application/json',
-        body: JSON.stringify({ url: 'https://checkout.stripe.com/c/pay/cs_live_1' }) });
+    const opened = [];
+    await page.route('https://studio.prospektor.ai/signup**', route => {
+      opened.push(route.request().url());
+      return route.fulfill({ status: 200, contentType: 'text/html', body: '<h1>STUDIO SIGN-UP</h1>' });
     });
-    await page.route('https://checkout.stripe.com/**', route =>
-      route.fulfill({ status: 200, contentType: 'text/html', body: '<h1>STRIPE CHECKOUT</h1>' }));
-
-    await page.goto('http://localhost:8899/pricing/');
-    await page.waitForSelector('#buyForm:not([hidden])', { timeout: 5000 });
-    check('/pricing/ reveals the one-field form when keys exist', await page.isVisible('#buyForm'));
-    check('/pricing/ hides the multi-step fallback link', !(await page.isVisible('#buyLink')));
-    await page.fill('#buyEmail', 'buyer@acme.com');
-    await page.click('#buyBtn');
-    await page.waitForURL(/checkout\.stripe\.com/, { timeout: 5000 });
-    check('/pricing/ goes straight to Stripe', page.url().startsWith('https://checkout.stripe.com/'), page.url());
-    check('carrying the email, once', posts.length === 1 && posts[0].email === 'buyer@acme.com', posts);
+    await page.goto('http://localhost:8899/pricing/?utm_source=close&utm_campaign=dir&gclid=nope&via=close');
+    const atLoad = new URL(await page.getAttribute('#buyLink', 'href'));
+    check('/pricing/ opens the studio sign-up', atLoad.origin + atLoad.pathname === SIGNUP, atLoad.href);
+    check('monthly sends no plan', !atLoad.searchParams.has('plan'), atLoad.href);
+    check('the utm_* keys ride, and nothing else off the URL does',
+      atLoad.searchParams.get('utm_source') === 'close' && atLoad.searchParams.get('utm_campaign') === 'dir'
+      && !atLoad.searchParams.has('gclid') && !atLoad.searchParams.has('via'), atLoad.href);
+    await page.click('#planSwitch [data-plan="year"]');
+    const year = new URL(await page.getAttribute('#buyLink', 'href'));
+    check('after pressing Yearly the link carries plan=yearly', year.searchParams.get('plan') === 'yearly', year.href);
+    await page.click('#planSwitch [data-plan="month"]');
+    check('and back on Monthly it carries none',
+      !new URL(await page.getAttribute('#buyLink', 'href')).searchParams.has('plan'));
+    await page.click('#planSwitch [data-plan="year"]');
+    // The programme's script lands after the page; the id is read at the press.
+    await page.evaluate(() => { window.Rewardful = { referral: 'ref-abc123' }; });
+    await page.click('#buyLink');
+    await page.waitForURL(/studio\.prospektor\.ai\/signup/, { timeout: 5000 });
+    const went = new URL(opened[0] || page.url());
+    check('the press lands on the studio sign-up', went.origin + went.pathname === SIGNUP, went.href);
+    check('carrying the referral id set before the press', went.searchParams.get('referral') === 'ref-abc123', went.href);
+    check('and the plan and the utm_* keys', went.searchParams.get('plan') === 'yearly'
+      && went.searchParams.get('utm_source') === 'close', went.href);
     await page.close();
   }
 
-  // 12 — no keys: /pricing/ degrades to the page that still works, exactly
-  //      as the homepage tile does.
+  // 12 — #1097: a ?plan=year arriving on /pricing/ is heard, and a translated
+  //      page sends its language to the studio.
   {
     const page = await browser.newPage();
-    await page.route('**/.netlify/functions/create-checkout-session', route =>
-      route.fulfill({ status: 503, body: JSON.stringify({ error: 'not open' }) }));
-    await page.goto('http://localhost:8899/pricing/');
-    await page.waitForTimeout(300);
-    check('/pricing/ without keys keeps the /checkout/ link visible', await page.isVisible('#buyLink'));
-    check('/pricing/ without keys shows no form', !(await page.isVisible('#buyForm')));
+    await page.goto('http://localhost:8899/pricing/?plan=year');
+    check('/pricing/?plan=year opens on a yearly sign-up link',
+      new URL(await page.getAttribute('#buyLink', 'href')).searchParams.get('plan') === 'yearly',
+      await page.getAttribute('#buyLink', 'href'));
+    await page.goto('http://localhost:8899/es/pricing/');
+    check('/es/pricing/ sends lang=es', (await page.getAttribute('#buyLink', 'href'))
+      === 'https://studio.prospektor.ai/signup?lang=es', await page.getAttribute('#buyLink', 'href'));
+    await page.goto('http://localhost:8899/es/');
+    check('/es/ sends lang=es from the tile and both scan CTAs',
+      (await page.getAttribute('#buyLink', 'href')) === 'https://studio.prospektor.ai/signup?lang=es'
+      && (await page.getAttribute('#scanCta', 'href')) === 'https://studio.prospektor.ai/signup?lang=es'
+      && (await page.getAttribute('#scanFallbackCta', 'href')) === 'https://studio.prospektor.ai/signup?lang=es',
+      await page.getAttribute('#buyLink', 'href'));
     await page.close();
   }
 
@@ -1281,12 +1318,10 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     await page.waitForLoadState('domcontentloaded');
     check('Precio lands on /es/pricing/', new URL(page.url()).pathname === '/es/pricing/', page.url());
     check('the pricing h1 is Spanish', /Un precio/.test(await page.textContent('h1')));
-    await page.waitForSelector('#buyForm:not([hidden])', { timeout: 5000 });
-    await page.fill('#buyEmail', 'comprador@acme.es');
-    await page.click('#buyBtn');
-    await page.waitForURL(/checkout\.stripe\.com/, { timeout: 5000 });
-    check('the Spanish pricing tile reaches Stripe', page.url().startsWith('https://checkout.stripe.com/'));
-    check('and told the server the buyer read Spanish', posts.length === 1 && posts[0].locale === 'es' && posts[0].from === 'pricing', posts);
+    // #1097: the tile opens the studio sign-up, telling it the buyer read Spanish.
+    check('the Spanish pricing tile opens the studio sign-up in Spanish',
+      (await page.getAttribute('#buyLink', 'href')) === 'https://studio.prospektor.ai/signup?lang=es',
+      await page.getAttribute('#buyLink', 'href'));
     await page.goto('http://localhost:8899/es/');
     await page.click('.nav-links a[href="/resources/"]');
     await page.waitForLoadState('domcontentloaded');
@@ -1686,7 +1721,7 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
       route.fulfill({ status: 200, contentType: 'text/html', body: '<h1>STRIPE CHECKOUT</h1>' }));
 
     await page.goto('http://localhost:8899/pricing/');
-    await page.waitForSelector('#buyForm:not([hidden])', { timeout: 5000 });
+    await page.waitForSelector('#planSwitch', { timeout: 5000 });
     // The big figure — one of the two price rows — and the line under it.
     const priced = () => page.$$eval('.pricing-card .price-row:not([hidden])',
       ns => ns.map(n => n.textContent.replace(/\s+/g, ' ').trim()).join(' | '));
@@ -1706,8 +1741,10 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     check('and it never shows two price rows at once', yearly.split('|').length === 1, yearly);
     check('and says what the two months free are free OF',
       (await note()).includes('$11,988'), await note());
-    check('the CTA carries the yearly figure too',
-      ((await page.textContent('#buyBtn')) || '').includes('$9,990'), await page.textContent('#buyBtn'));
+    // #1097: the CTA is the studio sign-up link, and the plan rides on it.
+    check('the CTA carries the yearly plan to the studio',
+      new URL(await page.getAttribute('#buyLink', 'href')).searchParams.get('plan') === 'yearly',
+      await page.getAttribute('#buyLink', 'href'));
     check('the yearly option reports itself pressed, the monthly one not',
       await page.getAttribute('.plan-opt[data-plan="year"]', 'aria-pressed') === 'true'
       && await page.getAttribute('.plan-opt[data-plan="month"]', 'aria-pressed') === 'false');
@@ -1722,10 +1759,7 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
       { switch: box, card });
     await page.setViewportSize({ width: 1280, height: 900 });
 
-    await page.fill('#buyEmail', 'buyer@acme.com');
-    await page.click('#buyBtn');
-    await page.waitForURL(/checkout\.stripe\.com/, { timeout: 5000 });
-    check('a yearly buy tells the server which plan', posts.length === 1 && posts[0].plan === 'year', posts);
+    check('and nothing asks the checkout function: the studio opens Stripe now', posts.length === 0, posts);
     await page.close();
   }
   {
@@ -1743,26 +1777,23 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     await page.route('https://checkout.stripe.com/**', route =>
       route.fulfill({ status: 200, contentType: 'text/html', body: '<h1>STRIPE CHECKOUT</h1>' }));
     await page.goto('http://localhost:8899/pricing/');
-    await page.waitForSelector('#buyForm:not([hidden])', { timeout: 5000 });
-    await page.fill('#buyEmail', 'buyer@acme.com');
-    await page.click('#buyBtn');
-    await page.waitForURL(/checkout\.stripe\.com/, { timeout: 5000 });
+    await page.waitForSelector('#planSwitch', { timeout: 5000 });
     check('an untouched pricing page sends no plan at all',
-      posts.length === 1 && !('plan' in posts[0]), posts);
+      (await page.getAttribute('#buyLink', 'href')) === 'https://studio.prospektor.ai/signup',
+      await page.getAttribute('#buyLink', 'href'));
     await page.close();
   }
   {
-    // The hop: /pricing/'s own link to /checkout/ carries the choice, and the
-    // switch on the far side is already on it. This is the path a visitor
-    // takes when there are no Stripe keys — the one that used to be a dead end
-    // for a yearly buyer, since the pricing CTA is a link then, not a form.
+    // The hop: /pricing/'s link carries the choice whether or not this site
+    // has Stripe keys, since #1097 made it the studio's sign-up. The switch on
+    // /checkout/ (the Close page's path) still reads the same `?plan=`.
     const page = await browser.newPage();
     await page.route('**/.netlify/functions/create-checkout-session', route =>
       route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ error: 'not open' }) }));
     await page.goto('http://localhost:8899/pricing/');
     await page.click('.plan-opt[data-plan="year"]');
-    check('with no keys the /checkout/ link carries the choice',
-      /[?&]plan=year/.test(await page.getAttribute('#buyLink', 'href')),
+    check('with no keys the sign-up link carries the choice',
+      /[?&]plan=yearly/.test(await page.getAttribute('#buyLink', 'href')),
       await page.getAttribute('#buyLink', 'href'));
     await page.click('.plan-opt[data-plan="month"]');
     check('and drops it again when the visitor goes back to monthly',
@@ -1981,26 +2012,21 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
       page.on('request', r => { const h = new URL(r.url()).host; if (!/^localhost:889[89]$/.test(h)) hosts.add(h); });
       return hosts;
     };
+    // #1097: the pricing button is a link to the studio's sign-up, and the
+    // referral rides on its query. `posts` holds the sign-up URLs pressed.
     const buyPage = async (origin) => {
       const page = await browser.newPage();
       const posts = [];
-      await page.route('**/.netlify/functions/create-checkout-session', async route => {
-        if (route.request().method() === 'GET')
-          return route.fulfill({ status: 200, body: JSON.stringify({ configured: true }) });
-        posts.push(JSON.parse(route.request().postData()));
-        return route.fulfill({ status: 200, contentType: 'application/json',
-          body: JSON.stringify({ url: 'https://checkout.stripe.com/c/pay/cs_live_1' }) });
+      await page.route('https://studio.prospektor.ai/signup**', route => {
+        posts.push(new URL(route.request().url()));
+        return route.fulfill({ status: 200, contentType: 'text/html', body: '<h1>STUDIO SIGN-UP</h1>' });
       });
-      await page.route('https://checkout.stripe.com/**', route =>
-        route.fulfill({ status: 200, contentType: 'text/html', body: '<h1>STRIPE CHECKOUT</h1>' }));
       const hosts = watch(page);
       return { page, posts, hosts };
     };
     const buy = async page => {
-      await page.waitForSelector('#buyForm:not([hidden])', { timeout: 5000 });
-      await page.fill('#buyEmail', 'buyer@acme.com');
-      await page.click('#buyBtn');
-      await page.waitForURL(/checkout\.stripe\.com/, { timeout: 5000 });
+      await page.click('#buyLink');
+      await page.waitForURL(/studio\.prospektor\.ai\/signup/, { timeout: 5000 });
     };
     const panelRows = async page => {
       await page.click('footer a[data-cookies]');
@@ -2021,9 +2047,9 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
       check('dark: no cookie of any kind', (await page.context().cookies()).length === 0, await page.context().cookies());
       check('dark: the buyer has no Rewardful object to read', await page.evaluate(() => typeof window.Rewardful === 'undefined'));
       await buy(page);
-      check('dark: the checkout call carries no referral', posts.length === 1 && !('referral' in posts[0]), posts);
-      check('dark: the browser asked nobody outside this origin but the mocked Stripe',
-        [...hosts].every(h => h === 'checkout.stripe.com'), [...hosts]);
+      check('dark: the sign-up link carries no referral', posts.length === 1 && !posts[0].searchParams.has('referral'), posts.map(String));
+      check('dark: the browser asked nobody outside this origin but the mocked studio',
+        [...hosts].every(h => h === 'studio.prospektor.ai'), [...hosts]);
       await page.goto('http://localhost:8899/pricing/');
       const rows = await panelRows(page);
       check('dark: the panel names no cookie', !rows.some(r => /rewardful/i.test(r)), rows);
@@ -2057,9 +2083,9 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
       await page.waitForTimeout(400);
       check('lit: Reject loads nothing and sets nothing', rwHits.length === 0 && (await page.context().cookies()).length === 0);
       await buy(page);
-      check('lit: a buyer who rejected sends no referral', posts.length === 1 && !('referral' in posts[0]), posts);
+      check('lit: a buyer who rejected sends no referral', posts.length === 1 && !posts[0].searchParams.has('referral'), posts.map(String));
       // A fresh visitor on the same lit site: Accept. (Back on this origin
-      // first: the buy left the page on the mocked Stripe origin, whose
+      // first: the buy left the page on the mocked studio origin, whose
       // storage is not ours to clear.)
       await page.goto('http://localhost:8898/pricing/');
       await page.evaluate(() => { try { localStorage.clear(); } catch (e) {} });
@@ -2073,7 +2099,7 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
       const cookies = await page.context().cookies();
       check('lit: the referral cookie is first-party on this origin', cookies.length === 1 && cookies[0].name === 'rewardful.referral', cookies);
       await buy(page);
-      check('lit: the checkout call carries the referral read at the press', posts.length === 2 && posts[1].referral === UUID, posts[1]);
+      check('lit: the sign-up link carries the referral read at the press', posts.length === 2 && posts[1].searchParams.get('referral') === UUID, posts.map(String));
       await page.goto('http://localhost:8898/pricing/');
       const rows = await panelRows(page);
       check('lit: the panel names the cookie', rows.includes('rewardful.referral'), rows);
@@ -2082,7 +2108,7 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
         (await page.$$('.partner-terms li')).length === 7);
       check('and the signup link', (await page.getAttribute('.partner-terms + p a', 'href')) === 'https://prospektor.getrewardful.com/signup');
       check('lit: the only host outside this origin was Rewardful\'s script, and only after Accept',
-        [...hosts].every(h => h === 'r.wdfl.co' || h === 'checkout.stripe.com'), [...hosts]);
+        [...hosts].every(h => h === 'r.wdfl.co' || h === 'studio.prospektor.ai'), [...hosts]);
       await page.close();
     } finally {
       litServer.close();

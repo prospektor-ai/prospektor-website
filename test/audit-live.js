@@ -162,7 +162,8 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
     check('scan card leads with who they are', name.length > 0, JSON.stringify(name));
     check('scan renders no signal bullets (#240)', (await page.locator('#scanSignals li').count()) === 0);
     const href = await page.getAttribute('#scanCta','href');
-    check('scan CTA carries domain into /checkout/', /^\/checkout\/\?.*domain=/.test(href) || href === '/checkout/', href);
+    // #1097: the way to pay is the studio's sign-up, carrying the website.
+    check('scan CTA carries the website into the studio sign-up', /^https:\/\/studio\.prospektor\.ai\/signup\?(?:.*&)?website=/.test(href || ''), href);
     // #419: the free run is the card's primary action. Asked of production
     // because the defect this closes was invisible to every green build for
     // six days — the studio answered /r the whole time and nothing here
@@ -248,11 +249,12 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
     await pes.close();
   }
 
-  // ── CLAIM: the pricing tile pays directly ──
+  // ── CLAIM (#1097): the pricing tile opens the studio sign-up ──
   const p2 = await ctx.newPage();
   await p2.goto(SITE+'/#pricing', { waitUntil: 'domcontentloaded' });
-  await p2.waitForSelector('#buyForm:not([hidden])', { timeout: 20000 });
-  check('pricing CTA is the pay form, not a link to onboarding', await p2.isVisible('#buyForm') && !(await p2.isVisible('#buyLink')));
+  const tileHref = await p2.getAttribute('#buyLink', 'href');
+  check('pricing CTA opens the studio sign-up', await p2.isVisible('#buyLink')
+    && /^https:\/\/studio\.prospektor\.ai\/signup(?:\?|$)/.test(tileHref || ''), tileHref);
 
   // ── CLAIM: /checkout/ works scan-less and asks for a website ──
   const p3 = await ctx.newPage();
@@ -541,13 +543,13 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
   if(outcome==='result'){
     check('error message is cleared on the successful retry', !(await q1.isVisible('#scanError')));
     const href=await q1.getAttribute('#scanCta','href');
-    check('the retry CTA carries the NEW domain', /domain=netlify\.com/.test(href||''), href);
+    check('the retry CTA carries the NEW domain', /website=netlify\.com/.test(href||''), href);
   }
 
   // --- CLAIM: the CTA is reachable even when the scan gives nothing ---
   const q2=await ctx.newPage();
   await q2.goto('https://prospektor.ai/#scan',{waitUntil:'domcontentloaded'});
-  const heroCta = await q2.isVisible('#scanCta') || await q2.isVisible('#scanFallbackCta') || await q2.isVisible('#buyForm');
+  const heroCta = await q2.isVisible('#scanCta') || await q2.isVisible('#scanFallbackCta') || await q2.isVisible('#buyLink');
   check('a visitor who never scans can still reach a way to buy', true, 'pricing tile is always present');
 
   // --- CLAIM: /checkout/ consumes the scan handoff params ---
@@ -647,16 +649,15 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
       liveWords(liveH1).includes(liveWords(liveTitle.split('·').pop() || '').replace(/^your /, '')),
       liveH1.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim() + '  ·  ' + liveTitle);
 
-    // The trap CLAUDE.md names: a pricing page that looks right and quietly
-    // degrades to the multi-step /checkout/ page is the regression that
-    // shipped once and was recorded as done.
+    // The trap CLAUDE.md names: a pricing page whose buy button detours is the
+    // regression that shipped once and was recorded as done. Since #1097 the
+    // button is one link to the studio's sign-up, finished by signup.js.
     const pricing = await (await fetch(SITE + '/pricing/')).text();
-    const missingIds = ['buy','buyLink','buyForm','buyEmail','buyBtn','buySite','buyMsg','buyLive']
-      .filter(id => !pricing.includes('id="' + id + '"'));
-    check('/pricing/ serves the whole direct-to-Stripe form',
-      missingIds.length === 0 && /assets\/js\/buy(?:\.[0-9a-f]+)?\.js/.test(pricing),
-      missingIds.length ? 'missing #' + missingIds.join(', #')
-        : (/assets\/js\/buy(?:\.[0-9a-f]+)?\.js/.test(pricing) ? '' : 'the ids are there but buy.js is not loaded'));
+    const signupLink = /<a href="https:\/\/studio\.prospektor\.ai\/signup" class="btn-cta" id="buyLink" data-signup>/.test(pricing);
+    const signupJs = /assets\/js\/signup(?:\.[0-9a-f]+)?\.js/.test(pricing);
+    check('/pricing/ serves the buy button to the studio sign-up (#1097)',
+      signupLink && signupJs,
+      [!signupLink && 'no #buyLink to studio.prospektor.ai/signup', !signupJs && 'signup.js is not loaded'].filter(Boolean).join('; '));
 
     // ── CLAIM (#542): the yearly plan is on the live pricing page ──
     // The board's own definition of done for that row: the yearly figure

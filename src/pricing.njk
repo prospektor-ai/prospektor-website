@@ -14,13 +14,12 @@ permalink: "{{ language.prefix }}/pricing/"
 {#- #153, 24 Aug 2026. /#pricing was a nav item pointing at an anchor on the
     homepage. This is the page it should have been.
 
-    THE ONE RULE THIS PAGE MUST NOT BREAK (CLAUDE.md, and the reason it is
-    written down there): the price CTA goes STRAIGHT TO STRIPE. It was once
-    asked for exactly that, built as a link to an onboarding page, and recorded
-    on the board as shipped for three days. So the markup here is the homepage
-    tile's markup, ids and all, driven by the same buy.js — one field, then
-    Stripe. The homepage tile stays where it is and keeps id="pricing", because
-    Stripe's own cancel_url returns to /#pricing and deep links still land. -#}
+    THE ONE RULE THIS PAGE MUST NOT BREAK: the price CTA is one press to the
+    place money is taken. Until #1097 that was a field here and then Stripe;
+    since #1097 (the operator's approved journey) it is the studio's sign-up,
+    where the buyer signs in, answers website, what to find and plan, and then
+    meets Stripe. The markup is the homepage tile's, ids and all, and the
+    homepage tile keeps id="pricing" because deep links still land there. -#}
 
 {#- The one page on this site with a price on it, and until #137 the only
     machine-readable thing about it was the word "Pricing" in the <title>.
@@ -219,39 +218,24 @@ permalink: "{{ language.prefix }}/pricing/"
       <li>{% t %}Share links, print and PDF export of any deliverable{% endt %}</li>
     </ul>
 
+    {#- #1097. One link to the studio's sign-up, the homepage tile's twin
+        (the reasoning is in src/index.njk beside the same link). The plan the
+        switch shows rides on it as `plan=yearly`, written by signup.js. -#}
     <div class="buy" id="buy">
-      <a href="{{ '/checkout/' | localize }}" class="btn-cta" id="buyLink">{% t %}Start my studio →{% endt %}</a>
-      <form class="reserve-form buy-form" id="buyForm" hidden novalidate>
-        <input class="reserve-input" id="buyEmail" type="email" autocomplete="email"
-               placeholder="you@yourcompany.com" aria-label="{% t %}Your work email{% endt %}">
-        {#- The label carries the figure, so the yearly one is here too — read
-            off the button by buy.js when the switch moves, which is also what
-            it restores after a failed attempt. `| safe` because the entities
-            are the sentence's own; without it Nunjucks would escape the `&`
-            twice and the button would read "Pay &amp; start". -#}
-        <button class="btn-cta" type="submit" id="buyBtn"
-                data-label-year="{{ 'Pay &amp; start · $9,990/yr →' | t | safe }}">{% t %}Pay &amp; start · $999/mo →{% endt %}</button>
-      </form>
-      <input class="reserve-input buy-site" id="buySite" type="text" inputmode="url" autocomplete="url"
-             placeholder="yourcompany.com" aria-label="{% t %}Your company website{% endt %}" hidden>
-      <p class="reserve-msg is-error" id="buyMsg" hidden></p>
+      <a href="{{ site.studio }}/signup{% if language.code != 'en' %}?lang={{ language.code }}{% endif %}" class="btn-cta" id="buyLink" data-signup>{% t %}Start my studio →{% endt %}</a>
       <p class="buy-note">
-        {#- #423 — the homepage tile's twin, and it changes with it. The
-            reasoning is in src/index.njk beside the same line. -#}
-        <span id="buyLive" hidden>{% t %}Next stop is Stripe. This address becomes your studio's sign-in, and a work email brings your whole team in with you.{% endt %} </span>{% t %}Money back if it doesn't earn its keep, with no fourteen days of hoping you remember to cancel.{% endt %}
+        {#- #423, the homepage tile's twin, and it changes with it. -#}
+        {% t %}Money back if it doesn't earn its keep, with no fourteen days of hoping you remember to cancel.{% endt %}
       </p>
     </div>
   </div>
 </section>
-{#- defer (#137). This sat mid-document without it, so the parser stopped
-    here and rendered nothing below until the script had been fetched and
-    run. Every one of these is an IIFE that looks its elements up by id and
-    returns if they are absent, so deferring is not only cheaper — it is the
-    case the guard was written for, with the DOM guaranteed complete. -#}
-<script src="{{ '/assets/js/buy.js' | asset }}" defer></script>
-{#- plan.js loads AFTER buy.js on purpose (#542): deferred scripts run in
-    document order, so buy.js is listening for the switch's `plan` event by the
-    time plan.js announces the choice a `?plan=` in the URL already made. -#}
+{#- defer (#137). Every one of these is an IIFE that looks its elements up by
+    id and returns if they are absent. signup.js loads BEFORE plan.js on
+    purpose (#542, #1097): deferred scripts run in document order, so it is
+    listening for the switch's `plan` event by the time plan.js announces the
+    choice a `?plan=` in the URL already made. -#}
+<script src="{{ '/assets/js/signup.js' | asset }}" defer></script>
 <script src="{{ '/assets/js/plan.js' | asset }}" defer></script>
 
 <section class="pricing-faq">

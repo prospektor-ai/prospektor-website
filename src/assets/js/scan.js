@@ -42,9 +42,10 @@
   const fallbackEl = document.getElementById('scanFallback');
   const fallbackMsg = document.getElementById('scanFallbackMsg');
   const fallbackCta = document.getElementById('scanFallbackCta');
-  // Where checkout is on THIS page's language — the template wrote the
-  // localized href (#114), so the script reads it rather than assuming /checkout/.
-  const CHECKOUT = (ctaEl && ctaEl.getAttribute('href')) || '/checkout/';
+  // Where the buy link goes on THIS page's language. The template wrote it (the
+  // studio's /signup since #1097, with `lang` on a translated page), so the
+  // script reads it rather than assuming a URL.
+  const CHECKOUT = (ctaEl && ctaEl.getAttribute('href')) || 'https://studio.prospektor.ai/signup';
 
   // ── Arriving at #scan means "I want to scan" ──
   // #207: the fragment jump moves the viewport and nothing else — keyboard
@@ -187,12 +188,17 @@
 
   const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-  function checkoutUrl(domain, company) {
-    const p = new URLSearchParams();
-    if (domain) p.set('domain', domain);
-    if (company) p.set('company', company);
-    const q = p.toString();
-    return CHECKOUT + (q ? '?' + q : '');
+  // #1097: the buy link is the studio's /signup, which takes the website the
+  // scan resolved and asks the rest itself. Set with the URL API so the `lang`
+  // the template wrote stays; signup.js adds the referral and the utm_* keys
+  // at the press.
+  function checkoutUrl(domain) {
+    let to;
+    try { to = new URL(CHECKOUT, location.href); }
+    catch (e) { return CHECKOUT; }
+    if (domain) to.searchParams.set('website', domain);
+    else to.searchParams.delete('website');
+    return to.href;
   }
 
   // The domain the scan resolved, not the raw string typed: /r normalises the
@@ -341,7 +347,7 @@
     });
     factsEl.hidden = facts.length === 0;
     guessEl.textContent = toProposal(goal);
-    ctaEl.href = checkoutUrl(domain, result.name);
+    ctaEl.href = checkoutUrl(domain);
     if (runCtaEl) runCtaEl.href = runUrl(domain);
     // The checkout page picks the scan up from here so the buyer's target
     // sentence survives the navigation without a backend.

@@ -39,9 +39,11 @@
     // The page's own link to /checkout/ carries the choice across, for the
     // visitor who has no Stripe form to submit (no keys, or no JS on the far
     // side): the switch on /checkout/ reads the same `?plan=`.
+    // #1097: only a link on this site. A link to the studio's sign-up is
+    // signup.js's, which writes the plan in the studio's own words.
     const link = document.getElementById('buyLink');
-    if (link) {
-      const to = new URL(link.getAttribute('href'), location.href);
+    const to = link && new URL(link.getAttribute('href'), location.href);
+    if (to && to.origin === location.origin) {
       if (plan === names[0]) to.searchParams.delete('plan');
       else to.searchParams.set('plan', plan);
       link.setAttribute('href', to.pathname + to.search + to.hash);

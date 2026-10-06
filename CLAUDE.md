@@ -351,8 +351,16 @@ year. Four surfaces carry a figure and exactly one of them decides it.
   a price the build did not write, ships no sentence of its own to translate,
   and degrades — no JS, no keys, a crawler — to the monthly page it has always
   been. `plan.js` loads **after** the page's own script, because deferred
-  scripts run in document order and `buy.js` has to be listening for the `plan`
-  event before a `?plan=` in the URL is announced.
+  scripts run in document order and the listener (`signup.js` on `/pricing/`,
+  the checkout script on `/checkout/`) has to be hearing the `plan` event
+  before a `?plan=` in the URL is announced.
+- **Since #1097 every buy button but the Close page's opens the studio's
+  sign-up** (`site.studio` + `/signup`, `?lang=` on a translated page): the
+  buyer signs in there, answers website, what to find and plan, and then meets
+  Stripe. `signup.js` adds `website`, `plan=yearly`, `referral` and the utm_*
+  keys, never `via`; `create-checkout-session` ignores `via` from the studio
+  door, so the Close free month belongs to `/integrations/close/` alone, which
+  keeps its own form, `buy.js` and `/checkout/`.
 - **The choice crosses pages as `?plan=`, never as storage.** That is the path
   a yearly buyer takes when there are no Stripe keys and `/pricing/`'s CTA is a
   link rather than a form — and it declares nothing to `consent.js`'s

@@ -123,7 +123,12 @@ exports.handler = async function(event) {
   // plan is, and the trial is granted ONLY to it and ONLY when this build's
   // environment arms it — so the plain funnel keeps selling at list price and
   // an unarmed deploy sends Stripe the request it always sent.
-  const partner = partnerOf(data.via);
+  //
+  // The studio's door never names a partner, whatever the request carries: a
+  // buyer who signs up on studio.prospektor.ai arrived through a URL anybody
+  // can type, so a `via` on it is a query parameter, and the Close free month
+  // belongs to the Close page alone.
+  const partner = data.from === 'studio' ? '' : partnerOf(data.via);
   const trial = partner === 'close' ? trialDays() : 0;
   // #885: the partner programme's marker, Rewardful's referral id, read by
   // the page at the press. Honoured ONLY while the programme is on

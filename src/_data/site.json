@@ -5,6 +5,8 @@
   "url": "https://prospektor.ai",
   "//googleSiteVerification": "Only needed if Search Console is verified by HTML tag instead of DNS TXT. The recommended route is a DNS TXT record at Spaceship, which needs no deploy, survives a hosting change, and verifies a Domain property covering www. and studio. as well — see RUNBOOK-search-console.md. Paste the raw token here (the content= value, not the whole tag) only if DNS is not an option.",
   "googleSiteVerification": "",
+  "//studio": "#1097. The studio's origin, the one place a template names it for a link that leaves this site. Every buy button outside /integrations/close/ points at its /signup page (signup.js adds the rest of the query at the press).",
+  "studio": "https://studio.prospektor.ai",
   "email": "hello@prospektor.ai",
   "privacyEmail": "privacy@prospektor.ai",
   "description": "Teach Prospektor what you're after (customers, partners, resellers, investors) and it finds the companies, names who to contact, and writes what you send.",

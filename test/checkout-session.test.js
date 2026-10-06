@@ -280,6 +280,20 @@ describe('create-checkout-session', () => {
     assert.equal(p.get('cancel_url'), 'https://studio.prospektor.ai/signup?website=evil.example&lang=es', 'a domain is cleaned before it rides');
   });
 
+  test('the studio door never grants the Close month, whatever `via` it carries', async () => {
+    process.env.CLOSE_TRIAL_DAYS = String(TRIAL_DAYS);
+    for (const via of ['close', ' Close ', 'CLOSE']) {
+      const calls = stubFetch([STRIPE_OK, FREE]);
+      await post(fn, { email: 'b@acme.com', domain: 'acme.com', from: 'studio', via });
+      const p = new URLSearchParams(stripeCalls(calls)[0].body);
+      assert.equal(p.get('subscription_data[trial_period_days]'), null, `via=${JSON.stringify(via)} from the studio must buy no trial`);
+      assert.equal(p.get('metadata[via]'), null);
+      assert.equal(p.get('subscription_data[metadata][via]'), null);
+      assert.equal(p.get('metadata[door]'), 'studio');
+    }
+    delete process.env.CLOSE_TRIAL_DAYS;
+  });
+
   test('every other door writes no door into the metadata', async () => {
     const calls = stubFetch([STRIPE_OK, FREE]);
     await post(fn, { email: 'b@acme.com', domain: 'acme.com', from: 'pricing' });
