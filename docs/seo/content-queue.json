@@ -146,6 +146,31 @@
       ],
       "distinct_from_checked": "7 Sep 2026 (#447), against the two named pages, read in full. niche-down's subject is HOW MUCH to narrow and why narrowing the message wins the customers outside it — a size argument — and its axis table recommends the orthogonal cut, one role across industries, which is a WHO. §7.5's finding is that the unit of segmentation is the job the buyer is hiring you for, a WHY, and that a role is a proxy for it. who-to-approach qualifies a named prospect on TIMING (is there a person whose quarter depends on it); the job is what makes a company a candidate before timing is asked. Defended on one condition, kept in the text: the article acknowledges niche-down's table, says why a job is not Cohen's horizontal cut, never re-argues size, and links there for it. No phrase is shared between the two descriptions. Verdict: written. Full reasoning in the studio's ROADMAP.md under #447, 7 Sep.",
       "published": "7 Sep 2026, website main 8c38661, live 13:42 UTC — title, h1, sitemap entry, hub card, OG card and every inbound sibling link fetched as served bytes."
+    },
+    {
+      "slug": "ask-for-a-warm-introduction",
+      "type": "article",
+      "action": "new",
+      "cluster": null,
+      "title": "How to ask for a warm introduction someone will make",
+      "seo_title": "How to ask for a warm introduction",
+      "primary_keyword": "how to ask for a warm introduction",
+      "target_words": 1100,
+      "faq": false,
+      "angle": "The connector's blank page is what stalls an introduction, so the ask carries a finished email for them to forward: under 100 words, shared context, one specific ask, an easy out. Pick the connector by two-way history, never by title, and send intro asks first. Added 6 Oct 2026 by the daily cadence: the queue had nothing queued, and warm intros is a named ICP search no article covered.",
+      "internal_links": [
+        "/resources/cold-email-personalisation/",
+        "/resources/network-beats-audience/",
+        "/resources/fish-where-the-fish-are/"
+      ],
+      "distinct_from": "network-beats-audience argues WHY a network beats an audience, how to borrow somebody else's audience (swaps, guest posts) and how to keep a relationship warm between deals; it never covers getting introduced to one named target, choosing the connector, or writing the request. fish-where-the-fish-are names introductions as the channel for a buyer with no pond, a channel choice; this is how to run one ask once that choice is made. cold-email-personalisation writes TO the prospect; this writes to a connector and FOR them, where the shared context and the easy out are the rules that matter. selling-to-agencies' Template B offers a partner a free pack for its clients, a partner offer, not an introduction request.",
+      "distinct_from_checked": "6 Oct 2026, against network-beats-audience and fish-where-the-fish-are read in full and the descriptions of all 27 articles: no other page mentions a connector, tie strength or a forwardable email. docs/seo/gsc-latest.md absent, so `npm run gsc:cannibals` has no data; recorded, not read as permission.",
+      "ledger": "NEW ROWS: write-the-forward and tie-strength-is-two-way, the first promoted from research files other than the playbook (studio docs/research/ctd-teardown.md §2.3, §2.4, §3.2 and 40-conversations.md §4C, §8). The teardown is used for the method only: the page names no vendor and quotes none of its copy.",
+      "inbound_from": [
+        "/resources/network-beats-audience/",
+        "/resources/fish-where-the-fish-are/"
+      ],
+      "status": "published"
     }
   ],
   "maintenance": [

@@ -104,8 +104,8 @@ LinkedIn's premium and throws away the only thing you are paying it for.
 The uncomfortable case is a buyer who is not clustered anywhere: no conference, no
 subreddit, no obvious list. This is more common than the channel literature admits,
 and it has a specific answer rather than a shrug. When there is no pond, the channel
-is **one at a time**: outbound to named companies, and introductions through people
-who already know them. Founders tend to file that as a fallback for teams too small
+is **one at a time**: outbound to named companies, and [introductions through
+people who already know them](/resources/ask-for-a-warm-introduction/). Founders tend to file that as a fallback for teams too small
 to do real marketing. For a high-value offer it is often the highest-converting
 channel available, and it is the one you fully control. It is also the one most
 founders have never run, which is a smaller problem than it looks: [a channel can be

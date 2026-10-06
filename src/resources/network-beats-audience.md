@@ -94,8 +94,9 @@ The mechanics are unglamorous and they are the whole method:
   consultants, tool vendors whose customers are your customers, community
   organisers.
 - **Ask for one specific thing each.** A swap, a guest post, a joint webinar, an
-  integration, a mention, a warm introduction to three of their customers. A
-  specific small ask is answerable; "would you like to collaborate" is not.
+  integration, a mention, [a warm introduction](/resources/ask-for-a-warm-introduction/)
+  to three of their customers. A specific small ask is answerable; "would you like
+  to collaborate" is not.
 - **Lead with what they get.** Their audience wants your thing to exist, or your
   audience is useful to them, or you will do the work. Say which.
 - **Do the work yourself.** The reason these get yeses is that you are offering to

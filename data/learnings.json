@@ -46,7 +46,16 @@
       "four pieces (ROADMAP.md, #447, 7 Sep). Each qualifies on the reader test: how",
       "to get competent at a channel, whether a channel's price can carry it, and",
       "what to segment a prospect list on are all decisions a founder takes to win a",
-      "customer. Nothing else in Part 7 is, and it stays out."
+      "customer. Nothing else in Part 7 is, and it stays out.",
+    "",
+    "PROMOTED, 6 Oct 2026 (SEO cadence, daily article): write-the-forward and",
+    "tie-strength-is-two-way, the first rows from a research file other than the",
+    "playbook. Their `ref` names the file: docs/research/ctd-teardown.md (a teardown",
+    "of a warm-introduction product, read for the method; the article names no vendor",
+    "and quotes none of its copy) and docs/research/40-conversations.md (the operator's",
+    "own warm-intro request and its send-first timing). Both pass the reader test:",
+    "who to ask for an introduction and what to hand them is how a founder gets a",
+    "first meeting."
     ]
   },
   "learnings": [
@@ -154,6 +163,8 @@
     { "id": "build-to-save-is-a-rounding-error", "ref": "§7.1", "title": "Building a tool to save money is a rounding error against the enterprise value a growing month produces — and the two cases that survive the arithmetic", "verdict": "article", "article": "founder-sales-stack" },
     { "id": "learn-a-channel-fast", "ref": "§7.6", "title": "Learning a channel you have never run: one practitioner, the reading time-boxed to a day or two, the first attempt made badly, then a coach — and an LLM gives the average answer", "verdict": "article", "article": "learn-a-channel-fast" },
     { "id": "direct-mail-needs-the-acv", "ref": "§7.6", "title": "Direct mail is an account-based motion that needs the annual contract value, cash upfront and annual billing — the early letters are paid for before any of them work", "verdict": "article", "article": "learn-a-channel-fast" },
-    { "id": "job-not-persona", "ref": "§7.5", "title": "Why they buy is not who they are — segment by the job and the workflow, not the industry or the persona; two independent experts, one conclusion", "verdict": "article", "article": "sell-the-job-not-the-persona" }
+    { "id": "job-not-persona", "ref": "§7.5", "title": "Why they buy is not who they are — segment by the job and the workflow, not the industry or the persona; two independent experts, one conclusion", "verdict": "article", "article": "sell-the-job-not-the-persona" },
+    { "id": "write-the-forward", "ref": "docs/research/ctd-teardown.md §2.4, §3.2; docs/research/40-conversations.md §4C, §8", "title": "A warm introduction stalls on the connector's blank page: send the ask with a finished email for them to forward, under 100 words, with the shared context, one specific ask and an easy out, and send intro asks first because they come back slowest", "verdict": "article", "article": "ask-for-a-warm-introduction" },
+    { "id": "tie-strength-is-two-way", "ref": "docs/research/ctd-teardown.md §2.3, §2.4", "title": "Judge a connector by two-way history: one-way traffic and mass threads count for nothing, a bare connection is weak by default, and the strongest tie beats the most senior name", "verdict": "article", "article": "ask-for-a-warm-introduction" }
   ]
 }
