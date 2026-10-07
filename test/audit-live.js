@@ -830,7 +830,17 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
     const home = await (await fetch(SITE + l.prefix + '/')).text();
     check(`${l.prefix}/ speaks ${l.name}: the h1 is not the English one`,
       !/Leads that fit you/.test(home.match(/<h1>[\s\S]*?<\/h1>/)?.[0] || ''));
-    check(`${l.prefix}/ links checkout in ${l.name}`, home.includes(`href="${l.prefix}/checkout/"`));
+    // #1163: #1151 redrew the hero around the scan field, and its doors are
+    // the demo and the studio's sign-up — no language's hero links /checkout/
+    // any more (verified on the live pages before this claim was rewritten),
+    // so "links checkout" read broken on a page that was right. The claim is
+    // what the hero now promises: the demo in the language, served, and a
+    // sign-up link that tells the studio which language the visitor came in.
+    // /checkout/ itself is still asked for in the twin loop above.
+    check(`${l.prefix}/ links the demo in ${l.name}, and it is served`,
+      home.includes(`href="${l.prefix}/demo/"`) && (await fetch(SITE + l.prefix + '/demo/')).status === 200);
+    check(`${l.prefix}/ sends sign-up to the studio with lang=${l.code}`,
+      home.includes(`href="https://studio.prospektor.ai/signup?lang=${l.code}"`));
     // #535: the two product pages and contact, in the language — the h1 is
     // not the English one, and the nav's items land on the twins.
     for (const [p, h1] of [['/who-to-pitch/', 'Who to pitch'], ['/what-to-send/', 'What to send'], ['/contact/', 'Ask us anything.']]) {
