@@ -1171,8 +1171,13 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     await page.goto('http://localhost:8899/who-to-pitch/');
     check('the WHO page offers the free scan', await page.isVisible('a[href="/#scan"]'));
     await page.goto('http://localhost:8899/what-to-send/');
+    // #1092 rebuilt the page as one card per thing you send, in the studio's
+    // names; the claim is unchanged: every deliverable is named on it.
+    const whatText = await page.textContent('main, body');
     check('the WHAT page names every deliverable a run produces',
-      (await page.$$eval('.card-title', n => n.map(e => e.textContent))).length === 6);
+      (await page.$$eval('.hcard h2', n => n.length)) === 6
+      && ['deck', 'one-pager', 'cold email', 'proposal', 'reply', 'call sheet'].every(w => whatText.toLowerCase().includes(w)),
+      (await page.$$eval('.hcard h2', n => n.map(e => e.textContent))).join(' · '));
     await page.close();
   }
 
@@ -1303,8 +1308,8 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     await page.waitForLoadState('domcontentloaded');
     check('/es/ is Spanish', (await page.getAttribute('html', 'lang')) === 'es');
     check('no offer on the page already in the browser’s language', !(await page.$('#langSuggest')));
-    check('the h1 is Spanish', /Encuentra leads/.test(await page.textContent('h1')));
-    check('the scan hint is Spanish', /Gratis · sin registro/.test(await page.textContent('#scanHint')));
+    check('the h1 is Spanish', /Leads que encajan/.test(await page.textContent('h1')));
+    check('the scan hint is Spanish', /Gratis, sin registro/.test(await page.textContent('#scanHint')));
     await page.fill('#scanInput', 'acme.com');
     await page.click('#scanBtn');
     await page.waitForSelector('#scanError:not([hidden])', { timeout: 5000 });
@@ -1323,7 +1328,8 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
       (await page.getAttribute('#buyLink', 'href')) === 'https://studio.prospektor.ai/signup?lang=es',
       await page.getAttribute('#buyLink', 'href'));
     await page.goto('http://localhost:8899/es/');
-    await page.click('.nav-links a[href="/resources/"]');
+    // #1092 moved Resources from the nav to the footer; the claim is the same.
+    await page.click('footer a[href="/resources/"]');
     await page.waitForLoadState('domcontentloaded');
     check('Recursos lands on the English /resources/ — there is no Spanish one, and no dead link', new URL(page.url()).pathname === '/resources/', page.url());
     check('and /resources/ carries no switcher: it has no twin', !(await page.$('.footer-langs')));

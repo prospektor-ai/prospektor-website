@@ -632,12 +632,14 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
     }
 
     // #453: the two questions moved out of the h1 and into the deck under it,
-    // so this asks production the two things that actually matter — the frame
-    // is still in the hero (#153), and the h1 is the promise the <title> makes.
-    const liveHero = (home.match(/<section class="hero"[^>]*>([\s\S]*?)<\/section>/) || [, ''])[1];
-    check('the two questions are still in the live hero (#153)',
-      /Who to pitch\./.test(liveHero) && /What to send\./.test(liveHero),
-      (liveHero.match(/<div class="hero-ai-tag">([\s\S]*?)<\/div>/) || [, '(none)'])[1]
+    // and #1092 gave the hero to the scan field alone, so the frame lives in
+    // the page body now. This asks production the two things that actually
+    // matter — the frame is still on the homepage between the nav and the
+    // footer (#153), and the h1 is the promise the <title> makes.
+    const liveBody = (home.match(/<\/nav>([\s\S]*?)<footer\b/) || [, ''])[1];
+    check('the two questions are still on the live homepage (#153)',
+      /Who to pitch\b/.test(liveBody) && /What to send\b/.test(liveBody),
+      (liveBody.match(/<h2[^>]*>([\s\S]*?)<\/h2>/g) || ['(no h2)']).join(' | ')
         .replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim());
     // Words, not typography: the h1 breaks the promise over two lines with a
     // full stop in the middle, and the tagline is one phrase.
@@ -827,7 +829,7 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
     }
     const home = await (await fetch(SITE + l.prefix + '/')).text();
     check(`${l.prefix}/ speaks ${l.name}: the h1 is not the English one`,
-      !/Find Leads\./.test(home.match(/<h1>[\s\S]*?<\/h1>/)?.[0] || ''));
+      !/Leads that fit you/.test(home.match(/<h1>[\s\S]*?<\/h1>/)?.[0] || ''));
     check(`${l.prefix}/ links checkout in ${l.name}`, home.includes(`href="${l.prefix}/checkout/"`));
     // #535: the two product pages and contact, in the language — the h1 is
     // not the English one, and the nav's items land on the twins.

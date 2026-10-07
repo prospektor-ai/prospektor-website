@@ -84,14 +84,14 @@ const site = require('../src/_data/site.json');
  * copy has earned it; the test says which one and to what.
  */
 const CEILING = {
-  funnel: { dashes: 0, verbose: 34 },
+  funnel: { dashes: 0, verbose: 18 },
   legal: { dashes: 187 },
   resources: { dashes: 0 },
   scripts: { dashes: 0, verbose: 6 },
   functions: { dashes: 0, verbose: 3 },
-  es: { dashes: 125 },
-  de: { dashes: 125 },
-  nl: { dashes: 125 },
+  es: { dashes: 69 },
+  de: { dashes: 69 },
+  nl: { dashes: 69 },
 };
 
 /** Every file whose string literals a person may read: a mail, a notice, a

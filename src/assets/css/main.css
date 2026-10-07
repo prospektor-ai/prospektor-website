@@ -1,23 +1,38 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* The studio's look since #1092 (docs/design-language.md in the studio repo):
+   a light grey ground, white cards with no border and no shadow, ink and
+   greys for everything, and coral on the one press that starts something
+   (the scan button, a checkout button). Links are the darker coral.
+   The system font stack: nothing to download before the first word. */
 :root {
-  --ink: #1A1A18;
-  --ink-mid: #52524E;
-  --ink-faint: #8F8F8A;
+  --ink: #1f1f1f;
+  --ink-mid: #5f6368;
+  --ink-faint: #80868b;
   --white: #FFFFFF;
-  --off-white: #F7F5F0;
-  --stone: #EDEAE3;
-  --accent: #00B37E;          /* emerald green — techy, premium, founder-coded */
-  --accent-dim: #00956A;
-  --accent-bg: #E6F7F2;
-  --coral: #E8533A;            /* CTA only */
-  --coral-hover: #D04530;
-  --border: rgba(26,26,24,0.1);
-  --font: 'Plus Jakarta Sans', -apple-system, sans-serif;
-  --mono: 'JetBrains Mono', monospace;
+  --off-white: #f7f7f9;        /* the ground */
+  --stone: #ebebef;            /* the grey pill */
+  --accent: #c8432c;           /* links */
+  --accent-dim: #c8432c;
+  --accent-bg: #fce4de;        /* the coral tint */
+  --coral: #e8533a;            /* the one primary press per screen */
+  --coral-hover: #d04530;
+  --good: #1e8e5a;
+  --bad: #c5221f;
+  --border: #e6e6ea;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: var(--font);         /* small labels: the same face, never a terminal */
+  --code: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --nav-h: 64px;
+  /* What consent.js (the studio's banner, #143) reads, so the banner wears
+     the same tokens instead of its emerald defaults. */
+  --signal: #c8432c; --signal-dim: #c8432c; --mint: #fce4de;
+  --muted: #5f6368; --faint: #80868b; --card: #FFFFFF;
+  --brand-ink: #1f1f1f; --studio-font: var(--font);
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; background: var(--off-white); }
+a { color: var(--accent); }
 /* [hidden] has to actually hide. The UA stylesheet's `[hidden]{display:none}`
    loses to any author rule that sets display, and several components below do
    (.btn-cta is inline-block, .reserve-form and .scan-facts are flex) — so
@@ -30,98 +45,61 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font);
-  background: var(--white);
+  background: var(--off-white);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
 /* ── NAV ── */
+/* The studio's header: mark and wordmark left, the nav, one quiet Sign in
+   pill. Fixed, because every page's hero pads itself clear of it and the
+   language nudge hangs from its bottom edge. */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-  height: 58px;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 2.5rem;
-  background: rgba(255,255,255,0.93);
-  backdrop-filter: blur(12px);
+  height: var(--nav-h);
+  display: flex; align-items: center; gap: 28px;
+  padding: 0 max(24px, calc((100% - 1180px) / 2));
+  background: var(--off-white);
   border-bottom: 1px solid var(--border);
 }
 
 .logo {
-  font-size: 0.95rem; font-weight: 800; color: var(--ink);
-  text-decoration: none; display: flex; align-items: center; gap: 7px;
-  letter-spacing: -0.02em;
+  font-size: 21px; font-weight: 400; color: var(--ink);
+  text-decoration: none; display: flex; align-items: center; gap: 10px;
 }
 
 .logo-mark {
-  width: 22px; height: 22px; border-radius: 6px;
-  background: var(--ink); display: flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 7.5px;
+  background: #1A1A18; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
 }
 
-.logo-mark svg { width: 12px; height: 12px; }
+.logo-mark svg { width: 14px; height: 14px; }
 
 .nav-links {
-  display: flex; gap: 2rem; list-style: none;
-  font-size: 0.84rem; font-weight: 500; color: var(--ink-mid);
+  display: flex; gap: 24px; list-style: none; margin-left: auto;
+  font-size: 14px; color: var(--ink);
 }
-.nav-links a { color: inherit; text-decoration: none; transition: color .15s; }
-.nav-links a:hover { color: var(--ink); }
+.nav-links a { color: inherit; text-decoration: none; }
+.nav-links a:hover { color: var(--accent); }
 
-.nav-ai-badge {
-  font-family: var(--mono); font-size: 0.65rem; font-weight: 500;
-  color: var(--accent); background: var(--accent-bg);
-  padding: 0.2rem 0.6rem; border-radius: 4px;
-  border: 1px solid rgba(0,179,126,0.2);
-  letter-spacing: 0.02em;
-}
-
-.nav-right { display: flex; align-items: center; gap: 1rem; }
+.nav-right { display: flex; align-items: center; gap: 12px; }
 
 .nav-signin {
-  font-size: 0.82rem; font-weight: 600; color: var(--ink-mid);
-  text-decoration: none; transition: color .15s;
+  font-size: 14px; color: var(--ink); text-decoration: none;
+  background: var(--white); border: 1px solid #dadce0; border-radius: 20px;
+  padding: 8px 16px; white-space: nowrap;
 }
-.nav-signin:hover { color: var(--ink); }
-
-.nav-cta {
-  font-size: 0.82rem; font-weight: 700;
-  color: white; background: var(--coral);
-  padding: 0.5rem 1.2rem; border-radius: 100px;
-  text-decoration: none; transition: background .15s, transform .1s;
-  display: inline-block;
-}
-.nav-cta:hover { background: var(--coral-hover); transform: translateY(-1px); }
+.nav-signin:hover { background: var(--stone); }
 
 /* ── HERO ── */
+/* The promise, one sentence, the field and one quiet line, with air around
+   them so the scan reads as the page's one primary action (the operator,
+   7 Oct: "keep it minimal and clean"). */
 .hero {
-  min-height: 100vh;
-  background: var(--off-white);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 7rem 2rem 5rem;
   text-align: center;
-  position: relative; overflow: hidden;
-}
-
-/* Subtle grid bg */
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(26,26,24,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(26,26,24,0.04) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 40%, transparent 100%);
-}
-
-.hero-ai-tag {
-  font-family: var(--mono); font-size: 0.68rem; font-weight: 500;
-  color: var(--accent); background: var(--accent-bg);
-  padding: 0.3rem 0.75rem; border-radius: 100px;
-  border: 1px solid rgba(0,179,126,0.25);
-  margin-bottom: 2rem; letter-spacing: 0.02em;
-  display: inline-block;
-  opacity: 0; animation: fadeUp .5s ease forwards .1s;
+  padding: calc(var(--nav-h) + 96px) 24px 72px;
 }
 
 .building-dot {
@@ -132,148 +110,118 @@ nav {
 
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)} }
 
-/* Hero headline */
 .hero h1 {
-  font-size: clamp(2.6rem, 6vw, 5.5rem);
-  font-weight: 800; line-height: 1.05; letter-spacing: -0.04em;
-  color: var(--ink); max-width: 780px;
-  margin-left: auto; margin-right: auto;
-  opacity: 0; animation: fadeUp .6s ease forwards .35s;
+  font-size: 44px; font-weight: 400; letter-spacing: -0.01em; line-height: 1.15;
+  color: var(--ink); max-width: 720px; margin: 0 auto 16px;
+  text-wrap: balance;
 }
-
-.hero h1 .accent { color: var(--accent); }
-
 
 .hero-sub {
-  font-size: 1.2rem; color: var(--ink-mid);
-  /* 560, not 520 (#450): the sentence gained the list of target types, and at
-     520 it set as five ragged lines on a laptop. */
-  max-width: 560px; line-height: 1.6;
-  margin: 1.5rem auto 2.5rem;
-  opacity: 0; animation: fadeUp .6s ease forwards .5s;
-}
-
-.hero-actions {
-  display: flex; align-items: center; gap: 0.75rem;
-  margin-top: 2rem; flex-wrap: wrap; justify-content: center;
-  opacity: 0; animation: fadeUp .6s ease forwards .65s;
+  font-size: 18px; color: var(--ink-mid);
+  max-width: 560px; line-height: 1.5;
+  margin: 0 auto 40px; text-wrap: balance;
 }
 
 .btn-cta {
-  font-size: 0.9rem; font-weight: 700;
+  font-family: var(--font); font-size: 15px; font-weight: 500;
   color: white; background: var(--coral);
-  padding: 0.8rem 1.75rem; border-radius: 100px;
+  padding: 12px 22px; border-radius: 22px;
   text-decoration: none; border: none; cursor: pointer;
-  transition: background .15s, transform .1s; display: inline-block;
+  transition: background .15s; display: inline-block;
 }
-.btn-cta:hover { background: var(--coral-hover); transform: translateY(-1px); }
+.btn-cta:hover { background: var(--coral-hover); }
 
 .btn-ghost {
-  font-size: 0.88rem; font-weight: 600; color: var(--ink-mid);
-  background: transparent; border: 1.5px solid var(--border);
-  padding: 0.78rem 1.6rem; border-radius: 100px;
-  text-decoration: none; transition: border-color .15s, color .15s;
+  font-size: 14px; font-weight: 500; color: var(--ink);
+  background: var(--white); border: 1px solid #dadce0;
+  padding: 10px 18px; border-radius: 20px;
+  text-decoration: none; transition: background .15s;
   display: inline-block;
 }
-.btn-ghost:hover { border-color: var(--ink-mid); color: var(--ink); }
-
-.hero-note {
-  font-size: 0.75rem; color: var(--ink-faint);
-  margin-top: 0.85rem;
-  opacity: 0; animation: fadeUp .6s ease forwards .8s;
-}
+.btn-ghost:hover { background: var(--stone); }
 
 /* ── SCAN (hero) ── */
 .scan-hero {
-  width: 100%; max-width: 680px;
-  margin: 0 auto 2.5rem;
+  width: 100%; max-width: 620px;
+  margin: 0 auto;
   position: relative; z-index: 1;
-  opacity: 0; animation: fadeUp .5s ease forwards .2s;
 }
 .scan-hero [hidden] { display: none !important; }
 
+/* The grey pill with the coral press inside it: the studio's bar. */
 .scan-form {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 0.6rem 0.6rem 0.6rem 1.25rem;
-  display: flex; align-items: center; gap: 0.75rem;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  position: relative;
+  background: var(--stone);
+  border-radius: 28px;
+  padding: 6px 6px 6px 22px;
+  display: flex; align-items: center; gap: 10px;
   text-align: left;
 }
-.scan-form:focus-within { border-color: var(--accent); }
+.scan-form:focus-within { background: var(--white); box-shadow: 0 1px 6px rgba(32,33,36,.18); }
+.scan-q { flex: 1; display: flex; align-items: center; gap: 12px; min-width: 0; }
+.scan-q-icon { color: var(--ink-faint); flex: none; }
 
-/* The typeahead (#241): one line per company — name, then domain — hanging
-   under the field at the field's own width, in the field's own box style. It
-   is absolute inside the form so it covers the hint rather than moving it:
-   nothing else on the page shifts while a visitor picks. */
-.scan-form { position: relative; }
+/* The typeahead (#241): one line per company (name, then domain) hanging
+   under the field at the field's own width. It is absolute inside the form
+   so it covers the hint rather than moving it. */
 .scan-suggest {
-  position: absolute; left: -1px; right: -1px; top: calc(100% + 6px);
-  margin: 0; padding: 0.35rem 0; list-style: none;
+  position: absolute; left: 0; right: 0; top: calc(100% + 6px);
+  margin: 0; padding: 6px 0; list-style: none;
   background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(32,33,36,.16);
   z-index: 5; text-align: left;
 }
 .scan-suggest li {
-  display: flex; align-items: baseline; gap: 0.6rem;
-  padding: 0.5rem 1.25rem; cursor: pointer;
+  display: flex; align-items: baseline; gap: 10px;
+  padding: 8px 22px; cursor: pointer;
   white-space: nowrap; overflow: hidden;
 }
 .scan-suggest li:hover,
 .scan-suggest li[aria-selected="true"] { background: var(--off-white); }
 .scan-suggest-name {
-  font-size: 0.9rem; font-weight: 600; color: var(--ink);
+  font-size: 15px; color: var(--ink);
   overflow: hidden; text-overflow: ellipsis;
 }
 .scan-suggest-domain {
-  font-family: var(--mono); font-size: 0.72rem; color: var(--ink-faint);
+  font-size: 13px; color: var(--ink-faint);
   overflow: hidden; text-overflow: ellipsis; flex-shrink: 0;
 }
 
-.scan-form-label {
-  font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
-  color: var(--ink-faint); white-space: nowrap; flex-shrink: 0;
-}
-
 .scan-input {
-  font-family: var(--mono); font-size: 0.9rem; font-weight: 500;
+  font-family: var(--font); font-size: 16px;
   color: var(--ink); background: transparent;
   border: none; outline: none;
-  flex: 1; min-width: 0;
+  flex: 1; min-width: 0; padding: 10px 0;
 }
 .scan-input::placeholder { color: var(--ink-faint); }
 
-/* Coral, like every other call to action — the token says "CTA only" and this
-   is the most important one on the page. It was ink, which made the primary
-   action on the homepage the one button that did not look clickable, while the
-   header's smaller "Scan your site" was coral two inches above it. */
 .scan-btn {
-  font-family: var(--font); font-size: 0.84rem; font-weight: 700;
+  font-family: var(--font); font-size: 15px; font-weight: 500;
   color: white; background: var(--coral);
-  padding: 0.6rem 1.4rem; border-radius: 100px;
-  border: none; cursor: pointer; flex-shrink: 0;
-  transition: background .15s, opacity .15s, transform .1s;
+  padding: 12px 22px; border-radius: 22px;
+  border: none; cursor: pointer; flex-shrink: 0; white-space: nowrap;
+  transition: background .15s, opacity .15s;
 }
-.scan-btn:hover { background: var(--coral-hover); transform: translateY(-1px); }
-.scan-btn:disabled { opacity: 0.45; cursor: default; transform: none; }
+.scan-btn:hover { background: var(--coral-hover); }
+.scan-btn:disabled { opacity: 0.45; cursor: default; }
 
-.scan-hint {
-  font-family: var(--mono); font-size: 0.68rem; color: var(--ink-faint);
-  margin-top: 0.8rem;
+/* The hint and the demo's door, read as one line. */
+.scan-hints {
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 0 4px;
+  margin-top: 14px; font-size: 13px; color: var(--ink-mid); line-height: 1.5;
 }
+.scan-hint { margin: 0; }
 
 .scan-error {
-  font-size: 0.8rem; color: var(--coral);
-  margin-top: 0.85rem;
+  font-size: 14px; color: var(--bad);
+  margin-top: 14px;
 }
 
-.scan-status { margin-top: 1.1rem; }
+.scan-status { margin-top: 20px; }
 
 .scan-progress {
-  height: 2px; background: var(--stone); border-radius: 2px; overflow: hidden;
+  height: 3px; background: var(--stone); border-radius: 2px; overflow: hidden;
   max-width: 420px; margin: 0 auto;
 }
 .scan-progress-fill {
@@ -282,306 +230,123 @@ nav {
 }
 
 .scan-status-line {
-  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-  font-family: var(--mono); font-size: 0.72rem; color: var(--accent);
-  margin-top: 0.75rem;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-size: 13px; color: var(--ink-mid);
+  margin-top: 12px;
 }
 
 /* Focus mode: from the moment a scan starts, the rest of the hero recedes
-   and the scan is the page — the visitor is entering onboarding. */
+   and the scan is the page. */
 .hero-rest {
   max-height: 900px;
   transition: opacity .45s ease, transform .45s ease, max-height .6s ease;
 }
-.hero.scan-focus .hero-rest,
-.hero.scan-focus .hero-ai-tag {
-  animation: none;
+.hero.scan-focus .hero-rest {
   opacity: 0; transform: translateY(14px);
   max-height: 0; overflow: hidden; pointer-events: none;
   margin-bottom: 0;
 }
 
 .scan-result {
-  margin-top: 1.5rem;
+  margin-top: 16px;
   text-align: left;
-  animation: fadeUp .5s ease;
+  animation: fadeUp .4s ease;
 }
 
-/* #240: the result is ONE card, wearing the search bar's own box — same
-   border, same radius, same shadow, and by construction the same width, which
-   is the alignment the operator asked for. Inside it: name + domain, fact
-   chips, the proposal, the CTA. Nothing monospace, nothing uppercase. */
+/* #240: the result is ONE card, the width of the search bar by
+   construction. A white card on the grey ground, like every card. */
 .scan-card {
   background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 1.5rem 1.5rem 1.4rem;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  border-radius: 16px;
+  padding: 24px;
 }
 
 .scan-card-head {
-  display: flex; align-items: baseline; gap: 0.7rem; flex-wrap: wrap;
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
 }
-.scan-card-name {
-  font-size: 1.05rem; font-weight: 800; letter-spacing: -0.015em;
-  color: var(--ink);
-}
-.scan-card-domain {
-  font-family: var(--mono); font-size: 0.7rem; color: var(--ink-faint);
-}
+.scan-card-name { font-size: 18px; color: var(--ink); }
+.scan-card-domain { font-size: 13px; color: var(--ink-faint); }
 
 .scan-chips {
-  display: flex; flex-wrap: wrap; gap: 0.4rem;
-  margin-top: 0.75rem;
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 12px;
 }
 .scan-chips span {
-  font-size: 0.72rem; line-height: 1.4; color: var(--ink-mid);
-  background: var(--stone); border: 1px solid var(--border);
-  border-radius: 100px; padding: 0.22rem 0.7rem;
+  font-size: 12px; line-height: 1.4; color: var(--ink-mid);
+  background: var(--stone);
+  border-radius: 100px; padding: 4px 11px;
 }
 
 .scan-lead {
-  font-size: 0.85rem; color: var(--ink-mid);
-  margin: 1.4rem 0 0.5rem;
+  font-size: 14px; color: var(--ink-mid);
+  margin: 20px 0 6px;
 }
 
 .scan-guess {
-  font-size: 1.35rem; font-weight: 800; letter-spacing: -0.025em;
-  line-height: 1.3; color: var(--ink);
+  font-size: 20px; line-height: 1.35; color: var(--ink);
 }
 
 .scan-cta-row {
-  margin-top: 1.6rem; padding-top: 1.5rem;
+  margin-top: 24px; padding-top: 20px;
   border-top: 1px solid var(--border);
-  display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
 }
-.scan-result .scan-cta-row { border-top: none; padding-top: 0; margin-top: 1.4rem; }
+.scan-result .scan-cta-row { border-top: none; padding-top: 0; margin-top: 20px; }
 .scan-cta-note {
-  font-size: 0.75rem; color: var(--ink-faint); line-height: 1.5;
-  max-width: 220px; text-align: left;
+  font-size: 13px; color: var(--ink-faint); line-height: 1.5;
+  max-width: 240px; text-align: left;
 }
-/* #419: checkout lives in the note now — the free run is the card's primary
-   action. Darker than the note around it so the way to pay is still findable
-   by the reader who is already sold, quiet enough that it does not compete
-   with the button beside it. Coral is reserved for the CTA (see the token). */
+/* #419: checkout lives in the note: findable by the reader who is already
+   sold, quiet beside the button. */
 .scan-cta-note a {
-  color: var(--ink-mid); font-weight: 600; text-decoration: none;
-  white-space: nowrap; transition: color .15s;
+  color: var(--accent); text-decoration: none; white-space: nowrap;
 }
-.scan-cta-note a:hover { color: var(--ink); text-decoration: underline; }
+.scan-cta-note a:hover { text-decoration: underline; }
 
-.scan-fallback { margin-top: 1.25rem; }
+.scan-fallback { margin-top: 20px; }
 .scan-fallback-msg {
-  font-family: var(--mono); font-size: 0.72rem; color: var(--ink-mid);
-  margin-bottom: 1.25rem;
+  font-size: 14px; color: var(--ink-mid);
+  margin-bottom: 20px;
 }
 
 /* ── SHARED SECTION ── */
 .section { padding: 5rem 2.5rem; }
 .inner { max-width: 1060px; margin: 0 auto; }
 
-/* One idea per screen (#80): a huge statement, one graphic, micro-copy. */
-.section-big {
-  padding: 7rem 2.5rem;
-  display: flex; flex-direction: column; align-items: center;
-  border-bottom: 1px solid var(--border);
-}
-
-.sec-big {
-  font-size: clamp(2.2rem, 4.8vw, 3.5rem);
-  font-weight: 800; line-height: 1.08; letter-spacing: -0.035em;
-  text-align: center;
-}
-
 .sec-mid {
-  font-size: clamp(1.7rem, 3.4vw, 2.4rem);
-  font-weight: 800; line-height: 1.1; letter-spacing: -0.03em;
-  text-align: center;
+  font-size: 28px; font-weight: 400; line-height: 1.2; letter-spacing: -0.01em;
+  text-align: center; text-wrap: balance;
 }
 
 .sec-sub {
-  font-size: 1.02rem; color: var(--ink-mid); line-height: 1.6;
-  margin-top: 1.1rem; text-align: center; max-width: 560px;
+  font-size: 16px; color: var(--ink-mid); line-height: 1.5;
+  margin-top: 8px; text-align: center; max-width: 600px;
 }
 
+/* A small label above a title. The studio writes labels in sentence case, so
+   the first letter is raised rather than the whole word. */
 .tag {
   display: inline-block;
-  font-family: var(--mono); font-size: 0.65rem; font-weight: 500;
-  letter-spacing: 0.06em; text-transform: uppercase;
-  background: var(--stone); color: var(--ink-mid);
-  padding: 0.22rem 0.65rem; border-radius: 4px;
-  margin-bottom: 1.1rem;
+  font-size: 13px; color: var(--ink-mid);
+  margin-bottom: 10px;
 }
+.tag::first-letter { text-transform: uppercase; }
 
 .section-h2 {
-  font-size: clamp(1.75rem, 3.2vw, 2.8rem);
-  font-weight: 800; line-height: 1.1; letter-spacing: -0.035em;
+  font-size: 24px; font-weight: 400; line-height: 1.2;
   max-width: 580px;
 }
 
-/* ── NAME A COMPANY — the run card, centered ── */
-.termsec { background: var(--off-white); }
-.termwrap { width: 100%; max-width: 860px; margin-top: 2.5rem; }
-
-/* ── BUILD ANIMATION CARD ── */
-.build-card {
-  background: var(--ink);
-  border-radius: 14px; overflow: hidden;
-  box-shadow: 0 24px 60px rgba(26,26,24,0.18);
-}
-
-.build-titlebar {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
-  display: flex; align-items: center; gap: 0.5rem;
-  background: rgba(255,255,255,0.03);
-}
-
-.ttdot { width: 8px; height: 8px; border-radius: 50%; }
-
-.build-filename {
-  font-family: var(--mono); font-size: 0.65rem;
-  color: rgba(255,255,255,0.3); margin-left: 0.4rem;
-}
-
-.build-body { padding: 1.25rem; }
-
-/* Animated code lines */
-.code-lines { display: flex; flex-direction: column; gap: 0; }
-
-.cl {
-  display: flex; gap: 0.75rem;
-  font-family: var(--mono); font-size: 0.72rem; line-height: 1.9;
-  opacity: 0; transition: opacity .4s ease;
-}
-.cl.show { opacity: 1; }
-
-.ln { color: rgba(255,255,255,0.12); min-width: 1.2rem; text-align: right; user-select: none; }
-.kw { color: #7dd3fc; }
-.str { color: #86efac; }
-.fn { color: #fde68a; }
-.cm { color: rgba(255,255,255,0.22); }
-.ac { color: #6ee7b7; }  /* accent green */
-.tx { color: rgba(255,255,255,0.65); }
-.pu { color: rgba(255,255,255,0.45); }
-
-/* Progress footer */
-.build-footer {
-  padding: 0.85rem 1.25rem;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  background: rgba(255,255,255,0.02);
-}
-
-.build-progress-label {
-  display: flex; justify-content: space-between;
-  font-family: var(--mono); font-size: 0.62rem;
-  color: rgba(255,255,255,0.3); margin-bottom: 0.45rem;
-}
-
-.build-bar {
-  height: 2px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden;
-}
-
-.build-fill {
-  height: 100%; background: var(--accent); border-radius: 2px;
-  width: 0%; transition: width 1.2s ease;
-}
-
-.build-status-row {
-  display: flex; gap: 1rem; margin-top: 0.85rem; flex-wrap: wrap;
-}
-
-.bstat {
-  display: flex; align-items: center; gap: 0.35rem;
-  font-family: var(--mono); font-size: 0.6rem;
-  color: rgba(255,255,255,0.3);
-}
-.bstat.done { color: var(--accent); }
-.bstat.active { color: #fde68a; }
-
-.bstat-dot {
-  width: 5px; height: 5px; border-radius: 50%;
-  background: currentColor;
-}
-.bstat.active .bstat-dot { animation: pulse 1s infinite; }
-
-/* ── ONE LIST IN (dark band) ── */
-.batch { background: var(--ink); border-bottom: none; }
-.batch .sec-big { color: var(--off-white); }
-.batch .sec-sub { color: var(--ink-faint); }
-
-.batch-flow {
-  display: flex; align-items: center; gap: 1.75rem;
-  margin-top: 2.75rem; flex-wrap: wrap; justify-content: center;
-}
-.batch-arrow { flex-shrink: 0; }
-
-.batch-card {
-  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 14px; padding: 1.6rem 2.1rem;
-  display: flex; flex-direction: column; gap: 0.35rem; text-align: center;
-}
-.batch-card.is-out {
-  background: rgba(0,179,126,0.12); border-color: rgba(0,179,126,0.35);
-}
-.batch-label {
-  font-family: var(--mono); font-size: 0.78rem; color: var(--ink-faint);
-}
-.batch-card.is-out .batch-label { color: var(--accent); }
-.batch-num {
-  font-size: 2.4rem; font-weight: 800; letter-spacing: -0.03em; color: var(--off-white);
-}
-.batch-num em {
-  font-style: normal; font-size: 1.02rem; font-weight: 600; color: var(--ink-faint);
-}
-
-/* ── WARM PATHS ── */
-.warm-flow {
-  display: flex; align-items: center; gap: 1.1rem;
-  margin-top: 2.75rem; flex-wrap: wrap; justify-content: center;
-}
-.warm-arrow { color: var(--ink-faint); flex-shrink: 0; }
-
-.warm-chip {
-  display: flex; flex-direction: column; align-items: center; gap: 0.05rem;
-  background: var(--off-white); border: 1px solid var(--border);
-  border-radius: 100px; padding: 0.85rem 1.75rem;
-  font-size: 1rem; font-weight: 700; text-align: center;
-}
-.warm-chip em { font-style: normal; font-size: 0.74rem; font-weight: 500; color: var(--ink-mid); }
-.warm-chip.is-connector { background: var(--accent-bg); border-color: rgba(0,179,126,0.35); }
-.warm-chip.is-target { background: var(--ink); color: var(--off-white); border-color: var(--ink); }
-
-/* ── FAQ ── */
-.faq { border-bottom: none; }
-.faq-list {
-  width: 100%; max-width: 720px; margin-top: 2.25rem;
-  border-top: 1px solid var(--border);
-}
-.faq-list details { border-bottom: 1px solid var(--border); }
-.faq-list summary {
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  padding: 1.3rem 0.35rem;
-  font-size: 1rem; font-weight: 600;
-  cursor: pointer; list-style: none;
-}
-.faq-list summary::-webkit-details-marker { display: none; }
-.faq-list summary svg { color: var(--ink-faint); flex-shrink: 0; transition: transform .2s; }
-.faq-list details[open] summary svg { transform: rotate(180deg); }
-.faq-list details p {
-  padding: 0 0.35rem 1.3rem;
-  font-size: 0.9rem; color: var(--ink-mid); line-height: 1.7;
-  max-width: 620px;
-}
-.faq-list details p a { color: var(--ink); border-bottom: 1px solid var(--accent); text-decoration: none; }
-
 /* ── ONBOARDING (/checkout/) ── */
 .onboard {
-  min-height: 100vh; background: var(--off-white);
-  padding: 7.5rem 2rem 5rem;
+  min-height: 70vh;
+  padding: calc(var(--nav-h) + 56px) 16px 24px;
 }
 .onboard [hidden] { display: none !important; }
 .onboard-inner { max-width: 640px; margin: 0 auto; }
+/* Each step is a white card on the grey ground, the studio's settings page. */
+.onboard-panel { background: var(--white); border-radius: 16px; padding: 32px; }
+@media (max-width: 640px) { .onboard-panel { padding: 22px 18px; } }
 
 .steps {
   list-style: none; display: flex; align-items: center; gap: 1.5rem;
@@ -604,23 +369,22 @@ nav {
 .step.active .step-n-badge { border-color: var(--ink); background: var(--ink); color: var(--white); }
 
 .onboard-h1 {
-  font-size: clamp(1.6rem, 3.4vw, 2.3rem);
-  font-weight: 800; letter-spacing: -0.03em; line-height: 1.15;
+  font-size: 28px;
+  font-weight: 400; letter-spacing: -0.01em; line-height: 1.15;
   margin: 0.75rem 0 0;
 }
 .onboard-sub {
   font-size: 0.92rem; color: var(--ink-mid); line-height: 1.7;
   margin-top: 0.9rem; max-width: 540px;
 }
-.onboard-sub a { color: var(--ink); border-bottom: 1px solid var(--accent); text-decoration: none; }
+.onboard-sub a { color: var(--accent); text-decoration: none; }
 
 .goal-input {
   width: 100%; margin-top: 1.5rem;
   font-family: var(--font); font-size: 1.05rem; font-weight: 600;
   letter-spacing: -0.01em; line-height: 1.5; color: var(--ink);
-  background: var(--white); border: 1px solid var(--border); border-radius: 14px;
+  background: var(--stone); border: 1px solid transparent; border-radius: 16px;
   padding: 1.25rem 1.4rem; resize: vertical; outline: none;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 }
 .goal-input:focus { border-color: var(--accent); }
 
@@ -637,15 +401,14 @@ nav {
 
 .order-card {
   margin-top: 1.5rem; padding: 1.75rem;
-  background: var(--white); border: 1px solid var(--border); border-radius: 14px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  background: var(--off-white); border-radius: 16px;
 }
 .order-row {
   display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
   padding-bottom: 1.1rem; border-bottom: 1px solid var(--border); margin-bottom: 1.1rem;
 }
 .order-name { font-size: 0.9rem; font-weight: 700; }
-.order-price { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.03em; white-space: nowrap; }
+.order-price { font-size: 1.5rem; font-weight: 400; letter-spacing: -0.01em; white-space: nowrap; }
 .order-per { font-family: var(--mono); font-size: 0.7rem; font-weight: 500; color: var(--ink-faint); margin-left: 0.15rem; }
 .order-card .pricing-list { margin-top: 0; }
 
@@ -660,7 +423,7 @@ nav {
 
 .onboard-note {
   margin-top: 1.25rem; padding: 1.1rem 1.35rem;
-  border: 1px solid var(--border); border-radius: 10px; background: var(--white);
+  border-radius: 12px; background: var(--off-white);
 }
 .onboard-note p { font-size: 0.85rem; color: var(--ink-mid); line-height: 1.65; }
 .onboard-note strong { color: var(--ink); }
@@ -671,9 +434,9 @@ nav {
 }
 .reserve-input {
   flex: 1; min-width: 220px;
-  font-family: var(--mono); font-size: 0.88rem; font-weight: 500;
-  color: var(--ink); background: var(--white);
-  border: 1px solid var(--border); border-radius: 100px;
+  font-family: var(--font); font-size: 15px;
+  color: var(--ink); background: var(--stone);
+  border: 1px solid transparent; border-radius: 100px;
   padding: 0.8rem 1.3rem; outline: none;
 }
 .reserve-input:focus { border-color: var(--accent); }
@@ -697,7 +460,7 @@ nav {
   margin-top: 1rem; font-size: 0.85rem; color: var(--ink);
 }
 .reserve-msg.is-error { color: var(--ink-mid); }
-.reserve-msg a { color: var(--ink); border-bottom: 1px solid var(--accent); text-decoration: none; }
+.reserve-msg a { color: var(--accent); text-decoration: none; }
 
 /* ── PRICING: the direct buy ── */
 /* Mirrors .scan-cta-row's rule-above-the-CTA so the tile reads the same
@@ -713,23 +476,16 @@ nav {
   font-size: 0.75rem; color: var(--ink-faint);
   line-height: 1.6; margin-top: 0.9rem;
 }
-.buy-note a { color: var(--ink-mid); border-bottom: 1px solid var(--border); text-decoration: none; }
-.buy-note a:hover { color: var(--ink); border-bottom-color: var(--accent); }
+.buy-note a { color: var(--accent); text-decoration: none; }
+.buy-note a:hover { text-decoration: underline; }
 
 /* ── PRICING ── */
-.pricing { background: var(--off-white); }
-
-.pricing-card {
-  width: 100%; max-width: 620px; margin-top: 2.5rem;
-  border: 1px solid var(--border); border-radius: 20px;
-  background: var(--white); box-shadow: 0 16px 40px rgba(26,26,24,0.07);
-  padding: 2.75rem 3rem;
-}
+.pricing-card { background: var(--white); border-radius: 16px; }
 
 .price-row { display: flex; align-items: baseline; gap: 0.6rem; }
 
 .price-num {
-  font-size: 4rem; font-weight: 800; letter-spacing: -0.04em;
+  font-size: 32px; font-weight: 400; letter-spacing: -0.01em;
   color: var(--ink); line-height: 1;
 }
 
@@ -738,33 +494,30 @@ nav {
   font-size: 0.94rem; color: var(--ink-mid); line-height: 1.6;
 }
 
-.price-per {
-  font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
-  color: var(--ink-faint);
-}
+.price-per { font-size: 14px; color: var(--ink-mid); }
 
 /* #542 — the plan switch. A segmented control, not a second buy button: a
    pricing page and a checkout each get one primary action (style rule 8), and
    this is a choice about that one action rather than a second escape hatch. */
 .plan-switch {
   display: inline-flex; gap: 2px; padding: 3px; margin-bottom: 1.5rem;
-  background: var(--off-white); border: 1px solid var(--border); border-radius: 100px;
+  background: var(--stone); border-radius: 100px;
 }
 .plan-opt {
   border: 0; background: none; cursor: pointer;
-  font-family: var(--font); font-size: 0.76rem; font-weight: 700; line-height: 1.2;
+  font-family: var(--font); font-size: 0.8rem; font-weight: 500; line-height: 1.2;
   color: var(--ink-mid); padding: 0.45rem 0.95rem; border-radius: 100px;
   white-space: nowrap;
 }
 .plan-opt[aria-pressed="true"] {
   background: var(--white); color: var(--ink);
-  box-shadow: 0 1px 3px rgba(26,26,24,0.14);
+  box-shadow: 0 1px 2px rgba(60,64,67,0.2);
 }
 .plan-note {
   margin-top: 0.8rem;
   font-size: 0.86rem; color: var(--ink-mid); line-height: 1.55;
 }
-.plan-note strong { color: var(--ink); font-weight: 700; }
+.plan-note strong { color: var(--ink); font-weight: 500; }
 /* On the order card the switch sits above a row that is already tight. */
 .order-card .plan-switch { margin-bottom: 1.1rem; }
 .order-card .plan-note { margin: 1rem 0 0; font-size: 0.82rem; }
@@ -782,55 +535,34 @@ nav {
   width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
 }
 
-/* ── CTA ── */
-.cta { background: var(--off-white); border-top: 1px solid var(--border); padding: 7rem 2.5rem; text-align: center; }
-
-.cta h2 {
-  font-size: clamp(2.2rem, 5vw, 4rem);
-  font-weight: 800; letter-spacing: -0.04em; line-height: 1.05;
-  max-width: 680px; margin: 0 auto 2rem;
-}
-.cta h2 .accent { color: var(--accent); }
-
 /* ── FOOTER ── */
 footer {
-  background: var(--ink); color: rgba(255,255,255,0.35);
+  max-width: 1040px; margin: 72px auto 0;
+  border-top: 1px solid var(--border);
   /* The consent bar (#143) is fixed to the bottom of the viewport and
-     publishes its own height as --ppsc-inset on <html>. The footer is the last
-     thing on the page, so a visitor scrolled to the end reads it through the
-     bar — and the link the bar's own panel tells them to use, Cookies, is one
-     of the ones underneath. Stepping over the inset is the website's half of
-     that contract; the studio's support panel does the same. It costs nothing
-     when the bar is gone: the variable is 0px, or absent and defaulted. */
-  padding: 1.5rem 2.5rem calc(1.5rem + var(--ppsc-inset, 0px));
-  display: flex; align-items: center; justify-content: space-between;
-  font-size: 0.76rem; flex-wrap: wrap; gap: 0.75rem;
+     publishes its own height as --ppsc-inset on <html>, so the footer steps
+     over it and its Cookies link stays reachable. */
+  padding: 28px 24px calc(40px + var(--ppsc-inset, 0px));
+  display: flex; align-items: center; flex-wrap: wrap; gap: 12px 22px;
+  font-size: 13px; color: var(--ink-mid);
 }
-.footer-logo {
-  font-size: 0.88rem; font-weight: 800; color: white;
-  text-decoration: none; display: flex; align-items: center; gap: 7px;
-  letter-spacing: -0.02em;
-}
-.footer-tagline { font-family: var(--mono); font-size: 0.65rem; color: var(--accent); }
-
+.footer-copy { white-space: nowrap; }
 .footer-links {
-  display: flex; gap: 1.25rem; list-style: none;
+  display: flex; flex-wrap: wrap; gap: 8px 22px; list-style: none;
 }
-.footer-links a { color: rgba(255,255,255,0.35); text-decoration: none; transition: color .15s; }
-.footer-links a:hover { color: white; }
+.footer-links a { color: var(--ink-mid); text-decoration: none; }
+.footer-links a:hover { color: var(--ink); }
 
 /* ── LEGAL PAGES ── */
 .legal-hero {
-  background: var(--off-white);
-  border-bottom: 1px solid var(--border);
-  padding: 8.5rem 2.5rem 3.25rem;
+  padding: calc(var(--nav-h) + 56px) 2.5rem 2rem;
 }
 
 .legal-inner { max-width: 720px; margin: 0 auto; }
 
 .legal-h1 {
-  font-size: clamp(2rem, 4.2vw, 3rem);
-  font-weight: 800; line-height: 1.08; letter-spacing: -0.04em;
+  font-size: 32px;
+  font-weight: 400; line-height: 1.08; letter-spacing: -0.01em;
 }
 
 .legal-lede {
@@ -843,10 +575,13 @@ footer {
   font-family: var(--mono); font-size: 0.67rem; color: var(--ink-faint);
   display: flex; flex-wrap: wrap; gap: 0.5rem;
 }
-.legal-meta a { color: var(--ink-mid); text-decoration: none; border-bottom: 1px solid var(--accent); }
+.legal-meta a { color: var(--accent); text-decoration: none; }
 .legal-meta a:hover { color: var(--ink); }
 
-.legal { background: var(--white); padding: 3rem 2.5rem 5rem; }
+.legal { padding: 0 2.5rem 3rem; }
+/* The document is one white card on the grey ground. */
+.legal > .legal-inner { background: var(--white); border-radius: 16px; padding: 40px 48px; }
+@media (max-width: 640px) { .legal > .legal-inner { padding: 24px 18px; } }
 
 /* Contents */
 .legal-toc {
@@ -884,7 +619,7 @@ footer {
 
 .legal-block h2 {
   font-size: 1.08rem; font-weight: 700;
-  letter-spacing: -0.02em; margin-bottom: 0.85rem;
+  letter-spacing: -0.01em; margin-bottom: 0.85rem;
 }
 .legal-block h3 {
   font-size: 0.86rem; font-weight: 700;
@@ -894,11 +629,11 @@ footer {
 .legal-block p + p { margin-top: 0.85rem; }
 .legal-block strong { color: var(--ink); font-weight: 700; }
 .legal-block code {
-  font-family: var(--mono); font-size: 0.78em;
+  font-family: var(--code); font-size: 0.85em;
   background: var(--stone); color: var(--ink);
   padding: 0.1rem 0.35rem; border-radius: 4px;
 }
-.legal-block a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--accent); }
+.legal-block a { color: var(--accent); text-decoration: none; }
 .legal-block a:hover { color: var(--accent-dim); }
 
 .legal-list { list-style: none; margin: 1rem 0 0; display: flex; flex-direction: column; gap: 0.55rem; }
@@ -961,22 +696,19 @@ footer {
   letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint);
 }
 .legal-end a {
-  font-size: 0.85rem; font-weight: 600; color: var(--ink);
-  text-decoration: none; border-bottom: 1px solid var(--accent);
+  font-size: 0.85rem; font-weight: 600; color: var(--accent); text-decoration: none;
 }
 .legal-end a:hover { color: var(--accent-dim); }
 
 /* ── HELP CENTER ── */
 .help-hero {
-  background: var(--off-white);
-  border-bottom: 1px solid var(--border);
-  padding: 8.5rem 2.5rem 3.5rem;
+  padding: calc(var(--nav-h) + 56px) 2.5rem 2rem;
   text-align: center;
 }
 .help-hero-inner { max-width: 640px; margin: 0 auto; }
 .help-h1 {
-  font-size: clamp(2rem, 4.2vw, 3rem);
-  font-weight: 800; line-height: 1.08; letter-spacing: -0.04em;
+  font-size: 36px;
+  font-weight: 400; line-height: 1.08; letter-spacing: -0.01em;
   margin-top: 1rem;
 }
 .help-lede {
@@ -986,14 +718,13 @@ footer {
 .help-search {
   margin: 2rem auto 0; max-width: 540px;
   display: flex; align-items: center; gap: 0.75rem;
-  background: var(--white); border: 1px solid var(--border);
+  background: var(--stone);
   border-radius: 100px; padding: 0.85rem 1.4rem;
-  box-shadow: 0 8px 30px rgba(26,26,24,0.06);
-  transition: border-color .15s, box-shadow .15s;
+  transition: background .15s, box-shadow .15s;
 }
 .help-search:focus-within {
-  border-color: var(--accent);
-  box-shadow: 0 8px 30px rgba(0,179,126,0.12);
+  background: var(--white);
+  box-shadow: 0 1px 6px rgba(32,33,36,.18);
 }
 .help-search svg { width: 16px; height: 16px; color: var(--ink-faint); flex-shrink: 0; }
 .help-search input {
@@ -1032,7 +763,7 @@ footer {
    first h2 there is a real section heading and dressing it as a title would
    make the second section look like the start of the guide. */
 .help-guides:not(.help-guides-single) .help-guide > h2:first-of-type {
-  font-size: 1.55rem; font-weight: 800; letter-spacing: -0.03em;
+  font-size: 1.55rem; font-weight: 400; letter-spacing: -0.01em;
   line-height: 1.15; margin: 0 0 1.25rem; padding-top: 0; border-top: none;
 }
 .help-guide-top {
@@ -1043,11 +774,11 @@ footer {
 .help-guide-top:hover { color: var(--ink-mid); }
 
 .help-guide h1 {
-  font-size: 1.55rem; font-weight: 800; letter-spacing: -0.03em;
+  font-size: 1.55rem; font-weight: 400; letter-spacing: -0.01em;
   line-height: 1.15; margin-bottom: 1.25rem;
 }
 .help-guide h2 {
-  font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em;
+  font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em;
   margin: 2.1rem 0 0.75rem; padding-top: 1.4rem;
   border-top: 1px solid var(--border);
   scroll-margin-top: 74px;
@@ -1061,11 +792,11 @@ footer {
 .help-guide strong { color: var(--ink); font-weight: 700; }
 .help-guide em { color: var(--ink); }
 .help-guide code {
-  font-family: var(--mono); font-size: 0.78em;
+  font-family: var(--code); font-size: 0.85em;
   background: var(--stone); color: var(--ink);
   padding: 0.1rem 0.35rem; border-radius: 4px;
 }
-.help-guide a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--accent); }
+.help-guide a { color: var(--accent); text-decoration: none; }
 .help-guide a:hover { color: var(--accent-dim); }
 .help-guide ul, .help-guide ol { margin: 0.9rem 0 0 0; display: flex; flex-direction: column; gap: 0.55rem; }
 .help-guide ul { list-style: none; }
@@ -1113,7 +844,7 @@ footer {
 .help-hit { display: flex; flex-direction: column; gap: 0.4rem; }
 .help-hit-title {
   font-size: 1rem; font-weight: 700; color: var(--ink);
-  text-decoration: none; letter-spacing: -0.02em;
+  text-decoration: none; letter-spacing: -0.01em;
 }
 .help-hit-title:hover { color: var(--accent-dim); }
 .help-hit-snippet {
@@ -1144,29 +875,29 @@ footer {
 /* ── the FAQ block, and the "ask a person" footer ──
    Both come from the pmc.splitpay.com/help shape the ask pointed at: cards,
    then frequently asked questions, then a way to reach a human. */
-.help-faq { background: var(--off-white); border-top: 1px solid var(--border); padding: 4rem 0; }
-.help-faq-inner { max-width: 760px; margin: 0 auto; padding: 0 2.5rem; }
+.help-faq { padding: 3rem 2.5rem 0; }
+.help-faq-inner { max-width: 760px; margin: 0 auto; padding: 32px 40px; background: var(--white); border-radius: 16px; }
 .help-faq-h2 {
-  font-size: clamp(1.4rem, 2.6vw, 1.9rem); font-weight: 800;
-  letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 2rem;
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem); font-weight: 400;
+  letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 2rem;
 }
 .help-faq-item { border-top: 1px solid var(--border); padding: 1.4rem 0; }
 .help-faq-item:first-child { border-top: none; padding-top: 0; }
 .help-faq-item dt { font-size: 0.95rem; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
 .help-faq-item dd { font-size: 0.88rem; color: var(--ink-mid); line-height: 1.75; margin: 0.6rem 0 0; }
-.help-faq-item dd a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--accent); font-weight: 600; }
+.help-faq-item dd a { color: var(--accent); text-decoration: none; font-weight: 600; }
 .help-faq-item dd a:hover { color: var(--accent-dim); }
 
-.help-support { border-top: 1px solid var(--border); background: var(--white); padding: 4rem 0; text-align: center; }
+.help-support { padding: 4rem 0 1rem; text-align: center; }
 .help-support-inner { max-width: 560px; margin: 0 auto; padding: 0 2.5rem; }
 .help-support-inner h2 {
-  font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800;
-  letter-spacing: -0.03em; line-height: 1.12; margin-top: 1rem;
+  font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 400;
+  letter-spacing: -0.01em; line-height: 1.12; margin-top: 1rem;
 }
 .help-support-inner p { font-size: 0.92rem; color: var(--ink-mid); line-height: 1.7; margin: 1rem 0 1.75rem; }
 .help-support-alt { margin-top: 1.5rem !important; margin-bottom: 0 !important; }
-.help-support-alt a { color: var(--ink-mid); text-decoration: none; border-bottom: 1px solid var(--border); font-size: 0.82rem; }
-.help-support-alt a:hover { color: var(--ink); border-bottom-color: var(--accent); }
+.help-support-alt a { color: var(--accent); text-decoration: none; font-size: 0.82rem; }
+.help-support-alt a:hover { text-decoration: underline; }
 
 /* Search-result trimmings the hub adds: the guide's emoji beside its title,
    and the line that owns up to a partial match instead of implying a full one. */
@@ -1174,16 +905,16 @@ footer {
    The hero, the h1 and the dek are grouped onto `.res-hero`'s rules above
    rather than restated, so an article and a guide page cannot drift apart.
    These three are all this page needs beyond that. */
-.help-guides-single { padding-top: 3rem; }
+.help-guides-single { background: var(--white); border-radius: 16px; padding: 40px 48px; }
 /* Whatever the guide opens with sits directly under the hero — no rule, no
    gap held for a title that is now the <h1> two elements up. */
 .help-guides-single .help-guide > *:first-child {
   margin-top: 0; padding-top: 0; border-top: none;
 }
-.help-more { border-top: 1px solid var(--border); background: var(--off-white); padding: 3rem 0 3.5rem; }
+.help-more { padding: 3rem 0 1rem; }
 .help-more-inner { max-width: 760px; margin: 0 auto; padding: 0 2.5rem; }
 .help-more-all { margin-top: 1.5rem; }
-.help-more-all a { color: var(--ink-mid); text-decoration: none; border-bottom: 1px solid var(--accent); }
+.help-more-all a { color: var(--accent); text-decoration: none; }
 .help-more-all a:hover { color: var(--ink); }
 
 .help-hit-emoji { margin-right: 0.5rem; }
@@ -1193,6 +924,9 @@ footer {
   .help-hero { padding: 6rem 1.25rem 2.5rem; }
   .help-hub { padding: 2.25rem 1.25rem 0.5rem; }
   .help-guides { padding: 1rem 1.25rem 3rem; }
+  .help-guides-single { margin: 0 16px; padding: 24px 18px; }
+  .help-faq { padding: 2rem 16px 0; }
+  .help-faq-inner { padding: 24px 18px; }
   .help-faq-inner, .help-support-inner { padding-left: 1.25rem; padding-right: 1.25rem; }
 }
 
@@ -1202,39 +936,25 @@ footer {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.reveal {
-  opacity: 0; transform: translateY(22px);
-  transition: opacity .65s ease, transform .65s ease;
-}
-.reveal.in { opacity: 1; transform: none; }
-.d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; } .d3 { transition-delay: .3s; }
+/* Every section is visible at rest since #1092: a page is complete without
+   scrolling. The class survives in a few templates and means nothing now. */
+.reveal { opacity: 1; transform: none; }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 860px) {
-  nav { padding: 0 1.25rem; }
-  .nav-links, .nav-ai-badge { display: none; }
-  .hero { padding: 5rem 1.25rem 4rem; }
-  .scan-hero { max-width: 100%; }
-  .section { padding: 4rem 1.25rem; }
-  .section-big { padding: 4.5rem 1.25rem; }
-  .batch-flow { flex-direction: column; gap: 1rem; }
-  .batch-arrow { transform: rotate(90deg); }
-  .warm-flow { flex-direction: column; gap: 0.6rem; }
-  .warm-arrow { transform: rotate(90deg); }
-  .legal-hero { padding: 6rem 1.25rem 2.5rem; }
-  .legal { padding: 2.5rem 1.25rem 4rem; }
+  nav { padding: 0 16px; }
+  .nav-links { display: none; }
+  .legal-hero { padding: 7rem 16px 2rem; }
+  .legal { padding: 0 16px 3rem; }
   .legal-toc { grid-template-columns: 1fr; }
   .legal-block { grid-template-columns: 1fr; }
   .legal-n { padding-top: 0; margin-bottom: 0.5rem; }
 }
 
 @media (max-width: 480px) {
-  .scan-form-label { display: none; }
-  .scan-form { padding-left: 1rem; }
-  .pricing-card { padding: 1.5rem; }
-  /* #542: the switch holds one line inside a 1.5rem-padded card at 320px —
-     style rule 9, a label that would wrap gets shorter, not smaller, and the
-     drive measures it rather than trusting this. */
+  .pricing-card { padding: 20px; }
+  /* #542: the switch holds one line inside the card at 320px (style rule 9,
+     a label that would wrap gets shorter, not smaller). */
   .plan-opt { font-size: 0.68rem; padding: 0.42rem 0.66rem; }
 }
 /* ══ /resources/ — the lead-generation blog (#144) ══════════════════════
@@ -1246,20 +966,18 @@ footer {
 
 /* ── hub ── */
 .res-hub-hero, .page-hero {
-  background: var(--off-white);
-  border-bottom: 1px solid var(--border);
-  padding: 8.5rem 2.5rem 3.5rem;
+  padding: calc(var(--nav-h) + 72px) 2.5rem 2.5rem;
   text-align: center;
 }
 .res-hub-hero-inner, .page-hero-inner { max-width: 700px; margin: 0 auto; }
 .res-hub-h1, .page-h1 {
-  font-size: clamp(2rem, 4.2vw, 3rem);
-  font-weight: 800; line-height: 1.08; letter-spacing: -0.04em;
-  margin-top: 1rem; text-wrap: balance;
+  font-size: 40px;
+  font-weight: 400; line-height: 1.15; letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 .res-hub-lede, .page-lede {
-  font-size: 0.95rem; color: var(--ink-mid); line-height: 1.75;
-  margin-top: 1.15rem;
+  font-size: 18px; color: var(--ink-mid); line-height: 1.5;
+  margin: 16px auto 0; max-width: 600px; text-wrap: balance;
 }
 
 .res-hub { max-width: 1080px; margin: 0 auto; padding: 3.5rem 2.5rem 1rem; }
@@ -1273,10 +991,10 @@ footer {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 .res-card, .card {
-  border: 1px solid var(--border); border-radius: 14px;
-  background: var(--white); transition: border-color .15s, transform .1s;
+  border-radius: 16px;
+  background: var(--white); transition: box-shadow .15s;
 }
-.res-card:hover, .card:hover { border-color: var(--ink-faint); transform: translateY(-2px); }
+.res-card:hover, .card:hover { box-shadow: 0 1px 6px rgba(32,33,36,.16); }
 .res-card > a, .card > a {
   display: flex; flex-direction: column; gap: 0.55rem;
   padding: 1.5rem 1.5rem 1.35rem; text-decoration: none; height: 100%;
@@ -1286,8 +1004,8 @@ footer {
   letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-dim);
 }
 .res-card-title, .card-title {
-  font-size: 1.08rem; font-weight: 800; line-height: 1.28;
-  letter-spacing: -0.02em; color: var(--ink); text-wrap: balance;
+  font-size: 1.08rem; font-weight: 400; line-height: 1.28;
+  letter-spacing: -0.01em; color: var(--ink); text-wrap: balance;
 }
 .res-card-dek, .card-dek {
   font-size: 0.87rem; color: var(--ink-mid); line-height: 1.6; flex: 1;
@@ -1319,13 +1037,13 @@ footer {
 .res-chip {
   font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.04em;
   text-transform: uppercase; color: var(--ink-mid);
-  background: var(--white); border: 1px solid var(--border);
+  background: var(--white); border: 1px solid transparent;
   border-radius: 999px; padding: 0.42rem 0.85rem; cursor: pointer;
-  transition: border-color .15s, color .15s, background .15s;
+  transition: color .15s, background .15s;
 }
-.res-chip:hover { border-color: var(--ink-faint); color: var(--ink); }
+.res-chip:hover { background: var(--stone); color: var(--ink); }
 .res-chip.is-on {
-  background: var(--ink); border-color: var(--ink); color: var(--white);
+  background: var(--accent-bg); color: var(--accent);
 }
 .res-chip-n { opacity: 0.55; margin-left: 0.35rem; }
 .res-filter-count {
@@ -1361,13 +1079,12 @@ footer {
 }
 
 .res-hub-cta {
-  border-top: 1px solid var(--border); margin-top: 3.5rem;
-  background: var(--off-white); padding: 4rem 2.5rem; text-align: center;
+  margin-top: 1.5rem; padding: 4rem 2.5rem 0; text-align: center;
 }
 .res-hub-cta-inner { max-width: 560px; margin: 0 auto; }
 .res-hub-cta-inner h2 {
-  font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800;
-  letter-spacing: -0.03em; line-height: 1.12; text-wrap: balance;
+  font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 400;
+  letter-spacing: -0.01em; line-height: 1.12; text-wrap: balance;
 }
 .res-hub-cta-inner p {
   font-size: 0.92rem; color: var(--ink-mid); line-height: 1.7;
@@ -1376,9 +1093,7 @@ footer {
 
 /* ── article ── */
 .res-hero, .help-guide-hero {
-  background: var(--off-white);
-  border-bottom: 1px solid var(--border);
-  padding: 8.5rem 2.5rem 3rem;
+  padding: calc(var(--nav-h) + 56px) 2.5rem 2rem;
 }
 .res-hero-inner, .help-guide-hero-inner { max-width: 720px; margin: 0 auto; }
 .res-back {
@@ -1391,8 +1106,8 @@ footer {
 .res-back:hover { color: var(--ink-mid); }
 .res-back svg { width: 13px; height: 13px; }
 .res-h1, .help-guide-h1 {
-  font-size: clamp(1.9rem, 4vw, 2.85rem);
-  font-weight: 800; line-height: 1.09; letter-spacing: -0.04em;
+  font-size: 36px;
+  font-weight: 400; line-height: 1.09; letter-spacing: -0.01em;
   margin-top: 0.35rem; text-wrap: balance;
 }
 .res-dek {
@@ -1404,18 +1119,21 @@ footer {
   margin-top: 1.5rem;
 }
 
-.res-body { max-width: 720px; margin: 0 auto; padding: 3rem 2.5rem 0; }
+.res-body {
+  max-width: 800px; margin: 0 auto; padding: 40px 40px 8px;
+  background: var(--white); border-radius: 16px;
+}
 
 /* The prose block. Deliberately narrow measure and generous leading — these
    are 1,000-word arguments, not marketing sections. */
 .res-prose { font-size: 1.02rem; line-height: 1.78; color: var(--ink); }
 .res-prose > * + * { margin-top: 1.35rem; }
 .res-prose h2 {
-  font-size: 1.45rem; font-weight: 800; letter-spacing: -0.03em;
+  font-size: 1.45rem; font-weight: 400; letter-spacing: -0.01em;
   line-height: 1.2; margin-top: 3rem; text-wrap: balance;
 }
 .res-prose h3 {
-  font-size: 1.12rem; font-weight: 700; letter-spacing: -0.02em;
+  font-size: 1.12rem; font-weight: 700; letter-spacing: -0.01em;
   margin-top: 2.2rem;
 }
 .res-prose ul, .res-prose ol { padding-left: 1.3rem; }
@@ -1423,7 +1141,7 @@ footer {
 .res-prose strong { font-weight: 700; }
 .res-prose a { color: var(--accent-dim); text-underline-offset: 3px; }
 .res-prose code {
-  font-family: var(--mono); font-size: 0.86em;
+  font-family: var(--code); font-size: 0.86em;
   background: var(--stone); padding: 0.1em 0.35em; border-radius: 4px;
 }
 .res-prose blockquote {
@@ -1453,9 +1171,9 @@ footer {
   margin-top: 3.5rem; padding: 2rem 2rem 2.25rem;
   background: var(--accent-bg); border-radius: 16px; text-align: center;
 }
-.res-cta .tag { background: var(--white); color: var(--accent-dim); }
+.res-cta .tag { color: var(--accent); }
 .res-cta h2 {
-  font-size: 1.35rem; font-weight: 800; letter-spacing: -0.03em;
+  font-size: 1.35rem; font-weight: 400; letter-spacing: -0.01em;
   line-height: 1.18; text-wrap: balance;
 }
 .res-cta p {
@@ -1479,257 +1197,25 @@ footer {
   display: flex; flex-direction: column; gap: 0.25rem;
   padding: 1.1rem 0; text-decoration: none;
 }
-.res-more-title { font-weight: 700; font-size: 0.98rem; color: var(--ink); letter-spacing: -0.015em; }
+.res-more-title { font-weight: 700; font-size: 0.98rem; color: var(--ink); letter-spacing: -0.01em; }
 .res-more-dek { font-size: 0.85rem; color: var(--ink-mid); line-height: 1.55; }
 .res-more-list a:hover .res-more-title { color: var(--accent-dim); }
 
 @media (max-width: 640px) {
-  .res-hub-hero, .res-hero, .help-guide-hero { padding: 7rem 1.4rem 2.5rem; }
-  .res-hub, .res-body { padding-left: 1.4rem; padding-right: 1.4rem; }
+  .res-hub-hero, .res-hero, .help-guide-hero, .page-hero { padding: calc(var(--nav-h) + 40px) 16px 1.5rem; }
+  .res-hub-h1, .page-h1 { font-size: 30px; }
+  .res-h1, .help-guide-h1 { font-size: 28px; }
+  .res-hub-lede, .page-lede { font-size: 16px; }
+  .res-hub { padding-left: 16px; padding-right: 16px; }
+  .res-body { margin: 0 16px; padding: 24px 18px 8px; }
   .res-hub-cta { padding: 3rem 1.4rem; }
   .res-cta { padding: 1.6rem 1.3rem 1.9rem; }
 }
 
-/* ══ #153 — the WHO/WHAT reframe, and the pages the nav used to fake ═════
-   Three of the five nav items were same-page anchors. `/who-to-pitch/`,
-   `/what-to-send/` and `/pricing/` are real pages now, and the homepage's
-   flat grid of four verbs became two labelled halves.
-
-   Nothing here invents a second visual language: the page heroes are grouped
-   onto `.res-hub-hero`'s rules (added at that selector, not copied), the
-   deliverables grid is the `.card` component #144 shipped and #145 reused,
-   and everything else is tokens. Same 8.5rem hero top padding as
-   `.help-hero` and `.res-hub-hero`, which is what clears the fixed 58px nav. */
-
 /* ── the marketing page hero (shares .res-hub-hero's rules above) ── */
 .page-hero-actions {
   display: flex; gap: 0.85rem; justify-content: center;
-  flex-wrap: wrap; margin-top: 1.9rem;
-}
-
-/* ── THE TWO HALVES (homepage) ──
-   A two-up that must never read as "basic tier / better tier": both halves
-   are the product. The dark one is the WHAT, because that is the half
-   somebody is paying for and the eye should land there second and stay. */
-/* #218 — the five agents. Modelled on .halves-grid so it inherits the same card
-   language; auto-fit rather than a fixed column count because five cards do not
-   divide into two or three, and a hand-placed 3+2 breaks the moment a sixth
-   agent exists. */
-.crew-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(258px, 1fr));
-  gap: 1.25rem; width: 100%; max-width: 1060px; margin-top: 2.75rem;
-  text-align: left;
-}
-
-.crew-card {
-  border: 1px solid var(--border); border-radius: 18px;
-  background: var(--white); padding: 1.6rem 1.5rem 1.5rem;
-  display: flex; flex-direction: column;
-}
-
-.crew-card.is-dark {
-  background: var(--ink); border-color: var(--ink); color: var(--off-white);
-}
-
-/* Deliberately neutral, not the brand emerald. --accent-dim is 3.81:1 on white
-   and --accent 2.71:1, both under AA for text this small, and #118 is already an
-   open row about exactly that pair. This does not add a sixth instance of it.
-   When #118 resolves, this can take whatever colour that decision lands on. */
-.crew-kicker {
-  font-family: var(--mono); font-size: 0.68rem; font-weight: 500;
-  letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-mid);
-}
-
-.crew-card.is-dark .crew-kicker { color: rgba(255,255,255,0.72); }
-
-/* #450: the plain word beside the acronym. Quieter than the label it explains,
-   because a reader who knows what an SDR is should be able to skip it and a
-   reader who does not should find it without looking. Not italic — the mono
-   face's italic is a slant of the same glyphs and reads as a rendering fault
-   at 0.68rem. */
-.crew-kicker em {
-  font-style: normal; text-transform: none; letter-spacing: 0.01em;
-  color: var(--ink-faint);
-}
-.crew-card.is-dark .crew-kicker em { color: rgba(255,255,255,0.45); }
-
-.crew-h {
-  font-size: 1.12rem; line-height: 1.28; margin: 0.65rem 0 0.55rem;
-  letter-spacing: -0.01em; text-wrap: balance;
-}
-
-.crew-lede { margin: 0; font-size: 0.94rem; line-height: 1.6; }
-.crew-card.is-dark .crew-lede { color: rgba(255,255,255,0.82); }
-
-/* #221: the you-send line sits under the grid, and sec-sub's 1.1rem top margin
-   reads as part of the last card that close to it. */
-.crew-foot { margin-top: 2.25rem; }
-
-/* Five cards into three columns leaves a hole in row two. The last card fills
-   it — which is also the right emphasis: RevOps is the one a competitor cannot
-   copy. Only above the width where three columns are certain; below that the
-   grid is 2-up or 1-up and a span would reopen the hole it closes. */
-@media (min-width: 900px) {
-  .crew-card:last-child { grid-column: span 2; }
-}
-
-@media (max-width: 640px) {
-  .crew-grid { grid-template-columns: 1fr; gap: 1rem; margin-top: 2rem; }
-  .crew-card { padding: 1.4rem 1.3rem 1.25rem; }
-}
-
-/* ── WHAT IT ACTUALLY DOES (#450) ──
-   Numbered rows rather than a card grid, deliberately: three cards side by side
-   are read as three separate features, and this is one sequence — you teach it,
-   it hunts, you get the pitch. The reader who needed this section is the reader
-   who needs the order. Narrower than the grids around it (720px) because it is
-   the only section on the page that is prose and wants a reading measure. */
-.plain-steps {
-  list-style: none;
-  width: 100%; max-width: 720px;
-  margin: 3rem auto 0;
-  display: flex; flex-direction: column; gap: 0;
-}
-
-.plain-step {
-  display: flex; align-items: flex-start; gap: 1.4rem;
-  padding: 1.6rem 0;
-  border-top: 1px solid var(--border);
-}
-.plain-step:first-child { border-top: none; padding-top: 0; }
-
-.plain-n {
-  font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
-  color: var(--ink-faint); line-height: 1.9; flex-shrink: 0;
-}
-
-.plain-body h3 {
-  font-size: 1.18rem; font-weight: 800; letter-spacing: -0.02em;
-  line-height: 1.3; margin: 0; text-wrap: balance;
-}
-
-.plain-body p {
-  font-size: 0.95rem; color: var(--ink-mid); line-height: 1.7;
-  margin: 0.5rem 0 0;
-}
-
-/* sec-sub centres itself with a 560px measure; under the steps it wants the
-   steps' own width and their left edge, or it reads as a caption on step 03. */
-.plain-foot {
-  max-width: 720px; margin-top: 2.25rem;
-}
-
-.halves-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
-  width: 100%; max-width: 1060px; margin-top: 2.75rem;
-  text-align: left;
-}
-
-.half {
-  border: 1px solid var(--border); border-radius: 18px;
-  background: var(--white); padding: 2rem 1.9rem 1.75rem;
-  display: flex; flex-direction: column;
-}
-
-.half.is-dark {
-  background: var(--ink); border-color: var(--ink);
-  color: var(--off-white);
-}
-
-.half-head { display: flex; align-items: center; gap: 0.7rem; }
-
-.half-n {
-  font-family: var(--mono); font-size: 0.68rem; font-weight: 500;
-  color: var(--ink-faint);
-}
-.half.is-dark .half-n { color: rgba(255,255,255,0.35); }
-
-.half-kicker {
-  font-family: var(--mono); font-size: 0.65rem; font-weight: 500;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--accent-dim);
-  background: var(--accent-bg); border: 1px solid rgba(0,179,126,0.2);
-  padding: 0.22rem 0.6rem; border-radius: 100px;
-}
-.half.is-dark .half-kicker {
-  color: var(--accent); background: rgba(0,179,126,0.12);
-  border-color: rgba(0,179,126,0.3);
-}
-
-.half-h {
-  font-size: 1.4rem; font-weight: 800; letter-spacing: -0.03em;
-  line-height: 1.2; margin-top: 1.1rem; text-wrap: balance;
-}
-
-.half-lede {
-  font-size: 0.9rem; color: var(--ink-mid); line-height: 1.7;
-  margin-top: 0.8rem;
-}
-.half.is-dark .half-lede { color: rgba(255,255,255,0.6); }
-
-.half-verbs {
-  list-style: none; margin-top: 1.5rem;
-  display: flex; flex-direction: column; gap: 0.9rem;
-  padding-top: 1.4rem; border-top: 1px solid var(--border);
-}
-.half.is-dark .half-verbs { border-top-color: rgba(255,255,255,0.12); }
-
-.half-verbs li { display: flex; align-items: flex-start; gap: 0.75rem; }
-.half-verbs svg { color: var(--ink); flex-shrink: 0; margin-top: 1px; }
-.half.is-dark .half-verbs svg { color: var(--accent); }
-.half-verbs span { font-size: 0.87rem; color: var(--ink-mid); line-height: 1.6; }
-.half-verbs strong { color: var(--ink); font-weight: 700; }
-.half.is-dark .half-verbs span { color: rgba(255,255,255,0.6); }
-.half.is-dark .half-verbs strong { color: var(--off-white); }
-
-/* margin-top:auto keeps the two links on the same baseline when one half's
-   copy runs a line longer than the other's. */
-.half-link {
-  margin-top: auto; padding-top: 1.5rem;
-  font-size: 0.87rem; font-weight: 700; color: var(--coral);
-  text-decoration: none; transition: color .15s;
-}
-.half-link:hover { color: var(--coral-hover); }
-.half.is-dark .half-link { color: var(--accent); }
-.half.is-dark .half-link:hover { color: #6ee7b7; }
-
-.half-foot {
-  font-family: var(--mono); font-size: 0.68rem; color: var(--ink-faint);
-  margin-top: 0.55rem;
-}
-.half.is-dark .half-foot { color: rgba(255,255,255,0.35); }
-
-/* ── THE NUMBERED FLOW (/who-to-pitch/, /what-to-send/) ── */
-.flow { background: var(--white); padding: 4.5rem 2.5rem 1rem; }
-.flow-inner { max-width: 720px; margin: 0 auto; }
-
-.flowstep {
-  display: grid; grid-template-columns: 3.5rem 1fr;
-  border-top: 1px solid var(--border); padding: 2.5rem 0;
-}
-.flowstep:first-child { border-top: none; padding-top: 0.5rem; }
-
-.flowstep-n {
-  font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
-  color: var(--accent-dim); padding-top: 0.35rem;
-}
-
-.flowstep-body h2 {
-  font-size: 1.35rem; font-weight: 800; letter-spacing: -0.03em;
-  line-height: 1.22; text-wrap: balance;
-}
-.flowstep-body p {
-  font-size: 0.92rem; color: var(--ink-mid); line-height: 1.78;
-  margin-top: 0.9rem;
-}
-.flowstep-body strong { color: var(--ink); font-weight: 700; }
-.flowstep-body em { color: var(--ink); font-style: normal; font-weight: 600; }
-
-.flowstep-proof {
-  font-family: var(--mono); font-size: 0.72rem !important;
-  line-height: 1.65 !important; color: var(--ink-faint) !important;
-  border-left: 2px solid var(--accent); padding-left: 0.85rem;
-  margin-top: 1.35rem !important;
+  flex-wrap: wrap; margin-top: 28px;
 }
 
 /* ── /integrations/ AND /integrations/close/ (#830, #838) ──
@@ -1746,7 +1232,7 @@ footer {
   font-family: var(--mono); font-size: 0.82rem; font-weight: 700;
   letter-spacing: 0.02em; margin-bottom: 0.35rem;
 }
-.int-mark.has-logo { background: var(--white); border: 1px solid var(--border); }
+.int-mark.has-logo { background: var(--off-white); }
 .int-mark img { width: 62%; height: 62%; object-fit: contain; display: block; }
 .int-card.is-static .int-mark { color: var(--ink-faint); }
 .int-card.is-static .int-mark img { opacity: .55; }
@@ -1760,7 +1246,7 @@ footer {
 .int-hub-more .btn-ghost { margin-top: 1.1rem; display: inline-block; }
 
 /* the integration page */
-.int-page { max-width: 1080px; margin: 0 auto; padding: 7.5rem 2.5rem 1rem; }
+.int-page { max-width: 1080px; margin: 0 auto; padding: calc(var(--nav-h) + 48px) 2.5rem 1rem; }
 .int-back {
   font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.04em;
   text-transform: uppercase; color: var(--ink-faint); text-decoration: none;
@@ -1768,12 +1254,12 @@ footer {
 .int-back:hover { color: var(--ink); }
 .int-head {
   display: flex; align-items: center; gap: 1.1rem;
-  margin-top: 1.6rem; padding-bottom: 1.6rem; border-bottom: 1px solid var(--border);
+  margin-top: 1.6rem; padding-bottom: 0.5rem;
 }
 .int-head .int-mark { width: 3.6rem; height: 3.6rem; font-size: 1.15rem; border-radius: 13px; margin: 0; }
 .int-head h1 {
-  font-size: clamp(1.9rem, 3.6vw, 2.6rem); font-weight: 800;
-  letter-spacing: -0.035em; line-height: 1.05;
+  font-size: 32px; font-weight: 400;
+  letter-spacing: -0.01em; line-height: 1.05;
 }
 .int-sub { font-size: 0.95rem; color: var(--ink-mid); margin-top: 0.3rem; }
 .int-body {
@@ -1781,8 +1267,8 @@ footer {
   margin-top: 2.25rem; align-items: start;
 }
 .int-side {
-  position: sticky; top: 5rem;
-  border: 1px solid var(--border); border-radius: 14px; background: var(--white);
+  position: sticky; top: calc(var(--nav-h) + 16px);
+  border-radius: 16px; background: var(--white);
   padding: 1.35rem; display: flex; flex-direction: column; gap: 0.7rem;
 }
 .int-side .btn-cta, .int-side .btn-ghost { display: block; text-align: center; margin: 0; }
@@ -1795,8 +1281,8 @@ footer {
 .int-built { font-family: var(--mono); font-size: 0.68rem; color: var(--ink-faint); margin-top: 0.4rem; }
 .int-main { min-width: 0; }
 .int-visual {
-  border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
-  background: var(--off-white); margin: 0;
+  border-radius: 16px; overflow: hidden;
+  background: var(--white); margin: 0;
 }
 .int-visual + .int-visual { margin-top: 1.1rem; }
 .int-visual img, .int-visual svg { display: block; width: 100%; height: auto; }
@@ -1810,12 +1296,13 @@ footer {
 .int-text ol { margin: 0.9rem 0 0 1.25rem; padding: 0; }
 .int-text li { font-size: 0.95rem; color: var(--ink-mid); line-height: 1.75; }
 .int-text strong, .int-text li strong { color: var(--ink); font-weight: 700; }
-.int-text a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--accent); font-weight: 600; }
+.int-text a { color: var(--accent); text-decoration: none; font-weight: 600; }
 .int-text a:hover { color: var(--accent-dim); }
 .int-more { max-width: 1080px; margin: 0 auto; padding: 4.5rem 2.5rem 4rem; }
 .int-more .sec-mid { text-align: center; margin-bottom: 2rem; }
 .int-more-all { text-align: center; margin-top: 2rem; }
-.int-page .pricing-page { padding: 3.5rem 0 0; background: none; }
+.int-page .pricing-page { padding: 3.5rem 0 0; }
+.int-page .pricing-card { max-width: 620px; margin: 0 auto; padding: 32px; }
 @media (max-width: 860px) {
   /* One column, the sidebar first: on a phone the button is the first thing
      under the name, the way it is on Close's own pages, never under the text. */
@@ -1824,60 +1311,41 @@ footer {
 }
 @media (max-width: 640px) {
   .int-page, .int-hub, .int-more, .int-hub-more { padding-left: 1.4rem; padding-right: 1.4rem; }
-  .int-page { padding-top: 6.5rem; }
+  .int-page { padding-top: calc(var(--nav-h) + 32px); }
 }
 
-/* ── THE CLOSING SPLIT (both product pages) ── */
+/* ── THE CLOSING CARD (both product pages) ── */
 .page-split {
-  background: var(--off-white); border-top: 1px solid var(--border);
-  margin-top: 4rem; padding: 4.5rem 2.5rem; text-align: center;
+  max-width: 1040px; margin: 16px auto 0; padding: 0 24px; text-align: center;
 }
-.page-split-inner { max-width: 620px; margin: 0 auto; }
+.page-split-inner { background: var(--white); border-radius: 16px; padding: 40px 24px; }
 .page-split-inner h2 {
-  font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800;
-  letter-spacing: -0.03em; line-height: 1.14;
-  margin-top: 1rem; text-wrap: balance;
+  font-size: 24px; font-weight: 400; line-height: 1.25; text-wrap: balance;
 }
 .page-split-inner p {
-  font-size: 0.93rem; color: var(--ink-mid); line-height: 1.75;
-  margin-top: 1.1rem;
+  font-size: 15px; color: var(--ink-mid); line-height: 1.5;
+  margin: 8px auto 0; max-width: 520px;
 }
-.page-split-inner .btn-cta { margin-top: 1.9rem; }
-
-/* ── WHAT COMES OUT OF A RUN (/what-to-send/) ──
-   .card without an <a>: the six deliverables are facts, not destinations. */
-.deliverables { padding: 4.5rem 2.5rem 0; }
-.deliverables-inner { max-width: 1080px; margin: 0 auto; }
-.deliverables .sec-mid { text-align: center; margin-bottom: 2.25rem; }
-.card > .card-body {
-  display: flex; flex-direction: column; gap: 0.5rem;
-  padding: 1.5rem 1.5rem 1.35rem; height: 100%;
-}
-.card.is-static:hover { transform: none; border-color: var(--border); }
+.page-split-inner .btn-cta, .page-split-inner .btn-ghost { margin-top: 20px; }
 
 /* ── /pricing/ ── */
-.pricing-page { border-top: none; padding-top: 3.5rem; }
-.pricing-page .pricing-card { margin: 0 auto; }
-.pricing-page .pricing-list { margin-top: 1.6rem; }
-.pricing-page .buy { margin-top: 1.9rem; }
+.pricing-page .buy { margin-top: 24px; }
+.pricing-page .plan-switch { margin: 4px 0 16px; align-self: flex-start; }
+.pricing-page .price-row { margin-top: 0; }
 
-.pricing-faq { background: var(--white); padding: 4.5rem 2.5rem; }
-.pricing-faq-inner { max-width: 720px; margin: 0 auto; }
-.pricing-faq .sec-mid { text-align: center; margin-bottom: 2rem; }
-.pricing-faq-item { border-top: 1px solid var(--border); padding: 1.5rem 0; }
+.pricing-faq { padding: 48px 24px 0; }
+.pricing-faq-inner { max-width: 760px; margin: 0 auto; }
+.pricing-faq h2 { font-size: 28px; font-weight: 400; text-align: center; margin-bottom: 20px; }
+.pricing-faq-list { background: var(--white); border-radius: 16px; padding: 8px 32px; }
+.pricing-faq-item { border-top: 1px solid var(--border); padding: 20px 0; }
 .pricing-faq-item:first-child { border-top: none; }
-.pricing-faq-item dt {
-  font-size: 1rem; font-weight: 700; color: var(--ink); letter-spacing: -0.015em;
-}
+.pricing-faq-item dt { font-size: 16px; font-weight: 500; color: var(--ink); }
 .pricing-faq-item dd {
-  font-size: 0.9rem; color: var(--ink-mid); line-height: 1.78; margin: 0.6rem 0 0;
+  font-size: 15px; color: var(--ink-mid); line-height: 1.6; margin: 6px 0 0;
 }
-.pricing-faq-item dd em { color: var(--ink); font-style: normal; font-weight: 600; }
-.pricing-faq-item dd a {
-  color: var(--ink); text-decoration: none;
-  border-bottom: 1px solid var(--accent); font-weight: 600;
-}
-.pricing-faq-item dd a:hover { color: var(--accent-dim); }
+.pricing-faq-item dd em { color: var(--ink); font-style: normal; font-weight: 500; }
+.pricing-faq-item dd a { color: var(--accent); text-decoration: none; }
+.pricing-faq-item dd a:hover { text-decoration: underline; }
 
 /* The mobile header. `.nav-links` is display:none above 860px in the base
    rules; here it becomes a panel under the bar, opened by .nav-toggle. Every
@@ -1895,62 +1363,53 @@ footer {
 @media (max-width: 860px) {
   .nav-toggle { display: block; }
   .nav-signin { display: none; }
-  /* The bar is 58px; the panel hangs off its bottom edge. */
+  .nav-right { margin-left: auto; }
+  /* The panel hangs off the bar's bottom edge. */
   .nav-links {
-    display: none;
-    position: absolute; top: 58px; left: 0; right: 0;
+    display: none; margin-left: 0;
+    position: absolute; top: var(--nav-h); left: 0; right: 0;
     flex-direction: column; gap: 0;
     background: var(--white);
     border-bottom: 1px solid var(--border);
-    padding: 0.35rem 1.25rem 0.9rem;
-    font-size: 0.95rem;
-    max-height: calc(100vh - 58px); overflow-y: auto;
+    padding: 4px 16px 12px;
+    font-size: 16px;
+    max-height: calc(100vh - var(--nav-h)); overflow-y: auto;
   }
   .nav-links.is-open { display: flex; }
   .nav-links li { border-top: 1px solid var(--border); }
   .nav-links li:first-child { border-top: none; }
-  .nav-links a { display: block; padding: 0.85rem 0; font-weight: 600; color: var(--ink); }
-
-  .plain-steps { margin-top: 2.25rem; }
-  .plain-step { flex-direction: column; gap: 0.4rem; padding: 1.35rem 0; }
-  .plain-n { line-height: 1.4; }
-  .halves-grid { grid-template-columns: 1fr; gap: 1rem; }
-  .page-hero { padding: 8rem 1.25rem 3rem; }
-  .flow { padding: 3.5rem 1.25rem 0; }
-  .flowstep { grid-template-columns: 1fr; }
-  .flowstep-n { padding-top: 0; margin-bottom: 0.5rem; }
-  .page-split { padding: 3.5rem 1.25rem; }
-  .deliverables { padding: 3.5rem 1.25rem 0; }
-  .pricing-faq { padding: 3.5rem 1.25rem; }
-  .half { padding: 1.6rem 1.4rem 1.4rem; }
+  .nav-links a { display: block; padding: 14px 0; color: var(--ink); }
+  .pricing-faq { padding: 40px 16px 0; }
+  .pricing-faq-list { padding: 4px 18px; }
+  .page-split { padding: 0 16px; }
 }
 
 /* ── CONTACT (#456) ──────────────────────────────────────────────────────
    Three fields stacked, one button. The style skill's rule 8 — one primary
    action per screen — is the whole layout: no field groups side by side, no
    optional extras, no second CTA competing with Send. */
-.contact-section { padding: 4rem 2.5rem 5rem; }
-.contact-inner { max-width: 560px; margin: 0 auto; }
+.contact-section { padding: 1rem 2.5rem 1rem; }
+.contact-inner { max-width: 600px; margin: 0 auto; background: var(--white); border-radius: 16px; padding: 32px; }
 
 .contact-form { display: flex; flex-direction: column; gap: 1.4rem; }
 
 .contact-row { display: flex; flex-direction: column; gap: 0.5rem; text-align: left; }
 
 .contact-label {
-  font-size: 0.8rem; font-weight: 700; color: var(--ink);
+  font-size: 14px; font-weight: 500; color: var(--ink);
 }
 
 /* Square-cornered rather than the pill .reserve-input uses: a pill reads as a
    single-line control, and the message box next to it is six rows tall. */
 .contact-input {
   width: 100%; box-sizing: border-box;
-  font-family: var(--mono); font-size: 0.88rem; font-weight: 500;
-  color: var(--ink); background: var(--white);
-  border: 1px solid var(--border); border-radius: 10px;
+  font-family: var(--font); font-size: 15px;
+  color: var(--ink); background: var(--stone);
+  border: 1px solid transparent; border-radius: 12px;
   padding: 0.8rem 1rem; outline: none;
-  transition: border-color .15s;
+  transition: background .15s, border-color .15s;
 }
-.contact-input:focus { border-color: var(--accent); }
+.contact-input:focus { background: var(--white); border-color: #dadce0; }
 .contact-input::placeholder { color: var(--ink-faint); }
 
 .contact-textarea { resize: vertical; min-height: 9rem; line-height: 1.6; }
@@ -1961,7 +1420,7 @@ footer {
   margin-top: 2rem; font-size: 0.8rem; line-height: 1.7;
   color: var(--ink-mid); text-align: left;
 }
-.contact-note a { color: var(--ink); }
+.contact-note a { color: var(--accent); }
 
 /* /partners/ (#885): the seven terms as a numbered list in the legal list's
    voice, and the note under them in the contact note's. */
@@ -1973,30 +1432,12 @@ footer {
 .partner-note {
   margin-top: 2rem; font-size: 0.8rem; line-height: 1.7; color: var(--ink-mid);
 }
-.partner-note a { color: var(--ink); }
+.partner-note a { color: var(--accent); }
 
 @media (max-width: 860px) {
-  .contact-section { padding: 3rem 1.25rem 4rem; }
+  .contact-section { padding: 0.5rem 16px 1rem; }
+  .contact-inner { padding: 22px 18px; }
   .contact-submit { align-self: stretch; text-align: center; }
-}
-
-/* ── The six-item header (#456) ──────────────────────────────────────────
-   Contact makes six nav items beside a badge, a sign-in and a CTA. Measured
-   rather than guessed: at 900px the six items plus .nav-right overflow the
-   58px bar, and the row wraps into the page. Below 860px .nav-links is
-   already a panel behind .nav-toggle, so the squeeze is entirely in the band
-   between the two — which is where a laptop at a non-maximised window sits,
-   not a rare width.
-
-   The badge goes first because it is decoration (it is already dropped at
-   860px for the same reason), then the gap tightens. Nothing is hidden that
-   is a way to somewhere. */
-@media (max-width: 1040px) and (min-width: 861px) {
-  nav { padding: 0 1.5rem; }
-  .nav-ai-badge { display: none; }
-  .nav-links { gap: 1.15rem; }
-  .nav-right { gap: 0.75rem; }
-  .nav-cta { padding: 0.5rem 0.9rem; }
 }
 
 /* ── THE DEMO (#767) ────────────────────────────────────────────────────
@@ -2008,24 +1449,24 @@ footer {
    cover what it points at. Without demo.js the figures stand in order.
    The chapter hues are the studio's own (`--verb-*` in studio.css). */
 .demo-hero { padding-bottom: 2rem; border-bottom: none; }
-.demo { background: var(--off-white); padding: 0 2.5rem 5rem; }
+.demo { padding: 0 2.5rem 1rem; }
 .demo-stage { max-width: 1100px; margin: 0 auto; scroll-margin-top: 4.5rem; }
 .demo-step { margin: 0 0 3.5rem; }
 .demo-stage.is-live .demo-step { margin-bottom: 0; }
 .demo-shot {
-  position: relative; overflow: hidden; border-radius: 14px;
-  border: 1px solid var(--border); background: var(--white);
-  box-shadow: 0 30px 60px -30px rgba(26,26,24,0.35);
+  position: relative; overflow: hidden; border-radius: 16px;
+  background: var(--white);
+  box-shadow: 0 1px 2px rgba(60,64,67,.12), 0 8px 28px rgba(60,64,67,.10);
 }
 .demo-shot img { display: block; width: 100%; height: auto; }
 .demo-ring {
   position: absolute; display: block; border-radius: 10px;
-  border: 2px solid var(--accent);
-  box-shadow: 0 0 0 4px rgba(0,179,126,0.28), 0 0 0 9999px rgba(26,26,24,0.42);
+  border: 2px solid var(--coral);
+  box-shadow: 0 0 0 4px rgba(232,83,58,0.28), 0 0 0 9999px rgba(26,26,24,0.42);
   transition: box-shadow .15s;
 }
 .demo-ring:hover, .demo-ring:focus-visible {
-  box-shadow: 0 0 0 6px rgba(0,179,126,0.4), 0 0 0 9999px rgba(26,26,24,0.5);
+  box-shadow: 0 0 0 6px rgba(232,83,58,0.4), 0 0 0 9999px rgba(26,26,24,0.5);
   outline: none;
 }
 .demo-card {
@@ -2041,7 +1482,7 @@ footer {
 .demo-chapter.engage, .demo-chapter-btn.engage { color: #0E8C8C; }
 .demo-chapter.teach, .demo-chapter-btn.teach { color: #7A5EA8; }
 .demo-card h2 {
-  font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em;
+  font-size: 1.4rem; font-weight: 400; letter-spacing: -0.01em;
   line-height: 1.2; margin: 0.4rem 0 0.4rem;
 }
 .demo-card-text > p:not(.demo-count) {
@@ -2050,43 +1491,42 @@ footer {
 }
 .demo-chapters { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1.1rem; }
 .demo-chapter-btn {
-  font-size: 0.86rem; font-weight: 700; text-decoration: none;
-  padding: 0.6rem 1.25rem; border-radius: 100px;
-  border: 1.5px solid currentColor; background: var(--white);
-  transition: transform .1s, background .15s;
+  font-size: 14px; font-weight: 500; text-decoration: none;
+  padding: 0.55rem 1.15rem; border-radius: 100px;
+  border: 1px solid #dadce0; background: var(--white);
+  transition: background .15s;
 }
-.demo-chapter-btn:hover { transform: translateY(-1px); background: var(--stone); }
+.demo-chapter-btn:hover { background: var(--stone); }
 .demo-actions { display: flex; align-items: center; gap: 0.75rem; justify-self: end; padding-top: 1.3rem; }
 .demo-dots { display: flex; gap: 5px; list-style: none; margin: 0 0.5rem 0 0; padding: 0; }
 .demo-dots li { width: 6px; height: 6px; border-radius: 50%; background: rgba(26,26,24,0.15); }
 .demo-dots li.is-on { background: var(--ink); }
 .demo-next {
-  font-size: 0.88rem; font-weight: 700; color: white; background: var(--ink);
-  padding: 0.78rem 1.6rem; border-radius: 100px; text-decoration: none;
-  display: inline-block; transition: transform .1s, background .15s;
+  font-size: 14px; font-weight: 500; color: white; background: var(--ink);
+  padding: 0.7rem 1.4rem; border-radius: 100px; text-decoration: none;
+  display: inline-block; transition: background .15s;
 }
-.demo-next:hover { background: #000; transform: translateY(-1px); }
+.demo-next:hover { background: #000; }
 .demo-end {
-  background: var(--ink); color: var(--off-white); border-radius: 14px;
+  background: var(--white); color: var(--ink); border-radius: 16px;
   padding: 3.5rem 2rem; text-align: center;
 }
 .demo-end h2 {
-  font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800;
-  letter-spacing: -0.035em; line-height: 1.1; margin: 0 0 1rem;
+  font-size: 28px; font-weight: 400;
+  line-height: 1.2; margin: 0 0 0.75rem;
 }
-.demo-end p { font-size: 1rem; color: rgba(255,255,255,0.75); line-height: 1.6; max-width: 520px; margin: 0 auto 1.75rem; }
+.demo-end p { font-size: 1rem; color: var(--ink-mid); line-height: 1.6; max-width: 520px; margin: 0 auto 1.75rem; }
 .demo-end-actions { display: flex; gap: 0.85rem; justify-content: center; flex-wrap: wrap; }
-.demo-end .btn-ghost { color: rgba(255,255,255,0.75); border-color: rgba(255,255,255,0.3); }
-.demo-end .btn-ghost:hover { color: white; border-color: white; }
+
 
 /* The door on the homepage, under the scan field: one quiet line. */
-.scan-demo { margin-top: 0.55rem; font-size: 0.8rem; }
-.scan-demo a { color: var(--ink-mid); font-weight: 600; text-decoration: none; }
-.scan-demo a:hover { color: var(--ink); text-decoration: underline; }
+.scan-demo { margin: 0; }
+.scan-demo a { color: var(--accent); text-decoration: none; }
+.scan-demo a:hover { text-decoration: underline; }
 .hero.scan-focus .scan-demo { display: none; }
 
 @media (max-width: 860px) {
-  .demo { padding: 0 1.25rem 4rem; }
+  .demo { padding: 0 16px 1rem; }
   .demo-card { grid-template-columns: 1fr; gap: 1rem; }
   .demo-actions { justify-self: start; padding-top: 0; }
   .demo-shot { border-radius: 8px; }
@@ -2103,25 +1543,123 @@ footer {
    Nothing to read, nothing to decide, and it never redirects. The switcher
    exists only on a page that has a twin; the nudge only on an English one. */
 .footer-langs {
-  display: flex; gap: 1rem; list-style: none; flex-wrap: wrap;
+  display: flex; gap: 0 12px; list-style: none; flex-wrap: wrap; margin-left: auto;
 }
-.footer-langs a { color: rgba(255,255,255,0.35); text-decoration: none; transition: color .15s; }
-.footer-langs a:hover { color: white; }
-.footer-langs [aria-current] { color: rgba(255,255,255,0.7); }
+.footer-langs a { color: var(--ink-mid); text-decoration: none; }
+.footer-langs a:hover { color: var(--ink); }
+.footer-langs [aria-current] { color: var(--ink); }
+@media (max-width: 860px) { .footer-langs { margin-left: 0; } }
 
 .lang-suggest {
-  position: fixed; top: 58px; left: 0; right: 0; z-index: 199;
+  position: fixed; top: var(--nav-h); left: 0; right: 0; z-index: 199;
   display: flex; align-items: center; justify-content: center;
   gap: 1rem; padding: 0.55rem 1.25rem;
-  background: var(--ink);
+  background: var(--accent-bg);
   font-size: 0.82rem; line-height: 1.4;
 }
 .lang-suggest a {
-  color: white; font-weight: 700; text-decoration: none;
-  border-bottom: 1px solid var(--accent);
+  color: var(--accent); font-weight: 500; text-decoration: none;
 }
 .lang-suggest button {
   background: none; border: 0; padding: 0 0.25rem; cursor: pointer;
-  color: rgba(255,255,255,0.5); font: inherit; font-size: 1.15rem; line-height: 1;
+  color: var(--ink-mid); font: inherit; font-size: 1.15rem; line-height: 1;
 }
-.lang-suggest button:hover { color: white; }
+.lang-suggest button:hover { color: var(--ink); }
+
+/* ── The homepage sections and the cards they share (#1092) ─────────────
+   The studio's card: white on the grey ground, radius 16, no border and no
+   shadow, a small grey question at its head and at most one text link at its
+   foot. Rows inside it carry a letter tile in the coral tint. */
+.col { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+.sec { padding: 64px 0 0; scroll-margin-top: var(--nav-h); }
+.sec-first { padding-top: 0; }
+.sec h2 { font-size: 28px; font-weight: 400; line-height: 1.2; margin: 0 0 8px; text-wrap: balance; }
+.sec .lede { color: var(--ink-mid); font-size: 16px; margin: 0 0 24px; max-width: 600px; line-height: 1.5; }
+#what > .col > h2 { margin-bottom: 24px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.hcard { background: var(--white); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; min-width: 0; }
+.hcard > h2 { font-size: 18px; margin: 0 0 8px; }
+.hcard > p { font-size: 15px; color: var(--ink-mid); line-height: 1.55; }
+.hcard-q { font-size: 13px; color: var(--ink-mid); margin: 0 0 14px; }
+.hrow { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-top: 1px solid var(--border); }
+.hcard-q + .hrow { border-top: 0; padding-top: 0; }
+.tile {
+  width: 36px; height: 36px; border-radius: 10px; flex: none;
+  background: var(--accent-bg); color: var(--accent);
+  display: grid; place-items: center; font-size: 15px; font-weight: 600;
+}
+.hrow b { display: block; font-weight: 500; font-size: 15px; margin-bottom: 2px; }
+.hrow span:not(.tile) { color: var(--ink-mid); font-size: 14px; line-height: 1.45; }
+.hcard-foot { margin-top: auto; padding-top: 16px; font-size: 14px; display: flex; gap: 20px; flex-wrap: wrap; }
+.hcard-foot a { text-decoration: none; }
+.hcard-foot a:hover { text-decoration: underline; }
+.hcard-foot a.quiet { color: var(--ink-mid); }
+/* The homepage's paid card keeps the .buy id without the pricing tile's rule. */
+.hcard-foot.buy { border-top: 0; margin-top: auto; }
+
+/* A glance, shown */
+.glance { display: grid; grid-template-columns: 1fr 1.15fr; gap: 16px; align-items: start; }
+.glance-say h2 { margin-top: 8px; }
+.gco { display: flex; align-items: center; gap: 14px; }
+.glogo {
+  width: 44px; height: 44px; border-radius: 12px; flex: none;
+  background: #e8f0fe; color: #1a56c4; display: grid; place-items: center;
+  font-weight: 600; font-size: 18px;
+}
+.gname { font-size: 17px; }
+.gmeta { color: var(--ink-mid); font-size: 13px; margin-top: 2px; }
+.gscore { margin-left: auto; text-align: right; }
+.gscore b { font-size: 32px; font-weight: 400; display: block; line-height: 1; }
+.gscore small { color: var(--ink-mid); font-size: 12px; }
+.gmeter { height: 6px; border-radius: 3px; background: var(--stone); margin: 16px 0 18px; overflow: hidden; }
+.gmeter i { display: block; height: 100%; width: 94%; background: var(--good); border-radius: 3px; }
+.glance-card .gone { font-size: 16px; line-height: 1.5; margin: 0 0 16px; color: var(--ink); }
+.gsig { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 8px; font-size: 14px; color: #3c4043; }
+.gsig li { display: flex; gap: 10px; }
+.gsig li::before { content: "+"; color: var(--good); font-weight: 600; width: 12px; flex: none; }
+.gsig li.against::before { content: "\2212"; color: var(--bad); }
+.gwho {
+  font-size: 13px; color: var(--ink-mid); border-top: 1px solid var(--border); padding-top: 14px;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.ghost { border: 1px solid #dadce0; border-radius: 18px; padding: 7px 14px; color: var(--ink); font-size: 13px; background: var(--white); }
+.glance-card .gex { font-size: 12px; color: var(--ink-faint); margin-top: 10px; }
+
+/* The price, as two cards */
+.price .big { font-size: 32px; font-weight: 400; display: block; margin: 2px 0 2px; }
+.price .per { color: var(--ink-mid); font-size: 14px; margin-bottom: 18px; }
+.ticks { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; font-size: 15px; }
+.ticks li { display: flex; gap: 10px; line-height: 1.4; }
+.ticks li::before {
+  content: ""; width: 16px; height: 16px; flex: none; margin-top: 2px; border-radius: 50%;
+  background: var(--accent-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.8' stroke='%23c8432c' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") center/16px no-repeat;
+}
+.price .pricing-card .ticks { margin-top: 20px; }
+
+/* Works where you already work */
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip {
+  background: var(--white); border-radius: 20px; padding: 9px 16px; font-size: 14px;
+  display: inline-flex; align-items: center; gap: 8px; color: var(--ink); text-decoration: none;
+}
+.chip:hover { background: var(--stone); }
+.chip img { width: 18px; height: 18px; display: block; }
+
+/* ── The phone (#1092): one column, the field and its button stacked ── */
+@media (max-width: 640px) {
+  .col { padding: 0 16px; }
+  .hero { padding: calc(var(--nav-h) + 40px) 16px 24px; }
+  .hero h1 { font-size: 30px; }
+  .hero-sub { font-size: 16px; margin-bottom: 24px; }
+  .scan-form { flex-direction: column; align-items: stretch; background: transparent; padding: 0; gap: 10px; }
+  .scan-form:focus-within { background: transparent; box-shadow: none; }
+  .scan-q { background: var(--stone); border-radius: 26px; padding: 5px 18px; }
+  .scan-q:focus-within { background: var(--white); box-shadow: 0 1px 6px rgba(32,33,36,.18); }
+  .scan-btn { padding: 14px; }
+  .sec { padding-top: 44px; }
+  .sec h2 { font-size: 23px; }
+  .grid2, .glance { grid-template-columns: 1fr; }
+  .hcard { padding: 20px; }
+  footer { padding-left: 16px; padding-right: 16px; }
+}
+.pricing-page .grid2 { align-items: start; }

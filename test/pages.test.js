@@ -152,18 +152,21 @@ describe('the header, and the pages behind it', () => {
   });
 
   // #453 moved the two questions out of the h1 and into the deck under it: the
-  // h1 is the promise now ("Find leads that fit you."), which is what the
-  // <title> has always said and what a stranger can act on. #153's requirement
-  // is unchanged and is what this still holds — the frame must be ON the
-  // homepage, prominently, and must reach both pages. Scoped to the hero
+  // h1 is the promise now ("Leads that fit you, and what to send them"), which
+  // is what the <title> has always said and what a stranger can act on. #1092
+  // (7 Oct 2026) then gave the hero to the scan field alone, on the operator's
+  // ask to keep it minimal, and the frame moved to the page body: the pricing
+  // heading says it in full and the first section links both halves. #153's
+  // requirement is unchanged and is what this still holds — the frame must be
+  // ON the homepage and must reach both pages. Scoped to the page body
   // deliberately: the header carries the same two strings on every page of the
   // site, so a page-wide match would pass on the nav alone and assert nothing.
-  test('the homepage frames the two questions in the hero, and reaches both pages', () => {
+  test('the homepage frames the two questions in its body, and reaches both pages', () => {
     const home = read('index.html');
-    const hero = home.match(/<section class="hero"[^>]*>([\s\S]*?)<\/section>/);
-    assert.ok(hero, 'the homepage has no hero section');
-    assert.ok(/Who to pitch\./.test(hero[1]) && /What to send\./.test(hero[1]),
-      'the two questions have left the hero — the nav, both product pages and the halves '
+    const body = home.match(/<\/nav>([\s\S]*?)<footer\b/);
+    assert.ok(body, 'the homepage has no body between its nav and its footer');
+    assert.ok(/Who to pitch\b/.test(body[1]) && /What to send\b/.test(body[1]),
+      'the two questions have left the homepage body — the nav, both product pages and the pricing '
       + 'section are all built on that frame (#153), so it may be demoted but not dropped');
     const h1 = home.match(/<h1>([\s\S]*?)<\/h1>/);
     assert.ok(h1 && h1[1].replace(/<[^>]*>/g, '').trim().length > 8,
@@ -177,9 +180,9 @@ describe('the header, and the pages behind it', () => {
   // shape a search result should never have. Derived from site.json — editing
   // the tagline is allowed and editing the h1 is allowed, drifting them apart
   // silently is not.
-  // Punctuation-insensitive on purpose: the h1 breaks the promise across two
-  // lines with a full stop in the middle ("Find Leads." / "That fit you."), and
-  // the tagline is one phrase. Comparing the WORDS is the claim; comparing the
+  // Punctuation-insensitive on purpose: the h1 has broken the promise across
+  // two lines with a full stop in the middle ("Find Leads." / "That fit you."),
+  // and the tagline is one phrase. Comparing the WORDS is the claim; comparing the
   // typography would fail on a line break somebody was right to add.
   const words = t => t.replace(/<[^>]*>/g, ' ').toLowerCase()
     .replace(/[^a-z0-9]+/g, ' ').trim();
@@ -301,17 +304,22 @@ describe('the header, and the pages behind it', () => {
         + `first acronym at ${jargon}, first "deck … proposal" at ${goods}`);
   });
 
-  test('every agent acronym on the homepage carries a plain-English gloss', () => {
-    // The five kickers are the operator's own ask of 25 Aug and the five card
-    // headings are pinned verbatim by test/agents.test.js in the studio repo,
-    // so neither can be removed here. What #450 added instead is one plain word
-    // beside each. Derived from the built card: a sixth agent can only turn
-    // this red by shipping unglossed.
-    const kickers = [...read('index.html').matchAll(/<span class="crew-kicker">([\s\S]*?)<\/span>/g)];
-    assert.ok(kickers.length, 'the crew cards have lost their kickers');
+  test('every sales acronym on the homepage sits beside a plain-English gloss', () => {
+    // #450 kept the five crew kickers (the operator's ask of 25 Aug) and put a
+    // plain word beside each. #1092 (7 Oct 2026) removed the crew section with
+    // the rest of the agent framing, so the homepage now carries no acronym at
+    // all. The intent stands either way: an acronym may only reach a first-time
+    // reader inside a glossed kicker. Derived from the built page, so bringing
+    // a crew card back can only turn this red by shipping it unglossed.
+    const home = read('index.html');
+    const kickers = [...home.matchAll(/<span class="crew-kicker">([\s\S]*?)<\/span>/g)];
     for (const [, inner] of kickers)
       assert.match(inner, /<em>[^<]+<\/em>/,
         `the agent label ${JSON.stringify(inner.replace(/<[^>]*>/g, '').trim())} has no plain-English gloss (#450)`);
+    const bare = home.replace(/<span class="crew-kicker">[\s\S]*?<\/span>/g, ' ')
+      .replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<[^>]*>/g, ' ').match(JARGON);
+    assert.equal(bare, null,
+      `the homepage uses ${JSON.stringify(bare && bare[0])} outside a glossed kicker (#450)`);
   });
 
   test('every page carries the mobile way into the nav', () => {

@@ -1,7 +1,7 @@
 ---
 layout: base.njk
 title: Pricing
-description: "$999 a month, or $9,990 a year with two months free. Unlimited runs, your whole team in, no seats to count, money back if it doesn't earn its keep."
+description: "$999 a month, or $9,990 a year with two months free. Every pitch your team needs, your whole team in, and money back if it doesn't earn its keep."
 # One page per language (#114) — see src/index.njk for the reasoning.
 pagination:
   data: languages
@@ -111,7 +111,7 @@ permalink: "{{ language.prefix }}/pricing/"
   "@context": "https://schema.org",
   "@type": "Product",
   "name": "Prospektor",
-  "description": {{ ("A Prospektor workspace: unlimited pitch runs, research, decision-makers with sources, warm-intro mapping and every deliverable drafted in your voice." | t) | dump | safe }},
+  "description": {{ ("A Prospektor workspace: leads, research, decision-makers with sources, warm intros and every pitch written in your voice." | t) | dump | safe }},
   "brand": { "@type": "Brand", "name": "{{ site.name }}" },
   "url": "{{ site.url }}{{ page.url }}",
   "image": "{{ site.url }}{{ '/assets/img/og.png' | asset }}",
@@ -172,61 +172,71 @@ permalink: "{{ language.prefix }}/pricing/"
 
 <header class="page-hero">
   <div class="page-hero-inner">
-    <span class="tag">{% t %}pricing{% endt %}</span>
-    <h1 class="page-h1">{% t %}One price. The whole box.{% endt %}</h1>
-    <p class="page-lede">{% t %}
-      No seat maths, no credit meter, no sales call to find out the number.
-      One workspace, one price, everything in it.
-    {% endt %}</p>
+    <h1 class="page-h1">{% t %}One price for your whole team{% endt %}</h1>
+    <p class="page-lede">{% t %}Who to pitch is free. What to send is one workspace, with no seats to count and no credit meter.{% endt %}</p>
   </div>
 </header>
 
-<section class="pricing pricing-page">
-  <div class="pricing-card">
-    {#- #542 — the yearly plan. A SEGMENTED CONTROL, not a second buy button:
-        a pricing page gets one primary action (the style skill, rule 8), and
-        two CTAs is the shape the operator has twice asked us not to build.
+{#- #1092: the two-card shape the homepage uses, the thesis priced. The free
+    card is the scan and the free run (#419); the paid card is the one place
+    on this page with a coral button. -#}
+<section class="sec sec-first pricing-page" id="plans">
+  <div class="col">
+    <div class="grid2 price">
+      <div class="hcard">
+        <p class="hcard-q">{% t %}Who to pitch{% endt %}</p>
+        <b class="big">{% t %}Free{% endt %}</b>
+        <p class="per">{% t %}No card, no sign-up to start{% endt %}</p>
+        <ul class="ticks">
+          <li>{% t %}Your site read, and what you should hunt for{% endt %}</li>
+          <li>{% t %}Three companies that fit, scored{% endt %}</li>
+          <li>{% t %}Who buys from one of your competitors{% endt %}</li>
+        </ul>
+        <p class="hcard-foot"><a href="{{ '/#scan' | localize }}">{% t %}Scan your site{% endt %} ›</a></p>
+      </div>
 
-        Both figures and both sentences are written here, by the build, in the
-        reader's language; plan.js only decides which of them is hidden. So the
-        switch can never say a price the build did not write, it costs a script
-        no sentence of its own, and with JavaScript off the page is the monthly
-        page it was — which is also what a crawler reads. -#}
-    <div class="plan-switch" id="planSwitch" role="group" aria-label="{% t %}Billing period{% endt %}">
-      <button type="button" class="plan-opt" data-plan="month" aria-pressed="true">{% t %}Monthly{% endt %}</button>
-      <button type="button" class="plan-opt" data-plan="year" aria-pressed="false">{% t %}Yearly (2 months free){% endt %}</button>
-    </div>
-    <div class="price-row" data-plan-show="month">
-      <span class="price-num">$999</span>
-      <span class="price-per">{% t %}/ month · per workspace{% endt %}</span>
-    </div>
-    <div class="price-row" data-plan-show="year" hidden>
-      <span class="price-num">$9,990</span>
-      <span class="price-per">{% t %}/ year · per workspace{% endt %}</span>
-    </div>
-    <p class="plan-note" data-plan-show="month">{% t %}Or <strong>$9,990 a year</strong>, two months free.{% endt %}</p>
-    <p class="plan-note" data-plan-show="year" hidden>{% t %}<strong>Two months free</strong> on $11,988, and the price is fixed for the year.{% endt %}</p>
-    <p class="price-line">{% t %}Unlimited runs · your whole team in · money back if it doesn't earn its keep{% endt %}</p>
+      <div class="hcard pricing-card">
+        {#- #542, the yearly plan. A SEGMENTED CONTROL, not a second buy button:
+            a pricing page gets one primary action (the style skill, rule 8).
+            Both figures and both sentences are written here, by the build, in
+            the reader's language; plan.js only decides which of them is
+            hidden. With JavaScript off the page is the monthly page, which is
+            also what a crawler reads. -#}
+        <p class="hcard-q">{% t %}What to send{% endt %}</p>
+        <div class="plan-switch" id="planSwitch" role="group" aria-label="{% t %}Billing period{% endt %}">
+          <button type="button" class="plan-opt" data-plan="month" aria-pressed="true">{% t %}Monthly{% endt %}</button>
+          <button type="button" class="plan-opt" data-plan="year" aria-pressed="false">{% t %}Yearly (2 months free){% endt %}</button>
+        </div>
+        <div class="price-row" data-plan-show="month">
+          <span class="price-num">$999</span>
+          <span class="price-per">{% t %}/ month · per workspace{% endt %}</span>
+        </div>
+        <div class="price-row" data-plan-show="year" hidden>
+          <span class="price-num">$9,990</span>
+          <span class="price-per">{% t %}/ year · per workspace{% endt %}</span>
+        </div>
+        <p class="plan-note" data-plan-show="month">{% t %}Or <strong>$9,990 a year</strong>, two months free.{% endt %}</p>
+        <p class="plan-note" data-plan-show="year" hidden>{% t %}<strong>Two months free</strong> on $11,988, and the price is fixed for the year.{% endt %}</p>
 
-    <ul class="pricing-list">
-      <li>{% t %}Unlimited pitch runs: research, scoring and every deliverable{% endt %}</li>
-      <li>{% t %}Up to 100 companies in one batch, drafted while the tab is closed{% endt %}</li>
-      <li>{% t %}Decision-makers with sources, and the confidence rating on each name{% endt %}</li>
-      <li>{% t %}Your network mapped to warm paths, with the intro request drafted{% endt %}</li>
-      <li>{% t %}Call prep, inbound evaluation and the outcome log that teaches the next run{% endt %}</li>
-      <li>{% t %}Every colleague on your work-email domain, at no extra cost{% endt %}</li>
-      <li>{% t %}Share links, print and PDF export of any deliverable{% endt %}</li>
-    </ul>
+        <ul class="ticks">
+          <li>{% t %}Leads for you, Research and Counterprospekt{% endt %}</li>
+          <li>{% t %}Every pitch your team needs: deck, one-pager, cold email, proposal{% endt %}</li>
+          <li>{% t %}Decision-makers, with a source behind every name{% endt %}</li>
+          <li>{% t %}Warm intros from your network, with both emails drafted{% endt %}</li>
+          <li>{% t %}Replies to inbound, and a sheet for every call{% endt %}</li>
+          <li>{% t %}Every colleague on your work-email domain, at no extra cost{% endt %}</li>
+        </ul>
 
-    {#- #1097. One link to the studio's sign-up, the homepage tile's twin
-        (the reasoning is in src/index.njk beside the same link). The plan the
-        switch shows rides on it as `plan=yearly`, written by signup.js. -#}
-    <div class="buy" id="buy">
-      <a href="{{ site.studio }}/signup{% if language.code != 'en' %}?lang={{ language.code }}{% endif %}" class="btn-cta" id="buyLink" data-signup>{% t %}Start my studio →{% endt %}</a>
-      <p class="buy-note">
-        {#- #423, the homepage tile's twin, and it changes with it. -#}
-        {% t %}Money back if it doesn't earn its keep, with no fourteen days of hoping you remember to cancel.{% endt %}
-      </p>
+        {#- #1097. One link to the studio's sign-up. The plan the switch shows
+            rides on it as `plan=yearly`, written by signup.js. -#}
+        <div class="buy" id="buy">
+          <a href="{{ site.studio }}/signup{% if language.code != 'en' %}?lang={{ language.code }}{% endif %}" class="btn-cta" id="buyLink" data-signup>{% t %}Start my studio →{% endt %}</a>
+          <p class="buy-note">
+            {#- #423, and it changes with the FAQ answer below. -#}
+            {% t %}Money back if it doesn't earn its keep, with no fourteen days of hoping you remember to cancel.{% endt %}
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -240,7 +250,7 @@ permalink: "{{ language.prefix }}/pricing/"
 
 <section class="pricing-faq">
   <div class="pricing-faq-inner">
-    <h2 class="sec-mid">{% t %}The money questions.{% endt %}</h2>
+    <h2>{% t %}The money questions{% endt %}</h2>
     <dl class="pricing-faq-list">
       <div class="pricing-faq-item">
         <dt>{% t %}What counts as a workspace?{% endt %}</dt>
@@ -258,10 +268,13 @@ permalink: "{{ language.prefix }}/pricing/"
       </div>
       <div class="pricing-faq-item">
         <dt>{% t %}Is there a run limit or a credit meter?{% endt %}</dt>
-        <dd>{% t %}No. Runs are unlimited, and a batch takes up to a hundred companies
-          at a time. We would rather you used it hard: a workspace that runs a
-          lot and records what happened is a workspace that gets visibly better
-          results, which is the point.{% endt %}</dd>
+        {#- #1092. This said "Runs are unlimited" until the studio's own help
+            documented daily ceilings (100 glances a day per workspace, for
+            one). The help is the place that lists them; this names one. -#}
+        <dd>{% t %}There is no credit meter, and runs are included in the price. A few
+          presses have a daily ceiling per workspace, such as 100 glances a day,
+          so nobody's runaway script spends your team's day. The
+          <a href="/help/">help</a> lists each one.{% endt %}</dd>
       </div>
       <div class="pricing-faq-item">
         {#- #423. The old answer said "no trial theater" and named the scan as
@@ -314,9 +327,4 @@ permalink: "{{ language.prefix }}/pricing/"
       </div>
     </dl>
   </div>
-</section>
-
-<section class="cta">
-  <h2 class="reveal">{% t %}Not sure yet? See what it'd <span class="accent">hunt</span> for you.{% endt %}</h2>
-  <a href="{{ '/#scan' | localize }}" class="btn-cta reveal">{% t %}Scan your site for free{% endt %}</a>
 </section>

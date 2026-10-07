@@ -62,10 +62,10 @@
 
 <link rel="icon" href="{{ '/assets/img/favicon.svg' | asset }}" type="image/svg+xml">
 <link rel="apple-touch-icon" href="{{ '/assets/img/favicon.svg' | asset }}">
-<meta name="theme-color" content="#1A1A18">
-<link rel="preload" href="{{ '/assets/fonts/plus-jakarta-sans-latin.woff2' | asset }}" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="{{ '/assets/fonts/jetbrains-mono-latin.woff2' | asset }}" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{{ '/assets/css/fonts.css' | asset }}">
+<meta name="theme-color" content="#f7f7f9">
+{#- The system font stack since the studio's look reached this site (#1092):
+    no webfont to fetch, preload or swap. fonts.css and the woff2 files stay in
+    the tree because tools/og.js renders the Open Graph cards with them. -#}
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | asset }}">
 
 {#- The browser's half of the language work (#114), on every page that has a
@@ -159,21 +159,19 @@
     {% endfor %}
   </ul>
   <div class="nav-right">
-    <span class="nav-ai-badge">AI_FIRST</span>
+    {#- The studio's frame since #1092: mark and wordmark left, the nav, and
+        one quiet "Sign in" pill. Coral belongs to the one press that starts
+        something, which on this site is the scan field, so the header carries
+        no coral button of its own. -#}
     <a href="https://studio.prospektor.ai" class="nav-signin">{% t %}Sign in{% endt %}</a>
-    <a href="{{ '/#scan' | localize }}" class="nav-cta">{% t %}Scan your site{% endt %}</a>
-    {#- The phone's way in (#153). Until the nav became real pages, hiding it
-        under 860px cost a visitor three anchors onto the page they were
-        already reading — nothing. It now costs them /who-to-pitch/,
-        /what-to-send/ and /pricing/, so the header needs a door on a phone.
-        A <button> with aria-expanded rather than a checkbox hack, so it is
-        announced as what it is; the panel is the same <ul>, re-laid-out by
-        CSS, so there is exactly one nav in the markup and the tests that
-        derive from site.nav keep covering both. No JS, no panel. -#}
+    {#- The phone's way in (#153). A <button> with aria-expanded rather than
+        a checkbox hack, so it is announced as what it is; the panel is the
+        same <ul>, re-laid-out by CSS, so there is exactly one nav in the
+        markup and the tests that derive from site.nav keep covering both. -#}
     <button class="nav-toggle" id="navToggle" type="button"
             aria-controls="navLinks" aria-expanded="false" aria-label="{{ 'Menu' | t }}">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18"></path><path d="M3 12h18"></path><path d="M3 18h18"></path></svg>
-      <svg class="nav-toggle-x" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l14 14"></path><path d="M19 5L5 19"></path></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18"></path><path d="M3 12h18"></path><path d="M3 18h18"></path></svg>
+      <svg class="nav-toggle-x" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l14 14"></path><path d="M19 5L5 19"></path></svg>
     </button>
   </div>
 </nav>
@@ -181,22 +179,12 @@
 {{ content | safe }}
 
 <footer>
-  <a href="{{ '/' | localize }}" class="footer-logo">
-    <div class="logo-mark">
-      <svg viewBox="0 0 12 12" fill="none"><path d="M2 6C2 3.79 3.79 2 6 2s4 1.79 4 4-1.79 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round"/><circle cx="6" cy="6" r="1.2" fill="white"/></svg>
-    </div>
-    {{ site.name }}
-  </a>
-  <span class="footer-tagline">{{ site.tagline | t }}</span>
+  <span class="footer-copy">© 2026 {{ site.name }}</span>
   <ul class="footer-links">
-    {% for item in site.legal %}
-    <li><a href="{{ item.url | localize }}">{{ item.label | t }}</a></li>
-    {% endfor %}
-    {#- Not in site.legal, because it is not a page: consent.js catches the
-        click by delegation and opens the preferences panel. Withdrawal has to
-        be as easy as granting (GDPR Art. 7(3)), which means it has to be here,
-        on every page, and not only on the visit where the banner appeared. -#}
-    <li><a href="#cookies" data-cookies>Cookies</a></li>
+    {#- The articles' one inbound link on every page since the header became
+        the studio's five (#1092): the header carries the product, the
+        footer carries the reading. -#}
+    <li><a href="{{ '/resources/' | localize }}">{% t %}Resources{% endt %}</a></li>
     {#- #456. Contact is NOT in site.legal and deliberately so — that list is
         the legal pages, and a contact form is not one. It gets its own entry
         here, after the legal links, as the operator's second door to the form
@@ -225,6 +213,14 @@
         whose studio tab says *reconnecting* can find out from here whether it
         is them or us. The studio's own banner links the same page. -#}
     <li><a href="{{ '/status/' | localize }}">{% t %}Status{% endt %}</a></li>
+    {% for item in site.legal %}
+    <li><a href="{{ item.url | localize }}">{{ item.label | t }}</a></li>
+    {% endfor %}
+    {#- Not in site.legal, because it is not a page: consent.js catches the
+        click by delegation and opens the preferences panel. Withdrawal has to
+        be as easy as granting (GDPR Art. 7(3)), which means it has to be here,
+        on every page, and not only on the visit where the banner appeared. -#}
+    <li><a href="#cookies" data-cookies>Cookies</a></li>
   </ul>
   {#- The language switcher (#114): each language in its own name, so the
       right one is findable by somebody who reads none of the others, linking
