@@ -66,6 +66,10 @@
     for (const k of UTM) { const v = params.get(k); if (v) out[k] = v; }
     return Object.keys(out).length ? out : null;
   })(new URLSearchParams(location.search));
+  // #1195: the homepage version this visitor saw, when the free run's gate
+  // sent them here with it (studio #1190 puts `ab` on that link). One of the
+  // test's two words or nothing; read once, written nowhere on the device.
+  const ab = (v => (v === 'draw' || v === 'photo') ? v : '')(new URLSearchParams(location.search).get('ab'));
 
   fetch('/.netlify/functions/create-checkout-session')
     .then(r => {
@@ -125,7 +129,7 @@
           // #542: monthly sends nothing, the way English sends no locale — so
           // a monthly purchase is the request this has always made.
         }, plan === 'year' ? { plan: 'year' } : {}, LANG === 'en' ? {} : { locale: LANG },
-           VIA ? { via: VIA } : {}, utm ? { utm: utm } : {}, referral())),
+           VIA ? { via: VIA } : {}, utm ? { utm: utm } : {}, ab ? { ab: ab } : {}, referral())),
       });
       data = await response.json().catch(() => null);
     } catch (err) {

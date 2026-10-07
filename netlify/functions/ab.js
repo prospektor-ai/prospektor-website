@@ -27,7 +27,7 @@
 // page.
 const { connectLambda, getStore } = require('@netlify/blobs');
 
-const ARMS = ['draw', 'photo'];
+const { ARMS } = require('../../lib/ab');
 const EVENTS = ['view', 'scan', 'demo', 'signup'];
 const DAILY_CAP = 20000;
 const MAX_BODY = 200;

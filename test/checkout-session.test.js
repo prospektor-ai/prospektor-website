@@ -220,6 +220,26 @@ describe('create-checkout-session', () => {
     assert.equal(p.get('line_items[0][price_data][recurring][interval]'), 'month', 'nor a plan');
   });
 
+  test('the homepage version a buyer saw rides into the metadata as one of two words, or not at all (#1195)', async () => {
+    let calls = stubFetch([STRIPE_OK, FREE]);
+    await post(fn, { email: 'b@acme.com', from: 'studio', ab: 'photo' });
+    let p = new URLSearchParams(stripeCalls(calls)[0].body);
+    assert.equal(p.get('metadata[ab]'), 'photo');
+    assert.equal(p.get('subscription_data[metadata][ab]'), 'photo');
+    assert.equal(p.get('line_items[0][price_data][recurring][interval]'), 'month', 'the arm changes nothing about the price');
+    assert.equal(p.get('subscription_data[trial_period_days]'), null, 'nor buys a trial');
+    for (const typed of ['Draw ', 'DRAW']) {
+      calls = stubFetch([STRIPE_OK, FREE]);
+      await post(fn, { email: 'b@acme.com', from: 'pricing', ab: typed });
+      assert.equal(new URLSearchParams(stripeCalls(calls)[0].body).get('metadata[ab]'), 'draw', JSON.stringify(typed));
+    }
+    for (const junk of ['photos', 'x'.repeat(600), '<b>', 7, { v: 'photo' }, '']) {
+      calls = stubFetch([STRIPE_OK, FREE]);
+      await post(fn, { email: 'b@acme.com', from: 'pricing', ab: junk });
+      assert.equal(new URLSearchParams(stripeCalls(calls)[0].body).get('metadata[ab]'), null, JSON.stringify(junk) + ' is not an arm');
+    }
+  });
+
   test('a page with no tracking parameters sends none', async () => {
     const calls = stubFetch([STRIPE_OK, FREE]);
     await post(fn, { email: 'b@acme.com', from: 'pricing' });

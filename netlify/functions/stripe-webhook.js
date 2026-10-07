@@ -29,6 +29,7 @@ const crypto = require('node:crypto');
 const i18n = require('../../lib/i18n');
 const { redactKeys, worthRetrying } = require('../../lib/stripe-error');
 const { referralOf } = require('../../lib/rewardful');
+const { armOf } = require('../../lib/ab');
 const { companyDomainFromEmail } = require('../lib/email-domain');
 // The catalogues, as literal requires the bundler can see (#114).
 i18n.load(require('../lib/strings'));
@@ -231,7 +232,11 @@ async function freeUntil(session) {
 // name or an address (create-checkout-session refuses any other shape). The
 // studio files the workspace as `referred` on it; omitted when there is none,
 // so every other buyer's provision call is the call it always was.
-async function callProvision({ email, company, website, goal, marketing, language, endsAt, ref, secret }) {
+// `ab` (studio #1190/#1195) is the homepage version the buyer saw, `draw` or
+// `photo`, which rode through checkout as `metadata[ab]`; the studio keeps it
+// beside the plan so the tiles test can count customers. Omitted when there
+// is none, which is every buyer who did not arrive from the homepage test.
+async function callProvision({ email, company, website, goal, marketing, language, endsAt, ref, ab, secret }) {
   // `plan: 'paid'` because this caller is the one door money actually came
   // through — the studio defaults everything else to 'comped', and without
   // this line every checkout-provisioned workspace was landing as comped
@@ -248,6 +253,7 @@ async function callProvision({ email, company, website, goal, marketing, languag
     language: language || undefined,
     endsAt: endsAt || undefined,
     ref: ref || undefined,
+    ab: ab || undefined,
   });
   for (let attempt = 0; ; attempt++) {
     try {
@@ -339,7 +345,7 @@ async function sendMail({ to, subject, textBody, htmlBody, replyTo }) {
 // and asks the buyer to confirm it on first sign-in. Treating that as a
 // failure would fire a warning on every direct purchase, which is the fastest
 // way to teach someone to ignore the warning.
-async function sendOperatorNotice({ email, company, website, goal, language, ref, clientId, existing, resumed, goalRecorded }) {
+async function sendOperatorNotice({ email, company, website, goal, language, ref, ab, clientId, existing, resumed, goalRecorded }) {
   const operator = process.env.OPERATOR_EMAIL || 'hello@prospektor.ai';
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   // Sent a sentence and the studio did not record it — the one case worth
@@ -373,6 +379,9 @@ async function sendOperatorNotice({ email, company, website, goal, language, ref
     // #885: which partner sent them, as Rewardful's referral id. Absent for
     // every buyer nobody referred, which is the case with nothing to say.
     ['Referred', ref],
+    // #1195: which homepage they saw, while the tiles test runs. Absent for
+    // every buyer who did not come through it.
+    ['Homepage version', ab],
     ['Workspace', clientId ? `${clientId} (${resumed ? 'RESUMED: was suspended, this payment reopened it' : existing ? 'EXISTING: no new workspace was created' : 'newly created'})` : ''],
   ];
   const textBody = [
@@ -676,6 +685,9 @@ exports.handler = async function(event) {
   // in, applied again here because Stripe's dashboard can edit metadata and
   // the studio should meet the same shape from both sides of the seam.
   const ref = referralOf(metadata.ref);
+  // #1195: the homepage version, one of two words or nothing, read in the same
+  // grammar create-checkout-session wrote it in.
+  const ab = armOf(metadata.ab);
 
   const provisionSecret = process.env.STUDIO_PROVISION_SECRET;
   if (!provisionSecret) {
@@ -693,7 +705,7 @@ exports.handler = async function(event) {
 
   let provision;
   try {
-    provision = await callProvision({ email, company, website, goal, marketing, language, endsAt, ref, secret: provisionSecret });
+    provision = await callProvision({ email, company, website, goal, marketing, language, endsAt, ref, ab, secret: provisionSecret });
   } catch (e) {
     console.error('Studio unreachable after retries:', e.message);
     return { statusCode: 502, body: JSON.stringify({ error: 'Studio unreachable' }) };
@@ -730,7 +742,7 @@ exports.handler = async function(event) {
   if (endsAt && provision.data && provision.data.endsAt === false) {
     console.error('Free month end', endsAt, 'for', email, 'was sent but the studio did not record it.');
   }
-  await sendOperatorNotice({ email, company, website, goal, language, ref, clientId, existing, resumed, goalRecorded });
+  await sendOperatorNotice({ email, company, website, goal, language, ref, ab, clientId, existing, resumed, goalRecorded });
   if (!existing) {
     if (metadata.door === 'studio') await sendOpenEmail(email, language, { company, website });
     else await sendWelcomeEmail(email, language);

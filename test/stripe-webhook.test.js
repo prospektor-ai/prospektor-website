@@ -129,6 +129,21 @@ describe('stripe-webhook', () => {
       assert.ok(!(k in sent), k + ' is ours to count, not the studio\'s to store');
   });
 
+  test('the homepage version rides from the metadata to the studio, and junk does not (#1195)', async () => {
+    let calls = stubFetch([provisioned(), ['postmarkapp', { status: 200, body: {} }]]);
+    await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({
+      email: 'b@acme.com', metadata: { domain: 'acme.com', company: 'Acme', ab: 'photo' } })));
+    assert.equal(JSON.parse(calls.find(c => c.url.includes('/api/provision')).body).ab, 'photo');
+    assert.ok(notice(calls).TextBody.includes('Homepage version'), 'the operator is told which homepage sold it');
+    for (const junk of ['photos', '<b>', '']) {
+      calls = stubFetch([provisioned(), ['postmarkapp', { status: 200, body: {} }]]);
+      await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({
+        email: 'b@acme.com', metadata: { domain: 'acme.com', company: 'Acme', ab: junk } })));
+      const sent = JSON.parse(calls.find(c => c.url.includes('/api/provision')).body);
+      assert.ok(!('ab' in sent), JSON.stringify(junk) + ' must not reach the studio');
+    }
+  });
+
   test('provisions on payment and sends both mails', async () => {
     const calls = stubFetch([provisioned({ goal: true }), ['postmarkapp', { status: 200, body: {} }]]);
     const r = await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({

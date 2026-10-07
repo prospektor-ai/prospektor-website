@@ -42,6 +42,7 @@ const { companyDomainFromEmail, cleanDomain } = require('../lib/email-domain');
 const { languageOf, LANGUAGES } = require('../../lib/i18n');
 const { trialDays, partnerOf } = require('../../lib/trial');
 const { rewardfulKey, referralOf } = require('../../lib/rewardful');
+const { armOf } = require('../../lib/ab');
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const STUDIO = 'https://studio.prospektor.ai';
@@ -137,6 +138,10 @@ exports.handler = async function(event) {
   // always sent whatever a browser puts in the field, and a lit one can
   // never put an address or a name where a marker belongs.
   const referral = rewardfulKey() ? referralOf(data.referral) : '';
+  // #1195: which version of the homepage this buyer saw (studio #1185's
+  // drawings-against-photos test). One of two words or nothing, so the test
+  // can count a paying customer per arm; it buys nothing and steers nothing.
+  const ab = armOf(data.ab);
 
   // Required now, where it used to be optional. Stripe can collect an address
   // itself, but an address Stripe collects is one nothing has checked — and
@@ -257,7 +262,7 @@ exports.handler = async function(event) {
   const tags = UTM.map(k => [k, meta((data.utm || {})[k])]);
   // #1097: which door the buyer came through, so the webhook's welcome mail
   // can say the workspace is already open instead of asking them to sign in.
-  for (const [k, v] of [['door', studioDoor ? 'studio' : ''], ['domain', website], ['company', company], ['goal', goal], ['marketing', marketing], ['language', lang ? lang.code : ''], ['plan', plan === 'month' ? '' : plan], ['via', partner], ['ref', referral], ...tags]) {
+  for (const [k, v] of [['door', studioDoor ? 'studio' : ''], ['domain', website], ['company', company], ['goal', goal], ['marketing', marketing], ['language', lang ? lang.code : ''], ['plan', plan === 'month' ? '' : plan], ['via', partner], ['ref', referral], ['ab', ab], ...tags]) {
     if (v) {
       params.set('metadata[' + k + ']', v);
       params.set('subscription_data[metadata][' + k + ']', v);
