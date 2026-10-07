@@ -171,6 +171,31 @@
         "/resources/fish-where-the-fish-are/"
       ],
       "status": "published"
+    },
+    {
+      "slug": "clean-a-prospect-list",
+      "type": "article",
+      "action": "new",
+      "cluster": null,
+      "title": "How to clean a prospect list before the first email goes out",
+      "seo_title": "How to clean a prospect list before you send",
+      "primary_keyword": "how to clean a prospect list",
+      "target_words": 1100,
+      "faq": false,
+      "angle": "A list's errors hide behind its count: read a sample of rows against each company's own site for the wrong company under the same name, one brand counted several times and empty research; park what cannot be verified; build the do-not-contact list first, by person and domain, so it cancels queued mail; re-read on the day of sending. Added 7 Oct 2026 by the daily cadence: the queue had nothing queued, and checking a prospect list before cold email is an account and prospect research search no article covered.",
+      "internal_links": [
+        "/resources/cold-email-sequence/",
+        "/resources/cold-email-personalisation/",
+        "/resources/who-to-approach/"
+      ],
+      "distinct_from": "who-to-approach decides which companies belong on a list (activation, the free test, already staffed, lost to whom); it never asks whether a row is the company it names, merges duplicates or covers suppression. cold-email-sequence says the list makes the biggest difference and stops there; this is how to check one. cold-email-personalisation's paste test grades a sentence in an email; this applies it to a list's research column before any email is written. founder-sales-stack names a list as one of the stack's jobs and says nothing about checking it.",
+      "distinct_from_checked": "7 Oct 2026, against who-to-approach, cold-email-sequence and cold-email-personalisation read in full, founder-sales-stack searched for every mention of a list, and the titles and descriptions of the 27 other articles: no page mentions a duplicate, a same-name mismatch, a suppression list or re-reading a row before sending. docs/seo/gsc-latest.md absent (GSC_SERVICE_ACCOUNT_KEY unset, studio #135), so `npm run gsc:cannibals` has no data; recorded, not read as permission.",
+      "ledger": "NEW ROWS: read-the-rows-not-the-count and do-not-contact-comes-first, promoted from studio docs/research/explee-teardown.md §8b, signaliz-teardown.md §3.1, agency-list.md, ideal-customer-redrawn.html and MARKET-RESEARCH.md batches 2 and 3. The teardowns are used for the method only: the page names no vendor, quotes none of their copy and names none of their customers.",
+      "inbound_from": [
+        "/resources/cold-email-sequence/",
+        "/resources/who-to-approach/"
+      ],
+      "status": "published"
     }
   ],
   "maintenance": [

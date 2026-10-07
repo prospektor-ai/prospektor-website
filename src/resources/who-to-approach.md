@@ -121,7 +121,8 @@ need a sponsor above the affected team.
 cold emails every day for crap. I don't take the meeting. I only take sales calls
 if I'm in the market to buy it."* Your reply-rate ceiling is set by what share of
 your list is in-market, and your subject line does not move it. If reply rates are
-bad, the list is the first suspect.
+bad, the list is the first suspect, and [reading its rows against each company's
+own site](/resources/clean-a-prospect-list/) is the first check.
 
 ## What this changes on Monday
 

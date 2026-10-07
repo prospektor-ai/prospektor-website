@@ -55,7 +55,19 @@
     "and quotes none of its copy) and docs/research/40-conversations.md (the operator's",
     "own warm-intro request and its send-first timing). Both pass the reader test:",
     "who to ask for an introduction and what to hand them is how a founder gets a",
-    "first meeting."
+    "first meeting.",
+    "",
+    "PROMOTED, 7 Oct 2026 (SEO cadence, daily article): read-the-rows-not-the-count",
+    "and do-not-contact-comes-first. Their `ref` names the files: docs/research/",
+    "explee-teardown.md §8b (a sales-automation tool's own activation emails, read",
+    "for what five previewed rows got wrong and how its suppression list behaves),",
+    "signaliz-teardown.md §3.1 (a request is a ceiling), agency-list.md (unreadable",
+    "rows parked, and a list that aged in hours), ideal-customer-redrawn.html",
+    "(customers join do-not-contact) and the studio's MARKET-RESEARCH.md, batches 2",
+    "and 3 (a rival's customers on wrong matches, stale contacts and re-contacting).",
+    "The article names no vendor, quotes none of their copy and names none of the",
+    "customers. Both pass the reader test: checking a list before it sends is how a",
+    "founder keeps cold outreach from reaching the wrong person."
     ]
   },
   "learnings": [
@@ -165,6 +177,8 @@
     { "id": "direct-mail-needs-the-acv", "ref": "§7.6", "title": "Direct mail is an account-based motion that needs the annual contract value, cash upfront and annual billing — the early letters are paid for before any of them work", "verdict": "article", "article": "learn-a-channel-fast" },
     { "id": "job-not-persona", "ref": "§7.5", "title": "Why they buy is not who they are — segment by the job and the workflow, not the industry or the persona; two independent experts, one conclusion", "verdict": "article", "article": "sell-the-job-not-the-persona" },
     { "id": "write-the-forward", "ref": "docs/research/ctd-teardown.md §2.4, §3.2; docs/research/40-conversations.md §4C, §8", "title": "A warm introduction stalls on the connector's blank page: send the ask with a finished email for them to forward, under 100 words, with the shared context, one specific ask and an easy out, and send intro asks first because they come back slowest", "verdict": "article", "article": "ask-for-a-warm-introduction" },
-    { "id": "tie-strength-is-two-way", "ref": "docs/research/ctd-teardown.md §2.3, §2.4", "title": "Judge a connector by two-way history: one-way traffic and mass threads count for nothing, a bare connection is weak by default, and the strongest tie beats the most senior name", "verdict": "article", "article": "ask-for-a-warm-introduction" }
+    { "id": "tie-strength-is-two-way", "ref": "docs/research/ctd-teardown.md §2.3, §2.4", "title": "Judge a connector by two-way history: one-way traffic and mass threads count for nothing, a bare connection is weak by default, and the strongest tie beats the most senior name", "verdict": "article", "article": "ask-for-a-warm-introduction" },
+    { "id": "read-the-rows-not-the-count", "ref": "docs/research/explee-teardown.md §8b (the data-quality miss); docs/research/signaliz-teardown.md §3.1; docs/research/agency-list.md (Where the names came from; What the reading changed); MARKET-RESEARCH.md batch 2 (accuracy, stale contacts)", "title": "A prospect list's errors hide behind its count: read a sample of rows against each company's own site for the wrong company under the same name, branches of one brand counted as separate companies and empty research, park the rows that cannot be verified, and re-read a row on the day it sends because a list ages in hours", "verdict": "article", "article": "clean-a-prospect-list" },
+    { "id": "do-not-contact-comes-first", "ref": "docs/research/explee-teardown.md §8b (Suppress list; The activation email); docs/research/ideal-customer-redrawn.html (What stays the same); MARKET-RESEARCH.md batch 3 (dedupes, people already in touch)", "title": "Build the do-not-contact list before the prospect list: customers, open conversations and anyone who said no, by person and by company domain; a suppression has to cancel mail already queued, and nothing should send because nobody reviewed it", "verdict": "article", "article": "clean-a-prospect-list" }
   ]
 }

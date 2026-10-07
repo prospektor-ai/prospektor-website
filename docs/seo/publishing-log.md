@@ -10,3 +10,4 @@ anything that blocked the run.
   queued, and `docs/seo/gsc-latest.md` absent because the GitHub secret
   `GSC_SERVICE_ACCOUNT_KEY` has never been set (#135).
 - **2026-10-06** · Daily article: https://prospektor.ai/resources/ask-for-a-warm-introduction/ · keyword "how to ask for a warm introduction" · ledger write-the-forward, tie-strength-is-two-way. The queue had nothing queued, and warm intros is a named ICP search that no article covered, with a real method in the studio's research behind it.
+- **2026-10-07** · Daily article: https://prospektor.ai/resources/clean-a-prospect-list/ · keyword "how to clean a prospect list" · ledger read-the-rows-not-the-count, do-not-contact-comes-first. The queue had nothing queued, and checking a prospect list before cold email is an account and prospect research search no article covered, with concrete failures in the studio's teardowns and market research behind it.
