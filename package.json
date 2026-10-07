@@ -25,5 +25,8 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^10.7.13"
   }
 }
