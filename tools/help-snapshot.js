@@ -1,99 +1,114 @@
 #!/usr/bin/env node
-/* Refresh `data/help-corpus.json` — the last-good copy of the studio's help
-   corpus (#136) — and, since #535, `data/help-corpus.<code>.json` for every
-   language the site is built in that the studio holds at least one guide in.
+/* Refresh the last-good copy of the studio's help (#136, #535, studio #1201).
  *
- * The build prefers the live endpoint and only reads these files when the
- * studio cannot be reached or answers with something that is not a corpus.
- * They exist so that a studio outage during a deploy costs the site
- * *freshness*, not its help pages — and so the failure mode is "one corpus
- * behind" rather than "the word Loading…".
+ *   npm run help:snapshot                          from studio.prospektor.ai/api/help
+ *   npm run help:snapshot -- --from ../studio/docs/help   from a studio checkout
  *
- * A language's file is written only when the studio serves at least one file
- * in that language, and removed when it no longer does: the file's existence
- * is the offline build's whole answer to "is there a /<code>/help/" — the
- * same rule src/_data/help.js applies to the live answer. `npm test` builds
- * offline, so the Spanish tests run against exactly this file.
+ * Writes:
+ *   data/help-articles.json          the English articles, what /help/ shows
+ *   data/help-articles.<code>.json   a language's articles, only for a
+ *                                    language the studio holds at least one
+ *                                    article in (removed when it holds none:
+ *                                    the file's existence is the offline
+ *                                    build's answer to "is there /<code>/help/")
+ *   data/help-corpus.json            the long reference files, English, from
+ *                                    the live endpoint only. No page renders
+ *                                    them any more; the checks read them as a
+ *                                    catalogue of what the product says
+ *                                    (tools/resources-coverage.js, the welcome
+ *                                    mail's test).
  *
- * Run it deliberately (`npm run help:snapshot`) and commit the result. It is
- * on purpose that the build does not write these files itself: a build that
- * rewrites a committed file makes every deploy a diff, and on Netlify the
- * write would be thrown away with the container anyway.
+ * The build prefers the live endpoint and reads these only when the studio
+ * cannot be reached or answers with something that is not articles, so an
+ * outage during a deploy costs freshness, never the help pages. `--from`
+ * reads a checkout the way the studio's own `helpArticles()` does, for the
+ * days between writing articles and deploying them.
+ *
+ * Run it deliberately and commit the result: a build that rewrote committed
+ * files would make every deploy a diff.
  */
 const fs = require('node:fs');
 const path = require('node:path');
-const H = require('../src/assets/js/help-render.js');
+const A = require('../lib/help-articles.js');
 const i18n = require('../lib/i18n.js');
 
 const API = process.env.HELP_API || 'https://studio.prospektor.ai/api/help';
 const DATA = path.join(__dirname, '..', 'data');
-const outFor = code => path.join(DATA, code === i18n.DEFAULT ? 'help-corpus.json' : `help-corpus.${code}.json`);
+const outFor = code => path.join(DATA, code === i18n.DEFAULT ? 'help-articles.json' : `help-articles.${code}.json`);
+const CORPUS = path.join(DATA, 'help-corpus.json');
 const apiFor = code => API + (code === i18n.DEFAULT ? '' : (API.includes('?') ? '&' : '?') + 'lang=' + encodeURIComponent(code));
-// With a deadline (#185). Node's fetch has none, so a studio that accepts the
-// connection and then says nothing left this command hanging at the operator's
-// terminal with the word "Fetching" on screen — the one failure mode where
-// "the snapshot was NOT changed" never got printed.
+// With a deadline (#185): a studio that accepts the connection and says
+// nothing must not leave this hanging at the operator's terminal.
 const TIMEOUT_MS = Number(process.env.HELP_CORPUS_TIMEOUT_MS || 20000);
 
-async function fetchCorpus(code) {
+const at = process.argv.indexOf('--from');
+const FROM = at > 0 ? path.resolve(process.argv[at + 1] || '') : null;
+
+async function fetchBody(code) {
   const url = apiFor(code);
   process.stdout.write(`Fetching ${url} … `);
-  let body;
   try {
     const r = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT_MS) });
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    body = await r.json();
+    return await r.json();
   } catch (e) {
-    const why = e.name === 'TimeoutError' ? `no answer in ${TIMEOUT_MS}ms` : e.message;
-    console.error(`\n✗ ${why}\n  The ${code} snapshot was NOT changed.`);
+    console.error(`\n✗ ${e.name === 'TimeoutError' ? `no answer in ${TIMEOUT_MS}ms` : e.message}\n  The ${code} snapshot was NOT changed.`);
     return null;
   }
-  if (!body || !Array.isArray(body.files) || !body.files.length) {
-    console.error(`\n✗ that was not a corpus — the ${code} snapshot was NOT changed.`);
-    return null;
-  }
-  for (const f of body.files) {
-    if (!f || typeof f.name !== 'string' || typeof f.text !== 'string' || !f.text.trim()) {
-      console.error(`\n✗ ${f && f.name} carried no text — the ${code} snapshot was NOT changed.`);
-      return null;
-    }
-  }
-  // The language the studio served each file in rides along (#535); an older
-  // studio says nothing, and the build reads that as English.
-  return body.files.map(f => ({ name: f.name, text: f.text, ...(f.language ? { language: String(f.language) } : {}) }));
 }
 
-function write(code, files) {
+const strip = f => ({ name: f.name, text: f.text, ...(f.language ? { language: String(f.language) } : {}) });
+
+function writeJson(file, body) {
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, JSON.stringify(body, null, 2) + '\n');
+}
+
+function writeArticles(code, articles, source) {
   const OUT = outFor(code);
-  const previous = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : { files: [] };
-  const before = H.corpusHash(previous.files || []);
-  const after = H.corpusHash(files);
-  fs.mkdirSync(path.dirname(OUT), { recursive: true });
-  fs.writeFileSync(OUT, JSON.stringify({
-    // A note for whoever opens this file wondering what it is.
-    '//': 'Last-good copy of the studio help corpus. Generated by `npm run help:snapshot` — do not hand-edit. The build prefers the live /api/help and reads this only when that fails (#136).',
+  if (code !== i18n.DEFAULT && !articles.some(a => a.language === code)) {
+    const had = fs.existsSync(OUT);
+    if (had) fs.unlinkSync(OUT);
+    console.log(`none in ${i18n.languageName(code)}: no /${code}/help/${had ? `, removed ${path.relative(process.cwd(), OUT)}` : ''}`);
+    return;
+  }
+  writeJson(OUT, {
+    '//': 'Last-good copy of the studio help articles. Generated by `npm run help:snapshot`, do not hand-edit. The build prefers the live /api/help and reads this only when that fails (#136, studio #1201).',
     fetchedAt: new Date().toISOString().slice(0, 10),
-    source: apiFor(code),
+    source,
     ...(code === i18n.DEFAULT ? {} : { language: code }),
-    files,
-  }, null, 2) + '\n');
-  const own = code === i18n.DEFAULT ? '' : `, ${files.filter(f => f.language === code).length} in ${i18n.languageName(code)}`;
-  console.log(`ok\n  ${files.length} guides${own}, ${after}${before === after ? ' (unchanged)' : ` (was ${before})`}\n  → ${path.relative(process.cwd(), OUT)}`);
+    articles: articles.map(strip),
+  });
+  const own = code === i18n.DEFAULT ? '' : `, ${articles.filter(a => a.language === code).length} in ${i18n.languageName(code)}`;
+  console.log(`ok\n  ${articles.length} articles${own}\n  → ${path.relative(process.cwd(), OUT)}`);
 }
 
 (async () => {
   let failed = false;
   for (const l of i18n.built()) {
-    const files = await fetchCorpus(l.code);
-    if (!files) { failed = true; continue; }
-    if (l.code !== i18n.DEFAULT && !files.some(f => f.language === l.code)) {
-      const OUT = outFor(l.code);
-      const had = fs.existsSync(OUT);
-      if (had) fs.unlinkSync(OUT);
-      console.log(`none in ${l.name}\n  the studio holds no ${l.name} guide, so there is no /${l.code}/help/ — ${had ? 'removed ' + path.relative(process.cwd(), OUT) : 'nothing written'}`);
+    if (FROM) {
+      process.stdout.write(`Reading ${path.relative(process.cwd(), FROM) || '.'} (${l.code}) … `);
+      const articles = A.readDir(FROM, l.code);
+      const bad = A.validate({ articles });
+      if (bad) { console.error(`\n✗ ${bad}. The ${l.code} snapshot was NOT changed.`); failed = true; continue; }
+      writeArticles(l.code, articles, `docs/help/articles in a studio checkout`);
       continue;
     }
-    write(l.code, files);
+    const body = await fetchBody(l.code);
+    if (!body) { failed = true; continue; }
+    const bad = A.validate(body);
+    if (bad) { console.error(`\n✗ ${bad}. The ${l.code} snapshot was NOT changed.`); failed = true; continue; }
+    writeArticles(l.code, body.articles, apiFor(l.code));
+    if (l.code === i18n.DEFAULT && Array.isArray(body.files) && body.files.length
+      && body.files.every(f => f && typeof f.name === 'string' && typeof f.text === 'string' && f.text.trim())) {
+      writeJson(CORPUS, {
+        '//': 'The studio\'s long help files, English: the support chat\'s reference. No page renders them; the checks read them as a catalogue of what the product says. Generated by `npm run help:snapshot`.',
+        fetchedAt: new Date().toISOString().slice(0, 10),
+        source: apiFor(l.code),
+        files: body.files.map(strip),
+      });
+      console.log(`  ${body.files.length} reference files → ${path.relative(process.cwd(), CORPUS)}`);
+    }
   }
   process.exit(failed ? 1 : 0);
 })();

@@ -15,7 +15,7 @@ permalink: "{{ language.prefix }}/integrations/hubspot/"
     shape (`_includes/integration-page.njk`), at the operator's ask: "the LP
     should explain the benefit of Prospektor + INTEGRATION - and it should
     link to a KB 'how to use it'". Every sentence below is what the studio's
-    help says this connection does (docs/help/08-workspace.md, the HubSpot section); the KB link is that section.
+    help says this connection does (docs/help/08-workspace.md, the HubSpot section); the KB link opens the help article /help/connect-apps/.
     If the help changes what a push writes, this page is wrong, not modest. -#}
 
 {% set intId = 'hubspot' %}
@@ -24,7 +24,7 @@ permalink: "{{ language.prefix }}/integrations/hubspot/"
 {% set intSub %}{% t %}Prospektor writes the pitch. HubSpot works the deal.{% endt %}{% endset %}
 {% set intCtaHref = '/pricing/' | localize %}
 {% set intCtaLabel %}{% t %}Start my studio →{% endt %}{% endset %}
-{% set intDoc = ('/help/workspace/' | localize) + '#workspace--crm-a-finished-pitch-pushed-into-hubspot-affinity-close-or-lightfield' %}
+{% set intDoc = '/help/connect-apps/' | localize %}
 
 {% set dgTitle %}{% t %}One press in Prospektor writes four records in HubSpot{% endt %}{% endset %}
 {% set dgLeftLabel = 'PROSPEKTOR' %}

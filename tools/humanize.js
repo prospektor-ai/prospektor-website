@@ -45,10 +45,13 @@
 //   on the pages and the translations here; a fourth language arrives with
 //   nobody editing this file.
 //
-// NOT read: `/help/` and its guide pages. That text is the studio's corpus,
-// rendered here (#136, #166), and it is the studio's #639. The hub's own
-// sentences — its lede, its search box, its FAQ — are this repo's, so they
-// join the funnel off the inventory rather than off the page.
+// - **help** is `/help/` and every article under it, read off the built
+//   English pages like the funnel. Until 7 Oct 2026 this section rendered the
+//   studio's long reference files and was left to the studio (#639); since
+//   studio #1201 it is short articles written for a person, so it is held to
+//   the same standard here as everything else a visitor reads. The articles'
+//   words are the studio's (`docs/help/articles/`, checked there too), so a
+//   tell found here is fixed there and arrives with the next snapshot.
 //
 // A string is a paragraph, not a source line, since #738: `htmlBlocks()`
 // folds a block's raw newlines before it splits on block tags, so a tell that
@@ -84,14 +87,15 @@ const site = require('../src/_data/site.json');
  * copy has earned it; the test says which one and to what.
  */
 const CEILING = {
-  funnel: { dashes: 0, verbose: 18 },
+  funnel: { dashes: 0, verbose: 14 },
   legal: { dashes: 187 },
   resources: { dashes: 0 },
+  help: { dashes: 0 },
   scripts: { dashes: 0, verbose: 6 },
   functions: { dashes: 0, verbose: 3 },
-  es: { dashes: 69 },
-  de: { dashes: 69 },
-  nl: { dashes: 69 },
+  es: { dashes: 61 },
+  de: { dashes: 61 },
+  nl: { dashes: 61 },
 };
 
 /** Every file whose string literals a person may read: a mail, a notice, a
@@ -124,12 +128,11 @@ const urlOf = (dir, file) => '/' + path.relative(dir, file).replace(/index\.html
 
 /* ------------------------------- the surfaces ----------------------------- */
 
-/** Which surface a built page belongs to, or null for one that is not this
- *  repo's English copy: a language twin (its catalogue is the surface) or the
- *  help section (the studio's corpus). */
+/** Which surface a built page belongs to, or null for a language twin (its
+ *  catalogue is the surface; a translated help article is the studio's). */
 function surfaceOf(url) {
   if (i18n.localeOf(url) !== i18n.DEFAULT) return null;
-  if (/^\/help(?:\/|$)/.test(url)) return null;
+  if (/^\/help(?:\/|$)/.test(url)) return 'help';
   if ((site.legal || []).some(l => l.url === url)) return 'legal';
   if (url.startsWith('/resources/')) return 'resources';
   return 'funnel';
@@ -153,9 +156,9 @@ const plain = s => H.decodeEntities(String(s).replace(/<[^>]+>/g, ' ')).replace(
  *  attributed to the first surface it appears on — funnel first, so the
  *  chrome every page shares is the funnel's. */
 function pageItems(dir) {
-  const out = { funnel: [], legal: [], resources: [] };
+  const out = { funnel: [], legal: [], resources: [], help: [] };
   const seen = new Set();
-  const rank = { funnel: 0, legal: 1, resources: 2 };
+  const rank = { funnel: 0, legal: 1, resources: 2, help: 3 };
   const pages = htmlPages(dir)
     .map(file => ({ file, url: urlOf(dir, file) }))
     .map(p => ({ ...p, surface: surfaceOf(p.url) }))
@@ -167,13 +170,6 @@ function pageItems(dir) {
     out[surface].push({ text, where });
   };
   for (const p of pages) for (const text of H.htmlBlocks(fs.readFileSync(p.file, 'utf8'))) add(p.surface, text, p.url);
-  // The help hub's own sentences, off the inventory: the page itself is
-  // mostly the studio's text, and that is #639's.
-  for (const e of i18n.inventory()) {
-    if (!/^src\/help(?:-guide)?\.njk$/.test(e.file) || !['block', 'filter', 'data'].includes(e.kind)) continue;
-    const text = plain(e.key);
-    if (text) add('funnel', text, e.file);
-  }
   const llms = path.join(dir, 'llms.txt');
   if (fs.existsSync(llms)) for (const text of textParagraphs(fs.readFileSync(llms, 'utf8'))) add('funnel', text, '/llms.txt');
   return out;
@@ -261,6 +257,7 @@ function surfaces({ site: dir } = {}) {
       funnel: H.report(pages.funnel),
       legal: H.report(pages.legal),
       resources: H.report(pages.resources),
+      help: H.report(pages.help),
       scripts: H.report(scriptItems()),
       functions: H.report(functionItems()),
     };

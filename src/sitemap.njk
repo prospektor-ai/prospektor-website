@@ -33,21 +33,13 @@ pages:
   that is thin, transactional or half-rendered costs more than it earns.
 
   /help/ was deliberately out until 24 Aug 2026, on #135's reasoning: the
-  served HTML was a shell whose entire body copy was the word "Loading…", and
-  listing that is worse than omitting it. **#136 removed the reason** — the
-  corpus is now prerendered at build time, so /help/ ships ~51k characters of
-  real guide text and is the site's deepest long-tail content. The line #135
-  left room for is the one above.
-
-  **#166 split that text across eleven URLs**, one per guide, and they are
-  listed below. Nothing was added to the site — the same corpus is being
-  offered in the unit search engines actually rank. /help/ stays in the list
-  because it is still a page worth ranking in its own right: it is the hub, it
-  carries the FAQ block, and it is what somebody typing "prospektor help"
-  wants. The guide list is DERIVED from the corpus, so a guide the studio adds
-  is in the sitemap at the next build with nobody editing this file — and a
-  guide it retires leaves it the same way, which is the half a hand-kept list
-  always gets wrong.
+  served HTML was a shell whose entire body copy was the word "Loading…".
+  #136 prerendered it and #166 gave each guide its own URL. Since studio #1201
+  (7 Oct 2026) the section is short articles, one question each, and each one
+  is listed below, DERIVED from src/_data/help.js: an article the studio adds
+  is in the sitemap at the next build with nobody editing this file, and one
+  it retires leaves it the same way. /help/ itself stays in the list as the
+  hub somebody typing "prospektor help" wants.
 
   Deliberately out, each for its own reason:
     /checkout/       a form, not an answer to any search. Left crawlable and
@@ -101,10 +93,10 @@ pages:
   own URL is a page worth ranking on that URL, for the same reason its English
   twin is — and `hreflang` on the page tells Google which is which.
 
-  **The guides in another language (#535) follow the same rule twice over.**
-  An edition exists only where the studio holds at least one guide in that
-  language (src/_data/help.js), and within it only a guide the studio served
-  IN that language is listed — one it fell back to English on is written, for
+  **The help articles in another language (#535) follow the same rule twice
+  over.** An edition exists only where the studio holds at least one article in
+  that language (src/_data/help.js), and within it only an article the studio
+  served IN that language is listed — one it fell back to English on is written, for
   the reader who followed the hub, but is `noindex` and left out here: its
   English twin is the page to rank, and a sitemap must not ask for a URL the
   page itself declines.
@@ -131,8 +123,8 @@ pages:
   <url><loc>{{ site.url }}{{ a.url }}</loc></url>
 {%- endfor %}
 {%- endif %}
-{%- for e in help.editions %}{%- for g in e.guides %}{%- if g.language == e.code %}
-  <url><loc>{{ site.url }}{{ e.prefix }}/help/{{ g.slug }}/</loc></url>
+{%- for e in help.editions %}{%- for a in e.articles %}{%- if a.language == e.code %}
+  <url><loc>{{ site.url }}{{ e.prefix }}/help/{{ a.slug }}/</loc></url>
 {%- endif %}{%- endfor %}{%- endfor %}
 {%- for a in collections.resources | related('', 99) %}
   <url><loc>{{ site.url }}{{ a.url }}</loc><lastmod>{{ (a.data.updated or a.data.date) | isoDate }}</lastmod></url>

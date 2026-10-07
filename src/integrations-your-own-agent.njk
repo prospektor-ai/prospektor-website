@@ -15,7 +15,7 @@ permalink: "{{ language.prefix }}/integrations/your-own-agent/"
     shape (`_includes/integration-page.njk`), at the operator's ask: "the LP
     should explain the benefit of Prospektor + INTEGRATION - and it should
     link to a KB 'how to use it'". Every sentence below is what the studio's
-    help says this connection does (docs/help/08-workspace.md, the API tokens section); the KB link is that section.
+    help says this connection does (docs/help/08-workspace.md, the API tokens section); the KB link opens the help article /help/connect-apps/.
     If the help changes what a push writes, this page is wrong, not modest. -#}
 
 {% set intId = 'agent' %}
@@ -24,7 +24,7 @@ permalink: "{{ language.prefix }}/integrations/your-own-agent/"
 {% set intSub %}{% t %}Anything that is not a browser can call your workspace.{% endt %}{% endset %}
 {% set intCtaHref = '/pricing/' | localize %}
 {% set intCtaLabel %}{% t %}Start my studio →{% endt %}{% endset %}
-{% set intDoc = ('/help/workspace/' | localize) + '#workspace--api-tokens-letting-another-system-call-your-workspace' %}
+{% set intDoc = '/help/connect-apps/' | localize %}
 
 {% set dgTitle %}{% t %}A token lets your own code call the workspace{% endt %}{% endset %}
 {% set dgLeftLabel = 'YOUR SCRIPT OR AGENT' %}

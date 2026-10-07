@@ -75,6 +75,11 @@
     no webfont to fetch, preload or swap. fonts.css and the woff2 files stay in
     the tree because tools/og.js renders the Open Graph cards with them. -#}
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | asset }}">
+{#- A section's own stylesheet, loaded only by its pages (`stylesheet:` in
+    their frontmatter): the help pages' since studio #1201. -#}
+{%- if stylesheet %}
+<link rel="stylesheet" href="{{ stylesheet | asset }}">
+{%- endif %}
 
 {#- The browser's half of the language work (#114), on every page that has a
     twin: the sentences the scripts on this page say, in this page's language,

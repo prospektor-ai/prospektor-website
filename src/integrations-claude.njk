@@ -15,7 +15,7 @@ permalink: "{{ language.prefix }}/integrations/claude/"
     shape (`_includes/integration-page.njk`), at the operator's ask: "the LP
     should explain the benefit of Prospektor + INTEGRATION - and it should
     link to a KB 'how to use it'". Every sentence below is what the studio's
-    help says this connection does (docs/help/12-connect-your-claude.md); the KB link is that section.
+    help says this connection does (docs/help/12-connect-your-claude.md); the KB link opens the help article /help/connect-apps/.
     If the help changes what a push writes, this page is wrong, not modest. -#}
 
 {% set intId = 'claude' %}
@@ -24,7 +24,7 @@ permalink: "{{ language.prefix }}/integrations/claude/"
 {% set intSub %}{% t %}Ask your own Claude. Prospektor does the work.{% endt %}{% endset %}
 {% set intCtaHref = '/pricing/' | localize %}
 {% set intCtaLabel %}{% t %}Start my studio →{% endt %}{% endset %}
-{% set intDoc = ('/help/connect-your-claude/' | localize) + '' %}
+{% set intDoc = '/help/connect-apps/' | localize %}
 
 {% set dgTitle %}{% t %}Your own Claude asks, and the workspace does the work{% endt %}{% endset %}
 {% set dgLeftLabel = 'CLAUDE.AI' %}

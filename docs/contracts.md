@@ -2,46 +2,69 @@
 
 Moved word for word from `CLAUDE.md` on 6 Oct 2026 (studio #1116), so that every session stops loading them. `CLAUDE.md` keeps one line per contract.
 
-## The help contract — one URL per guide, all of it derived (#136, #166)
+## The help contract — short articles, one URL each, all of it derived (#136, #166, studio #1201)
 
-`/help/` is not written here. The corpus is the **studio's** `docs/help/`, served
-at `studio.prospektor.ai/api/help`, and this repo only ever renders it — which is
-what makes the two halves of the contract worth stating.
+`/help/` is not written here. Since 7 Oct 2026 (studio #1201, after the
+operator called the old section *"horrendous AI-slop"*) it is the studio's help
+**articles**: `docs/help/articles/*.md` in the studio, one question each, served
+at `studio.prospektor.ai/api/help` as `articles: [{ name, text, language }]`.
+Each is front matter (`title`, `dek`, `topic`, `order`, an optional `image`
+from `src/assets/img/demo/`, and one to three `next` slugs) and two sections,
+the steps and the facts. The studio's long reference files (`files` in the
+same answer) stay the support chat's and are not published here.
 
-- **Nothing about the help section is hand-listed.** `src/_data/help.js` fetches
-  the corpus at build time, `src/help-guide.njk` paginates over it to write one
-  page per guide at `/help/<slug>/`, `src/help.njk` is the hub over them, and
-  `src/sitemap.njk` derives its `/help/` entries from the same array. A guide the
-  studio adds gets a page, a card, three inbound links and a sitemap entry with
-  nobody editing this repo; a guide it retires loses all four the same way.
-- **A studio outage must never break a website deploy.** `src/_data/help.js` has
-  no code path that throws: live endpoint → committed snapshot → empty corpus,
-  every fallback logged loudly. An empty corpus ships the hub runtime-only and
-  writes **no** guide pages, which is correct — a sitemap must not ask for URLs
-  the build did not write.
-- **#76's property survived the split, and that is the interesting part.** A help
-  change is live for a reader the moment the *studio* deploys, with no website
-  publish in between. Two mechanisms keep it: the hub renders a guide the build
-  never saw *inline* and links it by anchor (`data-pages` on `#helpGuides` is the
-  build's list of slugs that do have a page), and each guide page reconciles its
-  own markdown against the live corpus by hash. Both are driven in `test/drive.js`
-  §7c and neither may be dropped without putting #76 back on the table.
-- **Every fetch of the corpus has a deadline, and the runtime ones are short**
-  (#185). The chain above answers a studio that is *dead*; it did not answer one
-  that *hangs*, because an unbounded fetch never fails and so never falls back.
-  `H.fetchCorpus()` in `help-render.js` is the one door — `H.CORPUS_TIMEOUT_MS`
-  is 3s in the browser, because the guides are already in the HTML and the
-  reader is not waiting on the studio for anything; the build allows 8s and
-  `npm run help:snapshot` 20s, since those are waited on by a machine and not by
-  a person. A bare `fetch(API)` added back to `help.js` or `help-guide.js` fails
-  `test/help.test.js` by name, and `test/drive.js` §8b drives a studio that
-  accepts the connection and never answers.
-- **A guide's text must live on exactly one URL.** Leaving the stacked copy on
-  the hub as well would recreate the duplication #166 removed, silently and
-  without failing anything else. `test/help.test.js` asserts it directly.
-- **Nothing in the checks counts guides.** Writing a twelfth guide, or a short
-  one, must never turn the suite red — the #131 lesson, the same way the
-  learnings ledger keeps it.
+- **Nothing about the help section is hand-listed.** `lib/help-articles.js`
+  is the one reader of an article; `src/_data/help.js` fetches them at build
+  time; `src/help.njk` is the hub (the start card for the `start` topic, a tile
+  for each of `who`, `what`, `warm`, `sharper` with its articles by `order`,
+  the `account` topic as pills); `src/help-article.njk` writes one page per
+  article at `/help/<file name>/`; `src/sitemap.njk` lists the same array. An
+  article the studio adds gets a page, a link on the hub, a search entry and a
+  sitemap entry at the next build with nobody editing this repo. The topic
+  names live in `lib/help-articles.js` (`TOPICS`) and are translated like any
+  sentence.
+- **The sections are read by position, never by heading.** The first `##` is
+  the steps (numbered dark circles), the second the facts (a white card), so a
+  translation's *Cómo hacerlo* renders the same as *How to do it*.
+- **A studio outage must never break a website deploy.** `src/_data/help.js`
+  has no code path that throws: the live endpoint, then the committed snapshot
+  (`data/help-articles.json`, and `data/help-articles.<code>.json` per
+  language), then nothing, every fallback logged loudly. A studio that answers
+  with no `articles` (an app shell, an older deploy with only `files`, a
+  malformed article) is a failed answer, not an empty section. Nothing ships
+  the hub with no article pages, and the sitemap then asks for none. An image
+  the site does not hold is dropped rather than reaching the `asset` filter,
+  which would fail the build.
+- **Every fetch has a deadline** (#185): 8s at build time, 20s for
+  `npm run help:snapshot`. The browser fetches nothing: the hub's search
+  filters the articles by title and dek from an index the build writes into
+  the page (`#helpIndex`, `src/assets/js/help-search.js`). What that costs,
+  said once: a help change reaches the site at the next website build, not
+  the moment the studio deploys (#76's property, retired with the long
+  guides, because the articles are short and the build is minutes).
+- **An article's text lives on exactly one URL.** The hub carries titles (and
+  the start article's dek), never the steps. `test/help.test.js` asserts it.
+- **Editions (#535).** `/<code>/help/` exists only when the studio holds at
+  least one article translated into that language (the live answer, or the
+  snapshot file's existence offline). In an edition an article still in
+  English is written, says so, carries `lang="en"`, is `noindex` and stays out
+  of the sitemap; its English twin is the page to rank.
+- **The old guide URLs answer 301.** Every `/help/<slug>/` and
+  `/es/help/<slug>/` the long guides were published at, 24 Aug to 7 Oct 2026,
+  has a rule in `netlify.toml` to the article that took its place or to the
+  hub, not forced, so a page the build writes always wins; anything else under
+  `/es/help/` falls back to its English twin. `test/help.test.js` holds every
+  old address to a rule and every rule to a built page, and fails if any page
+  on the site still links an old guide.
+- **Refreshing.** `npm run help:snapshot` reads the live endpoint;
+  `npm run help:snapshot -- --from ../studio/docs/help` reads a studio checkout
+  the way the studio's `helpArticles()` does, for the days between writing
+  articles and deploying them. The live run also refreshes
+  `data/help-corpus.json`, the long reference files, which no page renders and
+  the checks read as a catalogue of what the product says
+  (`tools/resources-coverage.js`, the welcome mail's test).
+- **Nothing in the checks counts articles, topics or languages.** A
+  twenty-sixth article, or a short one, never turns the suite red (#131).
 
 ## The resources contract — one article per useful learning
 
@@ -374,14 +397,15 @@ own copy is §8, dashes as the universal connector, the same as the studio's.
   welcome email's sentences, the operator notices, and every reply a function
   hands the browser, as the string literals of every file under
   `netlify/functions/` and `netlify/lib/`); and **one surface per catalogue**,
-  its values. NOT read: `/help/` and its guide pages, which are the studio's
-  corpus rendered here and the studio's #639.
+  its values; and since studio #1201 **help**, `/help/` and its articles off
+  the built English pages, at zero dashes like the funnel (the words are the
+  studio's `docs/help/articles/`, so a tell found here is fixed there).
 - **`npm test` is red on a strong tell, anywhere, and on a dash count rising
   past its ceiling.** The ceilings are `CEILING` in `tools/humanize.js`, one
   row per surface, and the test also fails when a count has fallen well
   *under* its ceiling, naming the number to write, so a thread that rewrote
   a page records the gain and the next thread cannot spend it. The funnel,
-  the scripts and the functions are at **zero** and stay there. The legal
+  the help, the scripts and the functions are at **zero** and stay there. The legal
   pages hold at 187: two of them carry wording still unmerged on the
   operator's desk (#529, #531), and nine of `/privacy/`'s sentences are pinned
   by name in the studio's `test/privacy-claims.test.js`, so a dash there is

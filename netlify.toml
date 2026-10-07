@@ -24,6 +24,151 @@
   status = 301
   force = true
 
+# The old help guides (studio #1201, 7 Oct 2026). Until then /help/<slug>/
+# was one of the studio's thirteen long reference files; now /help/ is short
+# articles, one question each, and those pages are gone. Each old address
+# answers 301 to the article that took its place, or to /help/ where no one
+# article did, so links in mails, search results and other people's pages
+# land on a real page. Not forced: a path the build writes is served as it is.
+# The Spanish edition's old addresses go to the same article in Spanish, and
+# anything left under /es/help/ that the build did not write falls back to its
+# English twin. `test/help.test.js` holds every old address to a rule here
+# and every rule to a page the build wrote.
+[[redirects]]
+  from = "/help/getting-started/*"
+  to = "/help/get-started/"
+  status = 301
+
+[[redirects]]
+  from = "/help/first-visit/*"
+  to = "/help/get-started/"
+  status = 301
+
+[[redirects]]
+  from = "/help/screens/*"
+  to = "/help/"
+  status = 301
+
+[[redirects]]
+  from = "/help/pitches/*"
+  to = "/help/write-a-pitch/"
+  status = 301
+
+[[redirects]]
+  from = "/help/sharing/*"
+  to = "/help/share-a-pitch/"
+  status = 301
+
+[[redirects]]
+  from = "/help/network/*"
+  to = "/help/warm-intros/"
+  status = 301
+
+[[redirects]]
+  from = "/help/calls/*"
+  to = "/help/prep-a-call/"
+  status = 301
+
+[[redirects]]
+  from = "/help/outcomes/*"
+  to = "/help/say-what-happened/"
+  status = 301
+
+[[redirects]]
+  from = "/help/workspace/*"
+  to = "/help/"
+  status = 301
+
+[[redirects]]
+  from = "/help/best-practices/*"
+  to = "/help/say-what-happened/"
+  status = 301
+
+[[redirects]]
+  from = "/help/troubleshooting/*"
+  to = "/help/not-working/"
+  status = 301
+
+[[redirects]]
+  from = "/help/privacy/*"
+  to = "/help/your-data/"
+  status = 301
+
+[[redirects]]
+  from = "/help/connect-your-claude/*"
+  to = "/help/connect-apps/"
+  status = 301
+
+[[redirects]]
+  from = "/es/help/getting-started/*"
+  to = "/es/help/get-started/"
+  status = 301
+
+[[redirects]]
+  from = "/es/help/first-visit/*"
+  to = "/es/help/get-started/"
+  status = 301
+
+[[redirects]]
+  from = "/es/help/screens/*"
+  to = "/es/help/"
+  status = 301
+
+[[redirects]]
+  from = "/es/help/pitches/*"
+  to = "/es/help/write-a-pitch/"
+  status = 301
+
+[[redirects]]
+  from = "/es/help/sharing/*"
+  to = "/es/help/share-a-pitch/"
+  status = 301
+
+[[redirects]]
+  from = "/es/help/network/*"
+  to = "/es/help/warm-intros/"
+  status = 301
+
+[[redirects]]
+  from = "/es/help/calls/*"
+  to = "/es/help/prep-a-call/"
+  status = 301
+
+[[redirects]]
+  from = "/es/help/outcomes/*"
+  to = "/es/help/say-what-happened/"
+  status = 301
+
+[[redirects]]
+  from = "/es/help/workspace/*"
+  to = "/es/help/"
+  status = 301
+
+[[redirects]]
+  from = "/es/help/best-practices/*"
+  to = "/es/help/say-what-happened/"
+  status = 301
+
+[[redirects]]
+  from = "/es/help/troubleshooting/*"
+  to = "/es/help/not-working/"
+  status = 301
+
+[[redirects]]
+  from = "/es/help/privacy/*"
+  to = "/es/help/your-data/"
+  status = 301
+
+[[redirects]]
+  from = "/es/help/connect-your-claude/*"
+  to = "/es/help/connect-apps/"
+  status = 301
+
+[[redirects]]
+  from = "/es/help/*"
+  to = "/help/:splat"
+  status = 301
+
 [[redirects]]
   from = "/*"
   to = "/404.html"

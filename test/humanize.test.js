@@ -192,10 +192,11 @@ describe('the scanner', () => {
 /* ------------------------- what is read, and what is not ------------------ */
 
 describe('what is read', () => {
-  test('a language twin is measured through its catalogue, and the help section is the studio\'s', () => {
+  test('a language twin is measured through its catalogue, and the help articles are a surface of their own (studio #1201)', () => {
     assert.strictEqual(surfaceOf('/es/pricing/'), null, 'a twin: its catalogue is the surface');
-    assert.strictEqual(surfaceOf('/help/'), null, 'the studio\'s corpus (#639)');
-    assert.strictEqual(surfaceOf('/help/01-getting-started/'), null);
+    assert.strictEqual(surfaceOf('/es/help/glance/'), null, 'a translated article: the studio\'s');
+    assert.strictEqual(surfaceOf('/help/'), 'help');
+    assert.strictEqual(surfaceOf('/help/glance/'), 'help');
     assert.strictEqual(surfaceOf('/privacy/'), 'legal');
     assert.strictEqual(surfaceOf('/terms/'), 'legal');
     assert.strictEqual(surfaceOf('/resources/'), 'resources');
@@ -219,10 +220,13 @@ describe('the copy', () => {
     assert.ok(all.funnel.count > 200, `funnel: ${all.funnel.count} strings`);
     assert.ok(all.legal.count > 100, `legal: ${all.legal.count} strings`);
     assert.ok(all.resources.count > 500, `resources: ${all.resources.count} strings`);
+    assert.ok(all.help.count > 100, `help: ${all.help.count} strings`);
     assert.ok(all.scripts.count > 30, `scripts: ${all.scripts.count} strings`);
     assert.ok(all.functions.count > 10, `functions: ${all.functions.count} strings`);
     for (const row of [...all.funnel.rows, ...all.legal.rows, ...all.resources.rows])
-      assert.ok(!/^\/(?:es|de|nl|help)\//.test(row.where), `a twin or a help page was read as this repo's copy: ${row.where}`);
+      assert.ok(!/^\/(?:es|de|nl|help)\//.test(row.where), `a twin or a help page was read as another surface's copy: ${row.where}`);
+    for (const row of all.help.rows)
+      assert.ok(/^\/help\//.test(row.where), `the help surface read a page outside /help/: ${row.where}`);
   });
 
   for (const [name, summary] of Object.entries(all)) {
