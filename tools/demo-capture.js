@@ -152,13 +152,23 @@ async function signIn(page, helpers) {
   if (consent) { await page.click('.ppsc-bar button.ppsc-btn-primary'); await page.waitForSelector('.ppsc-bar', { state: 'detached', timeout: 8000 }).catch(() => {}); }
   // The capture runs with no API key, so the shelf on Leads for you holds
   // simulated tiles that say so on their face, and so does Home's own row of
-  // three (`#start-leads`), and Counterprospekt's two readings that never land
-  // without a key (`#rivals-slot`, `#ranking-slot`). They are hidden BEFORE the tour
+  // three (`#start-leads`), and Counterprospekt's competitor reading that never
+  // lands without a key (its note, `#rivals-slot .rank-note`; since the studio's
+  // #1103 the slot itself holds the step's anchor, the add field, so it stays
+  // up). They are hidden BEFORE the tour
   // reaches that step, so the tour places its ring on the screen as shot; the
   // ring is on the ask box either way, and a visitor sees the box and the
   // sentence, never a placeholder company. The account nudge (a recovery
   // number and a passkey) is a fresh member's chore and goes the same way.
-  await page.addStyleTag({ content: '#view-suggested .tiles, #start-leads, #rivals-slot, #ranking-slot, #shelf-task, #shelf-state, #account-nudge { display: none !important; }' });
+  await page.addStyleTag({ content: '#view-suggested .tiles, #start-leads, #rivals-slot .rank-note, #shelf-task, #shelf-state, #account-nudge { display: none !important; }' });
+  // Since the studio's #1097 the tour never opens on its own: it is the last
+  // line of the setup card on Home, and it opens when that line is pressed.
+  // The studio's own `dev/drive-tour.js` opens it the same way.
+  await page.waitForSelector('#segments button[data-view="start"]', { timeout: 15000 });
+  await page.click('#segments button[data-view="start"]');
+  await page.waitForSelector('#view-start:not(.hidden)', { timeout: 15000 });
+  await page.waitForSelector('#home-setup #home-tour', { state: 'visible', timeout: 15000 });
+  await page.click('#home-tour');
   await page.waitForSelector('#tour:not(.hidden)', { timeout: 15000 });
   // Step 1's anchor is the ask box on Home since the studio's #877 took the
   // doors away; the studio's own `dev/drive-tour.js` waits on the same box.
@@ -281,8 +291,9 @@ async function main() {
     const total = await page.locator('#tour-dots i').count();
     if (total !== steps.length) throw new Error(`the page draws ${total} steps and the source parses ${steps.length}`);
     // What each step past the pitch must have drawn before it is read, the
-    // drive's own list: Your network and Settings fetch before they draw.
-    const DRAWN = { prep: '#prep-form', network: '.net-form', workspace: '#workspace-body .scard-title' };
+    // drive's own list: Counterprospekt, Your network, the Library and
+    // Settings fetch before they draw.
+    const DRAWN = { counter: '#counter-company', network: '#network-imports-card:not(.hidden)', prep: '#prep-form', library: '#saved-list', workspace: '#workspace-body .scard-title' };
     const out = [];
     for (let i = 0; i < total; i += 1) {
       if (i > 0) await page.click('#tour-next');

@@ -1,10 +1,10 @@
 {
   "//": "The clickable demo (#767): the studio's one-minute tour, read off the real screens by `npm run demo:capture` with the studio checked out beside this repo. Do not hand-edit. Every title and body is a string the studio says (`data/studio-strings.json`); `test/demo.test.js` holds the two together.",
-  "capturedAt": "2026-10-04",
+  "capturedAt": "2026-10-07",
   "source": {
     "repo": "prospektor-ai/studio",
     "file": "public/studio.js#TOUR_STEPS",
-    "commit": "3e40ed5cd507b959d030bee18d8dde54fd4a00b8"
+    "commit": "3764a09394006c4ee47358e8f7970450d9ac8530"
   },
   "viewport": {
     "width": 1280,
@@ -50,10 +50,10 @@
       "tab": null,
       "image": "/assets/img/demo/step-01.png",
       "ring": {
-        "x": 0.2109,
-        "y": 0.2567,
-        "w": 0.7125,
-        "h": 0.0925
+        "x": 0.1953,
+        "y": 0.02,
+        "w": 0.6031,
+        "h": 0.0575
       },
       "title": {
         "en": "Home",
@@ -62,10 +62,10 @@
         "nl": "Start"
       },
       "body": {
-        "en": "Say what you want in one line, or press a chip. Everything starts here.",
-        "de": "Sag in einer Zeile, was du willst, oder drücke einen Chip. Alles beginnt hier.",
-        "es": "Di lo que quieres en una línea, o pulsa un chip. Todo empieza aquí.",
-        "nl": "Zeg in één regel wat je wilt, of druk op een chip. Alles begint hier."
+        "en": "Say what you want in one line, from any screen. Everything starts here.",
+        "de": "Sag in einer Zeile, was du willst, auf jedem Bildschirm. Alles beginnt hier.",
+        "es": "Di lo que quieres en una línea, desde cualquier pantalla. Todo empieza aquí.",
+        "nl": "Zeg in één regel wat je wilt, vanaf elk scherm. Alles begint hier."
       },
       "names": [
         "Home"
@@ -78,10 +78,10 @@
       "tab": null,
       "image": "/assets/img/demo/step-02.png",
       "ring": {
-        "x": 0.2109,
-        "y": 0.2037,
-        "w": 0.7625,
-        "h": 0.2544
+        "x": 0.2141,
+        "y": 0.1588,
+        "w": 0.7656,
+        "h": 0.124
       },
       "title": {
         "en": "Leads for you",
@@ -106,9 +106,9 @@
       "tab": null,
       "image": "/assets/img/demo/step-03.png",
       "ring": {
-        "x": 0.2109,
-        "y": 0.4081,
-        "w": 0.7625,
+        "x": 0.2141,
+        "y": 0.4181,
+        "w": 0.7656,
         "h": 0.0691
       },
       "title": {
@@ -139,10 +139,10 @@
       "tab": null,
       "image": "/assets/img/demo/step-04.png",
       "ring": {
-        "x": 0.2313,
-        "y": 0.3173,
-        "w": 0.7219,
-        "h": 0.0725
+        "x": 0.2461,
+        "y": 0.4077,
+        "w": 0.1555,
+        "h": 0.065
       },
       "title": {
         "en": "Counterprospekt",
@@ -151,10 +151,10 @@
         "nl": "Counterprospekt"
       },
       "body": {
-        "en": "Name a competitor. Their client list is your prospect list, with where you win against them.",
-        "de": "Nenne einen Wettbewerber. Seine Kundenliste ist deine Prospect-Liste, samt dem, wo du gegen ihn gewinnst.",
-        "es": "Nombra a un competidor. Su lista de clientes es tu lista de prospectos, con dónde les ganas.",
-        "nl": "Noem een concurrent. Hun klantenlijst is jouw prospectlijst, met waar jij van ze wint."
+        "en": "Name a competitor and see who buys from them. Their clients are your next leads.",
+        "de": "Nenne einen Wettbewerber und sieh, wer bei ihm kauft. Seine Kunden sind deine nächsten Leads.",
+        "es": "Nombra a un competidor y mira quién le compra. Sus clientes son tus próximos leads.",
+        "nl": "Noem een concurrent en zie wie bij hen koopt. Hun klanten zijn je volgende leads."
       },
       "names": [
         "Counterprospekt"
@@ -167,10 +167,10 @@
       "tab": null,
       "image": "/assets/img/demo/step-05.png",
       "ring": {
-        "x": 0.2313,
-        "y": 0.2304,
-        "w": 0.7219,
-        "h": 0.235
+        "x": 0.2141,
+        "y": 0.2227,
+        "w": 0.7656,
+        "h": 0.4041
       },
       "title": {
         "en": "Warm intros",
@@ -196,10 +196,10 @@
       "tab": null,
       "image": "/assets/img/demo/step-06.png",
       "ring": {
-        "x": 0.2109,
-        "y": 0.1778,
-        "w": 0.7625,
-        "h": 0.7077
+        "x": 0.2141,
+        "y": 0.3049,
+        "w": 0.7656,
+        "h": 0.3938
       },
       "title": {
         "en": "Inbound",
@@ -225,10 +225,10 @@
       "tab": null,
       "image": "/assets/img/demo/step-07.png",
       "ring": {
-        "x": 0.2313,
-        "y": 0.2329,
-        "w": 0.7219,
-        "h": 0.2453
+        "x": 0.2328,
+        "y": 0.2927,
+        "w": 0.7281,
+        "h": 0.1506
       },
       "title": {
         "en": "Library",
@@ -253,10 +253,10 @@
       "tab": null,
       "image": "/assets/img/demo/step-08.png",
       "ring": {
-        "x": 0.3859,
-        "y": 0.2204,
-        "w": 0.5875,
-        "h": 0.5269
+        "x": 0.2141,
+        "y": 0.2227,
+        "w": 0.7656,
+        "h": 0.2263
       },
       "title": {
         "en": "Settings",
