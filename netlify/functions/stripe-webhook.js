@@ -42,15 +42,16 @@ const SIGNATURE_TOLERANCE_SECONDS = 300;
 
 // The site's brand, inlined for email clients (no webfonts, no remote
 // images — nothing an email client can block or break).
+// The #1092 tokens, the same values as src/assets/css/main.css (#1155).
 const BRAND = {
-  ink: '#1A1A18',
-  inkMid: '#52524E',
-  inkFaint: '#8F8F8A',
-  offWhite: '#F7F5F0',
-  stone: '#EDEAE3',
-  accent: '#00B37E',
-  coral: '#E8533A',
-  font: "'Plus Jakarta Sans', -apple-system, 'Segoe UI', sans-serif",
+  ink: '#1f1f1f',
+  inkMid: '#5f6368',
+  inkFaint: '#80868b',
+  offWhite: '#f7f7f9',
+  stone: '#e6e6ea',
+  accent: '#c8432c',
+  coral: '#e8533a',
+  font: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
 };
 
 // Shared shell: off-white ground, white card, wordmark header, footer line.

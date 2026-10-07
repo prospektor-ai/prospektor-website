@@ -33,20 +33,20 @@ exports.handler = async function(event) {
 
   const esc = s => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const line = (label, value) => value
-    ? `<tr><td style="padding:8px 12px;font-family:monospace;font-size:11px;color:#8f8f8a;text-transform:uppercase;vertical-align:top;">${label}</td><td style="padding:8px 12px;font-size:14px;color:#1a1a18;">${esc(value)}</td></tr>`
+    ? `<tr><td style="padding:8px 12px;font-family:monospace;font-size:11px;color:#80868b;text-transform:uppercase;vertical-align:top;">${label}</td><td style="padding:8px 12px;font-size:14px;color:#1f1f1f;">${esc(value)}</td></tr>`
     : '';
 
   const htmlBody = `
-<body style="margin:0;padding:24px;background:#f7f5f0;font-family:system-ui,sans-serif;">
-  <div style="max-width:560px;margin:0 auto;background:#ffffff;border:1px solid #edeae3;border-radius:12px;padding:24px;">
-    <p style="font-size:16px;font-weight:700;color:#1a1a18;margin:0 0 16px;">Founding spot requested</p>
+<body style="margin:0;padding:24px;background:#f7f7f9;font-family:system-ui,sans-serif;">
+  <div style="max-width:560px;margin:0 auto;background:#ffffff;border:1px solid #e6e6ea;border-radius:12px;padding:24px;">
+    <p style="font-size:16px;font-weight:700;color:#1f1f1f;margin:0 0 16px;">Founding spot requested</p>
     <table style="width:100%;border-collapse:collapse;">
       ${line('Email', email)}
       ${line('Domain', domain)}
       ${line('Company', company)}
       ${line('Their target', goal)}
     </table>
-    <p style="font-size:12px;color:#8f8f8a;margin:16px 0 0;">Sent from the /checkout/ payment step, before Stripe checkout opened. Reply goes to the buyer.</p>
+    <p style="font-size:12px;color:#80868b;margin:16px 0 0;">Sent from the /checkout/ payment step, before Stripe checkout opened. Reply goes to the buyer.</p>
   </div>
 </body>`;
 

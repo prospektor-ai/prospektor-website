@@ -91,19 +91,18 @@ function card({ title, topic }) {
   const size = n > 78 ? 52 : n > 58 ? 60 : n > 40 ? 68 : 76;
   return `<!doctype html><html><head><meta charset="utf-8"><style>
     ${fontFace('Jakarta', 'plus-jakarta-sans-latin.woff2', '200 800')}
-    ${fontFace('Mono', 'jetbrains-mono-latin.woff2', '100 800')}
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       width: 1200px; height: 630px; display: flex; flex-direction: column;
       justify-content: space-between; padding: 72px 80px;
-      background: #1A1A18; color: #fff;
+      background: #1f1f1f; color: #fff;
       font-family: 'Jakarta', sans-serif; overflow: hidden;
     }
-    /* One emerald bleed in the corner — the site's accent, used once. */
+    /* One coral bleed in the corner: the site's accent, used once (#1155). */
     .glow {
       position: absolute; right: -180px; top: -180px;
       width: 620px; height: 620px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,179,126,0.30) 0%, rgba(0,179,126,0) 70%);
+      background: radial-gradient(circle, rgba(232,83,58,0.32) 0%, rgba(232,83,58,0) 70%);
     }
     .top { display: flex; align-items: center; gap: 12px; position: relative; }
     .mark {
@@ -112,9 +111,10 @@ function card({ title, topic }) {
     }
     .mark svg { width: 24px; height: 24px; }
     .word { font-size: 25px; font-weight: 800; letter-spacing: -0.02em; }
+    /* Small labels in the same face, never a terminal (main.css --mono, #1151). */
     .topic {
-      font-family: 'Mono', monospace; font-size: 17px; letter-spacing: 0.14em;
-      text-transform: uppercase; color: #00B37E; margin-left: auto;
+      font-size: 17px; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #e8533a; margin-left: auto;
     }
     h1 {
       font-size: ${size}px; font-weight: 800; line-height: 1.1;
@@ -122,14 +122,14 @@ function card({ title, topic }) {
     }
     .foot {
       display: flex; align-items: center; justify-content: space-between;
-      font-family: 'Mono', monospace; font-size: 19px; color: #8F8F8A;
+      font-size: 19px; color: #80868b;
       border-top: 1px solid rgba(255,255,255,0.14); padding-top: 26px;
     }
-    .foot .url { color: #EDEAE3; }
+    .foot .url { color: #ebebef; }
   </style></head><body>
     <div class="glow"></div>
     <div class="top">
-      <div class="mark"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6C2 3.79 3.79 2 6 2s4 1.79 4 4-1.79 4-4 4" stroke="#1A1A18" stroke-width="1.5" stroke-linecap="round"/><circle cx="6" cy="6" r="1.2" fill="#1A1A18"/></svg></div>
+      <div class="mark"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6C2 3.79 3.79 2 6 2s4 1.79 4 4-1.79 4-4 4" stroke="#1f1f1f" stroke-width="1.5" stroke-linecap="round"/><circle cx="6" cy="6" r="1.2" fill="#1f1f1f"/></svg></div>
       <span class="word">Prospektor</span>
       <span class="topic">${esc(topic || 'lead generation')}</span>
     </div>
@@ -153,45 +153,44 @@ function card({ title, topic }) {
 function siteCard() {
   return `<!doctype html><html><head><meta charset="utf-8"><style>
     ${fontFace('Jakarta', 'plus-jakarta-sans-latin.woff2', '200 800')}
-    ${fontFace('Mono', 'jetbrains-mono-latin.woff2', '100 800')}
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       width: 1200px; height: 630px; display: flex; flex-direction: column;
       justify-content: space-between; padding: 72px 80px;
-      background: #F5F3EF; color: #1A1A18;
+      background: #f7f7f9; color: #1f1f1f;
       font-family: 'Jakarta', sans-serif; overflow: hidden;
     }
     .top { display: flex; align-items: center; gap: 12px; }
     .mark {
-      width: 40px; height: 40px; border-radius: 11px; background: #1A1A18;
+      width: 40px; height: 40px; border-radius: 11px; background: #1f1f1f;
       display: flex; align-items: center; justify-content: center;
     }
     .mark svg { width: 24px; height: 24px; }
     .word { font-size: 25px; font-weight: 800; letter-spacing: -0.02em; }
-    .word .dot { color: #00B37E; }
+    .word .dot { color: #e8533a; }
     h1 {
       font-size: 74px; font-weight: 800; line-height: 1.06;
-      letter-spacing: -0.038em; max-width: 15ch;
+      letter-spacing: -0.038em; max-width: 22ch;
     }
-    h1 .accent { color: #00B37E; }
+    h1 .accent { color: #e8533a; }
     /* #453: the two questions ride above the headline here exactly as they ride
        in the hero's tag pill — the card is the hero in picture form, and a card
        showing a headline the page no longer has is the drift data/og-cards.json
        and test/assets.test.js exist to catch. */
     .frame {
-      display: block; font-family: 'Mono', monospace; font-size: 19px;
-      letter-spacing: 0.06em; color: #8F8F8A; margin-bottom: 18px;
+      display: block; font-size: 19px; font-weight: 600;
+      letter-spacing: 0.06em; color: #80868b; margin-bottom: 18px;
     }
     p {
-      font-size: 27px; line-height: 1.45; color: #55554F;
+      font-size: 27px; line-height: 1.45; color: #5f6368;
       max-width: 30ch; margin-top: 26px;
     }
     .foot {
       display: flex; align-items: center; gap: 14px;
-      font-family: 'Mono', monospace; font-size: 19px; color: #8F8F8A;
+      font-size: 19px; color: #80868b;
     }
-    .foot .price { color: #1A1A18; }
-    .foot .dot { color: #00B37E; font-size: 15px; }
+    .foot .price { color: #1f1f1f; }
+    .foot .dot { color: #e8533a; font-size: 15px; }
   </style></head><body>
     <div class="top">
       <div class="mark"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6C2 3.79 3.79 2 6 2s4 1.79 4 4-1.79 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><circle cx="6" cy="6" r="1.2" fill="#fff"/></svg></div>
@@ -199,7 +198,7 @@ function siteCard() {
     </div>
     <div>
       <span class="frame">Who to pitch. What to send.</span>
-      <h1>Find Leads.<br><span class="accent">That fit you.</span></h1>
+      <h1>${esc(HEADLINE[0])}<br><span class="accent">${esc(HEADLINE[1])}</span></h1>
       <p>${esc(TAGLINE_LINE)}</p>
     </div>
     <div class="foot">
@@ -210,15 +209,16 @@ function siteCard() {
 }
 
 /**
- * The sentence under the headline. #450: it is the hero's own promise, cut to
- * what fits a card at 27px — not site.description, which is written to a
- * 160-character search-snippet budget and reads as a meta tag when it is set
- * this large. The tagline is appended so the one string every other surface
- * shows is on the picture too.
+ * The sentence under the headline. #450: it is the hero's own promise, not
+ * site.description, which is written to a 160-character search-snippet budget
+ * and reads as a meta tag when it is set this large. Since #1155 it is the
+ * hero's sentence word for word, and the headline is the hero's h1: the card
+ * is the hero in picture form (#453), and test/assets.test.js holds both
+ * against src/index.njk so the picture cannot outlive the words again.
  */
-const TAGLINE_LINE =
-  `Teach it what you're after in three minutes — customers, partners, `
-  + `resellers, investors. Then it finds them, and writes what you send.`;
+const TAGLINE_LINE = 'Give it your website. It finds the companies worth approaching and writes the pitch in your voice.';
+/** The hero's own headline, split where the card breaks the line; the second half is the coral one. */
+const HEADLINE = ['Leads that fit you,', 'and what to send them'];
 
 (async () => {
   const files = fs.readdirSync(SRC).filter(f => f.endsWith('.md'));
@@ -255,6 +255,7 @@ const TAGLINE_LINE =
       + 'Held against src/_data/site.json and the articles\' frontmatter by test/assets.test.js — '
       + 'if that test is red, the pictures have drifted from the words: run `npm run og`.',
     tagline: site.tagline,
+    headline: HEADLINE.join(' '),
     siteLine: TAGLINE_LINE,
     articles,
   }, null, 2) + '\n');

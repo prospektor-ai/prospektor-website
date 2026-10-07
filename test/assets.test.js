@@ -139,6 +139,18 @@ describe('the Open Graph cards still say what the site says', () => {
     assert.ok(baked, 'data/og-cards.json is missing — ' + RERUN);
   });
 
+  // #1155: the sitewide card is the hero in picture form (#453), and the hero
+  // moved in #1151 while the card went on saying "Find Leads. That fit you."
+  // So the words the card bakes are held against the page they picture.
+  test('the sitewide card says what the homepage hero says', () => {
+    const index = fs.readFileSync(path.join(ROOT, 'src', 'index.njk'), 'utf8');
+    for (const key of ['headline', 'siteLine']) {
+      assert.ok(typeof baked[key] === 'string' && baked[key], `data/og-cards.json carries no ${key} — ${RERUN}`);
+      assert.ok(index.includes(baked[key]),
+        `the sitewide card says ${JSON.stringify(baked[key])} and src/index.njk no longer does — ${RERUN}`);
+    }
+  });
+
   test('the tagline on every card is the tagline in site.json', () => {
     assert.equal(baked.tagline, site.tagline,
       `the cards were rendered with ${JSON.stringify(baked.tagline)} and site.json now says `
