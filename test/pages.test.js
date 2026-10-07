@@ -155,8 +155,10 @@ describe('the header, and the pages behind it', () => {
   // h1 is the promise now ("Find Leads. That fit you.", kept by the operator 7 Oct 2026), which
   // is what the <title> has always said and what a stranger can act on. #1092
   // (7 Oct 2026) then gave the hero to the scan field alone, on the operator's
-  // ask to keep it minimal, and the frame moved to the page body: the pricing
-  // heading says it in full and the first section links both halves. #153's
+  // ask to keep it minimal, and the frame moved to the page body. Since the
+  // big tiles (7 Oct 2026) the first section's heading says it in full ("Who
+  // to pitch, and what to send") and its first two tiles are the links to the
+  // two halves, and the price cards name both again. #153's
   // requirement is unchanged and is what this still holds — the frame must be
   // ON the homepage and must reach both pages. Scoped to the page body
   // deliberately: the header carries the same two strings on every page of the
@@ -173,6 +175,28 @@ describe('the header, and the pages behind it', () => {
       'the homepage has no h1 worth reading');
     assert.match(home, /href="\/who-to-pitch\/"[^]*href="\/what-to-send\/"/,
       'the two halves do not both link through to their pages');
+  });
+
+  // The tiles link into the two product pages at a section (Warm intros on
+  // /who-to-pitch/, In your voice on /what-to-send/). The dead-link checks
+  // strip the fragment, so an id renamed on the target page would leave the
+  // tile landing at the top with every test green. This holds every fragment
+  // the homepage, in every language, points at another page to an id there.
+  test('every fragment the homepage links into another page is an id on that page', () => {
+    const homes = htmlPages(SITE).filter(p => /^([a-z]{2}\/)?index\.html$/.test(path.relative(SITE, p).replace(/\\/g, '/')));
+    assert.ok(homes.length > 1, 'no localized homepages were built');
+    const missing = [];
+    let seen = 0;
+    for (const p of homes) {
+      const html = fs.readFileSync(p, 'utf8');
+      for (const m of html.matchAll(/href="(\/[^"#?]+)#([^"]+)"/g)) {
+        seen++;
+        const target = fs.readFileSync(path.join(SITE, m[1], 'index.html'), 'utf8');
+        if (!target.includes(`id="${m[2]}"`)) missing.push(`${path.relative(SITE, p)} → ${m[1]}#${m[2]}`);
+      }
+    }
+    assert.ok(seen >= homes.length * 2, `expected the Warm intros and Sharper every pitch tiles to deep-link on every homepage, saw ${seen} fragment link(s)`);
+    assert.deepStrictEqual(missing, [], 'a tile points at a section that is not on its page');
   });
 
   // #453. The <title> is "Prospektor · <tagline>" and the h1 is the same

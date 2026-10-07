@@ -230,6 +230,42 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     }
   }
 
+  // 6b′ — the four tiles under the hero (7 Oct 2026). Two by two on a desk,
+  //       one column on a phone, each one a link with its heading as real
+  //       text and its drawing hidden from a screen reader, and nothing on
+  //       the phone wider than the phone.
+  {
+    for (const vp of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
+      const page = await browser.newPage({ viewport: vp });
+      await page.goto('http://localhost:8899/');
+      const m = await page.evaluate(() => {
+        const tiles = [...document.querySelectorAll('#what a.ptile')];
+        const tops = tiles.map(t => Math.round(t.getBoundingClientRect().top));
+        return {
+          n: tiles.length,
+          rows: new Set(tops).size,
+          heads: tiles.map(t => (t.querySelector('h3') || {}).textContent),
+          hrefs: tiles.map(t => t.getAttribute('href')),
+          hidden: tiles.every(t => t.querySelector('.pvis').getAttribute('aria-hidden') === 'true'),
+          // body is overflow-x:hidden, so the page's scrollWidth alone would
+          // hide a tile that ran off the edge; measure what is drawn as well.
+          scroll: Math.max(document.documentElement.scrollWidth,
+            ...[...document.querySelectorAll('.home-sec *')].filter(e => !e.closest('.pvis') || e.matches('.pvis'))
+              .map(e => Math.ceil(e.getBoundingClientRect().right))) - window.innerWidth,
+        };
+      });
+      const w = `${vp.width}px`;
+      check(`four tiles under the hero (${w})`,
+        m.n === 4 && m.heads.join('|') === 'Who to pitch|What to send|Warm intros|Sharper every pitch', m.heads);
+      check(`the tiles sit ${vp.width > 640 ? 'two by two' : 'one to a row'} (${w})`,
+        m.rows === (vp.width > 640 ? 2 : 4), m.rows);
+      check(`every tile is a link into a product page, its drawing hidden from a screen reader (${w})`,
+        m.hidden && m.hrefs.every(h => /^\/(who-to-pitch|what-to-send)\//.test(h)), m.hrefs);
+      check(`the homepage does not scroll sideways (${w})`, m.scroll <= 0, m.scroll);
+      await page.close();
+    }
+  }
+
   // 6c — #240: the scan result is one card the width of the search bar.
   //      Geometry again, like 6b, because that was the literal complaint
   //      ("not sure why it's not the width of the search bar") — and the

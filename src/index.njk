@@ -15,11 +15,10 @@ permalink: "{{ language.prefix }}/"
 
 {#- The homepage in the studio's look (#1092, 7 Oct 2026): the grey ground,
     white cards with no border and no shadow, and coral on exactly one press,
-    the scan field's. The words are the studio's own names for its screens
-    (Leads for you, Research, Counterprospekt, a glance, Decision-makers, Warm
-    intros, Library, Inbound), because a visitor who signs up should meet the
-    menu they read about. The five agents, the six-stage run card and the
-    batch band are gone with the run model they described.
+    the scan field's. Below the hero, four tiles name what the product does
+    in one line each, and the two product pages carry the studio's own names
+    for its screens. The five agents, the six-stage run card and the batch
+    band are gone with the run model they described.
 
     The operator on the draft: "keep it minimal and clean. I want the primary
     CTA still to be clearly to scan the site and not immediately go into
@@ -104,63 +103,74 @@ permalink: "{{ language.prefix }}/"
 </section>
 <script src="{{ '/assets/js/scan.js' | asset }}" defer></script>
 
-{#- The studio's menu, as it is: four questions, in the order you ask them
-    about a company. Keeps id="what" so old deep links land. -#}
-<section class="sec" id="what">
+{#- Below the hero, four tiles (7 Oct 2026, the operator's big-tiles
+    mockup): Who to pitch, What to send, Warm intros, Sharper every pitch.
+    One heading and one line each, and the whole tile is the link; the detail
+    lives on the two product pages. Each visual panel is a small piece of the
+    real product drawn in HTML, decorative and hidden from a screen reader.
+    The names in the drawings (Ledgerpost pitching Harborline, the seller the
+    demo signs in as) are invented example content, as the old glance card
+    was, and its sentences are still translated. One worked example and
+    no scale: the method is published, never the mechanics (#746).
+    Keeps id="what" on the section and id="how" on the grid, so old deep
+    links to either land here. -#}
+<section class="sec home-sec" id="what">
   <div class="col">
-    <h2>{% t %}Every screen answers one question{% endt %}</h2>
-    <div class="grid2">
-      <div class="hcard">
-        <p class="hcard-q">{% t %}Who?{% endt %}</p>
-        <div class="hrow"><span class="tile" aria-hidden="true">L</span><div><b>{% t %}Leads for you{% endt %}</b><span>{% t %}Companies worth approaching this week, each with the reason it fits.{% endt %}</span></div></div>
-        <div class="hrow"><span class="tile" aria-hidden="true">R</span><div><b>{% t %}Research{% endt %}</b><span>{% t %}Read one company, find more like it, or hand it a whole list.{% endt %}</span></div></div>
-        <div class="hrow"><span class="tile" aria-hidden="true">C</span><div><b>Counterprospekt</b><span>{% t %}Who buys from your competitors. Their clients are your next leads.{% endt %}</span></div></div>
-        <p class="hcard-foot"><a href="{{ '/who-to-pitch/' | localize }}">{% t %}See who to pitch{% endt %} ›</a></p>
-      </div>
-      <div class="hcard">
-        <p class="hcard-q">{% t %}What to say?{% endt %}</p>
-        <div class="hrow"><span class="tile" aria-hidden="true">P</span><div><b>{% t %}The pitch{% endt %}</b><span>{% t %}Deck, one-pager, cold email and proposal, in your voice and grounded in what has worked for you.{% endt %}</span></div></div>
-        <div class="hrow"><span class="tile" aria-hidden="true">I</span><div><b>{% t %}Inbound{% endt %}</b><span>{% t %}Answer a lead who wrote to you, or prepare the call.{% endt %}</span></div></div>
-        <div class="hrow"><span class="tile" aria-hidden="true">B</span><div><b>{% t %}Library{% endt %}</b><span>{% t %}Every pitch you have written, ready to share or push to your CRM.{% endt %}</span></div></div>
-        <p class="hcard-foot"><a href="{{ '/what-to-send/' | localize }}">{% t %}See what to send{% endt %} ›</a></p>
-      </div>
-      <div class="hcard">
-        <p class="hcard-q">{% t %}Who at them?{% endt %}</p>
-        <div class="hrow"><span class="tile" aria-hidden="true">D</span><div><b>{% t %}Decision-makers{% endt %}</b><span>{% t %}The people to write to, with their emails and where each was found.{% endt %}</span></div></div>
-      </div>
-      <div class="hcard">
-        <p class="hcard-q">{% t %}Who can walk you in?{% endt %}</p>
-        <div class="hrow"><span class="tile" aria-hidden="true">W</span><div><b>{% t %}Warm intros{% endt %}</b><span>{% t %}Who you already know who can introduce you, and the note to send them.{% endt %}</span></div></div>
-      </div>
+    <div class="sec-h">
+      <h2>{% t %}Who to pitch, and what to send{% endt %}</h2>
+      <p>{% t %}Everything between your website and a sent email.{% endt %}</p>
     </div>
-  </div>
-</section>
-
-{#- A glance, shown rather than described. The example is the studio's own
-    (Ledgerpost pitching Harborline Freight, the seller the demo signs in as),
-    and the card says it is invented. One worked example and no scale: the
-    method is published, never the mechanics (#746). Keeps id="how". -#}
-<section class="sec" id="how">
-  <div class="col glance">
-    <div class="glance-say">
-      <h2>{% t %}A glance before you pitch{% endt %}</h2>
-      <p class="lede">{% t %}Fifteen seconds tells you whether a company is worth a full pitch: a fit score, the one argument, and what counts against it.{% endt %}</p>
-    </div>
-    <div class="hcard glance-card">
-      <div class="gco">
-        <span class="glogo" aria-hidden="true">H</span>
-        <div><div class="gname">Harborline Freight</div><div class="gmeta">{% t %}Freight forwarding · 380 staff{% endt %}</div></div>
-        <div class="gscore"><b>94</b><small>{% t %}fit{% endt %}</small></div>
-      </div>
-      <div class="gmeter" aria-hidden="true"><i></i></div>
-      <p class="gone">{% t %}Harborline rekeys every customs filing by hand, and Ledgerpost already holds the data being rekeyed.{% endt %}</p>
-      <ul class="gsig">
-        <li>{% t %}240,000 shipments a year through 14 ports.{% endt %}</li>
-        <li>{% t %}Nine operations staff rekey customs filings full time.{% endt %}</li>
-        <li class="against">{% t %}Signed a three-year TMS contract in March.{% endt %}</li>
-      </ul>
-      <div class="gwho"><span>{% t %}Write to the Head of Customs and the COO{% endt %}</span><span class="ghost">{% t %}Write the pitch{% endt %}</span></div>
-      <p class="gex">{% t %}Harborline and Ledgerpost are invented for this example.{% endt %}</p>
+    <div class="ptiles" id="how">
+      <a class="ptile" href="{{ '/who-to-pitch/' | localize }}">
+        <div class="pvis pvis-1" aria-hidden="true">
+          <div class="dr-card">
+            <div class="dr-h">{% t %}Leads for you{% endt %}</div>
+            <div class="dr-lead"><span class="dr-lg dr-blue">B</span><span class="dr-nm"><b>Brightwater Forwarding</b><span>{% t %}Like Northwind, one of your customers{% endt %}</span></span><span class="dr-fit dr-good">91</span><span class="dr-gl">{% t %}Glance{% endt %}</span></div>
+            <div class="dr-lead"><span class="dr-lg dr-amber">C</span><span class="dr-nm"><b>Calder Shipping Group</b><span>{% t %}Hiring a customs lead this month{% endt %}</span></span><span class="dr-fit dr-good">84</span><span class="dr-gl">{% t %}Glance{% endt %}</span></div>
+            <div class="dr-lead"><span class="dr-lg dr-green">T</span><span class="dr-nm"><b>Talbot &amp; Vance Logistics</b><span>{% t %}Buys from a competitor of yours{% endt %}</span></span><span class="dr-fit">72</span><span class="dr-gl">{% t %}Glance{% endt %}</span></div>
+          </div>
+        </div>
+        <div class="pcap"><div><h3>{% t %}Who to pitch{% endt %}</h3><p>{% t %}Companies that fit you, found and scored every week.{% endt %}</p></div><span class="pgo" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M6 3l5 5-5 5" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span></div>
+      </a>
+      <a class="ptile" href="{{ '/what-to-send/' | localize }}">
+        <div class="pvis pvis-2" aria-hidden="true">
+          <div class="dr-card">
+            <div class="dr-fmt"><span class="on">{% t %}Cold email{% endt %}</span><span>{% t %}Deck{% endt %}</span><span>{% t %}One-pager{% endt %}</span><span>{% t %}Proposal{% endt %}</span></div>
+            <div class="dr-subj">{% t %}Harborline and Ledgerpost: the rekeying{% endt %}</div>
+            <p class="dr-l">{% t %}Your investor update names customs delay as the top drag on margin, and nine people retype filings to get there.{% endt %}</p>
+            <p class="dr-l">{% t %}We already hold the filing data for 11 of your 14 ports. Worth twenty minutes to try one?{% endt %}</p>
+          </div>
+        </div>
+        <div class="pcap"><div><h3>{% t %}What to send{% endt %}</h3><p>{% t %}The email, the deck and the one-pager, in your voice.{% endt %}</p></div><span class="pgo" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M6 3l5 5-5 5" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span></div>
+      </a>
+      <a class="ptile" href="{{ '/who-to-pitch/' | localize }}#warm-intros">
+        <div class="pvis pvis-3" aria-hidden="true">
+          <div class="dr-chain">
+            <div class="dr-pp"><span class="dr-av dr-ink"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3.2" fill="#fff"/><path d="M3 16c.6-3.2 3-5 6-5s5.4 1.8 6 5" fill="#fff"/></svg></span><b>{% t %}You{% endt %}</b><span>Ledgerpost</span></div>
+            <span class="dr-arr">→</span>
+            <div class="dr-pp"><span class="dr-av dr-coral">S</span><b>Sam Okafor</b><span>{% t %}Your old colleague{% endt %}</span></div>
+            <span class="dr-arr">→</span>
+            <div class="dr-pp"><span class="dr-av dr-navy">M</span><b>Marieke de Vries</b><span>{% t %}COO, Harborline{% endt %}</span></div>
+          </div>
+          <div class="dr-ask">{% t %}Drafted: your ask to Sam, and the note to forward{% endt %}</div>
+        </div>
+        <div class="pcap"><div><h3>{% t %}Warm intros{% endt %}</h3><p>{% t %}Someone you know already knows them. It finds who, and drafts the ask.{% endt %}</p></div><span class="pgo" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M6 3l5 5-5 5" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span></div>
+      </a>
+      <a class="ptile" href="{{ '/what-to-send/' | localize }}#in-your-voice">
+        <div class="pvis pvis-4" aria-hidden="true">
+          <div class="dr-loop">
+            <div class="dr-chips"><span><i class="dr-good-bg"></i>{% t %}Won{% endt %}</span><span><i class="dr-navy"></i>{% t %}Meeting booked{% endt %}</span><span><i class="dr-grey"></i>{% t %}No reply{% endt %}</span></div>
+            <div class="dr-down">↓</div>
+            <div class="dr-card dr-brief">
+              <div class="dr-h">{% t %}Your brief{% endt %}</div>
+              <div class="dr-row">{% t %}Sells to freight forwarders above 100,000 shipments{% endt %}</div>
+              <div class="dr-row">{% t %}Sounds plain, never salesy{% endt %}</div>
+              <div class="dr-row dr-new">{% t %}What has worked: the rekeying line got replies{% endt %}</div>
+            </div>
+          </div>
+        </div>
+        <div class="pcap"><div><h3>{% t %}Sharper every pitch{% endt %}</h3><p>{% t %}Tell it what happened. The next pitch learns from it.{% endt %}</p></div><span class="pgo" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M6 3l5 5-5 5" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span></div>
+      </a>
     </div>
   </div>
 </section>
@@ -168,10 +178,12 @@ permalink: "{{ language.prefix }}/"
 {#- The thesis, priced. Keeps id="pricing": Stripe's cancel_url is /#pricing
     (test/checkout-session.test.js) and old deep links land here. #1097: the
     paid card's link opens the studio's sign-up, finished by signup.js. -#}
-<section class="sec" id="pricing">
+<section class="sec home-sec" id="pricing">
   <div class="col">
-    <h2>{% t %}Who to pitch is free. What to send is paid.{% endt %}</h2>
-    <p class="lede">{% t %}One workspace, one price, your whole team in.{% endt %}</p>
+    <div class="sec-h">
+      <h2>{% t %}Who to pitch is free{% endt %}</h2>
+      <p>{% t %}What to send is one workspace, one price, your whole team in.{% endt %}</p>
+    </div>
     <div class="grid2 price">
       <div class="hcard">
         <p class="hcard-q">{% t %}Who to pitch{% endt %}</p>
@@ -203,10 +215,12 @@ permalink: "{{ language.prefix }}/"
 
 {#- #830/#838: the directory has a page per integration; the chips are its
     doors. Logos are the directory's own files (#841). -#}
-<section class="sec">
+<section class="sec home-sec">
   <div class="col">
-    <h2>{% t %}Works where you already work{% endt %}</h2>
-    <p class="lede">{% t %}Your own Claude or ChatGPT can run Prospektor, and a finished pitch goes to your CRM in one press.{% endt %}</p>
+    <div class="sec-h">
+      <h2>{% t %}Works where you already work{% endt %}</h2>
+      <p>{% t %}Your own Claude or ChatGPT can run Prospektor, and a finished pitch goes to your CRM in one press.{% endt %}</p>
+    </div>
     <div class="chips">
       {%- for c in [['claude', 'Claude'], ['chatgpt', 'ChatGPT'], ['hubspot', 'HubSpot'], ['attio', 'Attio'], ['close', 'Close'], ['affinity', 'Affinity'], ['slack', 'Slack']] %}
       <a class="chip" href="{{ ('/integrations/' + c[0] + '/') | localize }}"><img src="{{ ('/assets/img/integrations/' + c[0] + '.svg') | asset }}" alt="" width="18" height="18">{{ c[1] }}</a>
