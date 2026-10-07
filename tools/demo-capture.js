@@ -128,7 +128,7 @@ const post = (page, url, body) => page.evaluate(([u, b]) =>
   fetch(u, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(b) }).then(r => r.json()), [url, body]);
 
 /** The way `dev/drive-tour.js` reaches the tour: a fresh member, a settled workspace, the studio itself. */
-async function signIn(page, helpers) {
+async function signIn(page, helpers, dir, dataDir) {
   await page.goto(BASE);
   await page.fill('#dev-email', EMAIL);
   await page.click('#dev-go');
@@ -142,6 +142,7 @@ async function signIn(page, helpers) {
     await page.waitForTimeout(500);
   }
   await post(page, '/api/first-run', { spent: true }).catch(() => {});
+  await seedShelf(page, dir, dataDir);
   await page.goto(BASE);
   // Whatever fronts the studio is cleared the way the studio's own drives
   // clear it (`dev/drive-account.js`), then the cookie notice, so the shots
@@ -150,17 +151,15 @@ async function signIn(page, helpers) {
   await helpers.pastFirstRunDeck(page);
   const consent = await page.locator('.ppsc-bar button.ppsc-btn-primary').count();
   if (consent) { await page.click('.ppsc-bar button.ppsc-btn-primary'); await page.waitForSelector('.ppsc-bar', { state: 'detached', timeout: 8000 }).catch(() => {}); }
-  // The capture runs with no API key, so the shelf on Leads for you holds
-  // simulated tiles that say so on their face, and so does Home's own row of
-  // three (`#start-leads`), and Counterprospekt's competitor reading that never
-  // lands without a key (its note, `#rivals-slot .rank-note`; since the studio's
-  // #1103 the slot itself holds the step's anchor, the add field, so it stays
-  // up). They are hidden BEFORE the tour
-  // reaches that step, so the tour places its ring on the screen as shot; the
-  // ring is on the ask box either way, and a visitor sees the box and the
-  // sentence, never a placeholder company. The account nudge (a recovery
-  // number and a passkey) is a fresh member's chore and goes the same way.
-  await page.addStyleTag({ content: '#view-suggested .tiles, #start-leads, #rivals-slot .rank-note, #shelf-task, #shelf-state, #account-nudge { display: none !important; }' });
+  // The capture runs with no API key, so Counterprospekt's competitor reading
+  // never lands (its note, `#rivals-slot .rank-note`; since the studio's #1103
+  // the slot itself holds the step's anchor, the add field, so it stays up).
+  // It is hidden BEFORE the tour reaches that step, so the tour places its
+  // ring on the screen as shot. The account nudge (a recovery number and a
+  // passkey) is a fresh member's chore and goes the same way. The shelf on
+  // Leads for you, and Home's own row of three, are no longer hidden (#1156):
+  // `seedShelf` below gives them the example's own leads before the tour opens.
+  await page.addStyleTag({ content: '#rivals-slot .rank-note, #shelf-task, #account-nudge { display: none !important; }' });
   // Since the studio's #1097 the tour never opens on its own: it is the last
   // line of the setup card on Home, and it opens when that line is pressed.
   // The studio's own `dev/drive-tour.js` opens it the same way.
@@ -176,6 +175,49 @@ async function signIn(page, helpers) {
     const box = document.getElementById('start-ask-form')?.getBoundingClientRect();
     return Boolean(box && box.width && box.height);
   }, { timeout: 30000 });
+}
+
+/*
+ * Leads for you, with leads on it (#1156).
+ *
+ * The capture runs with no API key, so the setup search fills the shelf with
+ * simulated tiles whose names are bracketed gaps (*[a company you would not
+ * have thought of]*), and #767 hid them, which left step 2 of `/demo/` a blank
+ * strip at the one step meant to sell who to chase. The shelf the shots show
+ * is seeded instead from the example's own invented world: the three
+ * lookalikes `public/example-pitch.js` draws under Harborline Freight, which
+ * are exactly the companies Leads for you would hold for Ledgerpost. They are
+ * written onto the capture's own throwaway workspace through the studio's
+ * `lib/shelf.js`, so the tiles are the product's rendering of the product's
+ * words: the name, the fit and the one-line why are all the studio's, and
+ * nothing here invents a company. The studio's own rule holds too: those
+ * names stay invented, and `test/buildPrompt.test.js` there checks it.
+ */
+async function seedShelf(page, dir, dataDir) {
+  // The store reads its root off the environment when it loads, so the
+  // capture's process is pointed at the dev server's data directory first.
+  process.env.STUDIO_DATA_DIR = dataDir;
+  process.env.STUDIO_FORCE_LOCAL_STORE = '1';
+  const { default: example } = await import(pathToFileURL(path.join(dir, 'public', 'example-pitch.js')).href);
+  const shelf = await import(pathToFileURL(path.join(dir, 'lib', 'shelf.js')).href);
+  const leads = (example?.result?.lookalikes || [])
+    .filter(l => l && l.name && !/^\[/.test(l.name) && l.why)
+    .map(l => ({ name: l.name, website: l.website || null, score: l.similarity ?? null, why: l.why, facts: [] }));
+  if (leads.length < 3) throw new Error(`the example pitch holds ${leads.length} lookalikes to seed Leads for you with, and the screen is drawn for three`);
+  const me = await page.evaluate(() => fetch('/api/me').then(r => r.json()));
+  const clientId = me?.client?.id;
+  if (!clientId) throw new Error('could not read the capture workspace\'s id off /api/me');
+  // The setup search's own refill lands first, so nothing simulated lands over the seed.
+  const until = Date.now() + 20000;
+  while (Date.now() < until) {
+    const seen = await page.evaluate(() => fetch('/api/suggestions').then(r => r.json())).catch(() => null);
+    if (seen && !seen.refilling && !seen.preparing) break;
+    await page.waitForTimeout(500);
+  }
+  const written = await shelf.updateShelf(clientId, current => shelf.addProspects({ ...current, prospects: [], refill: null }, leads, { source: 'example' }).record);
+  const names = (written?.prospects || []).map(p => p.name);
+  if (names.length !== leads.length) throw new Error(`seeded ${names.length} of ${leads.length} example leads onto the shelf`);
+  console.log(`  Leads for you seeded from the example: ${names.join(', ')}`);
 }
 
 /** Wait until the ring and the card have stopped moving (the drive's `settled`). */
@@ -285,7 +327,7 @@ async function main() {
   const errors = [];
   page.on('pageerror', error => errors.push(String(error)));
   try {
-    await signIn(page, helpers);
+    await signIn(page, helpers, dir, dataDir);
     fs.mkdirSync(SHOTS, { recursive: true });
     for (const stale of fs.readdirSync(SHOTS)) if (/^(step-\d+|screen-[a-z-]+)\.png$/.test(stale)) fs.unlinkSync(path.join(SHOTS, stale));
     const total = await page.locator('#tour-dots i').count();

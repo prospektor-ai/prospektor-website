@@ -315,9 +315,17 @@ link, so the page walks with no script too.
   checks them, with the same `says`.
 - **The capture hides three things and nothing else**, all of them true of the
   capture and of nothing a visitor looks at: the dev server's own notice that
-  runs are simulated, the simulated tiles on Leads for you, and a fresh
-  member's account nudge. The tour's own overlay is hidden for the shot
-  because the page draws its own ring and card.
+  runs are simulated, Counterprospekt's note that its competitor reading never
+  landed, and a fresh member's account nudge. The tour's own overlay is hidden
+  for the shot because the page draws its own ring and card.
+- **Leads for you shows leads, and they are the example's own** (#1156). With
+  no API key the setup search fills the shelf with bracketed gaps, and hiding
+  them left step 2 a blank strip. The capture seeds its throwaway workspace
+  instead, through the studio's `lib/shelf.js`, with the three lookalikes
+  `public/example-pitch.js` draws under Harborline Freight: invented names
+  the studio's own tests keep invented, each with the studio's fit and the
+  studio's one-line why. Nothing on the tiles is written here, and no real
+  company is named.
 - **The card sits under the screen, never over it.** The rings are mostly the
   right-hand panel, so a card over the screen would cover what it points at,
   and a card below scales to a phone without covering anything. The end card

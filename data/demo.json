@@ -4,7 +4,7 @@
   "source": {
     "repo": "prospektor-ai/studio",
     "file": "public/studio.js#TOUR_STEPS",
-    "commit": "3764a09394006c4ee47358e8f7970450d9ac8530"
+    "commit": "010c93c60be3996b1fec6d5bd2114cfb4c6a4f51"
   },
   "viewport": {
     "width": 1280,
@@ -81,7 +81,7 @@
         "x": 0.2141,
         "y": 0.1588,
         "w": 0.7656,
-        "h": 0.124
+        "h": 0.4015
       },
       "title": {
         "en": "Leads for you",
