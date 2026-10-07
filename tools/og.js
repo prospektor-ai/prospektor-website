@@ -9,6 +9,15 @@
 // build must not need a browser, so this is a local authoring step, not a build
 // step.
 //
+// #1161: rendering happens only when this file is the entry point. It used to
+// render on `require`, and test/assets.test.js requires it for `frontmatter`,
+// so every `npm test` launched a browser and rewrote all 28 PNGs into the
+// working tree: a green suite left byte-different cards behind on any machine
+// whose Chromium build was not the one that rendered the committed ones, and a
+// contributor could not tell a real change from the suite's own exhaust.
+// `npm run og` is the only writer now; `render()` is exported for a caller
+// that wants the same pictures somewhere else (a temporary directory, say).
+//
 // #450: the SITEWIDE card (src/assets/img/og.png) is rendered here too, and
 // that is new. It used to be a hand-made PNG that nothing regenerated, and it
 // drifted exactly the way #216 predicted the article footers would: #168
@@ -39,15 +48,13 @@ catch (e) { ({ chromium } = require('/opt/node22/lib/node_modules/playwright'));
 const ROOT = path.join(__dirname, '..');
 const site = require('../src/_data/site.json'); // #216: the card footer used to hard-code the tagline, so it drifted the moment site.json changed.
 const SRC = path.join(ROOT, 'src', 'resources');
-const OUT = path.join(ROOT, 'src', 'assets', 'img', 'og');
-const SITE_CARD = path.join(ROOT, 'src', 'assets', 'img', 'og.png');
 // #450: what the committed PNGs were last rendered FROM. A string baked into a
 // bitmap is invisible to grep and to every check in this repo, which is how the
 // sitewide card went on saying "Your AI pre-sales team" for six days after #168
 // retired it. This manifest is the bitmaps' text, written out so
 // test/assets.test.js can hold it against site.json and the articles' own
 // frontmatter — and fail, naming `npm run og`, the moment they disagree.
-const MANIFEST = path.join(ROOT, 'data', 'og-cards.json');
+// (Its path, like the PNGs', is set inside render(): #1161.)
 const FONTS = path.join(ROOT, 'src', 'assets', 'fonts');
 
 // Minimal frontmatter read: the block between the first two `---` lines.
@@ -71,8 +78,9 @@ function frontmatter(file) {
 }
 
 // Exported so the test can read the same titles this renderer reads, rather
-// than a second parser drifting from this one.
-module.exports = { frontmatter };
+// than a second parser drifting from this one. `render` is below; requiring
+// this file writes nothing (#1161).
+module.exports = { frontmatter, render };
 
 const esc = s => String(s)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -220,7 +228,14 @@ const TAGLINE_LINE = 'Give it your website. It finds the companies worth approac
 /** The hero's own headline, split where the card breaks the line; the second half is the coral one. */
 const HEADLINE = ['Leads that fit you,', 'and what to send them'];
 
-(async () => {
+/**
+ * Render every card and the manifest under `root` (this repo by default).
+ * Nothing runs until this is called: see the #1161 note at the top.
+ */
+async function render(root = ROOT) {
+  const OUT = path.join(root, 'src', 'assets', 'img', 'og');
+  const SITE_CARD = path.join(root, 'src', 'assets', 'img', 'og.png');
+  const MANIFEST = path.join(root, 'data', 'og-cards.json');
   const files = fs.readdirSync(SRC).filter(f => f.endsWith('.md'));
   if (!files.length) { console.log('no articles'); return; }
   fs.mkdirSync(OUT, { recursive: true });
@@ -262,4 +277,9 @@ const HEADLINE = ['Leads that fit you,', 'and what to send them'];
   console.log('  wrote', 'data/og-cards.json');
 
   console.log(`${n} card${n === 1 ? '' : 's'}`);
-})();
+  return n;
+}
+
+if (require.main === module) {
+  render().catch(e => { console.error(e); process.exit(1); });
+}

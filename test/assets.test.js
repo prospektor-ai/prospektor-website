@@ -139,6 +139,30 @@ describe('the Open Graph cards still say what the site says', () => {
     assert.ok(baked, 'data/og-cards.json is missing — ' + RERUN);
   });
 
+  // #1161: this file requires tools/og.js for `frontmatter`, and until 7 Oct
+  // 2026 that require launched a browser and rewrote all 28 PNGs and the
+  // manifest into the working tree — so a green `npm test` left byte-different
+  // cards behind on any machine whose Chromium was not the one that rendered
+  // the committed ones. Requiring it must write nothing; `npm run og` is the
+  // only writer. Checked in a fresh process, by the files' own mtimes.
+  test('requiring tools/og.js renders nothing', () => {
+    const { spawnSync } = require('node:child_process');
+    const watched = [
+      path.join(ROOT, 'src', 'assets', 'img', 'og.png'),
+      path.join(ROOT, 'data', 'og-cards.json'),
+      ...fs.readdirSync(path.join(ROOT, 'src', 'assets', 'img', 'og'))
+        .map(f => path.join(ROOT, 'src', 'assets', 'img', 'og', f)),
+    ];
+    const before = watched.map(f => fs.statSync(f).mtimeMs);
+    const r = spawnSync(process.execPath, ['-e', "require('./tools/og.js')"],
+      { cwd: ROOT, encoding: 'utf8', timeout: 20000 });
+    assert.equal(r.status, 0, `requiring tools/og.js failed: ${r.stderr}`);
+    assert.equal(r.stdout, '', `requiring tools/og.js printed as if it had rendered:\n${r.stdout}`);
+    const changed = watched.filter((f, i) => fs.statSync(f).mtimeMs !== before[i])
+      .map(f => path.relative(ROOT, f));
+    assert.deepEqual(changed, [], 'requiring tools/og.js rewrote these — only `npm run og` may');
+  });
+
   // #1155: the sitewide card is the hero in picture form (#453), and the hero
   // moved in #1151 while the card went on saying "Find Leads. That fit you."
   // So the words the card bakes are held against the page they picture.
