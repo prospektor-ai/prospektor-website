@@ -2,12 +2,11 @@
 layout: base.njk
 permalink: /learn/
 title: Learn Prospektor
-seoTitle: "Learn Prospektor: the course, in eight short lessons"
-description: "The getting-started course every new workspace is mailed, one lesson a day, readable here in ten minutes: what the studio does and the one press that does it."
-# The screens and buttons this page names, as the product spells them:
-# tools/resources-coverage.js checks each is still something the studio or
-# its help says (#745, #742).
-names: [Getting started]
+seoTitle: "Learn Prospektor: four short courses, nine steps"
+description: "The course every new workspace is mailed, one step a day, in four short courses: a first meeting, a warm introduction, a competitor's customer, a sharper pitch."
+# The hub names no screen or button of its own since #1198 (the cards carry the
+# steps' words, and each step's `names` ride in data/lessons.json), so it
+# declares none; tools/resources-coverage.js checks the lesson layout's.
 ---
 
 {#- /learn/ (#742): the getting-started course as pages, for somebody who has
@@ -16,18 +15,21 @@ names: [Getting started]
     I could be something like prospektor.ai/learn"*. The words are the mails'
     own (`data/lessons.json`, out of the studio's `public/lessons.js`), drawn
     in the /resources/ idiom: the same hub hero, the same card grid, the same
-    ending at the free scan. Three groups named by when a customer meets the
-    lessons, the way Getting started draws them in the product (#741). -#}
+    ending at the free scan. Four courses, each named after the result at
+    its end, the way the Academy draws them (#1191, #1198): the same quiet
+    eyebrow the three time-based groups had, kept because a heading that
+    names the result says what the steps under it get a cold reader. The
+    courses' minutes stay in the product. -#}
 
 <header class="res-hub-hero">
   <div class="res-hub-hero-inner">
     <span class="tag">learn</span>
-    <h1 class="res-hub-h1">Eight lessons, one press each</h1>
+    <h1 class="res-hub-h1">Nine steps, one press each</h1>
     <p class="res-hub-lede">
-      This is the course a new workspace is mailed, one lesson a day. Each one
-      is a thing the studio does and the press that does it, from the box on
-      Getting started to the token that lets your own tools call it. Ten minutes
-      to read; a week to do.
+      This is the course a new workspace is mailed, one step a day, in four
+      short courses. Each course ends in a result: a first meeting from a cold
+      company, a warm introduction, one of your competitor's customers, a
+      sharper pitch. About {{ lessons.minutes }} minutes in all.
     </p>
   </div>
 </header>

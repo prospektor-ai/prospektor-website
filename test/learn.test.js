@@ -1,9 +1,9 @@
 // /learn/ — the getting-started course as pages (#742).
 //
 // What these guard, in the order they would break:
-//   - the snapshot the pages are drawn from is the course: eight lessons whose
-//     groups cover the days between them, contiguously, the way the studio's
-//     own test pins `COURSE_GROUPS`;
+//   - the snapshot the pages are drawn from is the course: nine steps whose
+//     four courses cover the days between them, contiguously, the way the
+//     studio's own test pins `COURSES` (#1191, #1198);
 //   - the hub builds, lists every lesson under its group, and ends at the free
 //     scan, which is what the section is for on a marketing site;
 //   - every lesson builds to its own URL with the mail's own words on it: the
@@ -34,16 +34,18 @@ describe('/learn/', () => {
   before(() => { built = siteBuild('learn'); SITE = built.dir; });
   after(() => built && built.cleanup());
 
-  test('the snapshot is the course: eight lessons, three groups covering the days between them', () => {
-    assert.strictEqual(data.lessons.length, 8);
-    assert.deepStrictEqual(data.lessons.map(l => l.day), [1, 2, 3, 4, 5, 6, 7, 8]);
+  test('the snapshot is the course: nine steps, four courses covering the days between them', () => {
+    assert.strictEqual(data.lessons.length, 9);
+    assert.deepStrictEqual(data.lessons.map(l => l.day), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    assert.strictEqual(data.groups.length, 4);
+    assert.ok(data.groups.every(g => g.id && g.name && g.minutes > 0), 'every course has an id, a name and its minutes');
     assert.ok(data.source && data.source.repo === 'prospektor-ai/studio' && data.fetchedAt, 'the snapshot says where and when it came from');
     let expected = 1;
     for (const g of data.groups) {
       assert.strictEqual(g.days[0], expected, `${g.name} starts at day ${g.days[0]}, expected ${expected}`);
       expected = g.days[1] + 1;
     }
-    assert.strictEqual(expected, 9, 'the groups cover every day and stop at the last');
+    assert.strictEqual(expected, 10, 'the courses cover every day and stop at the last');
     for (const l of data.lessons) {
       assert.ok(l.subject && l.opener && l.close && l.bullets.length >= 1 && l.bullets.length <= 3, `day ${l.day} is a subject, an opener, one to three bullets and a close`);
     }
@@ -53,7 +55,7 @@ describe('/learn/', () => {
     for (const l of lessons.lessons) {
       assert.ok(l.title.length <= 60, `${l.url}: title is ${l.title.length} chars`);
       assert.ok(l.description.length <= 160 && l.description.length > 20, `${l.url}: description is ${l.description.length} chars`);
-      assert.match(l.title, new RegExp(`^Day ${l.day} of 8: `));
+      assert.match(l.title, new RegExp(`^Day ${l.day} of 9: `));
     }
   });
 
@@ -65,6 +67,7 @@ describe('/learn/', () => {
       assert.ok(text(hub).includes(l.subject), `the hub does not name day ${l.day}`);
     }
     assert.ok(/href="\/#scan"/.test(hub), 'the hub does not end at the scan');
+    assert.ok(lessons.minutes >= 9 && text(hub).includes(`About ${lessons.minutes} minutes in all`), 'the hub says how long the course is, from the table');
     assert.strictEqual((hub.match(/<h1\b/g) || []).length, 1);
   });
 
@@ -93,7 +96,7 @@ describe('/learn/', () => {
       if (next) assert.ok(html.includes(`href="${next.url}"`), `${l.url} does not reach ${next.url}`);
       else assert.ok(/learn-nav-next" href="\/learn\/"/.test(html), 'the last lesson returns to the hub');
       if (previous) assert.ok(html.includes(`href="${previous.url}"`), `${l.url} does not reach ${previous.url}`);
-      assert.ok(!html.includes('/learn/day-0/') && !html.includes('/learn/day-9/'), 'no link to a day that does not exist');
+      assert.ok(!html.includes('/learn/day-0/') && !html.includes('/learn/day-10/'), 'no link to a day that does not exist');
     }
   });
 
@@ -105,16 +108,16 @@ describe('/learn/', () => {
 
   test('the coverage tool reads the lessons as surfaces, and a lesson naming a lost button fails by name', () => {
     const surfaces = R.readLessons();
-    assert.strictEqual(surfaces.length, 8);
+    assert.strictEqual(surfaces.length, 9);
     assert.ok(surfaces.every(s => s.kind === 'lesson' && Array.isArray(s.names) && s.text.length > 50));
-    assert.ok(R.readSurfaces().filter(s => s.kind === 'lesson').length === 8, 'the real report includes them');
+    assert.ok(R.readSurfaces().filter(s => s.kind === 'lesson').length === 9, 'the real report includes them');
     const report = R.resourcesCoverage({
       snapshot: { strings: Array.from({ length: 200 }, (_, i) => `String ${i}`), fetchedAt: '2026-09-29', commit: 'abc1234' },
       corpus: [{ name: '01-getting-started.md', text: 'Nothing about it.' }],
-      surfaces: [{ file: 'data/lessons.json#day-9', kind: 'lesson', slug: null, names: ['Old button'], text: 'Press Old button.' }],
+      surfaces: [{ file: 'data/lessons.json#day-10', kind: 'lesson', slug: null, names: ['Old button'], text: 'Press Old button.' }],
       exclusions: [],
     });
     const failures = R.resourcesFailures(report);
-    assert.ok(failures.some(f => f.includes('data/lessons.json#day-9') && f.includes('"Old button"')), failures.join('\n'));
+    assert.ok(failures.some(f => f.includes('data/lessons.json#day-10') && f.includes('"Old button"')), failures.join('\n'));
   });
 });

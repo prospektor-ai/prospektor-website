@@ -35,5 +35,7 @@ module.exports = () => {
     l.next = brief(lessons.find(o => o.day === l.day + 1)) || null;
   }
   const groups = raw.groups.map(g => ({ ...g, lessons: lessons.filter(l => l.day >= g.days[0] && l.day <= g.days[1]) }));
-  return { count, groups, lessons, fetchedAt: raw.fetchedAt, source: raw.source };
+  // The course's length in all, so the hub's one sentence about it cannot drift from the table (#1198).
+  const minutes = groups.reduce((sum, g) => sum + (g.minutes || 0), 0);
+  return { count, groups, lessons, minutes, fetchedAt: raw.fetchedAt, source: raw.source };
 };
