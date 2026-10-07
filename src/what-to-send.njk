@@ -2,6 +2,7 @@
 layout: base.njk
 title: What to send
 description: "The pitch deck, one-pager, cold email and proposal in your voice, replies to leads who wrote to you, and a call sheet in about a minute, with nothing invented."
+pageCss: /assets/css/tile-pages.css
 # One page per language (#535) — see src/index.njk for the reasoning.
 pagination:
   data: languages
@@ -12,56 +13,149 @@ permalink: "{{ language.prefix }}/what-to-send/"
 ---
 
 {#- #153, 24 Aug 2026: the second half of the product thesis and the one worth
-    paying for. Rewritten for #1092 (7 Oct 2026) in the studio's names, one
-    card per thing you send. Every claim is in the studio's own help
-    (docs/help/03-pitches.md, 06-calls.md). Do not soften "nothing invented":
-    the product keeps it mechanically. -#}
+    paying for. #1092 (7 Oct 2026) put it in the studio's names. #1202 (7 Oct
+    2026) gave it splitpay.com/mortgage's rhythm, the same seven sections as
+    /who-to-pitch/, styles in tile-pages.css. Every claim is in the studio's
+    own help (docs/help/03-pitches.md, 06-calls.md, 07-outcomes.md). Do not
+    soften "nothing invented": the product keeps it mechanically, which is
+    why every price and date in the drawn pieces is a bracketed gap. -#}
+{%- set ph = abtest.photos %}
 
-<header class="page-hero">
-  <div class="page-hero-inner">
-    <h1 class="page-h1">{% t %}What to send{% endt %}</h1>
-    <p class="page-lede">{% t %}The pitch for each company, written in your voice and grounded in what has already worked for you.{% endt %}</p>
-    <div class="page-hero-actions">
+<header class="tp-hero tp-what">
+  <div class="tp-hero-in">
+    <div>
+      <h1 class="page-h1">{% t %}What to send{% endt %}</h1>
+      <p class="tp-display">{% t %}The pitch, written before your coffee is cold.{% endt %}</p>
+      <p class="tp-lede">{% t %}For each company: the deck, the one-pager, the cold email and the proposal, in your voice and built on what has worked for you.{% endt %}</p>
       <a class="btn-cta" href="{{ '/pricing/' | localize }}">{% t %}See the price{% endt %}</a>
+      <ul class="tp-ticks">
+        <li>{% t %}Each piece in under two minutes{% endt %}</li>
+        <li>{% t %}Nothing invented{% endt %}</li>
+        <li>{% t %}Your whole team{% endt %}</li>
+      </ul>
     </div>
+    {%- if ph.what %}
+    <div class="tp-shot">
+      <img src="{{ ph.what.src | asset }}" width="{{ ph.what.width }}" height="{{ ph.what.height }}" fetchpriority="high" decoding="async" alt="{% t %}Hands on a laptop with a short email on screen, a coffee beside it{% endt %}">
+      <div class="tp-chip tp-chip-a" aria-hidden="true">
+        <div class="tp-chip-t">{% t %}Cold email{% endt %}</div>
+        <b>{% t %}Harborline and Ledgerpost: the rekeying{% endt %}</b>
+        <p>{% t %}Your investor update names customs delay as the top drag on margin, and nine people retype filings to get there.{% endt %}</p>
+      </div>
+      <div class="tp-chip tp-chip-b" aria-hidden="true">
+        <div class="tp-chip-t">{% t %}Ready{% endt %}</div>
+        <div class="tp-roles"><span>{% t %}Deck{% endt %}</span><span>{% t %}One-pager{% endt %}</span><span>{% t %}Cold email{% endt %}</span><span>{% t %}Proposal{% endt %}</span></div>
+      </div>
+    </div>
+    {%- endif %}
   </div>
 </header>
 
-<section class="sec sec-first">
-  <div class="col">
-    <div class="grid2">
-      <article class="hcard">
-        <h2>{% t %}The pitch{% endt %}</h2>
-        <p>{% t %}A pitch deck, a one-pager, a cold email and a proposal. Each piece is one press and lands in under two minutes, editable and shareable at once.{% endt %}</p>
-      </article>
-      <article class="hcard" id="in-your-voice">
-        <h2>{% t %}In your voice{% endt %}</h2>
-        <p>{% t %}Save an edit and later pitches are written against it. Record what happened with a company, and every pitch after it is written from that.{% endt %}</p>
-      </article>
-      <article class="hcard">
-        <h2>{% t %}Nothing invented{% endt %}</h2>
-        <p>{% t %}Numbers come from your brief or a cited source. Anything else becomes a bracketed placeholder for you to fill.{% endt %}</p>
-      </article>
-      <article class="hcard">
-        <h2>{% t %}Inbound{% endt %}</h2>
-        <p>{% t %}Paste what a lead sent you and get the reply to send, with whether they are worth your time. A price or a date in it comes only from you.{% endt %}</p>
-      </article>
-      <article class="hcard">
-        <h2>{% t %}Prepare a call{% endt %}</h2>
-        <p>{% t %}Name the company and which call it is. In about a minute you have a call sheet: the goal, the talking points, the objection they will raise and what to say back.{% endt %}</p>
-      </article>
-      <article class="hcard">
-        <h2>{% t %}Library{% endt %}</h2>
-        <p>{% t %}Every pitch you have written, sorted by the search it came from. Share one with a link, print it, or push it to your CRM.{% endt %}</p>
-      </article>
+<section class="tp-sec tp-white">
+  <div class="tp-in">
+    <div class="tp-sh">
+      <h2>{% t %}One press per piece{% endt %}</h2>
+      <p>{% t %}Each lands in under two minutes, editable and shareable at once.{% endt %}</p>
+    </div>
+    <div class="tp-fmts">
+      <div class="tp-fm">
+        <div class="tp-pv tp-bg-who" aria-hidden="true"><div class="tp-doc"><b>{% t %}Harborline and Ledgerpost: the rekeying{% endt %}</b><p>{% t %}We already hold the filing data for 11 of your 14 ports. Worth twenty minutes to try one?{% endt %}</p></div></div>
+        <h3>{% t %}Cold email{% endt %}</h3>
+        <p>{% t %}Short, specific, one ask.{% endt %}</p>
+      </div>
+      <div class="tp-fm">
+        <div class="tp-pv tp-bg-learn" aria-hidden="true"><div class="tp-doc"><span class="tp-k">Harborline · 04</span><b>{% t %}Nine people, one retyped filing{% endt %}</b><div class="tp-bars"><span style="width:90%"></span><span style="width:70%"></span><span style="width:80%"></span><span style="width:40%"></span></div></div></div>
+        <h3>{% t %}Pitch deck{% endt %}</h3>
+        <p>{% t %}Their problem first, then you.{% endt %}</p>
+      </div>
+      <div class="tp-fm">
+        <div class="tp-pv tp-bg-intro" aria-hidden="true"><div class="tp-doc"><span class="tp-k">{% t %}One-pager{% endt %}</span><b>{% t %}Customs filings without the rekeying{% endt %}</b><div class="tp-bars"><span style="width:95%"></span><span style="width:85%"></span><span style="width:60%"></span><span style="width:88%"></span><span style="width:50%"></span></div></div></div>
+        <h3>{% t %}One-pager{% endt %}</h3>
+        <p>{% t %}The case on a page.{% endt %}</p>
+      </div>
+      <div class="tp-fm">
+        <div class="tp-pv tp-bg-what" aria-hidden="true"><div class="tp-doc"><span class="tp-k">{% t %}Proposal{% endt %}</span><b>{% t %}A pilot on the Rotterdam lane{% endt %}</b><div class="tp-bars"><span style="width:80%"></span><span style="width:92%"></span></div><p class="tp-gap">{% t %}Price:{% endt %} <span class="tp-ph">{% t %}[your price]{% endt %}</span></p></div></div>
+        <h3>{% t %}Proposal{% endt %}</h3>
+        <p>{% t %}A price or a date comes only from you.{% endt %}</p>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="page-split">
-  <div class="page-split-inner">
-    <h2>{% t %}Free tells you who to chase. Paid gives you what to send.{% endt %}</h2>
-    <p>{% t %}Who to pitch is free to try, with no account.{% endt %}</p>
-    <a class="btn-ghost" href="{{ '/who-to-pitch/' | localize }}">{% t %}← First: who to pitch{% endt %}</a>
+<section class="tp-sec tp-dark" id="in-your-voice">
+  <div class="tp-in">
+    <div class="tp-sh">
+      <h2>{% t %}In your voice, and sharper with every pitch{% endt %}</h2>
+      <p>{% t %}Save an edit and later pitches are written against it. Record what happened, and every pitch after it is written from that.{% endt %}</p>
+    </div>
+    <div class="tp-loop" aria-hidden="true">
+      <ul class="tp-outs">
+        <li><i class="tp-dot-good"></i>{% t %}Won{% endt %}</li>
+        <li><i class="tp-dot-blue"></i>{% t %}Meeting booked{% endt %}</li>
+        <li><i class="tp-dot-grey"></i>{% t %}No reply{% endt %}</li>
+      </ul>
+      <div class="tp-arr">→</div>
+      <div class="tp-brief">
+        <div class="tp-chip-t">{% t %}Your brief{% endt %}</div>
+        <div>{% t %}Sells to freight forwarders above 100,000 shipments{% endt %}</div>
+        <div>{% t %}Sounds plain, never salesy{% endt %}</div>
+        <div class="tp-new">{% t %}What has worked: the rekeying line got replies{% endt %}</div>
+      </div>
+    </div>
+    <ul class="tp-facts">
+      <li><b>{% t %}Your edits{% endt %}</b>{% t %}later pitches follow them{% endt %}</li>
+      <li><b>{% t %}Your outcomes{% endt %}</b>{% t %}every pitch after learns{% endt %}</li>
+      <li><b>{% t %}Your numbers{% endt %}</b>{% t %}or a cited source{% endt %}</li>
+    </ul>
   </div>
+</section>
+
+<section class="tp-sec tp-white">
+  <div class="tp-in">
+    <div class="tp-sh"><h2>{% t %}And everything around the pitch{% endt %}</h2></div>
+    <div class="tp-split">
+      <div class="tp-pane tp-bg-intro">
+        <h3>{% t %}Prepare a call{% endt %}</h3>
+        <p>{% t %}Name the company and which call it is. In about a minute you have a call sheet.{% endt %}</p>
+        <div class="tp-card tp-sheet" aria-hidden="true">
+          <div class="tp-chip-t">{% t %}Goal{% endt %}</div>{% t %}Agree a pilot on one lane.{% endt %}
+          <div class="tp-chip-t">{% t %}Talking points{% endt %}</div>{% t %}The cost of the rekeying, and 11 of 14 ports already covered{% endt %}
+          <div class="tp-obj"><b>{% t %}"We just signed a two-year deal."{% endt %}</b><br>{% t %}The pilot runs beside it, on one lane, for a month.{% endt %}</div>
+        </div>
+      </div>
+      <div class="tp-pane tp-bg-what">
+        <h3>{% t %}Answer inbound{% endt %}</h3>
+        <p>{% t %}Paste what a lead sent you and get the reply to send, with whether they are worth your time.{% endt %}</p>
+        <div class="tp-card tp-sheet" aria-hidden="true">
+          <div class="tp-chip-t">{% t %}They wrote{% endt %}</div>{% t %}"Can you send pricing and a time next week?"{% endt %}
+          <div class="tp-chip-t">{% t %}Worth it{% endt %}</div><span class="tp-yes">{% t %}Yes: 300 people, in your market{% endt %}</span>
+          <div class="tp-chip-t">{% t %}Your reply{% endt %}</div>{% t %}Happy to. The pilot is <span class="tp-ph">[your price]</span>. Does <span class="tp-ph">[a day]</span> work?{% endt %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tp-sec">
+  <div class="tp-in">
+    <div class="tp-sh"><h2>{% t %}Questions{% endt %}</h2></div>
+    <div class="tp-faq">
+      <details open><summary>{% t %}What does it cost?{% endt %}</summary><p>{% t %}One workspace, one price, your whole team in.{% endt %} <a href="{{ '/pricing/' | localize }}">{% t %}See the price{% endt %}</a></p></details>
+      <details><summary>{% t %}Will it make things up?{% endt %}</summary><p>{% t %}Numbers come from your brief or a cited source. Anything else becomes a bracketed placeholder for you to fill.{% endt %}</p></details>
+      <details><summary>{% t %}Does it sound like me?{% endt %}</summary><p>{% t %}It writes from your brief and your saved edits, and every edit you save carries into the next pitch.{% endt %}</p></details>
+      <details><summary>{% t %}Can I send it from my CRM?{% endt %}</summary><p>{% t %}A finished pitch goes to your CRM in one press.{% endt %}</p></details>
+      <details><summary>{% t %}Can I share a pitch?{% endt %}</summary><p>{% t %}Share one with a link, print it, or push it to your CRM.{% endt %}</p></details>
+      <details><summary>{% t %}Do I have to find the companies first?{% endt %}</summary><p>{% t %}No. Who to pitch finds them, and the first three are free.{% endt %}</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="tp-close">
+  <h2>{% t %}The pitch, written before your coffee is cold.{% endt %}</h2>
+  <p>{% t %}Every company you pick, in your voice.{% endt %}</p>
+  <a class="btn-cta" href="{{ '/pricing/' | localize }}">{% t %}See the price{% endt %}</a>
+  <a class="tp-next tp-to-who" href="{{ '/who-to-pitch/' | localize }}">
+    <div><b>{% t %}Not sure who to pitch yet?{% endt %}</b><span>{% t %}Scan your site and get three companies that fit, free.{% endt %}</span></div>
+    <em>{% t %}Who to pitch →{% endt %}</em>
+  </a>
 </section>

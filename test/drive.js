@@ -1210,13 +1210,12 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     await page.goto('http://localhost:8899/who-to-pitch/');
     check('the WHO page offers the free scan', await page.isVisible('a[href="/#scan"]'));
     await page.goto('http://localhost:8899/what-to-send/');
-    // #1092 rebuilt the page as one card per thing you send, in the studio's
-    // names; the claim is unchanged: every deliverable is named on it.
-    const whatText = await page.textContent('main, body');
-    check('the WHAT page names every deliverable a run produces',
-      (await page.$$eval('.hcard h2', n => n.length)) === 6
-      && ['deck', 'one-pager', 'cold email', 'proposal', 'reply', 'call sheet'].every(w => whatText.toLowerCase().includes(w)),
-      (await page.$$eval('.hcard h2', n => n.map(e => e.textContent))).join(' · '));
+    // #1092 rebuilt the page in the studio's names and #1202 in sections, one
+    // heading per thing you send; the claim is unchanged: every deliverable is
+    // named on it.
+    const whatText = (await page.textContent('body')).toLowerCase();
+    const whatMissing = ['deck', 'one-pager', 'cold email', 'proposal', 'reply', 'call sheet'].filter(w => !whatText.includes(w));
+    check('the WHAT page names every deliverable a run produces', whatMissing.length === 0, whatMissing);
     await page.close();
   }
 

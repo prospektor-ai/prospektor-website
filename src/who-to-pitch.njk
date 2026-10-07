@@ -1,7 +1,8 @@
 ---
 layout: base.njk
 title: Who to pitch
-description: "Leads for you, Research and Counterprospekt find the companies worth approaching, and a glance scores each one in about 15 seconds and names who to write to."
+description: "The companies worth your next email. Prospektor reads your website, finds companies that fit you and names who to write to."
+pageCss: /assets/css/tile-pages.css
 # One page per language (#535, the same shape #114 gave the funnel) — see
 # src/index.njk for the reasoning. Every sentence sits in a {% t %} block and
 # renders untouched on the English page.
@@ -14,57 +15,205 @@ permalink: "{{ language.prefix }}/who-to-pitch/"
 ---
 
 {#- #153, 24 Aug 2026: the first half of the product thesis, given a page of
-    its own. Rewritten for #1092 (7 Oct 2026) in the studio's names, one card
-    per screen, so a visitor who signs up meets the menu they read about.
-    Every claim here is in the studio's own help (docs/help/02-screens.md,
-    03-pitches.md, 05-network.md). Publish the method, never the mechanics
-    (#746): no score band, no cut-point, no search or fetch budget. -#}
+    its own. #1092 (7 Oct 2026) put it in the studio's names. #1202 (7 Oct
+    2026, the operator pointing at splitpay.com/mortgage) gave it that page's
+    rhythm: a photo hero with product pieces on it, three steps, where the
+    leads come from, the glance on a dark band, people and intros, short
+    questions, and a close that repeats the headline. Styles in
+    tile-pages.css, loaded here only.
+    Every claim is in the studio's own help (docs/help/02-screens.md,
+    03-pitches.md, 05-network.md). The names in the drawn pieces (Ledgerpost
+    pitching Harborline and Calder) are invented example content, the same
+    cast as the homepage tiles. One worked example and no scale: publish the
+    method, never the mechanics (#746). -#}
+{%- set ph = abtest.photos %}
 
-<header class="page-hero">
-  <div class="page-hero-inner">
-    <h1 class="page-h1">{% t %}Who to pitch{% endt %}</h1>
-    <p class="page-lede">{% t %}The companies worth approaching, why each one fits, the people to write to and who can introduce you.{% endt %}</p>
-    <div class="page-hero-actions">
+<header class="tp-hero tp-who">
+  <div class="tp-hero-in">
+    <div>
+      <h1 class="page-h1">{% t %}Who to pitch{% endt %}</h1>
+      <p class="tp-display">{% t %}The companies worth your next email.{% endt %}</p>
+      <p class="tp-lede">{% t %}Give it your website. It finds companies that fit you, scores each one and names who to write to.{% endt %}</p>
       <a class="btn-cta" href="{{ '/#scan' | localize }}">{% t %}Scan your site for free{% endt %}</a>
+      <ul class="tp-ticks">
+        <li>{% t %}No card, no sign-up to start{% endt %}</li>
+        <li>{% t %}Three companies that fit, scored{% endt %}</li>
+      </ul>
     </div>
+    {%- if ph.who %}
+    <div class="tp-shot">
+      <img src="{{ ph.who.src | asset }}" width="{{ ph.who.width }}" height="{{ ph.who.height }}" fetchpriority="high" decoding="async" alt="{% t %}A founder at a kitchen table, circling one name on a printed list{% endt %}">
+      <div class="tp-chip tp-chip-a" aria-hidden="true">
+        <div class="tp-chip-t">{% t %}Leads for you{% endt %}</div>
+        <div class="tp-lead"><span class="tp-lg tp-c1">B</span><span class="tp-nm"><b>Brightwater Forwarding</b><span>{% t %}Like Northwind, one of your customers{% endt %}</span></span><span class="tp-fit tp-g">91</span></div>
+        <div class="tp-lead"><span class="tp-lg tp-c2">C</span><span class="tp-nm"><b>Calder Shipping Group</b><span>{% t %}Hiring a customs lead this month{% endt %}</span></span><span class="tp-fit tp-g">84</span></div>
+      </div>
+      <div class="tp-chip tp-chip-b" aria-hidden="true">
+        <div class="tp-chip-t">{% t %}Write to{% endt %}</div>
+        <div class="tp-lead"><span class="tp-av tp-c4">M</span><span class="tp-nm"><b>Marieke de Vries</b><span>{% t %}COO, Harborline{% endt %}</span></span></div>
+      </div>
+    </div>
+    {%- endif %}
   </div>
 </header>
 
-<section class="sec sec-first">
-  <div class="col">
-    <div class="grid2">
-      <article class="hcard">
-        <h2>{% t %}Leads for you{% endt %}</h2>
-        <p>{% t %}Companies worth approaching, a few at a time, each in a row that says why it is there: like a deal you closed, like one of your customers, or named on a page you pasted. Cross one out and the next search learns from it.{% endt %}</p>
-      </article>
-      <article class="hcard">
-        <h2>{% t %}Research{% endt %}</h2>
-        <p>{% t %}Read one company, find more like your best customers, or paste a whole list of up to a hundred and close the tab. Each one lands in your Library.{% endt %}</p>
-      </article>
-      <article class="hcard">
-        <h2>Counterprospekt</h2>
-        <p>{% t %}Who buys from your competitors. Each client comes with the page that names it, and their clients are your next leads.{% endt %}</p>
-      </article>
-      <article class="hcard">
-        <h2>{% t %}A glance{% endt %}</h2>
-        <p>{% t %}About 15 seconds per company: a fit score, the one argument the case rests on, signals for and against, and the roles to approach.{% endt %}</p>
-      </article>
-      <article class="hcard">
-        <h2>{% t %}Decision-makers{% endt %}</h2>
-        <p>{% t %}The people who hold those roles, with their LinkedIn and work email where one was found. A name comes only with a source behind it; otherwise the role stays a role.{% endt %}</p>
-      </article>
-      <article class="hcard" id="warm-intros">
-        <h2>{% t %}Warm intros{% endt %}</h2>
-        <p>{% t %}Who in your network can introduce you, each tie checked against what was read, and two drafts: your ask, and the email they send on.{% endt %}</p>
-      </article>
+<section class="tp-sec tp-white">
+  <div class="tp-in">
+    <div class="tp-sh">
+      <h2>{% t %}From your website to a name to write to{% endt %}</h2>
+      <p>{% t %}Three steps, and the first one is free.{% endt %}</p>
+    </div>
+    <div class="tp-steps">
+      <div class="tp-step">
+        <div class="tp-frame" aria-hidden="true">
+          <div class="tp-small">{% t %}Your company website{% endt %}</div>
+          <div class="tp-field"><span>ledgerpost.com</span><span>{% t %}Find my leads{% endt %}</span></div>
+        </div>
+        <span class="tp-n" aria-hidden="true">1</span>
+        <h3>{% t %}Scan your site{% endt %}</h3>
+        <p>{% t %}It reads what you sell and works out who you should hunt for.{% endt %}</p>
+      </div>
+      <div class="tp-step">
+        <div class="tp-frame" aria-hidden="true">
+          <div class="tp-card">
+            <div class="tp-rowh">{% t %}Like Northwind, one of your customers{% endt %}</div>
+            <div class="tp-lead"><span class="tp-lg tp-c1">B</span><span class="tp-nm"><b>Brightwater Forwarding</b><span>Rotterdam</span></span><span class="tp-fit tp-g">91</span></div>
+            <div class="tp-lead"><span class="tp-lg tp-c4">K</span><span class="tp-nm"><b>Kestrel Freight</b><span>Antwerp</span></span><span class="tp-fit tp-g">86</span></div>
+            <div class="tp-lead"><span class="tp-lg tp-c3">T</span><span class="tp-nm"><b>Talbot &amp; Vance Logistics</b><span>Felixstowe</span></span><span class="tp-fit">72</span></div>
+          </div>
+        </div>
+        <span class="tp-n" aria-hidden="true">2</span>
+        <h3>{% t %}Read the shortlist{% endt %}</h3>
+        <p>{% t %}Each lead sits in a row that says why it is there.{% endt %}</p>
+      </div>
+      <div class="tp-step">
+        <div class="tp-frame" aria-hidden="true">
+          <div class="tp-card">
+            <div class="tp-gh"><span class="tp-lg tp-c2">C</span><b>Calder Shipping Group</b><span class="tp-fit tp-g">84</span></div>
+            <div class="tp-gline">{% t %}Nine people retype customs filings by hand, and they are hiring a tenth.{% endt %}</div>
+            <div class="tp-roles"><span>{% t %}Head of Customs{% endt %}</span><span>COO</span></div>
+          </div>
+        </div>
+        <span class="tp-n" aria-hidden="true">3</span>
+        <h3>{% t %}Glance at one{% endt %}</h3>
+        <p>{% t %}The fit, the one argument and who to write to.{% endt %}</p>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="page-split">
-  <div class="page-split-inner">
-    <h2>{% t %}Then write what you send them{% endt %}</h2>
-    <p>{% t %}The deck, the one-pager, the cold email and the proposal, in your voice.{% endt %}</p>
-    <a class="btn-ghost" href="{{ '/what-to-send/' | localize }}">{% t %}What to send →{% endt %}</a>
+<section class="tp-sec">
+  <div class="tp-in">
+    <div class="tp-sh">
+      <h2>{% t %}Three places your next customer hides{% endt %}</h2>
+      <p>{% t %}All three land on one list, best fit first.{% endt %}</p>
+    </div>
+    {%- if ph.learn %}
+    <div class="tp-wide"><img src="{{ ph.learn.src | asset }}" width="{{ ph.learn.width }}" height="{{ ph.learn.height }}" loading="lazy" decoding="async" alt="{% t %}A small team at a whiteboard, one ticking off a name{% endt %}"></div>
+    {%- endif %}
+    <div class="tp-over{% if not ph.learn %} tp-over-flat{% endif %}">
+      <div class="tp-oc">
+        <div class="tp-ic tp-bg-who" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 1.8l2.2 4.6 5 .6-3.7 3.4 1 5-4.5-2.5-4.5 2.5 1-5L1.8 7l5-.6z" fill="#c8432c"/></svg></div>
+        <h3>{% t %}Like your best customers{% endt %}</h3>
+        <p>{% t %}Name a customer or a deal you closed. It finds more companies like them.{% endt %}</p>
+        <div class="tp-eg" aria-hidden="true">{% t %}Like SplitPay, the deal you closed{% endt %}</div>
+      </div>
+      <div class="tp-oc">
+        <div class="tp-ic tp-bg-learn" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M3 6h11M11 3l3 3-3 3M15 12H4M7 9l-3 3 3 3" stroke="#5b4bb7" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>{% t %}Your competitors' clients{% endt %}</h3>
+        <p>{% t %}Counterprospekt finds who buys from your rivals, with the page that names each one.{% endt %}</p>
+        <div class="tp-eg" aria-hidden="true">{% t %}A client of Botika, named on their case studies{% endt %}</div>
+      </div>
+      <div class="tp-oc">
+        <div class="tp-ic tp-bg-intro" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M4 4.5h10M4 9h10M4 13.5h6" stroke="#1e8e5a" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <h3>{% t %}Any list you paste{% endt %}</h3>
+        <p>{% t %}An exhibitor list or an investor's portfolio. Up to a hundred companies, each one scored.{% endt %}</p>
+        <div class="tp-eg" aria-hidden="true">{% t %}Named on: Multimodal 2026 exhibitors{% endt %}</div>
+      </div>
+    </div>
   </div>
+</section>
+
+<section class="tp-sec tp-dark">
+  <div class="tp-in">
+    <div class="tp-sh">
+      <h2>{% t %}One glance tells you if it's worth it{% endt %}</h2>
+      <p>{% t %}Before you spend an hour on a company, spend fifteen seconds.{% endt %}</p>
+    </div>
+    <div class="tp-glance" aria-hidden="true">
+      <div class="tp-score"><div><b>84</b><span>{% t %}Fit{% endt %}</span></div></div>
+      <div>
+        <div class="tp-gh"><span class="tp-lg tp-c2">C</span><b>Calder Shipping Group</b><span class="tp-tag">calder-shipping.com</span></div>
+        <p class="tp-arg">{% t %}Nine people retype customs filings by hand, and their investor update names customs delay as the top drag on margin.{% endt %}</p>
+        <div class="tp-sig">
+          <div class="tp-for"><i>{% t %}For{% endt %}</i>{% t %}Hiring a customs lead this month{% endt %}<br>{% t %}Ships through 11 ports you already cover{% endt %}</div>
+          <div class="tp-ag"><i>{% t %}Against{% endt %}</i>{% t %}Signed a two-year freight software deal in 2025{% endt %}</div>
+        </div>
+        <div class="tp-roles"><span>{% t %}Head of Customs{% endt %}</span><span>COO</span><span>{% t %}Finance Director{% endt %}</span></div>
+      </div>
+    </div>
+    <ul class="tp-facts">
+      <li><b>{% t %}About 15 seconds{% endt %}</b>{% t %}per company{% endt %}</li>
+      <li><b>{% t %}One line{% endt %}</b>{% t %}the argument it rests on{% endt %}</li>
+      <li><b>{% t %}Both sides{% endt %}</b>{% t %}signals for and against{% endt %}</li>
+    </ul>
+  </div>
+</section>
+
+<section class="tp-sec tp-white" id="warm-intros">
+  <div class="tp-in">
+    <div class="tp-sh">
+      <h2>{% t %}Then who to write to, and who can introduce you{% endt %}</h2>
+    </div>
+    <div class="tp-split">
+      <div class="tp-pane tp-bg-who">
+        <h3>{% t %}Decision-makers{% endt %}</h3>
+        <p>{% t %}The people in those roles, with their LinkedIn and work email where one was found. A name comes only with a source behind it.{% endt %}</p>
+        <div aria-hidden="true">
+          <div class="tp-person"><span class="tp-av tp-c4">M</span><span class="tp-nm"><b>Marieke de Vries</b><span>{% t %}COO · LinkedIn · work email found{% endt %}</span></span><span class="tp-tag">{% t %}Write to{% endt %}</span></div>
+          <div class="tp-person"><span class="tp-av tp-c2">J</span><span class="tp-nm"><b>Jonas Albers</b><span>{% t %}Head of Customs · LinkedIn{% endt %}</span></span></div>
+          <div class="tp-person"><span class="tp-av tp-c7">?</span><span class="tp-nm"><b>{% t %}Finance Director{% endt %}</b><span>{% t %}No name with a source behind it yet{% endt %}</span></span></div>
+        </div>
+      </div>
+      <div class="tp-pane tp-photo-pane{% if not ph.intro %} tp-bg-intro{% endif %}">
+        {%- if ph.intro %}
+        <img src="{{ ph.intro.src | asset }}" width="{{ ph.intro.width }}" height="{{ ph.intro.height }}" loading="lazy" decoding="async" alt="{% t %}Two people laughing over coffee, one showing the other a phone{% endt %}">
+        {%- endif %}
+        <div class="tp-chain">
+          <h3>{% t %}Warm intros{% endt %}</h3>
+          <p>{% t %}Who in your network can introduce you, and two drafts: your ask, and the email they send on.{% endt %}</p>
+          <div class="tp-ch" aria-hidden="true">
+            <div class="tp-pp"><span class="tp-av tp-c6">Y</span><b>{% t %}You{% endt %}</b><span>Ledgerpost</span></div><span class="tp-arr">→</span>
+            <div class="tp-pp"><span class="tp-av tp-c5">S</span><b>Sam Okafor</b><span>{% t %}Your old colleague{% endt %}</span></div><span class="tp-arr">→</span>
+            <div class="tp-pp"><span class="tp-av tp-c4">M</span><b>Marieke de Vries</b><span>{% t %}COO, Harborline{% endt %}</span></div>
+          </div>
+          <div class="tp-drafted" aria-hidden="true">{% t %}Drafted: your ask to Sam, and the note to forward{% endt %}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tp-sec">
+  <div class="tp-in">
+    <div class="tp-sh"><h2>{% t %}Questions{% endt %}</h2></div>
+    <div class="tp-faq">
+      <details open><summary>{% t %}Is it free?{% endt %}</summary><p>{% t %}The scan is: your site read, three companies that fit, scored, and who buys from one of your competitors. No card, no sign-up.{% endt %}</p></details>
+      <details><summary>{% t %}What do I need to start?{% endt %}</summary><p>{% t %}Your website address.{% endt %}</p></details>
+      <details><summary>{% t %}Will it suggest a company I already sell to?{% endt %}</summary><p>{% t %}No. A customer you name goes on your do-not-contact list and is never approached.{% endt %}</p></details>
+      <details><summary>{% t %}Where do the names and emails come from?{% endt %}</summary><p>{% t %}Public pages it read, each one linked. Without a source, a role stays a role.{% endt %}</p></details>
+      <details><summary>{% t %}Can I give it my own list?{% endt %}</summary><p>{% t %}Paste up to a hundred companies, or a page that lists them. Each one comes back scored.{% endt %}</p></details>
+      <details><summary>{% t %}Can my team use it?{% endt %}</summary><p>{% t %}Yes. One workspace, your whole team, no seats to count.{% endt %}</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="tp-close">
+  <h2>{% t %}The companies worth your next email.{% endt %}</h2>
+  <p>{% t %}Three of them, free, from your website.{% endt %}</p>
+  <a class="btn-cta" href="{{ '/#scan' | localize }}">{% t %}Scan your site for free{% endt %}</a>
+  <a class="tp-next tp-to-what" href="{{ '/what-to-send/' | localize }}">
+    <div><b>{% t %}Found them? Now write to them.{% endt %}</b><span>{% t %}The deck, the one-pager, the cold email and the proposal, in your voice.{% endt %}</span></div>
+    <em>{% t %}What to send →{% endt %}</em>
+  </a>
 </section>
