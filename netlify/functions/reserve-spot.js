@@ -1,8 +1,35 @@
 // Founding-spot reservations from /checkout/ while Stripe checkout isn't
 // open yet. Sends one notification email to the operator; nothing is stored.
+
+// Per-caller limit (studio #1160): a few sends per caller per window, counted in
+// this instance's memory. It is best effort by design: a cold start or a second
+// instance starts its own count, and nothing is written anywhere. A real
+// visitor who hits it still lands, because checkout.js falls back to Netlify
+// Forms on any answer that is not ok.
+const LIMIT = 5;
+const WINDOW_MS = 10 * 60 * 1000;
+const seen = new Map();
+
+function limited(event, now) {
+  const h = event.headers || {};
+  const ip = h['x-nf-client-connection-ip'] || String(h['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
+  if (seen.size > 5000) seen.clear();
+  const hits = (seen.get(ip) || []).filter(t => now - t < WINDOW_MS);
+  if (hits.length >= LIMIT) { seen.set(ip, hits); return true; }
+  hits.push(now);
+  seen.set(ip, hits);
+  return false;
+}
+
+exports._resetLimit = () => seen.clear();
+
 exports.handler = async function(event) {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method not allowed' };
+  }
+
+  if (limited(event, Date.now())) {
+    return { statusCode: 429, body: JSON.stringify({ error: 'Too many requests' }) };
   }
 
   let data;
