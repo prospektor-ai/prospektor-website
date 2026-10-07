@@ -14,6 +14,9 @@ const { serve } = require('./serve');
 const H = require('../src/assets/js/help-render.js');
 
 let pass = 0, fail = 0;
+// The homepage tiles test (studio #1185) tags sign-up links with ab=draw|photo
+// while it runs; a check about where a link goes reads it without that tag.
+const noAb = href => { if (!href) return href; const u = new URL(href); u.searchParams.delete('ab'); return u.toString(); };
 const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else { fail++; console.log('  FAIL', n, x !== undefined ? JSON.stringify(x) : ''); } };
 
 (async () => {
@@ -167,13 +170,13 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     await page.waitForTimeout(400);
     const SIGNUP = 'https://studio.prospektor.ai/signup';
     check('the homepage tile opens the studio sign-up',
-      (await page.getAttribute('#buyLink', 'href')) === SIGNUP, await page.getAttribute('#buyLink', 'href'));
+      noAb(await page.getAttribute('#buyLink', 'href')) === SIGNUP, await page.getAttribute('#buyLink', 'href'));
     check('and there is no form on the homepage to fill', (await page.locator('#buyForm').count()) === 0);
     check('and nothing asks the checkout function anything', probed === 0, probed);
     check('scan result CTA opens the studio sign-up',
-      (await page.getAttribute('#scanCta', 'href')) === SIGNUP, await page.getAttribute('#scanCta', 'href'));
+      noAb(await page.getAttribute('#scanCta', 'href')) === SIGNUP, await page.getAttribute('#scanCta', 'href'));
     check('scan fallback CTA opens the studio sign-up',
-      (await page.getAttribute('#scanFallbackCta', 'href')) === SIGNUP, await page.getAttribute('#scanFallbackCta', 'href'));
+      noAb(await page.getAttribute('#scanFallbackCta', 'href')) === SIGNUP, await page.getAttribute('#scanFallbackCta', 'href'));
     await page.close();
   }
 
@@ -1268,9 +1271,9 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
       === 'https://studio.prospektor.ai/signup?lang=es', await page.getAttribute('#buyLink', 'href'));
     await page.goto('http://localhost:8899/es/');
     check('/es/ sends lang=es from the tile and both scan CTAs',
-      (await page.getAttribute('#buyLink', 'href')) === 'https://studio.prospektor.ai/signup?lang=es'
-      && (await page.getAttribute('#scanCta', 'href')) === 'https://studio.prospektor.ai/signup?lang=es'
-      && (await page.getAttribute('#scanFallbackCta', 'href')) === 'https://studio.prospektor.ai/signup?lang=es',
+      noAb(await page.getAttribute('#buyLink', 'href')) === 'https://studio.prospektor.ai/signup?lang=es'
+      && noAb(await page.getAttribute('#scanCta', 'href')) === 'https://studio.prospektor.ai/signup?lang=es'
+      && noAb(await page.getAttribute('#scanFallbackCta', 'href')) === 'https://studio.prospektor.ai/signup?lang=es',
       await page.getAttribute('#buyLink', 'href'));
     await page.close();
   }
