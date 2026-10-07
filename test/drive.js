@@ -2191,6 +2191,14 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     await page.close();
   }
 
+  // The homepage tiles test (studio #1185), driven only when the build
+  // carries it: src/_data/abtest.js turns it on when the four photos exist.
+  {
+    const home = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+    if (/\/assets\/js\/ab\.[0-9a-f]+\.js/.test(home)) await require('./drive-ab').driveAb(browser, 'http://localhost:8899', check);
+    else console.log('  skip  tiles test: the four photos are not in src/assets/img/tiles yet');
+  }
+
   await browser.close();
   server.close();
   console.log('\n' + pass + ' passed, ' + fail + ' failed');

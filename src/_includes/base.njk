@@ -9,6 +9,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{#- The homepage tiles test (studio #1185, src/_data/abtest.js): one coin per
+    page view, written before the first paint so nobody sees the other
+    version flash. Inline because it must run before the stylesheet applies;
+    it stores nothing. Absent until all four photos exist, and only on a page
+    whose frontmatter says `abPage: true`. -#}
+{%- if abPage and abtest.enabled %}
+<script>try{document.documentElement.dataset.v=Math.random()<0.5?'photo':'draw'}catch(e){}</script>
+{%- endif %}
 {#- The <title> budget, #137. `metaTitle` fits the brand suffix to what is
     left of ~60 characters rather than always spending 37 of them; `seoTitle`
     lets a page whose own headline is longer than the budget give search a

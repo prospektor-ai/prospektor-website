@@ -11,6 +11,9 @@ pagination:
   alias: language
   addAllPagesToCollections: true
 permalink: "{{ language.prefix }}/"
+# The tiles test (studio #1185): drawings or photos, chosen per page view.
+# Inert until src/_data/abtest.js finds all four photos.
+abPage: true
 ---
 
 {#- The homepage in the studio's look (#1092, 7 Oct 2026): the grey ground,
@@ -130,6 +133,9 @@ permalink: "{{ language.prefix }}/"
             <div class="dr-lead"><span class="dr-lg dr-green">T</span><span class="dr-nm"><b>Talbot &amp; Vance Logistics</b><span>{% t %}Buys from a competitor of yours{% endt %}</span></span><span class="dr-fit">72</span><span class="dr-gl">{% t %}Glance{% endt %}</span></div>
           </div>
         </div>
+        {%- if abtest.enabled %}
+        <div class="pphoto"><img src="{{ abtest.photos.who.src | asset }}" width="{{ abtest.photos.who.width }}" height="{{ abtest.photos.who.height }}" loading="lazy" decoding="async" alt="{% t %}A founder at a kitchen table, circling one name on a printed list{% endt %}"></div>
+        {%- endif %}
         <div class="pcap"><div><h3>{% t %}Who to pitch{% endt %}</h3><p>{% t %}Companies that fit you, found and scored against your brief.{% endt %}</p></div><span class="pgo" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M6 3l5 5-5 5" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span></div>
       </a>
       <a class="ptile" href="{{ '/what-to-send/' | localize }}">
@@ -141,6 +147,9 @@ permalink: "{{ language.prefix }}/"
             <p class="dr-l">{% t %}We already hold the filing data for 11 of your 14 ports. Worth twenty minutes to try one?{% endt %}</p>
           </div>
         </div>
+        {%- if abtest.enabled %}
+        <div class="pphoto"><img src="{{ abtest.photos.what.src | asset }}" width="{{ abtest.photos.what.width }}" height="{{ abtest.photos.what.height }}" loading="lazy" decoding="async" alt="{% t %}Hands on a laptop with a short email on screen, a coffee beside it{% endt %}"></div>
+        {%- endif %}
         <div class="pcap"><div><h3>{% t %}What to send{% endt %}</h3><p>{% t %}The email, the deck and the one-pager, in your voice.{% endt %}</p></div><span class="pgo" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M6 3l5 5-5 5" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span></div>
       </a>
       <a class="ptile" href="{{ '/who-to-pitch/' | localize }}#warm-intros">
@@ -154,6 +163,9 @@ permalink: "{{ language.prefix }}/"
           </div>
           <div class="dr-ask">{% t %}Drafted: your ask to Sam, and the note to forward{% endt %}</div>
         </div>
+        {%- if abtest.enabled %}
+        <div class="pphoto"><img src="{{ abtest.photos.intro.src | asset }}" width="{{ abtest.photos.intro.width }}" height="{{ abtest.photos.intro.height }}" loading="lazy" decoding="async" alt="{% t %}Two people laughing over coffee, one showing the other a phone{% endt %}"></div>
+        {%- endif %}
         <div class="pcap"><div><h3>{% t %}Warm intros{% endt %}</h3><p>{% t %}Someone you know already knows them. It finds who, and drafts the ask.{% endt %}</p></div><span class="pgo" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M6 3l5 5-5 5" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span></div>
       </a>
       <a class="ptile" href="{{ '/what-to-send/' | localize }}#in-your-voice">
@@ -169,6 +181,9 @@ permalink: "{{ language.prefix }}/"
             </div>
           </div>
         </div>
+        {%- if abtest.enabled %}
+        <div class="pphoto"><img src="{{ abtest.photos.learn.src | asset }}" width="{{ abtest.photos.learn.width }}" height="{{ abtest.photos.learn.height }}" loading="lazy" decoding="async" alt="{% t %}A small team at a whiteboard, one ticking off a name{% endt %}"></div>
+        {%- endif %}
         <div class="pcap"><div><h3>{% t %}Sharper every pitch{% endt %}</h3><p>{% t %}Tell it what happened. The next pitch learns from it.{% endt %}</p></div><span class="pgo" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M6 3l5 5-5 5" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span></div>
       </a>
     </div>
@@ -212,6 +227,12 @@ permalink: "{{ language.prefix }}/"
   </div>
 </section>
 <script src="{{ '/assets/js/signup.js' | asset }}" defer></script>
+{#- The tiles test's counter (studio #1185, src/_data/abtest.js). After
+    signup.js on purpose: both rewrite the sign-up links, and this one only
+    adds `ab`. Not written at all until the four photos exist. -#}
+{%- if abtest.enabled %}
+<script src="{{ '/assets/js/ab.js' | asset }}" defer></script>
+{%- endif %}
 
 {#- #830/#838: the directory has a page per integration; the chips are its
     doors. Logos are the directory's own files (#841). -#}

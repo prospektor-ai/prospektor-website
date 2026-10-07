@@ -3,7 +3,7 @@
 // two Netlify functions at the route layer instead of running netlify dev.
 const http = require('http'), fs = require('fs'), path = require('path');
 const TYPES = { '.html':'text/html', '.css':'text/css', '.js':'text/javascript',
-  '.woff2':'font/woff2', '.svg':'image/svg+xml', '.png':'image/png',
+  '.woff2':'font/woff2', '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg',
   '.xml':'application/xml', '.txt':'text/plain' };
 
 function serve(root, port) {

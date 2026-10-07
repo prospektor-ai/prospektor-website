@@ -21,7 +21,8 @@
     "gsc:opportunities": "node tools/gsc.js opportunities",
     "gsc:cannibals": "node tools/gsc.js cannibals",
     "humanize": "node tools/humanize.js",
-    "demo:capture": "node tools/demo-capture.js"
+    "demo:capture": "node tools/demo-capture.js",
+    "ab": "node tools/ab-report.js"
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1"
