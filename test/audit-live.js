@@ -829,7 +829,7 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
     }
     const home = await (await fetch(SITE + l.prefix + '/')).text();
     check(`${l.prefix}/ speaks ${l.name}: the h1 is not the English one`,
-      !/Leads that fit you/.test(home.match(/<h1>[\s\S]*?<\/h1>/)?.[0] || ''));
+      !/Find Leads\./.test(home.match(/<h1>[\s\S]*?<\/h1>/)?.[0] || ''));
     // #1163: #1151 redrew the hero around the scan field, and its doors are
     // the demo and the studio's sign-up — no language's hero links /checkout/
     // any more (verified on the live pages before this claim was rewritten),

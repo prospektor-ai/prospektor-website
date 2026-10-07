@@ -45,7 +45,7 @@ describe('the language contract (#114)', () => {
   after(() => built && built.cleanup());
 
   test('English is a no-op, byte for byte, before any lookup', () => {
-    const odd = '  Leads that fit you,<br><span class="accent">and what to send them</span>\n   ';
+    const odd = '  Find Leads.<br><span class="accent">That fit you.</span>\n   ';
     assert.strictEqual(i18n.translate(odd, 'en'), odd, 'the English key came back changed');
     assert.strictEqual(i18n.t(odd, ''), odd, 'an unset language is English');
     assert.strictEqual(i18n.t(odd, 'xx'), odd, 'a language outside the set is English');
@@ -74,7 +74,7 @@ describe('the language contract (#114)', () => {
     }
     // The block the layout and the scripts depend on are all seen.
     const keys = new Set(inv.map(e => e.key));
-    for (const k of ['Sign in', 'Scan your site', 'Leads that fit you, and what to send them', 'Opening secure checkout…', 'opening {domain}…', 'Your studio is ready: sign in'])
+    for (const k of ['Sign in', 'Scan your site', 'Find Leads.<br><span class="accent">That fit you.</span>', 'Opening secure checkout…', 'opening {domain}…', 'Your studio is ready: sign in'])
       assert.ok(keys.has(k), `the extractor no longer sees ${JSON.stringify(k)}`);
     for (const k of Object.values(i18n.SUGGEST_KEYS)) assert.ok(keys.has(k), `the suggestion bar's ${JSON.stringify(k)} is not in the inventory`);
   });

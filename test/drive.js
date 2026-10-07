@@ -1308,7 +1308,7 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     await page.waitForLoadState('domcontentloaded');
     check('/es/ is Spanish', (await page.getAttribute('html', 'lang')) === 'es');
     check('no offer on the page already in the browser’s language', !(await page.$('#langSuggest')));
-    check('the h1 is Spanish', /Leads que encajan/.test(await page.textContent('h1')));
+    check('the h1 is Spanish', /Encuentra leads/.test(await page.textContent('h1')));
     check('the scan hint is Spanish', /Gratis, sin registro/.test(await page.textContent('#scanHint')));
     await page.fill('#scanInput', 'acme.com');
     await page.click('#scanBtn');

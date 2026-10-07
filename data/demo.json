@@ -4,7 +4,7 @@
   "source": {
     "repo": "prospektor-ai/studio",
     "file": "public/studio.js#TOUR_STEPS",
-    "commit": "010c93c60be3996b1fec6d5bd2114cfb4c6a4f51"
+    "commit": "a36069fec88e4c99aa55911d3da1f226980a6a7e"
   },
   "viewport": {
     "width": 1280,
@@ -81,7 +81,7 @@
         "x": 0.2141,
         "y": 0.1588,
         "w": 0.7656,
-        "h": 0.4015
+        "h": 0.5134
       },
       "title": {
         "en": "Leads for you",
@@ -107,9 +107,9 @@
       "image": "/assets/img/demo/step-03.png",
       "ring": {
         "x": 0.2141,
-        "y": 0.4181,
+        "y": 0.4761,
         "w": 0.7656,
-        "h": 0.0691
+        "h": 0.0697
       },
       "title": {
         "en": "Research",
@@ -118,18 +118,16 @@
         "nl": "Onderzoek"
       },
       "body": {
-        "en": "Press a lead and the pitch comes back: Fit thesis, Decision-makers with emails, Lookalikes, a Pitch deck and a Cold email, in your voice, with sources.",
-        "de": "Drücke einen Lead, und der Pitch kommt zurück: Fit-These, Entscheider mit E-Mails, Lookalikes, ein Pitch-Deck und eine Kalt-E-Mail, in deiner Stimme, mit Quellen.",
-        "es": "Pulsa un lead y vuelve el pitch: Tesis de encaje, Decisores con sus emails, Similares, un Deck y un Email en frío, con tu voz y con fuentes.",
-        "nl": "Druk op een lead en de pitch komt terug: Fit-these, Beslissers met e-mails, Lookalikes, een Pitchdeck en een Koude e-mail, in jouw stem, met bronnen."
+        "en": "Press a lead and it comes back in three tabs: The pitch, the email in your voice; Who to write to; and Why them, with sources.",
+        "de": "Tippe auf einen Lead, und er kommt in drei Tabs zurück: Der Pitch, die E-Mail in deiner Stimme; Wem schreiben; und Warum sie, mit Quellen.",
+        "es": "Pulsa un lead y vuelve en tres pestañas: El pitch, el email con tu voz; A quién escribir; y Por qué ellos, con fuentes.",
+        "nl": "Druk op een lead en hij komt terug in drie tabbladen: De pitch, de e-mail in jouw stem; Wie aan te schrijven; en Waarom zij, met bronnen."
       },
       "names": [
         "Research",
-        "Fit thesis",
-        "Decision-makers",
-        "Lookalikes",
-        "Pitch deck",
-        "Cold email"
+        "The pitch",
+        "Who to write to",
+        "Why them"
       ]
     },
     {

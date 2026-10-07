@@ -1,7 +1,7 @@
 {
   "//": "Written by tools/og.js (#450). What the committed OG PNGs actually say. Held against src/_data/site.json and the articles' frontmatter by test/assets.test.js — if that test is red, the pictures have drifted from the words: run `npm run og`.",
   "tagline": "Leads that fit you",
-  "headline": "Leads that fit you, and what to send them",
+  "headline": "Find Leads. That fit you.",
   "siteLine": "Give it your website. It finds the companies worth approaching and writes the pitch in your voice.",
   "articles": {
     "ads-as-a-positioning-lab": "Buy ads to learn the words, not to buy the customers",

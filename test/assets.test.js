@@ -167,7 +167,9 @@ describe('the Open Graph cards still say what the site says', () => {
   // moved in #1151 while the card went on saying "Find Leads. That fit you."
   // So the words the card bakes are held against the page they picture.
   test('the sitewide card says what the homepage hero says', () => {
-    const index = fs.readFileSync(path.join(ROOT, 'src', 'index.njk'), 'utf8');
+    // Tags read as a space: the h1 breaks its two lines with <br> and a span.
+    const index = fs.readFileSync(path.join(ROOT, 'src', 'index.njk'), 'utf8')
+      .replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
     for (const key of ['headline', 'siteLine']) {
       assert.ok(typeof baked[key] === 'string' && baked[key], `data/og-cards.json carries no ${key} — ${RERUN}`);
       assert.ok(index.includes(baked[key]),

@@ -226,7 +226,7 @@ function siteCard() {
  */
 const TAGLINE_LINE = 'Give it your website. It finds the companies worth approaching and writes the pitch in your voice.';
 /** The hero's own headline, split where the card breaks the line; the second half is the coral one. */
-const HEADLINE = ['Leads that fit you,', 'and what to send them'];
+const HEADLINE = ['Find Leads.', 'That fit you.'];
 
 /**
  * Render every card and the manifest under `root` (this repo by default).

@@ -267,7 +267,10 @@ const reading = page => page.evaluate(() => {
  * pitch's tabs are opened in turn while the tour stands on the example pitch.
  * `test/demo.test.js` holds every page to a file this list writes.
  */
-const NAMED_TABS = { 'fit-thesis': 'fit', 'decision-makers': 'people', 'pitch-deck': 'asset:deck', 'cold-email': 'asset:emailSequence' };
+// Since the studio's #1153 the pitch has three tabs (The pitch, Who to write to,
+// Why them) and the formats sit behind the pitch card's own menu, so a named
+// screen is a tab and, on the pitch tab, the format the menu shows.
+const NAMED_TABS = { 'fit-thesis': ['why'], 'decision-makers': ['who'], 'pitch-deck': ['pitch', 'asset:deck'], 'cold-email': ['pitch', 'asset:emailSequence'] };
 const NAMED_VIEWS = { prep: 'meeting-prep', workspace: 'settings' };
 const NAMED = [...Object.keys(NAMED_TABS), ...Object.values(NAMED_VIEWS)];
 
@@ -275,13 +278,17 @@ async function shootNamed(page, view, stepFile) {
   if (NAMED_VIEWS[view]) fs.copyFileSync(path.join(SHOTS, stepFile), path.join(SHOTS, `screen-${NAMED_VIEWS[view]}.png`));
   if (view !== 'result') return;
   const was = await page.evaluate(() => document.querySelector('#result-tabs button.active, #result-tabs button[aria-selected="true"]')?.dataset.tab || null);
-  for (const [name, tab] of Object.entries(NAMED_TABS)) {
-    const hit = await page.evaluate(t => {
-      const b = document.querySelector(`#result-tabs button[data-tab="${t}"], #asset-tabs button[data-tab="${t}"]`);
-      if (b) b.click();
-      return Boolean(b);
-    }, tab);
-    if (!hit) throw new Error(`the example pitch has no tab ${tab} to shoot as screen-${name}.png`);
+  for (const [name, [tab, format]] of Object.entries(NAMED_TABS)) {
+    const hit = await page.evaluate(([t, f]) => {
+      const b = document.querySelector(`#result-tabs button[data-tab="${t}"]`);
+      if (!b) return false;
+      b.click();
+      if (!f) return true;
+      const pick = document.querySelector(`#result-panels .pitch-card:not(.hidden) .fmt-pick button[data-format="${f}"]`);
+      if (pick) pick.click();
+      return Boolean(pick);
+    }, [tab, format || null]);
+    if (!hit) throw new Error(`the example pitch has no ${format || tab} to shoot as screen-${name}.png`);
     await page.waitForTimeout(400);
     await shoot(page, path.join(SHOTS, `screen-${name}.png`));
   }

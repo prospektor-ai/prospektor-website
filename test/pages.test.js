@@ -152,7 +152,7 @@ describe('the header, and the pages behind it', () => {
   });
 
   // #453 moved the two questions out of the h1 and into the deck under it: the
-  // h1 is the promise now ("Leads that fit you, and what to send them"), which
+  // h1 is the promise now ("Find Leads. That fit you.", kept by the operator 7 Oct 2026), which
   // is what the <title> has always said and what a stranger can act on. #1092
   // (7 Oct 2026) then gave the hero to the scan field alone, on the operator's
   // ask to keep it minimal, and the frame moved to the page body: the pricing
