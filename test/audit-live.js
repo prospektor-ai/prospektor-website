@@ -454,19 +454,12 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
     }
     return null;
   })();
-  check('studio /api/help serves the corpus cross-origin',
-    !!apiHelp && apiHelp.status===200 && apiHelp.cors==='*' && (apiHelp.body.files||[]).length>=10,
-    apiHelp ? `HTTP ${apiHelp.status}, cors ${apiHelp.cors}, ${(apiHelp.body.files||[]).length} files` : 'unreachable ×3');
-  // ── CLAIM (#136, split by #166): the guides are in the bytes ──
+  check('studio /api/help serves the help articles (studio #1201)',
+    !!apiHelp && apiHelp.status===200 && (apiHelp.body.articles||[]).length>=10,
+    apiHelp ? `HTTP ${apiHelp.status}, ${(apiHelp.body.articles||[]).length} articles` : 'unreachable ×3');
+  // ── CLAIM (#136, #166, studio #1201): every article is in the bytes, on its own URL ──
   // Asked of the raw responses, before a browser runs anything: this is what a
-  // crawler is handed, and the whole of #136 is that it used to be the word
-  // "Loading…". A browser check would pass on the old page too.
-  //
-  // #166 moved that text to one URL per guide, so the claim is asked of the
-  // section rather than of the hub, and of the LIVE corpus's slugs rather than
-  // a list written here — a guide the studio has added and this site has not
-  // rebuilt for should show up as a missing page, which is the one failure
-  // this claim exists to catch.
+  // crawler is handed.
   const getRaw = async (url) => {
     for (let i = 0; i < 3; i++) {
       try { const r = await fetch(url); return { status: r.status, text: await r.text() }; }
@@ -480,44 +473,38 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
 
   const helpRes = await getRaw(SITE+'/help/');
   const helpRaw = helpRes && helpRes.text;
-  const liveSlugs = ((apiHelp && apiHelp.body.files) || [])
-    .map(f => f.name.replace(/^\d+-/, '').replace(/\.md$/, ''));
+  const liveSlugs = ((apiHelp && apiHelp.body.articles) || []).map(f => f.name.replace(/\.md$/, ''));
 
-  check('/help/ is the hub, not a Loading… shell',
-    !!helpRaw && !/Loading…/.test(helpRaw) && /helpSearch/.test(helpRaw),
-    helpRaw ? `${bodyOf(helpRaw).length} chars of hub copy` : 'unreachable ×3');
+  check('/help/ is the article hub: the search field and a link to every article',
+    !!helpRaw && /id="helpSearch"/.test(helpRaw) && liveSlugs.length > 0
+      && liveSlugs.every(sl => helpRaw.includes(`href="/help/${sl}/"`)),
+    helpRaw ? `${liveSlugs.filter(sl => !helpRaw.includes(`href="/help/${sl}/"`)).length} articles missing from the hub` : 'unreachable ×3');
 
-  const guidePages = [];
+  const articlePages = [];
   for (const slug of liveSlugs) {
     const res = await getRaw(SITE+'/help/'+slug+'/');
-    guidePages.push({ slug, ok: !!res && res.status === 200, chars: bodyOf(res && res.text).length,
-      shell: !!res && /Loading…/.test(res.text) });
+    articlePages.push({ slug, ok: !!res && res.status === 200 && /class="hp-section hp-steps"/.test(res.text) });
   }
-  const missingGuides = guidePages.filter(g => !g.ok).map(g => g.slug);
-  const totalChars = guidePages.reduce((n, g) => n + g.chars, 0);
-  check('every guide the studio publishes has its own URL (#166)',
-    guidePages.length > 0 && !missingGuides.length,
-    missingGuides.length ? `missing: ${missingGuides.join(', ')}` : `${guidePages.length} guides served`);
-  check('and the section still carries the long-tail content #136 bought',
-    totalChars > 20000 && !guidePages.some(g => g.shell), `${totalChars} chars across the guides`);
-  check('/help/ answers the question the search bug hid (#145)',
-    guidePages.some(g => g.slug === 'workspace') &&
-    /New client workspace/.test((await getRaw(SITE+'/help/workspace/') || {}).text || ''));
+  const missingArticles = articlePages.filter(g => !g.ok).map(g => g.slug);
+  check('every article the studio publishes has its own URL, with its steps on it',
+    articlePages.length > 0 && !missingArticles.length,
+    missingArticles.length ? `missing: ${missingArticles.join(', ')}` : `${articlePages.length} articles served`);
+
+  // The old guide URLs answer 301 to an article or the hub (netlify.toml).
+  const oldGuide = await fetch(SITE + '/help/workspace/', { redirect: 'manual' }).catch(() => null);
+  check('an old guide URL answers 301 into the new help',
+    !!oldGuide && oldGuide.status === 301 && /\/help\/([a-z-]+\/)?$/.test(oldGuide.headers.get('location') || ''),
+    oldGuide ? `${oldGuide.status} → ${oldGuide.headers.get('location')}` : 'unreachable');
 
   const hp = await ctx.newPage();
   await hp.goto(SITE+'/help/', { waitUntil: 'domcontentloaded' });
-  let helpCards = 0;
-  try { await hp.waitForSelector('.card', { timeout: 15000 }); helpCards = await hp.$$eval('.card', n => n.length); } catch (e) {}
-  check('/help renders the card hub over the live corpus', helpCards >= 10, String(helpCards));
-  check('and every card opens a guide on its own URL (#166)',
-    (await hp.$$eval('.card > a', as => as.map(a => a.getAttribute('href'))))
-      .every(h => /^\/help\/[a-z0-9-]+\/$/.test(h)));
-  // The operator's own screenshot query — the regression this row exists for.
-  await hp.fill('#helpSearch', 'how can I create a new workspace');
+  const probe = liveSlugs[0] ? ((apiHelp.body.articles[0].text.match(/^title: (.*)$/m) || [])[1] || '') : '';
   let helpHit = '';
-  try { await hp.waitForSelector('#helpResults:not([hidden]) mark', { timeout: 5000 }); helpHit = await hp.textContent('#helpResults'); } catch (e) {}
-  check('/help search answers "how can I create a new workspace"',
-    /Workspace settings/.test(helpHit), helpHit ? helpHit.slice(0,90) : 'no results');
+  if (probe) {
+    await hp.fill('#helpSearch', probe);
+    try { await hp.waitForSelector('#helpResults:not([hidden]) #helpHits a', { timeout: 5000 }); helpHit = await hp.getAttribute('#helpHits a', 'href'); } catch (e) {}
+  }
+  check('/help search finds an article by its title', helpHit === `/help/${liveSlugs[0]}/`, helpHit || 'no results');
   await hp.close();
 
   // --- CLAIM (§1): "400 — what they typed is not a domain. Say so inline." ---
@@ -810,7 +797,7 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
     const hasHelp = STATIC_WITH_TWINS.includes(helpTwin);
     if (!hasHelp) {
       const en = await (await fetch(SITE + '/help/')).text();
-      check(`no ${l.prefix}/help/ (the studio holds no ${l.name} guide), and /help/ does not name one`,
+      check(`no ${l.prefix}/help/ (the studio holds no ${l.name} article), and /help/ does not name one`,
         !en.includes(`hreflang="${l.code}"`));
     }
     for (const p of ['/', '/pricing/', '/checkout/', '/who-to-pitch/', '/what-to-send/', '/contact/'].concat(hasHelp ? ['/help/'] : [])) {
@@ -854,24 +841,25 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
       new RegExp(`<form[^>]*\\saction=["']${l.prefix}/contact/thanks/["']`).test(await (await fetch(SITE + l.prefix + '/contact/')).text())
       && (await fetch(SITE + l.prefix + '/contact/thanks/')).status === 200);
     if (hasHelp) {
-      // The Spanish help section (#535): the hub links its own guide pages,
-      // and the first guide the studio serves in the language is served in it.
+      // The help section in the language (#535, studio #1201): the hub links
+      // its own article pages, and the first article the studio serves in
+      // the language is served in it.
       const hub = await (await fetch(SITE + l.prefix + '/help/')).text();
-      const cards = [...hub.matchAll(/<li class="card">\s*<a href="([^"]+)"/g)].map(m => m[1]);
-      check(`${l.prefix}/help/ links a guide page per card, each under ${l.prefix}/help/`,
-        cards.length >= 10 && cards.every(h => h.startsWith(l.prefix + '/help/')), `${cards.length} cards`);
+      const links = [...hub.matchAll(/href="([^"]*\/help\/[a-z-]+\/)"/g)].map(m => m[1]);
+      check(`${l.prefix}/help/ links its articles, each under ${l.prefix}/help/`,
+        links.length >= 10 && links.every(h => h.startsWith(l.prefix + '/help/')), `${links.length} links`);
       let corpus = null;
       try { corpus = await (await fetch(`https://studio.prospektor.ai/api/help?lang=${l.code}`)).json(); } catch (e) { RELAY_RETRIES.push('api/help?lang=' + l.code); }
-      const own = ((corpus && corpus.files) || []).filter(f => f.language === l.code);
-      const first = own[0] && own[0].name.replace(/^\d+-/, '').replace(/\.md$/, '');
-      const guide = first ? await (await fetch(SITE + l.prefix + '/help/' + first + '/')).text() : '';
+      const own = ((corpus && corpus.articles) || []).filter(f => f.language === l.code);
+      const first = own[0] && own[0].name.replace(/\.md$/, '');
+      const article = first ? await (await fetch(SITE + l.prefix + '/help/' + first + '/')).text() : '';
       check(`${l.prefix}/help/${first || '?'}/ is served in ${l.name}, naming its English twin`,
-        !!first && new RegExp(`<html lang="${l.code}">`).test(guide)
-        && guide.includes(`<link rel="alternate" hreflang="en" href="https://prospektor.ai/help/${first}/">`)
-        && guide.includes('id="guideLangNote" hidden'),
-        corpus ? `${own.length} of ${corpus.files.length} files in ${l.name}` : 'studio unreachable');
-      check(`and the sitemap carries the ${l.name} guide pages beside the English ones`,
-        own.length > 0 && own.every(f => liveLocs.includes('https://prospektor.ai' + l.prefix + '/help/' + f.name.replace(/^\d+-/, '').replace(/\.md$/, '') + '/')));
+        !!first && new RegExp(`<html lang="${l.code}">`).test(article)
+        && article.includes(`<link rel="alternate" hreflang="en" href="https://prospektor.ai/help/${first}/">`)
+        && !article.includes('class="hp-note"'),
+        corpus ? `${own.length} of ${(corpus.articles || []).length} articles in ${l.name}` : 'studio unreachable');
+      check(`and the sitemap carries the ${l.name} article pages beside the English ones`,
+        own.length > 0 && own.every(f => liveLocs.includes('https://prospektor.ai' + l.prefix + '/help/' + f.name.replace(/\.md$/, '') + '/')));
     }
   }
   check('everything else in the sitemap is a help guide, a published article or a lesson of /learn/',
@@ -886,7 +874,7 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
     lessonLocs.length === lessons.length && lessons.every(l => lessonLocs.includes(`https://prospektor.ai/learn/day-${l.day}/`))
     && (await Promise.all(lessonLocs.map(async l => (await fetch(l)).status === 200))).every(Boolean),
     `sitemap ${lessonLocs.length}, snapshot ${lessons.length}`);
-  check('and every guide the studio publishes is among them (#166)',
+  check('and every help article the studio publishes is among them (studio #1201)',
     guideLocs.length > 0 && liveSlugs.length > 0 &&
     liveSlugs.every(sl => guideLocs.includes('https://prospektor.ai/help/' + sl + '/')),
     `sitemap ${guideLocs.length}, corpus ${liveSlugs.length}`);

@@ -28,19 +28,14 @@ them without reading the studio's code.
    still telling the truth: one claim per board row, read-only, safe to run any
    time. It is how `app.prospektor.ai` was found still serving the pre-pivot
    agency page that the log had recorded as gone.
-   **`npm run help:snapshot`** refreshes `data/help-corpus.json`, the last-good
-   copy of the studio's help corpus that `/help/` falls back to when the studio
-   cannot be reached at build time (#136). Run it when the studio ships help
-   changes; the build prefers the live endpoint and never fails without it.
-   **Since #166 the snapshot decides how many PAGES the build writes**, not just
-   what one page says: every guide in the corpus gets `/help/<slug>/` and a
-   sitemap entry — and since #535 the snapshots decide which LANGUAGES the help
-   section exists in: `data/help-corpus.<code>.json` is written only for a
-   language the studio holds a guide in, and `/<code>/help/` exists offline
-   exactly when that file does. A stale snapshot is therefore a stale set of URLs — the site
-   still shows a newly-added guide (the hub renders it inline at runtime, and an
-   edited guide corrects itself on its own page), but it has no URL of its own
-   until the next build. See *The help contract* below.
+   **`npm run help:snapshot`** refreshes `data/help-articles.json` (and
+   `data/help-articles.<code>.json` for each language the studio translates),
+   the last-good copy of the studio's help articles that `/help/` falls back to
+   when the studio cannot be reached at build time; `-- --from
+   ../studio/docs/help` reads a studio checkout instead. Run it when the studio
+   ships help changes and commit the result: the snapshot decides which article
+   PAGES and which LANGUAGES the offline build writes, and the build prefers the
+   live endpoint and never fails without it. See *The help contract* below.
    **`npm run learnings`** prints the `/resources` coverage report — see
    *The resources contract* below. **`npm run resources:coverage`** asks whether
    `/resources` still tells the truth about the product: every screen,
@@ -114,9 +109,11 @@ studio #1116, so every session stops loading all of them). Read the one your
 change touches before you build it, and add a new contract there with one
 line here.
 
-- **Help** (#136, #166): `/help/` renders the studio's `docs/help/` and
-  nothing about it is hand-listed. A studio outage never breaks a deploy,
-  every corpus fetch has a deadline, and a guide's text lives on one URL.
+- **Help** (#136, #166, studio #1201): `/help/` is the studio's short help
+  articles (`docs/help/articles/`, served as `articles`), one URL each, the
+  long reference files unpublished. Nothing is hand-listed, a studio outage
+  never breaks a deploy (`data/help-articles.json` is the fallback), the old
+  guide URLs answer 301, and an article's text lives on one URL.
 - **Resources** (#159, #745): one article per useful learning, bound to
   `data/learnings.json` both ways. Articles declare the product names they
   use in `names:`, checked against `data/studio-strings.json`.

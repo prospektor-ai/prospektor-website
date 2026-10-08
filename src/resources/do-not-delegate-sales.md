@@ -126,9 +126,10 @@ call want someone who knows the domain and will answer a direct question directl
 and a founder outperforms a professional seller on both. Polish is not what they
 came for.
 
-What actually makes this easier is preparation rather than charisma: the ten
-objections written down with short answers, a handful of specific examples you can
-recall rather than invent, and the price said out loud on the first call. Those
+What actually makes this easier is [preparation](/resources/prepare-for-a-sales-call/)
+rather than charisma: the ten objections written down with short answers, a
+handful of specific examples you can recall rather than invent, and the price said
+out loud on the first call. Those
 three remove most of what makes selling uncomfortable, and none of them requires
 being an extrovert.
 

@@ -67,7 +67,21 @@
     "and 3 (a rival's customers on wrong matches, stale contacts and re-contacting).",
     "The article names no vendor, quotes none of their copy and names none of the",
     "customers. Both pass the reader test: checking a list before it sends is how a",
-    "founder keeps cold outreach from reaching the wrong person."
+    "founder keeps cold outreach from reaching the wrong person.",
+    "",
+    "PROMOTED, 8 Oct 2026 (SEO cadence, daily article): make-it-before-the-call and",
+    "write-the-call-down-first. Their `ref` names the file: docs/research/",
+    "40-conversations.md, the operator's own kit for forty first calls with agency",
+    "owners, read for the call it scripts in advance: §2c (the three tests, the",
+    "free test applied before the call), §3 (the timed twenty minutes, the artefact made before the",
+    "call, the opening, the question asked exactly, the one ask with no discount),",
+    "§4 (the artefact goes with the first email), §5 (the sheet and its exact",
+    "words), §6 and §8 (the pass mark named before the first call), and §7 (a",
+    "discount makes willingness to pay unmeasurable); growth-playbook.md §8.5 for",
+    "saying the price. The article names no product, publishes none of the kit's",
+    "thresholds and quotes only the kit's own script lines. Both pass the reader",
+    "test: what to make and write down before a first call is how a founder turns",
+    "the call into a decision."
     ]
   },
   "learnings": [
@@ -179,6 +193,8 @@
     { "id": "write-the-forward", "ref": "docs/research/ctd-teardown.md §2.4, §3.2; docs/research/40-conversations.md §4C, §8", "title": "A warm introduction stalls on the connector's blank page: send the ask with a finished email for them to forward, under 100 words, with the shared context, one specific ask and an easy out, and send intro asks first because they come back slowest", "verdict": "article", "article": "ask-for-a-warm-introduction" },
     { "id": "tie-strength-is-two-way", "ref": "docs/research/ctd-teardown.md §2.3, §2.4", "title": "Judge a connector by two-way history: one-way traffic and mass threads count for nothing, a bare connection is weak by default, and the strongest tie beats the most senior name", "verdict": "article", "article": "ask-for-a-warm-introduction" },
     { "id": "read-the-rows-not-the-count", "ref": "docs/research/explee-teardown.md §8b (the data-quality miss); docs/research/signaliz-teardown.md §3.1; docs/research/agency-list.md (Where the names came from; What the reading changed); MARKET-RESEARCH.md batch 2 (accuracy, stale contacts)", "title": "A prospect list's errors hide behind its count: read a sample of rows against each company's own site for the wrong company under the same name, branches of one brand counted as separate companies and empty research, park the rows that cannot be verified, and re-read a row on the day it sends because a list ages in hours", "verdict": "article", "article": "clean-a-prospect-list" },
-    { "id": "do-not-contact-comes-first", "ref": "docs/research/explee-teardown.md §8b (Suppress list; The activation email); docs/research/ideal-customer-redrawn.html (What stays the same); MARKET-RESEARCH.md batch 3 (dedupes, people already in touch)", "title": "Build the do-not-contact list before the prospect list: customers, open conversations and anyone who said no, by person and by company domain; a suppression has to cancel mail already queued, and nothing should send because nobody reviewed it", "verdict": "article", "article": "clean-a-prospect-list" }
+    { "id": "do-not-contact-comes-first", "ref": "docs/research/explee-teardown.md §8b (Suppress list; The activation email); docs/research/ideal-customer-redrawn.html (What stays the same); MARKET-RESEARCH.md batch 3 (dedupes, people already in touch)", "title": "Build the do-not-contact list before the prospect list: customers, open conversations and anyone who said no, by person and by company domain; a suppression has to cancel mail already queued, and nothing should send because nobody reviewed it", "verdict": "article", "article": "clean-a-prospect-list" },
+    { "id": "make-it-before-the-call", "ref": "docs/research/40-conversations.md §3 (Show the artefact), §4 (the artefact goes with the first email)", "title": "Prepare a first call by making the thing you would otherwise describe: one finished piece of your work, done on a real case of theirs before the call and sent with the first email, so the call is a second look and a reply, or silence, is already evidence", "verdict": "article", "article": "prepare-for-a-sales-call" },
+    { "id": "write-the-call-down-first", "ref": "docs/research/40-conversations.md §2c, §3, §5, §6, §7, §8; docs/research/growth-playbook.md §8.5 (price on the first call)", "title": "Write a first call down before it happens: the three tests answered beforehand, a timed twenty-minute agenda, the opening line, the deciding question word for word with its scale (a hedge is a no), one closing ask with no discount, the pass mark named in advance, and the sheet open before you dial", "verdict": "article", "article": "prepare-for-a-sales-call" }
   ]
 }

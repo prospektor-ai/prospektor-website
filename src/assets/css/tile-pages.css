@@ -3,7 +3,7 @@
    hero with product pieces laid on it, three steps, where it comes from, one
    big product moment on a dark band, the second half of the story, short
    questions, and a close that repeats the headline. Loaded by those two pages
-   only (`pageCss` in their front matter), so the homepage pays nothing for it.
+   only (`stylesheet:` in their front matter), so the homepage pays nothing for it.
    Every drawn product piece is aria-hidden example content, like the tiles'. */
 
 .tp-hero { padding: calc(var(--nav-h) + 40px) 0 72px; }

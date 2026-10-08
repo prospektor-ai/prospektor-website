@@ -57,7 +57,7 @@ research call, because in a research call none of them applies.
 ## What to prepare
 
 The mistake is to treat "learn something" as an attitude. It is an agenda item, and
-it needs the same preparation as the pitch.
+it needs the same [preparation as the pitch](/resources/prepare-for-a-sales-call/).
 
 **Write down one question you cannot currently answer.** One at a time, for
 whichever phase of learning you are in. *What do they call this internally? Who

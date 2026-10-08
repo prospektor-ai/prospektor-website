@@ -26,8 +26,9 @@ const ROOT = path.join(__dirname, '..');
 const world = (over = {}) => ({
   snapshot: { strings: Array.from({ length: 200 }, (_, i) => `String ${i}`).concat(['Call prep', 'Open For you', 'Warm paths']), fetchedAt: '2026-09-18', commit: 'abc1234' },
   corpus: [
-    { name: '01-getting-started.md', text: '# Getting started\n\nThe call prep is one press.' },
-    { name: '08-workspace.md', text: '# Workspace\n\nThe deck lives here.' },
+    { name: 'get-started.md', text: '---\ntitle: Get started\n---\n## How to do it\n1. The call prep is one press.', page: true },
+    { name: 'workspace.md', text: '---\ntitle: Workspace\n---\n## How to do it\n1. The deck lives here.', page: true },
+    { name: '08-workspace.md', text: '# Workspace\n\nThe reference file, which is not a page.', page: false },
   ],
   surfaces: [
     { file: 'src/resources/one.md', kind: 'article', slug: 'one', names: ['Call prep'], text: 'Press Call prep, then read [the workspace guide](/help/workspace/) and [two](/resources/two/).' },
@@ -48,9 +49,9 @@ describe('the reader', () => {
     assert.ok(R.says('(Skip)', 'Skip'));
   });
 
-  test('slugOf is the help contract\'s rule: drop the order prefix and the extension', () => {
-    assert.strictEqual(R.slugOf('08-workspace.md'), 'workspace');
-    assert.strictEqual(R.slugOf('01-getting-started.md'), 'getting-started');
+  test('slugOf is the help contract\'s rule: an article\'s file name without the extension (studio #1201)', () => {
+    assert.strictEqual(R.slugOf('glance.md'), 'glance');
+    assert.strictEqual(R.slugOf('get-started.md'), 'get-started');
   });
 
   test('linksIn reads markdown links and hrefs into /help/ and /resources/, and nothing else', () => {
@@ -83,7 +84,7 @@ describe('the check', () => {
   test('a name the help corpus explains is covered even when no string says it', () => {
     const r = R.resourcesCoverage(world({ surfaces: [{ file: 'src/resources.njk', kind: 'hub', slug: null, names: ['deck'], text: 'the deck' }] }));
     assert.deepStrictEqual(r.uncovered, []);
-    assert.deepStrictEqual(r.covered[0].where, ['08-workspace.md']);
+    assert.deepStrictEqual(r.covered[0].where, ['workspace.md']);
   });
 
   test('a declared name the page itself does not say fails by name', () => {
@@ -92,11 +93,12 @@ describe('the check', () => {
     assert.match(f[0], /declares the name "Call prep" in `names:` but its own text does not say it/);
   });
 
-  test('a help link written the numbered way fails with the slug it should have been', () => {
-    const f = failuresOf({ surfaces: [{ file: 'src/resources/one.md', kind: 'article', slug: 'one', names: [], text: 'Read [this](/help/08-workspace/).\nAnd [that](/help/nowhere/).' }] });
+  test('a help link written the numbered way fails with the slug it should have been, and a reference file is no page', () => {
+    const f = failuresOf({ surfaces: [{ file: 'src/resources/one.md', kind: 'article', slug: 'one', names: [], text: 'Read [this](/help/08-workspace/).\nAnd [that](/help/nowhere/).\nOr [the old guide](/help/getting-started/).' }] });
     assert.deepStrictEqual(f, [
-      'src/resources/one.md:1 links to /help/08-workspace/, and no guide in the help corpus has that address — it should be /help/workspace/.',
-      'src/resources/one.md:2 links to /help/nowhere/, and no guide in the help corpus has that address.',
+      'src/resources/one.md:1 links to /help/08-workspace/, and no help article has that address — it should be /help/workspace/.',
+      'src/resources/one.md:2 links to /help/nowhere/, and no help article has that address.',
+      'src/resources/one.md:3 links to /help/getting-started/, and no help article has that address.',
     ]);
   });
 
@@ -119,7 +121,8 @@ describe('the check', () => {
   test('a missing or unreadable snapshot is structural: the check says what to run rather than passing vacuously', () => {
     assert.match(failuresOf({ snapshot: null })[0], /data\/studio-strings\.json is missing.*npm run strings:snapshot/);
     assert.match(failuresOf({ snapshot: { strings: ['a'], fetchedAt: null, commit: null } })[0], /Only 1 strings in data\/studio-strings\.json/);
-    assert.match(failuresOf({ corpus: [] })[0], /data\/help-corpus\.json holds no guide/);
+    assert.match(failuresOf({ corpus: [] })[0], /data\/help-articles\.json holds no article/);
+    assert.match(failuresOf({ corpus: [{ name: '08-workspace.md', text: '# W', page: false }] })[0], /data\/help-articles\.json holds no article/, 'reference files alone are no pages');
     assert.match(failuresOf({ surfaces: [{ file: 'src/resources/one.md', kind: 'article', slug: 'one', names: 'Call prep', text: 'Call prep' }] })[0], /`names:` must be a YAML list/);
   });
 });

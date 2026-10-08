@@ -27,19 +27,20 @@
 //   (`src/_includes/article.njk`); it declares the screens, buttons and verbs
 //   it names in `names:` in its frontmatter. The catalogue is the studio's
 //   `dev/i18n-strings.js#inventory()`, vendored as `data/studio-strings.json`
-//   by `npm run strings:snapshot` (that file says why vendored), plus the help
-//   corpus snapshot `data/help-corpus.json`, exactly as the studio's checks
-//   read `docs/help/`: a thing the help explains exists even when its label
-//   is drawn some other way.
+//   by `npm run strings:snapshot` (that file says why vendored), plus the
+//   studio's help as snapshotted here: the help articles
+//   (`data/help-articles.json`, what /help/ shows) and the long reference
+//   files (`data/help-corpus.json`, the support chat's), exactly as the
+//   studio's checks read `docs/help/`: a thing the help explains exists even
+//   when its label is drawn some other way.
 // - **A declared name must appear in the surface's own text.** `names` is
 //   the surface's index of what it teaches, and an index that has stopped
 //   matching the page checks nothing.
 // - **Every `/help/…` and `/resources/…` link names a page.** The help slugs
-//   are derived from the corpus snapshot's filenames by the one rule
-//   `src/_data/help.js` applies (drop the order prefix and the extension),
-//   the article slugs from the files under `src/resources/`. A link written
-//   the numbered way (`/help/08-workspace/`) carries the slug it should have
-//   been, the way `dev/help-links.js` does, so the report reads as a patch.
+//   are the help articles' file names without the extension (studio #1201,
+//   the rule lib/help-articles.js applies), the article slugs the files under
+//   `src/resources/`. A link written the numbered way (`/help/08-glance/`)
+//   carries the slug it should have been, so the report reads as a patch.
 //   `test/pages.test.js` asks the same of every built page; this asks it of
 //   the sources, without a build, so `npm run resources:coverage` is the
 //   whole answer on its own.
@@ -90,6 +91,7 @@ const LEARN_LAYOUT = path.join(ROOT, 'src', 'learn-lesson.njk');
 const LESSONS = path.join(ROOT, 'data', 'lessons.json');
 const SNAPSHOT = path.join(ROOT, 'data', 'studio-strings.json');
 const CORPUS = path.join(ROOT, 'data', 'help-corpus.json');
+const ARTICLES_SNAPSHOT = path.join(ROOT, 'data', 'help-articles.json');
 
 /**
  * Names a surface says on purpose that the product does not. Empty today, and
@@ -103,8 +105,8 @@ const EXCLUSIONS = [];
 
 const rel = file => path.relative(ROOT, file).replace(/\\/g, '/');
 
-/** The website's rule for a help file's URL, and the only one: drop the order prefix and the extension. */
-const slugOf = name => String(name).replace(/\.md$/, '').replace(/^\d+-/, '');
+/** The website's rule for a help article's URL, and the only one: drop the extension. */
+const slugOf = name => String(name).replace(/\.md$/, '');
 
 const escapeRe = text => String(text).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -186,11 +188,15 @@ function readSnapshot() {
   return { strings: Array.isArray(s.strings) ? s.strings : [], fetchedAt: s.fetchedAt || null, commit: (s.source && s.source.commit) || null };
 }
 
-/** The help corpus snapshot's files, name and text. */
+/** The help snapshot's files, name and text: the articles, which are pages,
+ *  and the long reference files, which are not (`page: false`). */
 function readCorpus() {
-  if (!fs.existsSync(CORPUS)) return [];
-  const c = JSON.parse(fs.readFileSync(CORPUS, 'utf8'));
-  return (c.files || []).filter(f => f && typeof f.name === 'string').map(f => ({ name: f.name, text: String(f.text || '') }));
+  const read = (file, key, page) => {
+    if (!fs.existsSync(file)) return [];
+    const c = JSON.parse(fs.readFileSync(file, 'utf8'));
+    return (c[key] || []).filter(f => f && typeof f.name === 'string').map(f => ({ name: f.name, text: String(f.text || ''), page }));
+  };
+  return [...read(ARTICLES_SNAPSHOT, 'articles', true), ...read(CORPUS, 'files', false)];
 }
 
 /**
@@ -210,7 +216,7 @@ function resourcesCoverage(given = {}) {
   const corpus = given.corpus || readCorpus();
   const exclusions = given.exclusions || EXCLUSIONS;
   const minStrings = given.minStrings ?? 200;
-  const helpSlugs = corpus.map(f => slugOf(f.name));
+  const helpSlugs = corpus.filter(f => f.page !== false).map(f => slugOf(f.name));
   const articleSlugs = surfaces.filter(s => s.kind === 'article' && s.slug).map(s => s.slug);
 
   const structural = [];
@@ -226,7 +232,7 @@ function resourcesCoverage(given = {}) {
       + '`npm run strings:snapshot`; do not delete the assertion.',
     );
   }
-  if (!corpus.length) structural.push('data/help-corpus.json holds no guide — half the catalogue this check reads is missing, and every /help/ link is about to read as broken. Run `npm run help:snapshot`.');
+  if (!helpSlugs.length) structural.push('data/help-articles.json holds no article: half the catalogue this check reads is missing, and every /help/ link is about to read as broken. Run `npm run help:snapshot`.');
   if (!surfaces.some(s => s.kind === 'article')) structural.push('No article was read out of src/resources/ — the reader is broken, not the section empty.');
   for (const s of surfaces) {
     if (s.error) structural.push(`${s.file}: ${s.error}`);
@@ -287,7 +293,7 @@ function resourcesFailures(report) {
   for (const gap of report.uncovered) {
     failures.push(
       `${gap.file} names "${gap.name}" and no screen, button or help guide says it any more (data/studio-strings.json, `
-      + `${report.snapshot && report.snapshot.fetchedAt ? `studio as of ${report.snapshot.fetchedAt}` : 'no snapshot'}; data/help-corpus.json). `
+      + `${report.snapshot && report.snapshot.fetchedAt ? `studio as of ${report.snapshot.fetchedAt}` : 'no snapshot'}; data/help-articles.json, data/help-corpus.json). `
       + 'Rewrite the sentence for what the product says now, refresh the snapshot if the product still says it '
       + '(`npm run strings:snapshot`), or add it to EXCLUSIONS in tools/resources-coverage.js with a reason.',
     );
@@ -300,7 +306,7 @@ function resourcesFailures(report) {
   }
   for (const link of report.broken) {
     failures.push(
-      `${link.file}:${link.line} links to ${link.href}, and no ${link.section === 'help' ? 'guide in the help corpus' : 'article under src/resources/'} `
+      `${link.file}:${link.line} links to ${link.href}, and no ${link.section === 'help' ? 'help article' : 'article under src/resources/'} `
       + `has that address${link.suggestion ? ` — it should be ${link.suggestion}` : ''}.`,
     );
   }

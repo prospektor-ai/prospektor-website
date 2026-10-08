@@ -14,8 +14,7 @@ This domain is the marketing site: what the product is, and what it costs. Every
 page a visitor reads (the front page, the two product pages, pricing, checkout,
 contact) is also served in
 {% for l in languages %}{% if l.code != 'en' %}{{ l.own }} under `{{ l.prefix }}/`{% if not loop.last %}, {% endif %}{% endif %}{% endfor %};
-the help guides are served in a language wherever the product's own documentation
-is written in it ({% for e in help.editions %}{% if e.code != 'en' %}{{ e.own }} at `{{ e.prefix }}/help/`{% if not loop.last %}, {% endif %}{% endif %}{% endfor %}); the legal pages and the articles are English.
+the help articles are served in a language wherever the studio has translated them{% if help.editions.length > 1 %} ({% for e in help.editions %}{% if e.code != 'en' %}{{ e.own }} at `{{ e.prefix }}/help/`{% if not loop.last %}, {% endif %}{% endif %}{% endfor %}){% endif %}; the legal pages and the articles are English.
 Every translated page names its siblings with `hreflang`, and `/` is English. The
 application is `studio.prospektor.ai`, and it has its own file for machines:
 [studio.prospektor.ai/llms.txt](https://studio.prospektor.ai/llms.txt) lists the
@@ -59,7 +58,7 @@ The demo, [prospektor.ai/demo/](https://prospektor.ai/demo/), is the product's r
 
 ## The rest of the pages
 
-- [prospektor.ai/help/](https://prospektor.ai/help/): how the product works, screen by screen.
+- [prospektor.ai/help/](https://prospektor.ai/help/): short articles, one question each: how to find who to pitch, get the email written, ask for a warm introduction, and run your account.
 - [prospektor.ai/privacy/](https://prospektor.ai/privacy/): what is kept, what deletion leaves, and what to do if your name came up in someone's research.
 - [prospektor.ai/terms/](https://prospektor.ai/terms/): the contract.
 - [prospektor.ai/dpa/](https://prospektor.ai/dpa/): the data processing addendum, the customer is controller of what its workspace holds and connects, Prospektor is processor.

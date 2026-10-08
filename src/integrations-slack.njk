@@ -15,7 +15,7 @@ permalink: "{{ language.prefix }}/integrations/slack/"
     shape (`_includes/integration-page.njk`), at the operator's ask: "the LP
     should explain the benefit of Prospektor + INTEGRATION - and it should
     link to a KB 'how to use it'". Every sentence below is what the studio's
-    help says this connection does (docs/help/08-workspace.md, the Slack section); the KB link is that section.
+    help says this connection does (docs/help/08-workspace.md, the Slack section); the KB link opens the help article /help/connect-apps/.
     If the help changes what a push writes, this page is wrong, not modest. -#}
 
 {% set intId = 'slack' %}
@@ -24,7 +24,7 @@ permalink: "{{ language.prefix }}/integrations/slack/"
 {% set intSub %}{% t %}Prospektor does the work. Slack tells the team.{% endt %}{% endset %}
 {% set intCtaHref = '/pricing/' | localize %}
 {% set intCtaLabel %}{% t %}Start my studio →{% endt %}{% endset %}
-{% set intDoc = ('/help/workspace/' | localize) + '#workspace--slack-finished-work-posted-where-the-team-already-is' %}
+{% set intDoc = '/help/connect-apps/' | localize %}
 
 {% set dgTitle %}{% t %}A finished pitch in Prospektor posts one message in Slack{% endt %}{% endset %}
 {% set dgLeftLabel = 'PROSPEKTOR' %}

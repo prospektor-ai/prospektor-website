@@ -1,0 +1,99 @@
+---
+layout: base.njk
+stylesheet: /assets/css/help.css
+pagination:
+  data: help.pages
+  size: 1
+  alias: entry
+  addAllPagesToCollections: true
+permalink: "{{ entry.edition.prefix }}/help/{{ entry.article.slug }}/"
+# In the collections (#535): the layout's hreflang links and the footer
+# switcher derive a page's twins from the build's own page list.
+eleventyComputed:
+  title: "{{ entry.article.title }}"
+  description: "{{ entry.article.dek }}"
+---
+{#-
+  One help article on its own URL (studio #1201): the back link to its topic,
+  the title, the dek, the screen (when the article names one) on a panel in
+  its topic's tint, the steps as numbered circles, the facts in a white card,
+  and the next articles as cards.
+
+  The sections are read by position (lib/help-articles.js): the first is the
+  steps and the second the facts, whatever a translation calls them.
+
+  In another edition (#535), an article the studio has not translated yet is
+  still written, says so, carries `lang="en"`, and is noindex and out of the
+  sitemap: its English twin is the page to rank.
+-#}
+{%- set edition = entry.edition -%}
+{%- set a = entry.article -%}
+{%- set fallback = a.language != edition.code -%}
+{%- set topicName = edition.topic[a.topic].name | t -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": {{ a.title | dump | safe }},
+  "description": {{ a.dek | dump | safe }},
+  "author": { "@id": "{{ site.url }}/#organization" },
+  "publisher": { "@id": "{{ site.url }}/#organization" },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ site.url }}{{ page.url }}" },
+  "isPartOf": { "@type": "WebPage", "@id": "{{ site.url }}{{ edition.prefix }}/help/" },
+  "isAccessibleForFree": true,
+  "articleSection": {{ topicName | dump | safe }},
+  "inLanguage": "{{ a.language }}"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "{{ site.name }}", "item": "{{ site.url }}{{ '/' | localize }}" },
+    { "@type": "ListItem", "position": 2, "name": {{ ('Help' | t) | dump | safe }}, "item": "{{ site.url }}{{ edition.prefix }}/help/" },
+    { "@type": "ListItem", "position": 3, "name": {{ a.title | dump | safe }} }
+  ]
+}
+</script>
+
+<main class="hp-article">
+  <header class="hp-article-head">
+    <a class="hp-back" href="{{ edition.prefix }}/help/{% if a.topic != 'start' %}#{{ a.topic }}{% endif %}">‹ {{ 'Help' | t }} · {{ topicName }}</a>
+    <h1{% if fallback %} lang="{{ a.language }}"{% endif %}>{{ a.title }}</h1>
+    {%- if a.dek %}
+    <p class="hp-dek"{% if fallback %} lang="{{ a.language }}"{% endif %}>{{ a.dek }}</p>
+    {%- endif %}
+    {%- if fallback %}
+    <p class="hp-note">{{ 'This article is not in {language} yet, so it is shown in English.' | t({ language: edition.own }) }}</p>
+    {%- endif %}
+  </header>
+
+  {%- if a.image %}
+  <figure class="hp-shot hp-tint-{{ a.topic }}">
+    <img src="{{ ('/assets/img/demo/' + a.image) | asset }}" alt="{{ 'The screen this article describes' | t }}" width="1280" height="800">
+  </figure>
+  {%- endif %}
+
+  <div class="hp-body"{% if fallback %} lang="{{ a.language }}"{% endif %}>
+    {%- for s in a.sections %}
+    <section class="hp-section hp-{{ s.kind }}">
+      {%- if s.heading %}
+      <h2>{{ s.heading }}</h2>
+      {%- endif %}
+      {{ s.html | safe }}
+    </section>
+    {%- endfor %}
+  </div>
+
+  {%- if a.nextArticles.length %}
+  <section class="hp-next">
+    <h2>{{ 'Next' | t }}</h2>
+    {%- for n in a.nextArticles %}
+    <a class="hp-next-card" href="{{ edition.prefix }}/help/{{ n.slug }}/"{% if n.language != edition.code %} lang="{{ n.language }}"{% endif %}><span>{{ n.title }}</span><span aria-hidden="true">›</span></a>
+    {%- endfor %}
+  </section>
+  {%- endif %}
+
+</main>
