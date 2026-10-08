@@ -196,6 +196,33 @@
         "/resources/who-to-approach/"
       ],
       "status": "published"
+    },
+    {
+      "slug": "prepare-for-a-sales-call",
+      "type": "article",
+      "action": "new",
+      "cluster": null,
+      "title": "How to prepare for a sales call before you dial",
+      "seo_title": "How to prepare for a sales call",
+      "primary_keyword": "how to prepare for a sales call",
+      "target_words": 1100,
+      "faq": false,
+      "angle": "The preparation that changes a first call is done before it: answer the free test, the named person and who does the work today; make one finished piece of your work on a real case of theirs and send it with the first email; write the agenda in minutes; write the opening, the deciding question and the one ask (no discount) word for word; decide the scale and the pass mark in advance; open the sheet before you dial. Added 8 Oct 2026 by the daily cadence: the queue had nothing queued, and call prep is a named ICP search no article covered. Chosen over 'how to disqualify prospects' (who-to-approach already carries all three disqualification tests as its learnings) and 'how to research a prospect before cold email' (cold-email-personalisation already covers what to read and the paste test).",
+      "internal_links": [
+        "/resources/who-to-approach/",
+        "/resources/cold-email-personalisation/",
+        "/resources/the-first-call-is-research/",
+        "/resources/answer-without-freezing/",
+        "/resources/do-not-delegate-sales/"
+      ],
+      "distinct_from": "the-first-call-is-research is what to ask and record DURING the call (one unanswered question, where it goes, the questions that pay, four fields afterwards, reading the log every ten calls); this is what is made and written BEFORE it: the artefact sent ahead, a timed agenda, the opening and the closing ask word for word, the answer scale and the pass mark set in advance. It links there for the questions and the notes rather than repeating them. answer-without-freezing is the AREA shape for an unprepared question mid-call and the bank of real examples built ahead of it; this never covers answering or examples. who-to-approach owns the three tests as list-building learnings; this applies them once to a booked call and only to decide whether it happens and who attends. do-not-delegate-sales names preparation in one sentence (objections, examples, the price) and links here for the method.",
+      "distinct_from_checked": "8 Oct 2026, against the-first-call-is-research, answer-without-freezing, who-to-approach and cold-email-personalisation read in full, every article searched for prepar*, agenda and before the call (founder-sales-stack, do-not-delegate-sales and four-reasons-businesses-buy each name preparation in one line and none covers it), and the titles and descriptions of all 29 existing articles. docs/seo/gsc-latest.md absent (GSC_SERVICE_ACCOUNT_KEY unset, studio #135), so `npm run gsc:cannibals` has no data; recorded, not read as permission.",
+      "ledger": "NEW ROWS: make-it-before-the-call and write-the-call-down-first, promoted from studio docs/research/40-conversations.md §2c, §3, §4, §5, §6, §7, §8 and growth-playbook.md §8.5. The kit is used for its scripted first call only: the page names no product, publishes none of its thresholds and quotes only its own opening and closing lines.",
+      "inbound_from": [
+        "/resources/the-first-call-is-research/",
+        "/resources/do-not-delegate-sales/"
+      ],
+      "status": "published"
     }
   ],
   "maintenance": [
