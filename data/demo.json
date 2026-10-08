@@ -1,10 +1,10 @@
 {
   "//": "The clickable demo (#767): the studio's one-minute tour, read off the real screens by `npm run demo:capture` with the studio checked out beside this repo. Do not hand-edit. Every title and body is a string the studio says (`data/studio-strings.json`); `test/demo.test.js` holds the two together.",
-  "capturedAt": "2026-10-07",
+  "capturedAt": "2026-10-08",
   "source": {
     "repo": "prospektor-ai/studio",
     "file": "public/studio.js#TOUR_STEPS",
-    "commit": "0dba75a2180eed2b185bbc0011a30e3918ea2ff8"
+    "commit": "524cbd4fd3db76e7fda5b2f4f550ab8083780947"
   },
   "viewport": {
     "width": 1280,

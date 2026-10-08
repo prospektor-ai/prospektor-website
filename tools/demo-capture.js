@@ -271,6 +271,11 @@ const reading = page => page.evaluate(() => {
 // Why them) and the formats sit behind the pitch card's own menu, so a named
 // screen is a tab and, on the pitch tab, the format the menu shows.
 const NAMED_TABS = { 'fit-thesis': ['why'], 'decision-makers': ['who'], 'pitch-deck': ['pitch', 'asset:deck'], 'cold-email': ['pitch', 'asset:emailSequence'] };
+// A screen framed from its tab row down, clear of the fixed top bar, rather
+// than from the page's head. Why them since the studio's #1178 is signals, the
+// case in three tiles and Companies like X side by side, and from the head the
+// tiles fall under the fold.
+const FROM_TABS = new Set(['fit-thesis']);
 const NAMED_VIEWS = { prep: 'meeting-prep', workspace: 'settings' };
 const NAMED = [...Object.keys(NAMED_TABS), ...Object.values(NAMED_VIEWS)];
 
@@ -290,7 +295,9 @@ async function shootNamed(page, view, stepFile) {
     }, [tab, format || null]);
     if (!hit) throw new Error(`the example pitch has no ${format || tab} to shoot as screen-${name}.png`);
     await page.waitForTimeout(400);
+    if (FROM_TABS.has(name)) await page.evaluate(() => window.scrollTo({ top: document.getElementById('result-tabs').getBoundingClientRect().top + window.scrollY - 84, behavior: 'instant' }));
     await shoot(page, path.join(SHOTS, `screen-${name}.png`));
+    if (FROM_TABS.has(name)) await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
   }
   if (was) await page.evaluate(t => document.querySelector(`#result-tabs button[data-tab="${t}"]`)?.click(), was);
   await page.waitForTimeout(300);
