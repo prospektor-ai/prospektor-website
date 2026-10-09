@@ -470,6 +470,11 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     await page.fill('#helpSearch', word);
     const hits = await page.$$eval('#helpHits a', as => as.length);
     check('a word from a dek finds articles by their dek, not only their title', hits >= 1, word);
+    // A question, not a title: the small words drop out and the article whose
+    // steps answer it still comes back (Nils, 9 Oct 2026: "warm intro" found nothing).
+    await page.fill('#helpSearch', 'how do I get a warm intro');
+    check('a question in plain words finds its article',
+      (await page.$$eval('#helpHits a', as => as.map(a => a.getAttribute('href')))).includes('/help/warm-intros/'));
     await page.fill('#helpSearch', 'zzzunfindable');
     check('a miss says so and offers to write to us',
       await page.isVisible('#helpNone') && (await page.$$eval('#helpHits a', as => as.length)) === 0

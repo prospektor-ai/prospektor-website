@@ -170,7 +170,7 @@ describe('the built help section', () => {
       assert.match(hub.slice(hub.indexOf('id="account"')), new RegExp(`href="/help/${a.slug}/"`), `${a.slug} is not among the account pills`);
   });
 
-  test('search: the field, an index of every article\'s title and dek, and a script that asks nothing of the network', () => {
+  test('search: the field, an index of every article\'s title, dek, topic and words, and a script that asks nothing of the network', () => {
     assert.match(hub, /<input id="helpSearch" type="search"/);
     const index = JSON.parse(hub.match(/<script type="application\/json" id="helpIndex">([\s\S]*?)<\/script>/)[1]);
     assert.deepStrictEqual(index.map(e => e.u).sort(), ARTICLES.map(a => `/help/${a.slug}/`).sort());
@@ -178,6 +178,9 @@ describe('the built help section', () => {
       const a = ARTICLES.find(x => `/help/${x.slug}/` === e.u);
       assert.strictEqual(e.t, a.title);
       assert.strictEqual(e.d, a.dek);
+      assert.ok(e.k, `${e.u} carries no topic name to search`);
+      const step = a.sections[0].html.replace(/<[^>]+>/g, ' ').toLowerCase().match(/[a-z]{6,}/)[0];
+      assert.ok(e.b.split(' ').includes(step), `${e.u}: "${step}" from its steps is not searchable`);
     }
     assert.match(hub, /<script src="\/assets\/js\/help-search\.[0-9a-f]+\.js" defer><\/script>/);
     const src = fs.readFileSync(path.join(ROOT, 'src', 'assets', 'js', 'help-search.js'), 'utf8');

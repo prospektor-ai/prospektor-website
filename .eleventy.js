@@ -229,9 +229,17 @@ module.exports = function(eleventyConfig) {
   // ── /help/ (studio #1201) ─────────────────────────────────────────────
   // The hub's search index: each article's address, title and dek, as JSON
   // for a <script type="application/json">. `<` is escaped so no title can
-  // close the element early.
+  // close the element early. `k` is the topic's name and `b` the article's
+  // own words, each once, so a
+  // question typed in plain words ("how do I get a warm intro") finds the
+  // article whose steps answer it, not only one whose title says it.
+  const helpTopic = Object.fromEntries(require("./lib/help-articles").TOPICS.map(t => [t.key, t.name]));
+  const helpWords = a => [...new Set((a.sections || []).map(s => s.html).join(' ')
+    .replace(/<[^>]+>/g, ' ').replace(/&[a-z#0-9]+;/gi, ' ').toLowerCase()
+    .split(/[^\p{L}\p{N}’']+/u).filter(w => w.length > 2))].join(' ');
   eleventyConfig.addFilter("helpIndex", (articles, prefix) => JSON.stringify((articles || []).map(a => ({
     u: `${prefix || ''}/help/${a.slug}/`, t: a.title, d: a.dek, l: a.language,
+    k: helpTopic[a.topic] || '', b: helpWords(a),
   }))).replace(/</g, '\\u003c'));
 
   // The topics present in a collection, with counts, alphabetical. Drives the
