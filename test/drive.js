@@ -470,6 +470,11 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     await page.fill('#helpSearch', word);
     const hits = await page.$$eval('#helpHits a', as => as.length);
     check('a word from a dek finds articles by their dek, not only their title', hits >= 1, word);
+    // A question, not a title: the small words drop out and the article whose
+    // steps answer it still comes back (Nils, 9 Oct 2026: "warm intro" found nothing).
+    await page.fill('#helpSearch', 'how do I get a warm intro');
+    check('a question in plain words finds its article',
+      (await page.$$eval('#helpHits a', as => as.map(a => a.getAttribute('href')))).includes('/help/warm-intros/'));
     await page.fill('#helpSearch', 'zzzunfindable');
     check('a miss says so and offers to write to us',
       await page.isVisible('#helpNone') && (await page.$$eval('#helpHits a', as => as.length)) === 0
@@ -523,8 +528,8 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
       });
       await q.goto('http://localhost:8899/help/');
       await q.fill('#helpSearch', 'how many people can share a workspace?');
-      check('a question no article matches offers Ask, and typing asked nothing',
-        await q.isVisible('#helpAsk') && await q.isVisible('#helpNone') && asks.length === 0, asks);
+      check('a typed question offers Ask, and typing asked nothing',
+        await q.isVisible('#helpAsk') && asks.length === 0, asks);
       await q.press('#helpSearch', 'Enter');
       await q.waitForSelector('#helpAnswerText:not(:empty)', { timeout: 5000 }).catch(() => {});
       check('Enter asks the studio once, with the question and the page\'s language',
@@ -532,9 +537,9 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
       check('the answer shows, with the one real article it came from',
         (await q.textContent('#helpAnswerText')) === 'As many as you like.'
         && (await q.$$eval('#helpAnswerFrom a', as => as.map(a => a.getAttribute('href')))).join() === `/help/${team.slug}/`
-        && await q.isVisible('#helpAnswerFoot') && await q.isHidden('#helpNone') && await q.isHidden('#helpAsk'));
+        && await q.isVisible('#helpAnswerFoot') && await q.isHidden('#helpNone') && await q.isHidden('#helpAsk') && await q.isHidden('#helpHits'));
       await q.fill('#helpSearch', 'invite');
-      check('typing again puts the answer away', await q.isHidden('#helpAnswer') && await q.isHidden('#helpAsk'));
+      check('typing a word again puts the answer away and lists articles', await q.isHidden('#helpAnswer') && await q.isHidden('#helpAsk') && await q.isVisible('#helpHits a'));
       await q.unroute('https://studio.prospektor.ai/**');
       await q.route('https://studio.prospektor.ai/**', route => route.fulfill({ status: 429, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: '{"error":"x"}' }));
       await q.fill('#helpSearch', 'zzz unanswerable question');
