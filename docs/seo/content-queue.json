@@ -223,6 +223,34 @@
         "/resources/do-not-delegate-sales/"
       ],
       "status": "published"
+    },
+    {
+      "slug": "define-an-ideal-customer-profile",
+      "type": "article",
+      "action": "new",
+      "cluster": null,
+      "title": "How to define an ideal customer profile you can build a list from",
+      "seo_title": "How to define an ideal customer profile",
+      "primary_keyword": "how to define an ideal customer profile",
+      "target_words": 1100,
+      "faq": false,
+      "angle": "An ICP has two halves: the firmographic fields a data tool can pre-fill for you to correct, and the half only you hold. Start from two to five real customers (or say there are none, because a made-up example makes a made-up profile), write why they bought as mechanisms, name the role from those reasons, add negative criteria as a standing rule and a list of names, turn it into industry, headcount, geography, keywords and a signal, and read a small segment split one way. Added 9 Oct 2026 by the daily cadence: the queue had nothing queued, and defining an ICP is a named ICP search no article answered as a method. Chosen after passing over 'what to send after a sales call': no studio research file says what to send after a first call or when (the kit's closing ask and a product proposal for asking how a pitch ended are all there is), so that page would have been invented.",
+      "internal_links": [
+        "/resources/who-to-approach/",
+        "/resources/the-best-pond-is-not-the-biggest/",
+        "/resources/forever-customers/",
+        "/resources/sell-the-job-not-the-persona/",
+        "/resources/clean-a-prospect-list/",
+        "/resources/prepare-for-a-sales-call/"
+      ],
+      "distinct_from": "the-best-pond-is-not-the-biggest chooses BETWEEN two segments by cohort quality and scores them on six lines; this writes the profile for the segment chosen and links there for the separating property. who-to-approach is activation and three prospect-level disqualifiers applied to companies; this names activation as one reason in the profile and adds what it never covers: the firmographic half drafted rather than typed, real customers as the filter set, negative criteria as a profile field, the role, and the filters a search runs. sell-the-job-not-the-persona decides the AXIS to segment on (job over persona) and adds a job column; this links to it and never argues persona versus job. size-a-market is the powers-of-ten size check and niche-down is why narrowing wins; neither writes a profile down, and this repeats neither. None of the five tests a profile on conversations or reads a segment split.",
+      "distinct_from_checked": "9 Oct 2026, against the-best-pond-is-not-the-biggest, who-to-approach, sell-the-job-not-the-persona, niche-down and size-a-market read in full, and the titles and descriptions of all 29 existing articles: no page mentions negative criteria, the firmographic half as a draft to correct, two to five customers as the filter set, or a segment split. docs/seo/gsc-latest.md absent (GSC_SERVICE_ACCOUNT_KEY unset, studio #135), so `npm run gsc:cannibals` has no data; recorded, not read as permission.",
+      "ledger": "NEW ROWS: icp-has-two-halves, icp-says-who-it-is-not and read-the-segment-split-one-way, promoted from studio docs/research/prospektor-on-clay.html §04, explee-teardown.md §7 (the ICP editor) and 40-conversations.md §2a, §2b, §5 and §6 item 8. The teardowns are used for the method only: the page names no vendor, quotes none of their copy, names none of the example clients and publishes none of the kit's thresholds.",
+      "inbound_from": [
+        "/resources/who-to-approach/",
+        "/resources/the-best-pond-is-not-the-biggest/"
+      ],
+      "status": "published"
     }
   ],
   "maintenance": [

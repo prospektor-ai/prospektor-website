@@ -38,7 +38,9 @@ attention they have already committed elsewhere.
 
 Almost every ICP definition in circulation describes **could-want**: industry,
 headcount, tech stack, revenue band, job title. All of it real, all of it
-necessary, and none of it predictive of whether anyone buys this quarter. None of
+necessary, and none of it predictive of whether anyone buys this quarter. It is
+also [the half of a profile a data tool can fill in for
+you](/resources/define-an-ideal-customer-profile/). None of
 it is [the job they would be buying for](/resources/sell-the-job-not-the-persona/)
 either, which is a different axis again, but even the job does not tell you the
 quarter.

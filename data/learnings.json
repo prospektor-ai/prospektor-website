@@ -81,7 +81,23 @@
     "saying the price. The article names no product, publishes none of the kit's",
     "thresholds and quotes only the kit's own script lines. Both pass the reader",
     "test: what to make and write down before a first call is how a founder turns",
-    "the call into a decision."
+    "the call into a decision.",
+    "",
+    "PROMOTED, 9 Oct 2026 (SEO cadence, daily article): icp-has-two-halves,",
+    "icp-says-who-it-is-not and read-the-segment-split-one-way. Their `ref` names",
+    "the files: docs/research/prospektor-on-clay.html §04 (a feasibility read of a",
+    "list tool's onboarding: which profile inputs a vendor can pre-fill and which",
+    "five are knowledge no vendor holds, and that a search takes structured filters,",
+    "not a wish), explee-teardown.md §7 (a sales-automation tool's per-segment",
+    "profile editor, read for its negative-criteria field and the headshot-studio",
+    "example), and 40-conversations.md §2a and §2b (the operator's own profile for",
+    "agencies: an honest example when none has renewed, reasons as mechanisms, the",
+    "person, the rule-outs), §5 and §6 item 8 (the segment split read one way, which",
+    "no earlier row carries; §6 was cited on 8 Oct only for the pass mark). The",
+    "article names no vendor, quotes none of their copy, names no customer or brand",
+    "from the example clients and publishes none of the kit's thresholds. All three",
+    "pass the reader test: writing down who to approach is the first job of",
+    "outbound."
     ]
   },
   "learnings": [
@@ -195,6 +211,9 @@
     { "id": "read-the-rows-not-the-count", "ref": "docs/research/explee-teardown.md §8b (the data-quality miss); docs/research/signaliz-teardown.md §3.1; docs/research/agency-list.md (Where the names came from; What the reading changed); MARKET-RESEARCH.md batch 2 (accuracy, stale contacts)", "title": "A prospect list's errors hide behind its count: read a sample of rows against each company's own site for the wrong company under the same name, branches of one brand counted as separate companies and empty research, park the rows that cannot be verified, and re-read a row on the day it sends because a list ages in hours", "verdict": "article", "article": "clean-a-prospect-list" },
     { "id": "do-not-contact-comes-first", "ref": "docs/research/explee-teardown.md §8b (Suppress list; The activation email); docs/research/ideal-customer-redrawn.html (What stays the same); MARKET-RESEARCH.md batch 3 (dedupes, people already in touch)", "title": "Build the do-not-contact list before the prospect list: customers, open conversations and anyone who said no, by person and by company domain; a suppression has to cancel mail already queued, and nothing should send because nobody reviewed it", "verdict": "article", "article": "clean-a-prospect-list" },
     { "id": "make-it-before-the-call", "ref": "docs/research/40-conversations.md §3 (Show the artefact), §4 (the artefact goes with the first email)", "title": "Prepare a first call by making the thing you would otherwise describe: one finished piece of your work, done on a real case of theirs before the call and sent with the first email, so the call is a second look and a reply, or silence, is already evidence", "verdict": "article", "article": "prepare-for-a-sales-call" },
-    { "id": "write-the-call-down-first", "ref": "docs/research/40-conversations.md §2c, §3, §5, §6, §7, §8; docs/research/growth-playbook.md §8.5 (price on the first call)", "title": "Write a first call down before it happens: the three tests answered beforehand, a timed twenty-minute agenda, the opening line, the deciding question word for word with its scale (a hedge is a no), one closing ask with no discount, the pass mark named in advance, and the sheet open before you dial", "verdict": "article", "article": "prepare-for-a-sales-call" }
+    { "id": "write-the-call-down-first", "ref": "docs/research/40-conversations.md §2c, §3, §5, §6, §7, §8; docs/research/growth-playbook.md §8.5 (price on the first call)", "title": "Write a first call down before it happens: the three tests answered beforehand, a timed twenty-minute agenda, the opening line, the deciding question word for word with its scale (a hedge is a no), one closing ask with no discount, the pass mark named in advance, and the sheet open before you dial", "verdict": "article", "article": "prepare-for-a-sales-call" },
+    { "id": "icp-has-two-halves", "ref": "docs/research/prospektor-on-clay.html (04 The onboarding: structured filters, not a wish; the eight inputs); docs/research/40-conversations.md §2a (the three interview answers, Q2)", "title": "An ideal customer profile has two halves: the firmographic fields a data tool can pre-fill for you to correct, and the half only you hold, starting from two to five real customers whose common ground becomes the filter set; with no customer yet, say so, because a made-up example produces a made-up profile", "verdict": "article", "article": "define-an-ideal-customer-profile" },
+    { "id": "icp-says-who-it-is-not", "ref": "docs/research/explee-teardown.md §7 (Behind the wizard: the ICP editor, which is a brief); docs/research/prospektor-on-clay.html (04, inputs 5 to 7 and the filter list); docs/research/40-conversations.md §2b (Why past partnerships worked; Guardrails)", "title": "Write the profile as reasons and rules: why past customers bought as mechanisms no search infers, the role taken from those reasons, and negative criteria beside the positive ones (a standing rule plus existing customers, competitors and ruled-out companies by name, since a search returns all three), then turn it into industry, headcount, geography, keywords and a signal", "verdict": "article", "article": "define-an-ideal-customer-profile" },
+    { "id": "read-the-segment-split-one-way", "ref": "docs/research/40-conversations.md §5 (Segment), §6 item 8 (segment split of the free-test yes)", "title": "Test a profile on conversations and record each one's segment, but read a small split one way: at about thirty against ten, the 95% interval on the difference between two rates near 40% is about plus or minus 35 points, so keep the profile unless a result set down in advance overturns it, and let a tie keep it", "verdict": "article", "article": "define-an-ideal-customer-profile" }
   ]
 }

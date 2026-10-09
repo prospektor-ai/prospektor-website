@@ -66,7 +66,8 @@ The second half is the part people skip. Knowing that your best customers are
 recruitment agencies is mildly useful. Knowing that recruitment agencies buy well
 *because they bill their own clients for the output* is what lets you go and find
 another two hundred companies with that property, some of which are not recruitment
-agencies at all.
+agencies at all. That *because* is the line [an ideal customer profile worth
+searching on](/resources/define-an-ideal-customer-profile/) is written around.
 
 If you have no customers yet, the same question runs on the closest available proxy:
 which of your prospect conversations went somewhere, and what did those companies
