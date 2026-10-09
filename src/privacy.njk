@@ -2,7 +2,7 @@
 layout: base.njk
 title: Privacy
 description: What Prospektor collects, where it goes, who else sees it, and how long it stays. Written to be read, not to cover us.
-updated: 8 October 2026
+updated: 9 October 2026
 ---
 
 <header class="legal-hero">
@@ -257,6 +257,7 @@ updated: 8 October 2026
         </ul>
         <p><strong>Netlify Real User Metrics</strong> is the optional one, and the only measurement on this site that keeps anything about a single visit. It puts nothing on your device — no cookie, no browser storage of any kind — but as you leave a page it posts that page's load timings, along with your IP address, to Netlify, who host this site. <strong>It does not run unless you allow it.</strong> The tag is taken out of the page before the page reaches you, and your consent is the only thing that puts it back.</p>
         <p><strong>The homepage test.</strong> The homepage may show one of two versions of its four tiles, picked at random each time the page loads. For each version we count page views, and how many of them press the scan button, open the demo or start sign-up, as daily totals. Nothing about you is stored, on your device or with us. The page sends only which version it showed and what was pressed, we keep only the day's totals, and the links into the studio carry the version's name and nothing else. Because nothing is put on your device, the cookie notice does not list it.</p>
+        <p><strong>Questions on the help page.</strong> When no help article matches what you type in the help search and you press Ask, the question goes to our studio and from there to Anthropic, which writes a short answer from our help articles (<a href="#subprocessors">section 08</a>). We keep neither the question nor the answer. So that one person cannot use up the day's answers, the studio counts how many questions each connection asks per day, under a one-way digest of its network address, never the address itself. Typing in the search sends nothing; only Ask does.</p>
         <p><strong>Rewardful</strong> is the partner programme's referral cookie, and it is switched off: nothing about it is served until we turn the programme on. Once it is on, a page you reach through a partner's link can set one first-party cookie, <code>rewardful.referral</code>, holding Rewardful's id for that referral (a random identifier, never your name or address) so that if you then buy a workspace the partner is credited. It is kept 60 days. <strong>It does not run unless you allow marketing</strong> in the cookie notice, which asks you again on the day it appears; until you do, the script is not loaded, the cookie is not set, and Rewardful hears nothing from your browser. The referral id, and only that, goes to Stripe with your purchase so Rewardful can match the sale to the partner.</p>
 
         <h3>The studio</h3>
@@ -308,7 +309,7 @@ updated: 8 October 2026
             <tbody>
               <tr>
                 <td>Anthropic</td>
-                <td>As prompts to the Claude API: the client's brief, the target company name and website, the user's notes, and any brand-voice examples. The model runs up to 10 web searches per run through Anthropic's search tool.</td>
+                <td>As prompts to the Claude API: the client's brief, the target company name and website, the user's notes, and any brand-voice examples; and a question typed on the help page, with our help articles. The model runs up to 10 web searches per run through Anthropic's search tool.</td>
                 <td>The research and the drafting</td>
               </tr>
               <tr>

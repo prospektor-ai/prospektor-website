@@ -31,6 +31,13 @@
   font: inherit; font-size: 17px; color: var(--ink);
 }
 .hp-search input::placeholder { color: var(--ink-faint); }
+/* #1224: Ask sits inside the pill, the one coral press, shown only when no article matches. */
+.hp-ask {
+  flex: none; border: 0; border-radius: 18px; padding: 8px 16px;
+  background: var(--coral); color: var(--white); font: inherit; font-size: 15px; cursor: pointer;
+}
+.hp-ask:hover { background: var(--coral-hover); }
+.hp-ask:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
 .hp-start {
   display: flex; flex-wrap: wrap; align-items: center; gap: 28px;
@@ -112,6 +119,20 @@
 .hp-cards { display: flex; flex-direction: column; gap: 10px; }
 .hp-hit strong { display: block; font-weight: 600; }
 .hp-hit-dek { display: block; color: var(--ink-mid); font-size: 15px; margin-top: 2px; }
+
+/* #1224: Claude's answer, a white card with the articles it came from on the ground's grey. */
+.hp-answer { display: flex; flex-direction: column; gap: 16px; padding: 24px 28px; border-radius: 20px; background: var(--white); }
+.hp-answer-text { margin: 0; font-size: 17px; line-height: 1.55; }
+.hp-answer-text:empty { display: none; }
+.hp-answer .hp-next-card { background: var(--stone); }
+.hp-answer-foot { margin: 0; color: var(--ink-mid); font-size: 15px; }
+.hp-answer-foot a { color: var(--accent); }
+.hp-thinking { display: flex; gap: 6px; padding: 6px 0; }
+.hp-thinking i { width: 8px; height: 8px; border-radius: 4px; background: var(--ink-faint); animation: hp-blink 1.2s infinite ease-in-out; }
+.hp-thinking i:nth-child(2) { animation-delay: .2s; }
+.hp-thinking i:nth-child(3) { animation-delay: .4s; }
+@keyframes hp-blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .hp-thinking i { animation: none; opacity: .6; } }
 
 /* ── an article ── */
 .hp-article {

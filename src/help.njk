@@ -45,14 +45,26 @@ permalink: "{{ edition.prefix }}/help/"
     <h1>{% t %}How can we help?{% endt %}</h1>
     <label class="hp-search" for="helpSearch">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path></svg>
-      <input id="helpSearch" type="search" placeholder="{% t %}Search help{% endt %}" aria-label="{% t %}Search help{% endt %}" autocomplete="off">
+      <input id="helpSearch" type="search" placeholder="{% t %}Search help{% endt %}" aria-label="{% t %}Search help{% endt %}" autocomplete="off" maxlength="300">
+      {#- #1224: shown when no article matches; Claude answers from the articles. -#}
+      <button id="helpAsk" class="hp-ask" type="button" hidden>{% t %}Ask{% endt %}</button>
     </label>
   </section>
 
   {#- What the search shows while a query is typed; the hub below steps aside. -#}
   <section id="helpResults" class="hp-results" aria-live="polite" hidden>
     <div id="helpHits" class="hp-cards"></div>
-    <p id="helpNone" class="hp-foot" hidden>{% t %}No article matches that. Try another word, or <a href="/contact/">write to us</a>.{% endt %}</p>
+    <p id="helpNone" class="hp-foot" hidden>{% t %}No article matches that. Ask Claude, or <a href="/contact/">write to us</a>.{% endt %}</p>
+    {#- #1224: Claude's answer, from the articles only (studio /api/help-ask).
+        The sentences are the page's, in the page's language; the script only
+        fills in the answer and the articles it came from. -#}
+    <div id="helpAnswer" class="hp-answer" hidden>
+      <div id="helpThinking" class="hp-thinking" role="status" aria-label="{% t %}Claude is writing an answer{% endt %}"><i></i><i></i><i></i></div>
+      <p id="helpAnswerText" class="hp-answer-text"></p>
+      <div id="helpAnswerFrom" class="hp-cards"></div>
+      <p id="helpAnswerFoot" class="hp-answer-foot">{% t %}Not what you needed? <a href="/contact/">Write to us</a>.{% endt %}</p>
+      <p id="helpAnswerFail" class="hp-answer-foot" hidden>{% t %}Claude could not answer that just now. <a href="/contact/">Write to us</a> and a person answers.{% endt %}</p>
+    </div>
   </section>
 
   <div id="helpHub" class="hp-hub-body">

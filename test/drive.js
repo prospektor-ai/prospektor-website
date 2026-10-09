@@ -507,6 +507,44 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     }
     check('no help page asked the studio for anything', studio.length === 0, studio);
 
+    // #1224: a question no article matches gets Ask, and Ask gets Claude's
+    // answer with the article it came from. The studio is mocked; typing
+    // still asks it nothing, only the press does.
+    {
+      const q = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+      const asks = [];
+      const team = ARTICLES.find(x => x.slug === 'invite-team') || ARTICLES[0];
+      await q.route('https://studio.prospektor.ai/**', route => {
+        const req = route.request();
+        if (req.method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': 'content-type', 'access-control-allow-methods': 'POST, OPTIONS' } });
+        asks.push({ url: req.url(), body: req.postDataJSON() });
+        return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' },
+          body: JSON.stringify({ answer: 'As many as you like.', articles: [team.slug, 'not-an-article'], covered: true }) });
+      });
+      await q.goto('http://localhost:8899/help/');
+      await q.fill('#helpSearch', 'how many people can share a workspace?');
+      check('a question no article matches offers Ask, and typing asked nothing',
+        await q.isVisible('#helpAsk') && await q.isVisible('#helpNone') && asks.length === 0, asks);
+      await q.press('#helpSearch', 'Enter');
+      await q.waitForSelector('#helpAnswerText:not(:empty)', { timeout: 5000 }).catch(() => {});
+      check('Enter asks the studio once, with the question and the page\'s language',
+        asks.length === 1 && /\/api\/help-ask$/.test(asks[0].url) && asks[0].body.question === 'how many people can share a workspace?' && asks[0].body.lang === 'en', asks);
+      check('the answer shows, with the one real article it came from',
+        (await q.textContent('#helpAnswerText')) === 'As many as you like.'
+        && (await q.$$eval('#helpAnswerFrom a', as => as.map(a => a.getAttribute('href')))).join() === `/help/${team.slug}/`
+        && await q.isVisible('#helpAnswerFoot') && await q.isHidden('#helpNone') && await q.isHidden('#helpAsk'));
+      await q.fill('#helpSearch', 'invite');
+      check('typing again puts the answer away', await q.isHidden('#helpAnswer') && await q.isHidden('#helpAsk'));
+      await q.unroute('https://studio.prospektor.ai/**');
+      await q.route('https://studio.prospektor.ai/**', route => route.fulfill({ status: 429, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: '{"error":"x"}' }));
+      await q.fill('#helpSearch', 'zzz unanswerable question');
+      await q.click('#helpAsk');
+      await q.waitForSelector('#helpAnswerFail:not([hidden])', { timeout: 5000 }).catch(() => {});
+      check('when the studio cannot answer, the page offers a person',
+        await q.isVisible('#helpAnswerFail') && (await q.getAttribute('#helpAnswerFail a', 'href')) === '/contact/' && await q.isHidden('#helpThinking'));
+      await q.close();
+    }
+
     // A phone: 16px gutters, tiles stacked, nothing scrolls sideways.
     await page.setViewportSize({ width: 390, height: 844 });
     for (const url of ['/help/', `/help/${a.slug}/`]) {

@@ -170,7 +170,7 @@ describe('the built help section', () => {
       assert.match(hub.slice(hub.indexOf('id="account"')), new RegExp(`href="/help/${a.slug}/"`), `${a.slug} is not among the account pills`);
   });
 
-  test('search: the field, an index of every article\'s title and dek, and a script that asks nothing of the network', () => {
+  test('search: the field, an index of every article\'s title and dek, and a script that asks the network only when Ask is pressed', () => {
     assert.match(hub, /<input id="helpSearch" type="search"/);
     const index = JSON.parse(hub.match(/<script type="application\/json" id="helpIndex">([\s\S]*?)<\/script>/)[1]);
     assert.deepStrictEqual(index.map(e => e.u).sort(), ARTICLES.map(a => `/help/${a.slug}/`).sort());
@@ -181,8 +181,15 @@ describe('the built help section', () => {
     }
     assert.match(hub, /<script src="\/assets\/js\/help-search\.[0-9a-f]+\.js" defer><\/script>/);
     const src = fs.readFileSync(path.join(ROOT, 'src', 'assets', 'js', 'help-search.js'), 'utf8');
-    assert.equal(/fetch\(|XMLHttpRequest|localStorage|sessionStorage|document\.cookie/.test(src), false,
-      'the help search reaches for the network or the visitor\'s device');
+    assert.equal(/XMLHttpRequest|localStorage|sessionStorage|document\.cookie/.test(src), false,
+      'the help search reaches for the visitor\'s device');
+    // #1224: one request, the question to the studio, and only from ask().
+    // Typing filters the index and asks nothing.
+    assert.equal((src.match(/fetch\(/g) || []).length, 1, 'the help search makes one kind of request');
+    assert.match(src, /var API = 'https:\/\/studio\.prospektor\.ai\/api\/help-ask';/);
+    const askBody = src.slice(src.indexOf('function ask()'), src.indexOf("input.addEventListener('input'"));
+    assert.ok(askBody.includes('fetch(API'), 'the request is made from ask() and nowhere else');
+    assert.match(hub, /<button id="helpAsk" class="hp-ask" type="button" hidden>Ask<\/button>/);
   });
 
   test('every next link and every screen is something the build wrote', () => {
