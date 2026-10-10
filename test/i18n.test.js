@@ -206,12 +206,20 @@ describe('the language contract (#114)', () => {
   test('the sitemap lists every twin of every listed page, and nothing that was not built', () => {
     const xml = read('sitemap.xml');
     const locs = [...xml.matchAll(/<loc>https:\/\/prospektor\.ai([^<]*)<\/loc>/g)].map(m => m[1]);
-    const urls = new Set(htmlPages(SITE).map(urlOf));
+    const pages = htmlPages(SITE);
+    const urls = new Set(pages.map(urlOf));
+    // A help article the studio served in English inside another language's
+    // edition is written for the reader who followed the hub, but is `noindex`
+    // and left out of the sitemap on purpose (src/sitemap.njk, #535), so the
+    // twins are compared against the pages that ask to be indexed.
+    const indexable = new Set(pages
+      .filter(p => !/<meta[^>]+name="robots"[^>]+content="[^"]*noindex/i.test(fs.readFileSync(p, 'utf8')))
+      .map(urlOf));
     for (const loc of locs) assert.ok(urls.has(loc), `sitemap lists ${loc}, which the build did not write`);
     for (const l of i18n.built()) {
       for (const loc of locs.filter(u => i18n.localeOf(u) === 'en')) {
         const twin = i18n.twin(loc, l.code);
-        assert.strictEqual(locs.includes(twin), urls.has(twin), `sitemap and build disagree about ${twin}`);
+        assert.strictEqual(locs.includes(twin), indexable.has(twin), `sitemap and build disagree about ${twin}`);
       }
     }
   });
