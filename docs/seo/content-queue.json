@@ -251,6 +251,32 @@
         "/resources/the-best-pond-is-not-the-biggest/"
       ],
       "status": "published"
+    },
+    {
+      "slug": "start-a-b2b-newsletter",
+      "type": "article",
+      "action": "new",
+      "cluster": null,
+      "title": "How to start a B2B newsletter that books sales conversations",
+      "seo_title": "How to start a B2B newsletter that books calls",
+      "primary_keyword": "how to start a b2b newsletter",
+      "target_words": 1100,
+      "faq": false,
+      "angle": "A founder's B2B newsletter is a reason to email the buyers you want to sell to: a feature interview is a request with nothing for sale that strangers answer, and it is a customer conversation as well. Judge it by conversations booked, never subscribers; keep the platform's volume loops and a paid tier off; write the feature request before issue one and send three on day one; one spine format with a word budget per section and a source for every claim, subjects chosen by four tests; weekly for eight issues named in advance, with the stopping rule written down now; sent from a person, with a welcome email that ends on a question. Added 10 Oct 2026 by the daily cadence: the queue had nothing queued. Chosen fourth of four candidates. Passed over: answering 'we already do this in-house' (its research, growth-playbook.md §3.4 Template D, §3.2 Test 2 and 40-conversations.md §4D, is already the in-house-objection and already-staffed rows on who-to-approach, and the capacity reframe, the headwinds quote and 'the reading, not the judgement' are already in four-reasons-businesses-buy and answer-without-freezing, so a page would repeat three articles and promote one finding twice); asking why a deal ended (the-ending-question.html is a product proposal whose evidence is internal usage, and the one general finding, lost to a competitor against no decision, is the lost-to-whom row on who-to-approach); using AI for prospect research (no research file states a reader's method: the material is teardowns of vendors' products and this product's own mechanics, and the general rule, automate the reading and let a person write, is already cold-email-personalisation's third answer).",
+      "internal_links": [
+        "/resources/network-beats-audience/",
+        "/resources/the-channel-mix-changed/",
+        "/resources/the-first-call-is-research/",
+        "/resources/ads-as-a-positioning-lab/"
+      ],
+      "distinct_from": "network-beats-audience argues a network beats an audience, shows the launch numbers, and says to borrow other people's audiences and keep a monthly note going to people you already know; this is how to run your own newsletter whose job is booking conversations with strangers, and it links there for the numbers rather than repeating the argument. the-channel-mix-changed says to start an email list as the relationship platform and to ask how people heard of you; it never says how to run what goes to the list or how to judge it. ads-as-a-positioning-lab tests words with a paid budget; this names the newsletter as the free version in one sentence and links there. the-first-call-is-research is what to ask on a call; this links there for the questions and covers only how the feature interview books the call. No article covers a feature interview as outreach, a newsletter format, a stopping rule for a channel or a welcome email.",
+      "distinct_from_checked": "10 Oct 2026, against network-beats-audience, the-channel-mix-changed and founder-sales-stack read in full, every article searched for newsletter, publication, podcast and subscriber (network-beats-audience's monthly note and the-channel-mix-changed's list are the only mentions), and the titles and descriptions of all 30 existing articles. docs/seo/gsc-latest.md absent (GSC_SERVICE_ACCOUNT_KEY unset, studio #135), so `npm run gsc:cannibals` has no data; recorded, not read as permission.",
+      "ledger": "NEW ROWS: newsletter-is-a-reason-to-ask and newsletter-terms-set-in-advance, promoted from studio docs/research/substack-strategy.html (The verdict, The trap, The reframe, The format, Cadence and the kill, The queue, Setup, Issue 1, Restraint, One decision) and 40-conversations.md §1. The plan is used for its method only: the page names no platform, product or person, states no price and carries none of the plan's internal rows.",
+      "inbound_from": [
+        "/resources/network-beats-audience/",
+        "/resources/the-channel-mix-changed/"
+      ],
+      "status": "published"
     }
   ],
   "maintenance": [

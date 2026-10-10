@@ -119,7 +119,9 @@ exactly the keyword, and rank indirectly for "best {category} software" by getti
 reviews onto the directories that already rank for it.
 
 So "three channels" is a schedule: one channel learned properly per year, and an
-email list from day one, which is the one that does not take a year.
+email list from day one, which is the one that does not take a year. Judge that
+list by [the conversations a newsletter to it books](/resources/start-a-b2b-newsletter/)
+more than by how many addresses it holds.
 
 ## Five things to do
 

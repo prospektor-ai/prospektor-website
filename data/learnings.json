@@ -97,7 +97,27 @@
     "article names no vendor, quotes none of their copy, names no customer or brand",
     "from the example clients and publishes none of the kit's thresholds. All three",
     "pass the reader test: writing down who to approach is the first job of",
-    "outbound."
+    "outbound.",
+    "",
+    "PROMOTED, 10 Oct 2026 (SEO cadence, daily article): newsletter-is-a-reason-to-ask",
+    "and newsletter-terms-set-in-advance. Their `ref` names the files: docs/research/",
+    "substack-strategy.html, the CEO-lane plan for a weekly newsletter aimed at the",
+    "people who own new business at B2B agencies, read for the method a founder can",
+    "reuse: The verdict and The reframe (a publication is a reason to email a",
+    "stranger; a feature interview is a customer conversation; conversations booked,",
+    "never subscribers, judge it), The trap and Restraint (the platform's volume",
+    "loops, no paid tier, no subscriber count, original writing only), One decision",
+    "(name the buyer), The format, Cadence and the kill, The queue, Setup and Issue 1",
+    "(one spine with word budgets, the four subject tests, weekly for eight issues",
+    "named in advance, the stopping rule set now, sent from a person, a welcome",
+    "email that ends on a question, the feature request); and 40-conversations.md",
+    "§1 (the cold-email arithmetic, marked there as assumptions), which no earlier",
+    "row carries. The trap's launch numbers are growth-playbook.md §5.3, already",
+    "network-beats-audience, so the article links there and repeats only the",
+    "figures. The article names no platform, no product and no person, carries none",
+    "of the plan's internal rows or the sender's name, and states no price. Both pass",
+    "the reader test: a newsletter run this way is how a founder finds buyers to",
+    "talk to."
     ]
   },
   "learnings": [
@@ -214,6 +234,8 @@
     { "id": "write-the-call-down-first", "ref": "docs/research/40-conversations.md §2c, §3, §5, §6, §7, §8; docs/research/growth-playbook.md §8.5 (price on the first call)", "title": "Write a first call down before it happens: the three tests answered beforehand, a timed twenty-minute agenda, the opening line, the deciding question word for word with its scale (a hedge is a no), one closing ask with no discount, the pass mark named in advance, and the sheet open before you dial", "verdict": "article", "article": "prepare-for-a-sales-call" },
     { "id": "icp-has-two-halves", "ref": "docs/research/prospektor-on-clay.html (04 The onboarding: structured filters, not a wish; the eight inputs); docs/research/40-conversations.md §2a (the three interview answers, Q2)", "title": "An ideal customer profile has two halves: the firmographic fields a data tool can pre-fill for you to correct, and the half only you hold, starting from two to five real customers whose common ground becomes the filter set; with no customer yet, say so, because a made-up example produces a made-up profile", "verdict": "article", "article": "define-an-ideal-customer-profile" },
     { "id": "icp-says-who-it-is-not", "ref": "docs/research/explee-teardown.md §7 (Behind the wizard: the ICP editor, which is a brief); docs/research/prospektor-on-clay.html (04, inputs 5 to 7 and the filter list); docs/research/40-conversations.md §2b (Why past partnerships worked; Guardrails)", "title": "Write the profile as reasons and rules: why past customers bought as mechanisms no search infers, the role taken from those reasons, and negative criteria beside the positive ones (a standing rule plus existing customers, competitors and ruled-out companies by name, since a search returns all three), then turn it into industry, headcount, geography, keywords and a signal", "verdict": "article", "article": "define-an-ideal-customer-profile" },
-    { "id": "read-the-segment-split-one-way", "ref": "docs/research/40-conversations.md §5 (Segment), §6 item 8 (segment split of the free-test yes)", "title": "Test a profile on conversations and record each one's segment, but read a small split one way: at about thirty against ten, the 95% interval on the difference between two rates near 40% is about plus or minus 35 points, so keep the profile unless a result set down in advance overturns it, and let a tie keep it", "verdict": "article", "article": "define-an-ideal-customer-profile" }
+    { "id": "read-the-segment-split-one-way", "ref": "docs/research/40-conversations.md §5 (Segment), §6 item 8 (segment split of the free-test yes)", "title": "Test a profile on conversations and record each one's segment, but read a small split one way: at about thirty against ten, the 95% interval on the difference between two rates near 40% is about plus or minus 35 points, so keep the profile unless a result set down in advance overturns it, and let a tie keep it", "verdict": "article", "article": "define-an-ideal-customer-profile" },
+    { "id": "newsletter-is-a-reason-to-ask", "ref": "docs/research/substack-strategy.html (The verdict; The trap; The reframe; Issue 1: The Desk ask; Restraint; One decision); docs/research/40-conversations.md §1 (the arithmetic of four weeks)", "title": "A founder's B2B newsletter earns its place as a reason to email a named buyer: a feature interview is a request with nothing for sale that a stranger answers and is a customer conversation at once, so judge the newsletter by conversations booked with buyers, never by subscribers, keep the platform's volume loops and a paid tier off, and say who it is for", "verdict": "article", "article": "start-a-b2b-newsletter" },
+    { "id": "newsletter-terms-set-in-advance", "ref": "docs/research/substack-strategy.html (The format; Cadence and the kill; The queue; Setup; Issue 1: the teardown template, Picking the company)", "title": "Fix a newsletter's terms before issue one: at most three formats with one spine and a word budget per section, every claim linkable, subjects picked by four stated tests, weekly for eight issues named in advance, a stopping rule on conversations written down now, sent from a person with a reply address someone reads, and a welcome email that ends on a question", "verdict": "article", "article": "start-a-b2b-newsletter" }
   ]
 }

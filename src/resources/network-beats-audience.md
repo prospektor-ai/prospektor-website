@@ -118,7 +118,9 @@ people who matter:
 >
 > Jason Cohen
 
-The mechanism is that it makes the next ask normal rather than sudden.
+The mechanism is that it makes the next ask normal rather than sudden. A
+newsletter can carry the first ask too, when [featuring a buyer in an
+issue](/resources/start-a-b2b-newsletter/) is the reason to write to them.
 
 **The excuse to call.** An event, a briefing, a round-up, a small online
 conference, or anything else that gives you a legitimate reason to contact fifty
