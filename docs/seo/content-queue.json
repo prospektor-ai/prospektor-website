@@ -277,6 +277,30 @@
         "/resources/the-channel-mix-changed/"
       ],
       "status": "published"
+    },
+    {
+      "slug": "find-warm-introductions",
+      "type": "article",
+      "action": "new",
+      "cluster": null,
+      "title": "How to find warm introductions in your own network",
+      "seo_title": "How to find warm introductions in your own network",
+      "primary_keyword": "how to find warm introductions",
+      "target_words": 1200,
+      "faq": false,
+      "angle": "Find who can introduce you before you ask: download the LinkedIn archive (connections say who, messages say how well), reduce each person's messages to four numbers (sent, received, first, last) and delete the text, add a mailbox's headers, match the people against the target list in both directions, rank each account by its strongest tie rather than its count of contacts, count only ties you can point to, borrow the networks of advisors, investors and customers, re-export every six months as a merge, take everyone you know off the cold list, and track each path by stage. Added 11 Oct 2026 by the daily cadence: the queue had nothing queued, and finding warm introductions is a named ICP search (warm intros) that the existing warm-intro page, which is about the asking, does not answer. Chosen after a survey of the files the brief named as unmined or barely mined: signaliz-teardown (its one reader method, dated trigger events, is who-to-approach's activation section and cold-email-personalisation's strong signals already), chatgpt-finance-teardown (a product's onboarding, no reader method), reevo-teardown §1 to §7 (release notes beat the marketing page: a vendor-research method, outside the buyer's searches), crm-directories.html (marketplace listings for a software vendor, every fact a named vendor's terms), origami-prospects.md (a list of named people, unpublishable), who-rail.html, discover-rows.html and library-by-source.html (product proposals), partner-programme.md (our own payout terms, excluded), explee-teardown §8b's who-sends question (one paragraph, not a page) and growth-playbook.md §7.4 (zero-click marketing, already the-channel-mix-changed's attribution and channel sections).",
+      "internal_links": [
+        "/resources/ask-for-a-warm-introduction/",
+        "/resources/clean-a-prospect-list/"
+      ],
+      "distinct_from": "ask-for-a-warm-introduction is how to ASK once you know the connector: the note, the forwardable email, the easy out, and choosing among the people who know the target by two-way history; this is how to FIND them, from the export to the ranked list of accounts, and links there for the tie rules rather than repeating them. network-beats-audience argues a network beats an audience and borrows other people's audiences (swaps, guest posts); it never exports, matches or ranks a network against a list. fish-where-the-fish-are names introductions as the channel when there is no pond, a channel choice. clean-a-prospect-list builds the do-not-contact list; this adds one group to it and links there. No article covers the export, the message tally, matching a network to a target list, ranking by strongest tie, borrowed networks or re-exporting.",
+      "distinct_from_checked": "11 Oct 2026, against ask-for-a-warm-introduction, network-beats-audience, clean-a-prospect-list, who-to-approach, cold-email-personalisation and the-channel-mix-changed read in full, fish-where-the-fish-are's introductions passage, every article searched for network, connection, introduc and LinkedIn, and the titles and descriptions of all 32 existing articles. docs/seo/gsc-latest.md absent (GSC_SERVICE_ACCOUNT_KEY unset, studio #135), so `npm run gsc:cannibals` has no data; recorded, not read as permission.",
+      "ledger": "NEW ROWS: map-the-network-to-the-list and keep-the-tally-not-the-messages, promoted from studio docs/research/ctd-teardown.md §2.1, §2.2, §2.3, §2.5, §3.1 and §4, warm-paths-redrawn.md §2 (its reading of the vendor only), explee-teardown.md §2b, 40-conversations.md §1 and MARKET-RESEARCH.md batches 1 to 3. The teardowns are used for the method only: the page names no vendor and no community member, and names LinkedIn only as the source of the reader's own export.",
+      "inbound_from": [
+        "/resources/ask-for-a-warm-introduction/",
+        "/resources/clean-a-prospect-list/"
+      ],
+      "status": "published"
     }
   ],
   "maintenance": [

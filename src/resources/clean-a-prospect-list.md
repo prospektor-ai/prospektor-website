@@ -100,7 +100,9 @@ thread with, after an automated sequence reached that person as well.
 
 So the do-not-contact list comes before the prospect list, and it holds:
 
-- your customers, and anyone you are already talking to;
+- your customers, anyone you are already talking to, and [the people you
+  already know at a target](/resources/find-warm-introductions/), who are
+  better asked for an introduction;
 - anyone who has said no, or asked not to hear from you;
 - companies as well as people, by web domain, so that a new contact at a
   customer is caught too.

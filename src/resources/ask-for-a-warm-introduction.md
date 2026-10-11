@@ -111,7 +111,8 @@ product publishes for its own scores work just as well on your contacts:
   month and never write to is invisible to every signal above. You know they are
   strong, so count them.
 
-Run that over the people who know your target, and ask the one at the top.
+Run that over [the people in your network who know your
+target](/resources/find-warm-introductions/), and ask the one at the top.
 
 ## When the ask should come from someone else
 
