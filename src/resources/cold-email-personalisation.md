@@ -153,9 +153,10 @@ positioning move.
 **Three: automate the reading, not the writing.** This is the interesting one,
 and it is the distinction most "AI SDR" tools get backwards. They automate the
 *writing*, which produces four hundred fluent, personalised-looking emails that
-say nothing only a reader of that company could have written. The recipient's
-inference machine catches it immediately, because it grades evidence, and fluent
-grammar is not evidence.
+say nothing only a reader of that company could have written, in [the same
+structure as everyone else's](/resources/make-ai-cold-email-sound-like-you/).
+The recipient's inference machine catches it immediately, because it grades
+evidence, and fluent grammar is not evidence.
 
 Automating the *reading* is the opposite: open the company's actual site, follow
 the pages that say what they sell and to whom, note what changed and when, record

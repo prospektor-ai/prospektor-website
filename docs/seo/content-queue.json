@@ -346,13 +346,14 @@
         "/resources/founder-sales-stack/"
       ],
       "distinct_from": "cold-email-personalisation decides WHAT evidence goes in the email (show them their own stuff, the paste test, the five-paragraph email) and argues for automating the reading rather than the writing; this is how to keep a tool's draft in your own voice once it exists, and links there for what the email should say. founder-sales-stack is which tools to buy and says never automate the step that teaches you the market; it never covers editing a draft. cold-email-sequence is the four-email structure; this proposes no structure and links there. answer-without-freezing is spoken answers on a call. No article covers standing writing rules, writing your own examples for a tool, reviewing drafts before they send, template leakage or keeping the hand edit.",
-      "distinct_from_checked": "12 Oct 2026, against cold-email-personalisation and founder-sales-stack read in full, cold-email-sequence and answer-without-freezing by section, every article searched for AI, voice, sound like, subject line and edit (only cold-email-personalisation's third answer and founder-sales-stack's \"do not automate the reading\" touch it), and the titles of all 32 existing articles. docs/seo/gsc-latest.md absent (GSC_SERVICE_ACCOUNT_KEY unset, studio #135), so `npm run gsc:cannibals` has no data; recorded, not read as permission.",
+      "distinct_from_checked": "12 Oct 2026, against cold-email-personalisation and founder-sales-stack read in full, cold-email-sequence and answer-without-freezing by section, every article searched for AI, voice, sound like, subject line and edit (only cold-email-personalisation's third answer and founder-sales-stack's \"do not automate the reading\" touch it), and the titles of all 32 existing articles. docs/seo/gsc-latest.md absent (GSC_SERVICE_ACCOUNT_KEY unset, studio #135), so `npm run gsc:cannibals` has no data; recorded, not read as permission. Re-checked 12 Oct 2026 by the daily article, with cold-email-personalisation, founder-sales-stack and cold-email-sequence read in full: none covers writing your own examples for a tool, standing writing rules, reviewing a draft beside the reason for its hook, template bleed or keeping the hand edit. The angle's repeat count was left out of the page: a correction you make again becomes a rule, with no number, because a count for that is product mechanics (studio #1137), never published.",
       "ledger": "NEW ROWS, to be written with the article: say-the-rule-once (reevo-teardown.md §8.2; MARKET-RESEARCH.md batch 1 tone control and write-the-template remedy, batch 4 personalisation that obeys the sender) and the-edit-is-yours (MARKET-RESEARCH.md batch 1 launch-then-edit and why-this-hook, batch 2 the edit removed and restored and template bleed, batch 3 the edit is a right, Themes; reevo-teardown.md §8.3 the same sales structure). Neither ref is cited by an existing row: the reevo rows rejected on 11 Oct were §1 to §7, and §8 was added on 7 Oct.",
       "inbound_from": [
         "/resources/cold-email-personalisation/",
         "/resources/founder-sales-stack/"
       ],
-      "status": "queued"
+      "status": "published",
+      "published_date": "2026-10-12"
     },
     {
       "slug": "test-your-price-on-a-sales-call",

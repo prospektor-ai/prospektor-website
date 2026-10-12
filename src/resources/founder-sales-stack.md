@@ -93,9 +93,10 @@ learning runs the other way (in person, then calls, then email), and
 same case for not automating the part where you learn.
 
 **Automation of the step that is teaching you something.** Automate the sending.
-Do not automate the reading. A founder who has never read the websites of forty
-prospects in a row does not yet know what their market looks like, and there is no
-tool that will hand them that.
+Do not automate the reading, and if a tool drafts the emails, [keep the last word
+on every sentence](/resources/make-ai-cold-email-sound-like-you/) yourself. A
+founder who has never read the websites of forty prospects in a row does not yet
+know what their market looks like, and there is no tool that will hand them that.
 
 ## The one line that decides it
 
