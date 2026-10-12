@@ -70,7 +70,8 @@ article_dir:       src/resources/<slug>.md         # permalink /resources/<slug>
 index_page:        src/resources.njk               # derived — needs NO edit per article
 template_article:  src/resources/do-not-delegate-sales.md
 shared_components: src/_includes/base.njk, src/_includes/article.njk
-image_host:        none. The site serves ZERO <img> elements.
+image_host:        none for articles. The only <img> elements are the integration
+                   logos in src/assets/img/integrations/ (#841).
                    OG cards are generated: npm run og
 schema_types:      Article + BreadcrumbList per article (src/_includes/article.njk)
                    Organization + WebSite sitewide (base.njk)
@@ -120,7 +121,7 @@ Three sentences off the live site, for a writer to match rather than to guess at
 
 The register: **second person, present tense, concrete nouns, no hedging.** A
 claim arrives with the number or the name that makes it checkable. Paragraphs
-are short. Em dashes are used and are not apologised for. British spelling
+are short. No em or en dashes in /resources/ (the humanizer dash ceiling there is 0, #640). British spelling
 (*personalisation*, *organisation*, *recognise*).
 
 **`.claude/skills/style/SKILL.md` in the studio repo is binding** on anything

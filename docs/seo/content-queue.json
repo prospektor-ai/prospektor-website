@@ -20,7 +20,27 @@
     "operator's tools ask needs, so items below promote rows out of it.",
     "",
     "STATUS values: queued | writing | published. An item is only 'published' once",
-    "the page answers 200 on prospektor.ai — rule 5 of the thread protocol."
+    "the page answers 200 on prospektor.ai — rule 5 of the thread protocol.",
+    "",
+    "WEEKLY SEO PASS, 12 Oct 2026. Maintenance items now use queued | blocked | moot | done:",
+    "blocked waits on something named in the item, moot means the thing it fixes no longer",
+    "exists. The week was planned at THREE queued articles, not the cadence's seven, because",
+    "the research is nearly mined out: after every row in data/learnings.json, every published",
+    "article and the failures listed in the 11 Oct item, the only unmined sections with a",
+    "reader's method in them were reevo-teardown.md §8 with MARKET-RESEARCH.md's copy rows,",
+    "growth-playbook.md §2.4 and agency-list.md's ranking. Surveyed and passed over this week,",
+    "with the reason: higgsfield-academy.md (a product course design), zero-to-closed-message.md",
+    "alone (one outreach draft; used only as support for the agency item), fit-score-override.html",
+    "and origami-shape.html (product screens), explee-teardown.md §8b sending schedule (one",
+    "vendor toggle line) and §2 setup tax (one paragraph), signaliz-teardown.md §4 and §5 (vendor",
+    "surfaces), ctd-teardown.md §4 to §6 (vendor strategy), growth-playbook.md Part 6 (the kill",
+    "criteria are already prepare-for-a-sales-call and start-a-b2b-newsletter), §2.3 (the",
+    "all-in-one line, one argument), §3.6 (already the stay-top-of-mind and abm-vs-campaign rows),",
+    "§7.7 (two quotes, used as support for the pricing item), 40-conversations.md §1 as a",
+    "\"how many cold emails\" page (its arithmetic is already in three articles), reevo §8.1 items",
+    "10 to 12 as a pipeline review page (one vendor feature list and one buyer remark, thin), and",
+    "MARKET-RESEARCH.md's sending tar pit (deliverability is outside WHOM and WHAT, and the rows",
+    "record failures, not a method). Add an item the day a research file lands with a method in it."
   ],
   "cluster": {
     "name": "founder-led sales",
@@ -301,6 +321,99 @@
         "/resources/clean-a-prospect-list/"
       ],
       "status": "published"
+    },
+    {
+      "slug": "make-ai-cold-email-sound-like-you",
+      "type": "article",
+      "action": "new",
+      "cluster": null,
+      "title": "How to make AI-drafted cold email sound like you",
+      "seo_title": "How to make AI cold emails sound like you",
+      "primary_keyword": "how to make ai cold emails sound human",
+      "secondary_keywords": [
+        "ai cold email in your own voice",
+        "how to edit ai written sales emails"
+      ],
+      "target_words": 1100,
+      "faq": false,
+      "topic": "cold email",
+      "source": "studio docs/research/reevo-teardown.md §8.2 (the voice memory: a rule the user says once and every draft obeys; one seller's pasted paragraph of no guessing, no AI language and no dashes plus a manual review step, which he said gets him to 80 to 85%) and §8.3 (a buyer: personalisation that goes rogue, every AI email using the same sales structure); MARKET-RESEARCH.md batch 1 (tone control asked for; the vendor's own remedy, write the emails as you would send them and give the tool that template; launching copy you then have to edit message by message without seeing why each hook was chosen), batch 2 (a copy tell, the human edit removed and brought back, template language bleeding into a personalised email), batch 3 (the edit is a right, not a prompt: change one word and keep the rest), batch 4 (personalisation that obeys the sender; the template is the tell) and Themes (copy nobody trusts, about twenty-five sightings).",
+      "angle": "For the founder whose first draft already comes from a tool. The buyers who use these tools name three failures: the copy has the same structure as everyone else's, personalisation fixes on a detail nobody would mention, and asking for one change rewrites the rest. Their own remedies are the method: write the first few emails yourself and hand them to the tool as the pattern; keep the standing rules in one place, said once and obeyed by every draft (no invented facts, the phrases you never use, the format you do use); read every draft before it sends, with the reason for its opening line beside it, and check for details carried over from another prospect; edit by hand, change the word and keep the sentence, and keep a tool that lets you; when you make the same correction three times, it is a new standing rule. The person still decides every sentence that sends, which keeps this consistent with cold-email-personalisation's third answer. Added 12 Oct 2026 by the weekly SEO pass. True or absent: the 80 to 85% is one seller's own estimate and is said as his; the \"two words\" subject-line claim is one buyer's report of unnamed research and stays out; the reply-rate and spam figures a batch 2 member quoted from a press article are unverified and stay out. Names no vendor, model, member or company. Publishes none of this product's own writing rules or prompts.",
+      "internal_links": [
+        "/resources/cold-email-personalisation/",
+        "/resources/cold-email-sequence/",
+        "/resources/clean-a-prospect-list/",
+        "/resources/founder-sales-stack/"
+      ],
+      "distinct_from": "cold-email-personalisation decides WHAT evidence goes in the email (show them their own stuff, the paste test, the five-paragraph email) and argues for automating the reading rather than the writing; this is how to keep a tool's draft in your own voice once it exists, and links there for what the email should say. founder-sales-stack is which tools to buy and says never automate the step that teaches you the market; it never covers editing a draft. cold-email-sequence is the four-email structure; this proposes no structure and links there. answer-without-freezing is spoken answers on a call. No article covers standing writing rules, writing your own examples for a tool, reviewing drafts before they send, template leakage or keeping the hand edit.",
+      "distinct_from_checked": "12 Oct 2026, against cold-email-personalisation and founder-sales-stack read in full, cold-email-sequence and answer-without-freezing by section, every article searched for AI, voice, sound like, subject line and edit (only cold-email-personalisation's third answer and founder-sales-stack's \"do not automate the reading\" touch it), and the titles of all 32 existing articles. docs/seo/gsc-latest.md absent (GSC_SERVICE_ACCOUNT_KEY unset, studio #135), so `npm run gsc:cannibals` has no data; recorded, not read as permission.",
+      "ledger": "NEW ROWS, to be written with the article: say-the-rule-once (reevo-teardown.md §8.2; MARKET-RESEARCH.md batch 1 tone control and write-the-template remedy, batch 4 personalisation that obeys the sender) and the-edit-is-yours (MARKET-RESEARCH.md batch 1 launch-then-edit and why-this-hook, batch 2 the edit removed and restored and template bleed, batch 3 the edit is a right, Themes; reevo-teardown.md §8.3 the same sales structure). Neither ref is cited by an existing row: the reevo rows rejected on 11 Oct were §1 to §7, and §8 was added on 7 Oct.",
+      "inbound_from": [
+        "/resources/cold-email-personalisation/",
+        "/resources/founder-sales-stack/"
+      ],
+      "status": "queued"
+    },
+    {
+      "slug": "test-your-price-on-a-sales-call",
+      "type": "article",
+      "action": "new",
+      "cluster": null,
+      "title": "How to test your price in a sales conversation",
+      "seo_title": "How to test your B2B price on a sales call",
+      "primary_keyword": "how to test b2b saas pricing",
+      "secondary_keywords": [
+        "how to know if you are underpriced",
+        "value metric b2b pricing"
+      ],
+      "target_words": 1000,
+      "faq": false,
+      "topic": "sales motion",
+      "source": "studio docs/research/growth-playbook.md §2.4 (b: price in the unit the customer already expects to pay more for, not one they have to count; c: do not gate what spreads the product, so not by seat; On raising prices at all and The test to run: quote above list and watch for the blink; On the free trial question: charge for what they value, give away what helps word of mouth) and §7.7 (most founders in the room are underpriced, followed at once by a company that lowered prices for its ICP to restart growth).",
+      "angle": "The fastest pricing information a founder can get costs nothing: on the next sales-led deal, quote above list and watch the buyer. Someone at their limit hesitates; someone who says fine and asks what is next has told you that you are nowhere near it, so the next quote goes higher. Then the shape of the price: charge in the unit the buyer already expects to pay more for as they grow (an agency prices its own work per client, so a line per client needs no defence), never a meter they have to count and budget for; do not charge for the thing that spreads the product, such as seats; and in anything free, charge for what they value and give away what makes them tell someone. Keep the counter-example: a raise is a test, not a rule, and one company restarted growth by lowering prices for the customers it wanted. Added 12 Oct 2026 by the weekly SEO pass. Promoted out of Part 2 under the ledger scope note's reader rule: the number a founder quotes on a call is part of winning that customer. Not pricing-mechanics (§9.7, excluded as price-book operations for an existing base). True or absent: the five-times raise is told without the company's name or figures beyond what the quote says; no other company's price is stated, and our own is not used as the example.",
+      "internal_links": [
+        "/resources/what-your-price-licenses/",
+        "/resources/cold-email-sequence/",
+        "/resources/too-expensive/"
+      ],
+      "distinct_from": "what-your-price-licenses decides which sales motion a given price allows (the thresholds, the outbound floor, the funnel benchmarks, the enterprise triggers) and already says raising the price is often the fix; this is how to find and test the price itself, and links there for the thresholds without repeating them. cold-email-sequence carries the price-on-the-first-call number; this links there and adds only what to do with the buyer's reaction. too-expensive is the stated reason for churn after a sale. No article covers the blink test, choosing the unit a price is charged in, seat gating or what a free tier should give away.",
+      "distinct_from_checked": "12 Oct 2026, against what-your-price-licenses read in full, cold-email-sequence's two numbers section, too-expensive by section, every article searched for blink, per seat, value metric, trial and underpric (only what-your-price-licenses' underpricing line and its funnel table), and the titles of all 32 existing articles. docs/seo/gsc-latest.md absent (GSC_SERVICE_ACCOUNT_KEY unset, studio #135), so `npm run gsc:cannibals` has no data; recorded, not read as permission.",
+      "ledger": "NEW ROWS, to be written with the article: watch-for-the-blink (growth-playbook.md §2.4 On raising prices at all, The test to run; §7.7) and charge-in-their-unit (§2.4 b, c and On the free trial question). Note the promotion out of Part 2 in the ledger's scope comment, the way §7.1, §7.5 and §7.6 were promoted. No existing row cites §2.4 or §7.7.",
+      "inbound_from": [
+        "/resources/what-your-price-licenses/",
+        "/resources/cold-email-sequence/"
+      ],
+      "status": "queued"
+    },
+    {
+      "slug": "find-agencies-to-resell-you",
+      "type": "article",
+      "action": "new",
+      "cluster": null,
+      "title": "How to find agencies that will resell your product",
+      "seo_title": "How to find agency partners to resell your product",
+      "primary_keyword": "how to find agency partners",
+      "secondary_keywords": [
+        "how to find reseller partners for saas"
+      ],
+      "target_words": 1000,
+      "faq": false,
+      "topic": "partnerships",
+      "source": "studio docs/research/agency-list.md (The ranking, and what it ranks; Read and left out, with the reason; The message; Where the names came from for the directories only) and zero-to-closed-message.md (an agency whose own page caps how many clients it takes turns founders away, and those founders still need the work).",
+      "angle": "Start where agencies already list themselves as resellers: the partner directories of the tools your buyers use, which name the agencies and often carry a price the agency's own site does not, so read the listing first. Rank each agency on three facts from its own page: it does by hand the work your product does, so you replace a cost line it carries; it is small enough that a referral fee moves it, and a shop that caps its client count turns work away it could send you; it sits in more than one directory, so it already knows what a partner arrangement looks like. Record size, published price and the tools it names, because they decide the message rather than the rank. Leave agencies out with a written reason (too large for the fee to matter, the work is one service of four, paid per meeting so the work is not its cost, consulting first, turned into a vendor) and park the pages you cannot read. Send one message in which only one sentence changes per agency, the fact from its own page. Added 12 Oct 2026 by the weekly SEO pass. Names no agency, directory, vendor, person or commission rate, and states no price at all.",
+      "internal_links": [
+        "/resources/selling-to-agencies/",
+        "/resources/partnerships-or-wishes/",
+        "/resources/clean-a-prospect-list/"
+      ],
+      "distinct_from": "selling-to-agencies is why agency revenue compounds, what agencies want (support, a project to sell, the commission offered both ways) and the email to agencies you already work with; this is how to find and rank agencies you do not know yet, and links there for what to offer and say. partnerships-or-wishes screens large platform partners by revenue ratio and strategic mandate; this ranks small service firms by whether you replace a cost they carry, and links there for platforms. clean-a-prospect-list already takes the \"a list ages in hours\" example from the same research file; this links there rather than repeating it. No article covers partner directories as a source, the three ranking facts, a written reason for every agency left out, or referrals from an agency that is full.",
+      "distinct_from_checked": "12 Oct 2026, against selling-to-agencies and partnerships-or-wishes read by section (what agencies want, the tactic for existing agencies, the counter-argument, screening a partner list), clean-a-prospect-list's row checks, every article searched for agency, directory, reseller and referral, and the titles of all 32 existing articles. docs/seo/gsc-latest.md absent (GSC_SERVICE_ACCOUNT_KEY unset, studio #135), so `npm run gsc:cannibals` has no data; recorded, not read as permission.",
+      "ledger": "NEW ROWS, to be written with the article: rank-agencies-on-their-own-page (agency-list.md The ranking, Read and left out, The message) and full-agencies-refer (agency-list.md The ranking, a capped shop turns clients away; zero-to-closed-message.md). The existing row read-the-rows-not-the-count cites agency-list.md's Where the names came from and What the reading changed for a different finding (parked rows, a list that ages); neither of those is the new rows' finding.",
+      "inbound_from": [
+        "/resources/selling-to-agencies/",
+        "/resources/partnerships-or-wishes/"
+      ],
+      "status": "queued"
     }
   ],
   "maintenance": [
@@ -310,7 +423,8 @@
       "why": "The only finding on production as of 31 Aug 2026 — node tools/seo-audit.js reports it as the site's single MINOR. A jump from h1 to h3 tells a crawler a level is missing.",
       "needs_operator": null,
       "size": "S",
-      "status": "queued"
+      "status": "moot",
+      "note_2026_10_12": "Moot since studio #1201 (7 Oct 2026). /help/ now renders the studio's short help articles, each section read by position, and the old guide URL /help/screens/ answers 301 to /help/ (netlify.toml, verified on production 12 Oct). node tools/seo-audit.js against production on 12 Oct reports no heading jump on any /help/ page; the site's remaining h1 to h3 jumps were on /integrations/ in four languages, fixed in this pass by making the hub's card titles h2."
     },
     {
       "id": "gsc-first-read",
@@ -318,8 +432,9 @@
       "why": "Everything data-driven in this queue waits on it. The pipeline commits the file daily from 31 Aug; Search Console does not backfill from before the property was verified.",
       "needs_operator": "RUNBOOK-search-console.md §B — the service account, ~15 minutes — plus steps 6 and 7, still outstanding from #135.",
       "size": "S",
-      "status": "queued",
-      "note_2026_09_07": "docs/seo/gsc-latest.md does not exist. gsc.yml has run seven times, daily 1–7 Sep, and every run failed at 'credential present and parses' — GSC_SERVICE_ACCOUNT_KEY has never been set. That is #135's hand-back (RUNBOOK-search-console.md §B), noted on that row 7 Sep. Not a fault in the pipeline; nothing to read until the secret exists, and two to three weeks of zero rows after that."
+      "status": "blocked",
+      "note_2026_09_07": "docs/seo/gsc-latest.md does not exist. gsc.yml has run seven times, daily 1–7 Sep, and every run failed at 'credential present and parses' — GSC_SERVICE_ACCOUNT_KEY has never been set. That is #135's hand-back (RUNBOOK-search-console.md §B), noted on that row 7 Sep. Not a fault in the pipeline; nothing to read until the secret exists, and two to three weeks of zero rows after that.",
+      "note_2026_10_12": "Still absent. The \"Search Console snapshot\" workflow (gsc.yml) failed on its scheduled runs of 9, 10 and 11 Oct (gh run list), and docs/seo/gsc-latest.md does not exist. Blocked on #135: GSC_SERVICE_ACCOUNT_KEY is still unset."
     },
     {
       "id": "cannibalisation-sweep",
@@ -327,8 +442,9 @@
       "why": "The brief says check before every publish. Recording the answer even when it is empty is what makes the first non-empty one legible.",
       "needs_operator": null,
       "size": "S",
-      "status": "queued",
-      "note_2026_09_07": "`npm run gsc:cannibals` before publishing the last two founder-led sales spokes: 'no credential: set GSC_SERVICE_ACCOUNT_KEY'. Empty because there is no data, not because there is no overlap — recorded here rather than read as permission, per the rule above. The manual check was the distinct_from defence on each item, against the named pages."
+      "status": "blocked",
+      "note_2026_09_07": "`npm run gsc:cannibals` before publishing the last two founder-led sales spokes: 'no credential: set GSC_SERVICE_ACCOUNT_KEY'. Empty because there is no data, not because there is no overlap — recorded here rather than read as permission, per the rule above. The manual check was the distinct_from defence on each item, against the named pages.",
+      "note_2026_10_12": "`npm run gsc:cannibals`, 12 Oct: \"no credential: set GSC_SERVICE_ACCOUNT_KEY (the JSON key, whole) or GSC_SERVICE_ACCOUNT_FILE\". The first action is done again and recorded; the sweep itself has nothing to read until #135. The manual check stays the distinct_from defence on each queued item."
     },
     {
       "id": "homepage-vocabulary",
@@ -336,7 +452,8 @@
       "why": "#137 R1: nineteen buyer phrases were measured against the homepage and ZERO appear in its title or description. It has been open since 24 Aug waiting on exactly this data.",
       "needs_operator": "Whether the homepage title and tagline should meet those words or keep their own is repositioning — a CEO call (#141, #130), not a builder's. The data goes in the file; the decision waits.",
       "size": "S",
-      "status": "queued"
+      "status": "blocked",
+      "note_2026_10_12": "`npm run gsc:opportunities`, 12 Oct: \"no credential: set GSC_SERVICE_ACCOUNT_KEY\". Nothing to paste into SEO-AUDIT.md R1. Blocked on #135 for the data, and then on the CEO call the item already names."
     }
   ]
 }

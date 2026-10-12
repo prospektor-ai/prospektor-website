@@ -106,9 +106,9 @@ describe('/integrations/ — the directory, held to the product', () => {
     // 'how to use it'". Derived from the hub's own cards, so a tenth page is
     // checked with nobody editing this.
     const hub = read(HUB);
-    const cards = [...hub.matchAll(/class="card int-card">\s*<a href="(\/integrations\/[^"]+\/)">[\s\S]*?<h3 class="card-title">([^<]+)<\/h3>/g)];
+    const cards = [...hub.matchAll(/class="card int-card">\s*<a href="(\/integrations\/[^"]+\/)">[\s\S]*?<(h[23]) class="card-title">([^<]+)<\/\2>/g)];
     assert.ok(cards.length >= 2, 'the hub has cards leading to integration pages');
-    for (const [, href, name] of cards) {
+    for (const [, href, , name] of cards) {
       const html = read(path.join(href.replace(/^\//, ''), 'index.html'));
       const h1 = (html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i) || [])[1] || '';
       assert.strictEqual(text(h1).trim(), name.trim(), `${href} is headed "${text(h1).trim()}", the card says "${name}"`);

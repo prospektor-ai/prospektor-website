@@ -22,13 +22,18 @@
     inventory reads `{% t %}` blocks and frontmatter `faqs:`, not a list in a
     data file (lib/i18n.js): a sentence in a data file could be translated
     and the catalogue entry would read as stale. -#}
+{#- The card names are h3 under an integration page's "More integrations" h2,
+    and h2 on /integrations/, where nothing sits between them and the h1
+    (weekly SEO pass, 12 Oct 2026: the audit reported h1 to h3). Set
+    `cardLevel` before including to change it. -#}
+{%- set cardH = cardLevel or 'h3' %}
 <ul class="card-grid int-grid">
   {%- if skipApp != 'close' %}
   <li class="card int-card">
     <a href="{{ '/integrations/close/' | localize }}">
       <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/close.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}CRM{% endt %}</span>
-      <h3 class="card-title">Close</h3>
+      <{{ cardH }} class="card-title">Close</{{ cardH }}>
       <p class="card-dek">{% t %}A finished pitch lands as a lead, its contacts, an opportunity and a note. Push again and the same records update.{% endt %}</p>
       {%- if offer.close %}
       <span class="card-cta">{% t %}One month free for Close users →{% endt %}</span>
@@ -43,7 +48,7 @@
     <a href="{{ '/integrations/hubspot/' | localize }}">
       <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/hubspot.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}CRM{% endt %}</span>
-      <h3 class="card-title">HubSpot</h3>
+      <{{ cardH }} class="card-title">HubSpot</{{ cardH }}>
       <p class="card-dek">{% t %}A Company, its Contacts, a Deal in your first stage and a Note. Connect with one button, or paste a private app token.{% endt %}</p>
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
@@ -54,7 +59,7 @@
     <a href="{{ '/integrations/affinity/' | localize }}">
       <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/affinity.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}CRM{% endt %}</span>
-      <h3 class="card-title">Affinity</h3>
+      <{{ cardH }} class="card-title">Affinity</{{ cardH }}>
       <p class="card-dek">{% t %}The organization on the list you pick, its people and a note. Paste an API key and press Connect.{% endt %}</p>
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
@@ -65,7 +70,7 @@
     <a href="{{ '/integrations/lightfield/' | localize }}">
       <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/lightfield.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}CRM{% endt %}</span>
-      <h3 class="card-title">Lightfield</h3>
+      <{{ cardH }} class="card-title">Lightfield</{{ cardH }}>
       <p class="card-dek">{% t %}An account, the contacts with a work email, an opportunity and a note. Paste a key and press Connect.{% endt %}</p>
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
@@ -77,7 +82,7 @@
     <a href="{{ '/integrations/reevo/' | localize }}">
       <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/reevo.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}CRM{% endt %}</span>
-      <h3 class="card-title">Reevo</h3>
+      <{{ cardH }} class="card-title">Reevo</{{ cardH }}>
       <p class="card-dek">{% t %}An account, the contacts with a work email, an opportunity and an activity saying why. Paste a key and press Connect.{% endt %}</p>
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
@@ -88,7 +93,7 @@
     <a href="{{ '/integrations/attio/' | localize }}">
       <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/attio.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}CRM{% endt %}</span>
-      <h3 class="card-title">Attio</h3>
+      <{{ cardH }} class="card-title">Attio</{{ cardH }}>
       <p class="card-dek">{% t %}A company, the people with a work email and a dated note. Paste an access token and press Connect.{% endt %}</p>
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
@@ -99,7 +104,7 @@
     <a href="{{ '/integrations/highlevel/' | localize }}">
       <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/highlevel.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}CRM{% endt %}</span>
-      <h3 class="card-title">HighLevel</h3>
+      <{{ cardH }} class="card-title">HighLevel</{{ cardH }}>
       <p class="card-dek">{% t %}A contact for each person with a work email, tagged prospektor, and a note. Paste a token and your Location ID.{% endt %}</p>
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
@@ -109,7 +114,7 @@
     <div class="card-body">
       <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/salesforce.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}CRM{% endt %}</span>
-      <h3 class="card-title">Salesforce</h3>
+      <{{ cardH }} class="card-title">Salesforce</{{ cardH }}>
       <p class="card-dek">{% t %}Next in line. Say so under Request an integration in your workspace settings and it moves up.{% endt %}</p>
       <span class="card-cta">{% t %}Soon{% endt %}</span>
     </div>
@@ -119,7 +124,7 @@
     <a href="{{ '/integrations/slack/' | localize }}">
       <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/slack.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}Team chat{% endt %}</span>
-      <h3 class="card-title">Slack</h3>
+      <{{ cardH }} class="card-title">Slack</{{ cardH }}>
       <p class="card-dek">{% t %}Every finished pitch posts one short message where the team already is: company, fit score, the angle, a link back.{% endt %}</p>
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
@@ -130,7 +135,7 @@
     <a href="{{ '/integrations/claude/' | localize }}">
       <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/claude.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}AI assistant{% endt %}</span>
-      <h3 class="card-title">Claude</h3>
+      <{{ cardH }} class="card-title">Claude</{{ cardH }}>
       <p class="card-dek">{% t %}Your own Claude does the work here: reads a company, writes the pitch, preps the call. One connector address in claude.ai, a token in Claude Code, Desktop or Cursor.{% endt %}</p>
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
@@ -141,7 +146,7 @@
     <a href="{{ '/integrations/chatgpt/' | localize }}">
       <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/chatgpt.svg' | asset }}" alt="" width="24" height="24"></span>
       <span class="card-topic">{% t %}AI assistant{% endt %}</span>
-      <h3 class="card-title">ChatGPT</h3>
+      <{{ cardH }} class="card-title">ChatGPT</{{ cardH }}>
       <p class="card-dek">{% t %}Add one connector address in ChatGPT and it reads a company, writes the pitch and records what happened. There is no token to paste.{% endt %}</p>
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>
@@ -152,7 +157,7 @@
     <a href="{{ '/integrations/your-own-agent/' | localize }}">
       <span class="int-mark" aria-hidden="true">{}</span>
       <span class="card-topic">{% t %}API token{% endt %}</span>
-      <h3 class="card-title">{% t %}Your own agent{% endt %}</h3>
+      <{{ cardH }} class="card-title">{% t %}Your own agent{% endt %}</{{ cardH }}>
       <p class="card-dek">{% t %}A token lets a script, an agent or your CRM call the workspace. Tick what it may do and when it expires; the secret is shown once.{% endt %}</p>
       <span class="card-cta">{% t %}How it works →{% endt %}</span>
     </a>

@@ -9,9 +9,21 @@ const path = require('node:path');
 const FILE = path.join(__dirname, '..', '..', 'data', 'lessons.json');
 const DESCRIPTION_MAX = 155;
 
-/** The opener, or its first sentence when the whole would not fit a snippet. */
-function describe(opener) {
-  const text = String(opener || '').trim();
+// Under this a description wastes the snippet (tools/seo-audit.js flags it).
+const DESCRIPTION_MIN = 70;
+
+/** The opener, or its first sentence when the whole would not fit a snippet.
+    An opener too short to fill one takes the lesson's own bullets after it,
+    whole, while they fit (weekly SEO pass, 12 Oct 2026: day 7's opener is 46
+    characters). Still the mail's words, and nothing but them. */
+function describe(opener, bullets = []) {
+  let text = String(opener || '').trim();
+  for (const b of bullets) {
+    if (text.length >= DESCRIPTION_MIN) break;
+    const next = `${text} ${String(b).trim()}`;
+    if (next.length > DESCRIPTION_MAX) break;
+    text = next;
+  }
   if (text.length <= DESCRIPTION_MAX) return text;
   const first = text.match(/^[^.!?]*[.!?]/);
   return first && first[0].length <= DESCRIPTION_MAX ? first[0] : text.slice(0, DESCRIPTION_MAX - 1).replace(/\s+\S*$/, '') + '.';
@@ -25,7 +37,7 @@ module.exports = () => {
     slug: `day-${l.day}`,
     url: `/learn/day-${l.day}/`,
     title: `Day ${l.day} of ${count}: ${l.subject}`,
-    description: describe(l.opener),
+    description: describe(l.opener, l.bullets),
   }));
   // The way through the course, on each lesson, so the page's foot needs no
   // lookup in the template: the day before, the day after, or nothing.

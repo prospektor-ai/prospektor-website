@@ -6,9 +6,15 @@ description: "Why first-name merge tags reduce reply rates with sophisticated bu
 topic: cold email
 learnings: personalisation-as-evidence, cold-email-template
 date: 2026-08-24
+updated: 2026-10-12
 readingTime: 8
 ogImage: /assets/img/og/cold-email-personalisation.png
 ---
+
+Cold email personalisation works when it shows the recipient something only a
+person who looked at their company could know. A first-name merge tag does the
+opposite, because experienced buyers read it as proof that a machine sent the
+email.
 
 There is a piece of advice that has survived twenty years of sales training
 without anyone checking whether it still works: *use their name*. Put it in the
@@ -135,8 +141,8 @@ There are only three real answers to that.
 **One: accept lower volume.** If your average contract is worth enough, forty
 researched emails beat four hundred merged ones, and at high enough deal sizes
 this is simply correct. The threshold practitioners tend to name for outbound
-being economic at all sits somewhere around $3,000 to $5,000 of annual contract
-value. Below it, the maths gets hard.
+being economic at all sits somewhere around [$3,000 to $5,000 of annual contract
+value](/resources/what-your-price-licenses/). Below it, the maths gets hard.
 
 **Two: narrow the segment until the research generalises.** If you only write to
 BigCommerce stores doing over $400k, a lot of the reading is shared across the
@@ -165,7 +171,7 @@ findings. The volume goes up. The evidence stays real.
    observation.
 3. Pick the three signals above that you can actually source for your segment and
    make them a required field on your list. If a row cannot be filled in, that row
-   is not ready to email.
+   is [not ready to email](/resources/clean-a-prospect-list/).
 4. Measure reply rate, not open rate. Merge tags do fine on opens. They lose on
    the only metric that pays.
 
