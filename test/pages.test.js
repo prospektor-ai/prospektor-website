@@ -195,8 +195,8 @@ describe('the header, and the pages behind it', () => {
         if (!target.includes(`id="${m[2]}"`)) missing.push(`${path.relative(SITE, p)} → ${m[1]}#${m[2]}`);
       }
     }
-    assert.ok(seen >= homes.length * 2, `expected the Warm intros and Sharper every pitch tiles to deep-link on every homepage, saw ${seen} fragment link(s)`);
-    assert.deepStrictEqual(missing, [], 'a tile points at a section that is not on its page');
+    assert.ok(seen >= homes.length * 2, `expected the Reach the people and Sharper every pitch columns to deep-link on every homepage, saw ${seen} fragment link(s)`);
+    assert.deepStrictEqual(missing, [], 'a column points at a section that is not on its page');
   });
 
   // #453. The <title> is "Prospektor · <tagline>" and the h1 is the same

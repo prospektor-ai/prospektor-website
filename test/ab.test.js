@@ -5,18 +5,15 @@
 //     else, answers GET with 405, counts only beacons from prospektor.ai,
 //     stops counting at the day's cap, fails closed when the store is down,
 //     and never writes any part of the request but the pair into the store;
-//   - with the photos absent (today), the homepage ships no coin, no beacon
-//     script and no photo markup, in any language;
-//   - with four photos present, the coin is in <head> before the stylesheet,
-//     the beacon script is deferred, and every tile carries both the drawing
-//     and a sized, lazy photo;
+//   - the test is over (#1279): no homepage, in any language, tosses the
+//     coin, loads the beacon script or carries a tile photo, and the photos
+//     still serve the two product pages;
 //   - a photo Nils commits is a landscape JPEG of a sane weight, and a set of
 //     one to three photos says the test is still off;
 //   - the report's z-test is the textbook one.
 const { test, describe, before, after, beforeEach } = require('node:test');
 const assert = require('node:assert');
 const fs = require('node:fs');
-const os = require('node:os');
 const path = require('node:path');
 const { siteBuild, buildInto } = require('./helpers.js');
 const fn = require('../netlify/functions/ab.js');
@@ -167,32 +164,6 @@ const homepages = dir => ['', 'de', 'es', 'nl']
   .map(c => path.join(dir, c, 'index.html'))
   .filter(f => fs.existsSync(f));
 
-describe('photos absent: the homepage is the page it was', () => {
-  let built;
-  before(() => { built = siteBuild('ab-off'); });
-  after(() => built && built.cleanup());
-
-  test('the data file says off while the photos are missing', () => {
-    const have = abtest.TILES.filter(n => fs.existsSync(path.join(abtest.DIR, n + '.jpg')));
-    if (have.length === 4) return; // the photos have landed; the next block holds them
-    assert.equal(abtest.enabled, false);
-  });
-
-  test('no coin, no beacon script and no photo on any homepage', () => {
-    if (abtest.enabled) return;
-    const pages = homepages(built.dir);
-    assert.ok(pages.length >= 1, 'no homepage was built');
-    for (const p of pages) {
-      const html = fs.readFileSync(p, 'utf8');
-      assert.ok(!/dataset\.v|data-v=/.test(html), `${p} carries the coin`);
-      assert.ok(!/\/assets\/js\/ab\./.test(html), `${p} loads the beacon script`);
-      assert.ok(!/class="pphoto"/.test(html), `${p} carries a photo`);
-      assert.ok(!/sendBeacon|functions\/ab/.test(html), `${p} beacons`);
-      assert.ok(/class="pvis pvis-1"/.test(html), `${p} lost its drawings`);
-    }
-  });
-});
-
 // A JPEG with a start-of-frame marker and nothing to look at, which is all the
 // build reads from one.
 function fakeJpeg(width, height, pad = 0) {
@@ -203,80 +174,29 @@ function fakeJpeg(width, height, pad = 0) {
   return Buffer.concat([Buffer.from([0xff, 0xd8]), app0, sof, Buffer.alloc(pad), Buffer.from([0xff, 0xd9])]);
 }
 
-describe('photos present: both versions render, and the coin is tossed before paint', () => {
-  let dir, out;
-  before(() => {
-    dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ab-on-src-'));
-    const skip = new Set(['node_modules', '_site', '.git']);
-    for (const name of fs.readdirSync(ROOT)) {
-      if (skip.has(name)) continue;
-      fs.cpSync(path.join(ROOT, name), path.join(dir, name), { recursive: true });
-    }
-    fs.symlinkSync(path.join(ROOT, 'node_modules'), path.join(dir, 'node_modules'), 'dir');
-    const tiles = path.join(dir, 'src', 'assets', 'img', 'tiles');
-    fs.mkdirSync(tiles, { recursive: true });
-    for (const n of abtest.TILES) fs.writeFileSync(path.join(tiles, n + '.jpg'), fakeJpeg(1200, 800));
-    out = path.join(dir, '_out');
-    const { execFileSync } = require('node:child_process');
-    try {
-      execFileSync(path.join(ROOT, 'node_modules', '.bin', 'eleventy'), ['--quiet', '--output=' + out], {
-        cwd: dir, stdio: 'pipe', env: { ...process.env, HELP_CORPUS_OFFLINE: '1' },
-      });
-    } catch (err) {
-      throw new Error('eleventy build with photos failed:\n' + [err.stderr, err.stdout].filter(Boolean).join('\n'));
-    }
-  });
-  after(() => dir && fs.rmSync(dir, { recursive: true, force: true }));
+describe('the test is over: no page tosses the coin or beacons (#1279)', () => {
+  let built;
+  before(() => { built = siteBuild('ab-over'); });
+  after(() => built && built.cleanup());
 
-  test('every homepage tosses the coin in <head>, before the stylesheet', () => {
-    for (const p of homepages(out)) {
+  test('no homepage, in any language, carries the coin, the beacon script or a tile photo', () => {
+    const pages = homepages(built.dir);
+    assert.ok(pages.length > 1, 'no localized homepages were built');
+    for (const p of pages) {
       const html = fs.readFileSync(p, 'utf8');
-      const head = html.slice(0, html.indexOf('</head>'));
-      const coin = head.indexOf('document.documentElement.dataset.v=Math.random()');
-      assert.ok(coin > -1, `${p} has no coin in <head>`);
-      assert.ok(coin < head.indexOf('rel="stylesheet"'), `${p} tosses the coin after the stylesheet`);
-      assert.ok(!/localStorage|sessionStorage|cookie|indexedDB/i.test(head.slice(coin, head.indexOf('</script>', coin))), 'the coin stores something');
+      assert.ok(!/dataset\.v|data-v=/.test(html), `${p} carries the coin`);
+      assert.ok(!/\/assets\/js\/ab\./.test(html), `${p} loads the beacon script`);
+      assert.ok(!/class="pphoto"/.test(html), `${p} carries a tile photo`);
+      assert.ok(!/sendBeacon|functions\/ab/.test(html), `${p} beacons`);
     }
   });
 
-  test('the beacon script is loaded, deferred, after signup.js', () => {
-    for (const p of homepages(out)) {
-      const html = fs.readFileSync(p, 'utf8');
-      const tag = html.match(/<script src="(\/assets\/js\/ab\.[0-9a-f]+\.js)"([^>]*)><\/script>/);
-      assert.ok(tag, `${p} does not load ab.js`);
-      assert.match(tag[2], /\bdefer\b/);
-      assert.ok(fs.existsSync(path.join(out, tag[1])));
-      assert.ok(html.indexOf(tag[0]) > html.indexOf('/assets/js/signup.'), 'ab.js must run after signup.js');
+  test('the photos still serve the two product pages', () => {
+    if (!abtest.enabled) return;
+    for (const page of ['who-to-pitch', 'what-to-send']) {
+      const html = fs.readFileSync(path.join(built.dir, page, 'index.html'), 'utf8');
+      assert.ok(/\/assets\/img\/tiles\/[a-z]+\.jpg/.test(html), `/${page}/ lost its photo`);
     }
-  });
-
-  test('each of the four tiles carries its drawing and a sized, lazy photo with alt text', () => {
-    for (const p of homepages(out)) {
-      const html = fs.readFileSync(p, 'utf8');
-      const imgs = [...html.matchAll(/<div class="pphoto"><img ([^>]+)><\/div>/g)].map(m => m[1]);
-      assert.equal(imgs.length, 4, `${p}: ${imgs.length} photos`);
-      abtest.TILES.forEach((n, i) => {
-        const a = imgs[i];
-        assert.match(a, new RegExp(`src="/assets/img/tiles/${n}\\.jpg"`));
-        assert.match(a, /width="1200"/); assert.match(a, /height="800"/);
-        assert.match(a, /loading="lazy"/); assert.match(a, /decoding="async"/);
-        assert.match(a, /alt="[^"]{12,}"/);
-      });
-      for (let i = 1; i <= 4; i++) assert.ok(html.includes(`class="pvis pvis-${i}"`), `${p} lost drawing ${i}`);
-      assert.ok(fs.existsSync(path.join(out, 'assets', 'img', 'tiles', 'who.jpg')));
-    }
-  });
-
-  test('only the homepage takes part', () => {
-    const pricing = fs.readFileSync(path.join(out, 'pricing', 'index.html'), 'utf8');
-    assert.ok(!/dataset\.v|\/assets\/js\/ab\./.test(pricing));
-  });
-
-  test('the stylesheet shows one or the other by data-v', () => {
-    const css = fs.readFileSync(path.join(ROOT, 'src', 'assets', 'css', 'main.css'), 'utf8');
-    assert.match(css, /\.pphoto\s*\{[^}]*display:\s*none/);
-    assert.match(css, /html\[data-v="photo"\] \.pphoto\s*\{[^}]*display:\s*block/);
-    assert.match(css, /html\[data-v="photo"\] \.pvis\s*\{[^}]*display:\s*none/);
   });
 });
 

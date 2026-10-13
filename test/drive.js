@@ -232,36 +232,35 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     }
   }
 
-  // 6b′ — the four tiles under the hero (7 Oct 2026). Two by two on a desk,
-  //       one column on a phone, each one a link with its heading as real
-  //       text and its drawing hidden from a screen reader, and nothing on
-  //       the phone wider than the phone.
+  // 6b′ — what you get, under the hero (#1279, 13 Oct 2026; four tiles
+  //       until then). Four across on a desk, one column on a phone, each
+  //       column a link into a product page with its heading as real text,
+  //       and nothing on the phone wider than the phone.
   {
     for (const vp of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
       const page = await browser.newPage({ viewport: vp });
       await page.goto('http://localhost:8899/');
       const m = await page.evaluate(() => {
-        const tiles = [...document.querySelectorAll('#what a.ptile')];
-        const tops = tiles.map(t => Math.round(t.getBoundingClientRect().top));
+        const cols = [...document.querySelectorAll('#what a.pcol')];
+        const tops = cols.map(t => Math.round(t.getBoundingClientRect().top));
         return {
-          n: tiles.length,
+          n: cols.length,
           rows: new Set(tops).size,
-          heads: tiles.map(t => (t.querySelector('h3') || {}).textContent),
-          hrefs: tiles.map(t => t.getAttribute('href')),
-          hidden: tiles.every(t => t.querySelector('.pvis').getAttribute('aria-hidden') === 'true'),
+          heads: cols.map(t => (t.querySelector('h3') || {}).textContent),
+          hrefs: cols.map(t => t.getAttribute('href')),
+          hidden: cols.every(t => t.querySelector('svg').getAttribute('aria-hidden') === 'true'),
           // body is overflow-x:hidden, so the page's scrollWidth alone would
-          // hide a tile that ran off the edge; measure what is drawn as well.
+          // hide a column that ran off the edge; measure what is drawn as well.
           scroll: Math.max(document.documentElement.scrollWidth,
-            ...[...document.querySelectorAll('.home-sec *')].filter(e => !e.closest('.pvis') || e.matches('.pvis'))
-              .map(e => Math.ceil(e.getBoundingClientRect().right))) - window.innerWidth,
+            ...[...document.querySelectorAll('.home-sec *')].map(e => Math.ceil(e.getBoundingClientRect().right))) - window.innerWidth,
         };
       });
       const w = `${vp.width}px`;
-      check(`four tiles under the hero (${w})`,
-        m.n === 4 && m.heads.join('|') === 'Who to pitch|What to send|Warm intros|Sharper every pitch', m.heads);
-      check(`the tiles sit ${vp.width > 640 ? 'two by two' : 'one to a row'} (${w})`,
-        m.rows === (vp.width > 640 ? 2 : 4), m.rows);
-      check(`every tile is a link into a product page, its drawing hidden from a screen reader (${w})`,
+      check(`four columns under the hero (${w})`,
+        m.n === 4 && m.heads.join('|') === 'Find the right companies|Reach the people who decide|Know what to say|Sharper every pitch', m.heads);
+      check(`the columns sit ${vp.width > 960 ? 'four across' : 'one to a row'} (${w})`,
+        m.rows === (vp.width > 960 ? 1 : 4), m.rows);
+      check(`every column is a link into a product page, its icon hidden from a screen reader (${w})`,
         m.hidden && m.hrefs.every(h => /^\/(who-to-pitch|what-to-send)\//.test(h)), m.hrefs);
       check(`the homepage does not scroll sideways (${w})`, m.scroll <= 0, m.scroll);
       await page.close();
@@ -1950,14 +1949,6 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     check('a studio that does not answer at all is said as that', (await page.textContent('#statusLine')) === 'Prospektor is not answering.', await page.textContent('#statusLine'));
     check('the footer of the page itself links the status line', (await page.getAttribute('footer a[href="/status/"]', 'href')) === '/status/');
     await page.close();
-  }
-
-  // The homepage tiles test (studio #1185), driven only when the build
-  // carries it: src/_data/abtest.js turns it on when the four photos exist.
-  {
-    const home = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
-    if (/\/assets\/js\/ab\.[0-9a-f]+\.js/.test(home)) await require('./drive-ab').driveAb(browser, 'http://localhost:8899', check);
-    else console.log('  skip  tiles test: the four photos are not in src/assets/img/tiles yet');
   }
 
   await browser.close();

@@ -1,4 +1,11 @@
-// ── The homepage tiles test: drawings or photos (studio #1185) ──────────────
+// ── The tile photos, and the test they were for (studio #1185) ───────────────
+//
+// THE TEST IS OVER (studio #1279/#1288, 13 Oct 2026): the homepage's four
+// tiles became four columns of words, so no page tosses the coin or loads the
+// beacon script any more. The four photos stay, for the heroes of
+// /who-to-pitch/ and /what-to-send/, and the totals counted from 7 to 13 Oct
+// stay in the store: `npm run ab` still reads them. What follows describes the
+// test as it ran.
 //
 // FOR NILS: the four photos. The test switches itself on the first build after
 // all four of these files are committed, and stays off while any one is
