@@ -326,7 +326,6 @@
   "Your own agent": "Dein eigener Agent",
   "A token lets a script, an agent or your CRM call the workspace. Tick what it may do and when it expires; the secret is shown once.": "Ein Token lässt ein Skript, einen Agenten oder dein CRM den Workspace aufrufen. Hake an, was es darf und wann es abläuft; das Geheimnis wird einmal gezeigt.",
   "← All integrations": "← Alle Integrationen",
-  "<strong>One month free for Close users.</strong> Card on file, nothing charged for 30 days, and one email cancels.": "<strong>Ein Monat gratis für Close-Nutzer.</strong> Karte hinterlegt, 30 Tage lang keine Abbuchung, und eine E-Mail kündigt.",
   "Integration support": "Support zur Integration",
   "Documentation": "Dokumentation",
   "Terms of service": "Nutzungsbedingungen",
@@ -350,7 +349,6 @@
   "Press <strong>Connect Close</strong> in your workspace settings and approve it on Close's screen. There is no API key.": "Drück <strong>Close verbinden</strong> in den Workspace-Einstellungen und bestätige es auf dem Bildschirm von Close. Es gibt keinen API-Key.",
   "Run a pitch on a company you want.": "Lass einen Pitch auf eine Firma laufen, die du willst.",
   "Press <strong>Push to Close</strong>.": "Drück <strong>An Close übertragen</strong>.",
-  "<strong>One month free for Close users.</strong> Card on file, nothing charged for 30 days, and one email to <a href=\"mailto:hello@prospektor.ai\">hello@prospektor.ai</a> cancels.": "<strong>Ein Monat gratis für Close-Nutzer.</strong> Karte hinterlegt, 30 Tage lang keine Abbuchung, und eine E-Mail an <a href=\"mailto:hello@prospektor.ai\">hello@prospektor.ai</a> kündigt.",
   "More integrations from Prospektor": "Weitere Integrationen von Prospektor",
   "See all integrations →": "Alle Integrationen ansehen →",
   "integrations": "integrationen",
@@ -358,12 +356,10 @@
   "Every door out of your workspace and into it. A finished pitch lands in the CRM your team already works in, Slack gets the message, and your own Claude or ChatGPT can do the work here.": "Jede Tür aus deinem Workspace hinaus und in ihn hinein. Ein fertiger Pitch landet im CRM, in dem dein Team ohnehin arbeitet, Slack bekommt die Nachricht, und dein eigener Claude oder ChatGPT kann die Arbeit hier erledigen.",
   "Missing one? Name it under Request an integration in your workspace settings, or <a href=\"mailto:hello@prospektor.ai\">write to us</a>. The one asked for most is the one we build next.": "Fehlt eine? Nenn sie unter Integration anfragen in den Workspace-Einstellungen, oder <a href=\"mailto:hello@prospektor.ai\">schreib uns</a>. Die am häufigsten gewünschte bauen wir als Nächstes.",
   "Card saved, nothing charged. Your studio is already reading your site and drafting your brief.": "Karte hinterlegt, nichts abgebucht — dein Studio liest schon deine Website und entwirft dein Briefing.",
-  "Free for 30 days, then $999/month. Cancel before then (email <a href=\"mailto:hello@prospektor.ai\">hello@prospektor.ai</a>) and nothing is charged.": "30 Tage gratis, danach 999 $/Monat. Kündige vorher — eine E-Mail an <a href=\"mailto:hello@prospektor.ai\">hello@prospektor.ai</a> — und es wird nichts abgebucht.",
   "Prospektor finds the companies worth approaching and writes the pitch. One press files it in Close as a lead, its contacts, an opportunity and a note.": "Prospektor findet die Firmen, die einen Anlauf wert sind, und schreibt den Pitch. Ein Klick legt ihn in Close ab: Lead, Kontakte, Opportunity und Notiz.",
   "Prospektor writes the pitch. Close works the deal.": "Prospektor schreibt den Pitch. Close macht den Deal.",
   "Prospektor finds the companies worth approaching, names who to talk to and writes what you send them, in your voice. One press files all of it in Close, where your team already works.": "Prospektor findet die Firmen, die einen Anlauf wert sind, nennt die Ansprechpartner und schreibt, was du ihnen schickst, in deiner Stimme. Ein Klick legt alles in Close ab, wo dein Team ohnehin arbeitet.",
   "Start my free month →": "Meinen Gratismonat starten →",
-  "<strong>First month free for Close users.</strong> Card on file, nothing charged for 30 days. Cancel inside them with one email to <a href=\"mailto:hello@prospektor.ai\">hello@prospektor.ai</a> and you are never charged.": "<strong>Erster Monat gratis für Close-Nutzer.</strong> Karte hinterlegt, 30 Tage lang keine Abbuchung. Kündige innerhalb dieser Zeit mit einer E-Mail an <a href=\"mailto:hello@prospektor.ai\">hello@prospektor.ai</a>, und es wird nie abgebucht.",
   "Every finished pitch pushed to Close with one press": "Jeder fertige Pitch mit einem Klick an Close gesendet",
   "Start my free month · $0 today →": "Meinen Gratismonat starten · heute 0 $ →",
   "Nothing is charged for 30 days. After that, money back any month it doesn't earn its keep.": "30 Tage lang wird nichts abgebucht. Danach Geld zurück für jeden Monat, in dem es sich nicht bezahlt macht.",
@@ -651,5 +647,8 @@
   "one page before every call": "eine Seite vor jedem Gespräch",
   "Wins and losses": "Gewonnen und verloren",
   "shape the next pitch": "prägen den nächsten Pitch",
-  "teach it how you write": "zeigen ihm, wie du schreibst"
+  "teach it how you write": "zeigen ihm, wie du schreibst",
+  "<strong>One month free for Close users.</strong> Card on file, nothing charged for 30 days, and you cancel in the studio with one button.": "<strong>Ein Monat gratis für Close-Nutzer.</strong> Karte hinterlegt, 30 Tage lang keine Abbuchung, und du kündigst im Studio mit einem Klick.",
+  "Free for 30 days, then $999/month. Cancel before then (Settings, Plan, <strong>Manage billing in Stripe</strong>) and nothing is charged.": "30 Tage gratis, danach 999 $/Monat. Kündige vorher (Einstellungen, Plan, <strong>Abrechnung in Stripe verwalten</strong>) und es wird nichts berechnet.",
+  "<strong>First month free for Close users.</strong> Card on file, nothing charged for 30 days. Cancel inside them with <strong>Manage billing in Stripe</strong>, on the studio's Plan page, and you are never charged.": "<strong>Erster Monat gratis für Close-Nutzer.</strong> Karte hinterlegt, 30 Tage lang keine Abbuchung. Kündige innerhalb dieser Zeit mit <strong>Abrechnung in Stripe verwalten</strong> auf der Plan-Seite des Studios, und dir wird nie etwas berechnet."
 }

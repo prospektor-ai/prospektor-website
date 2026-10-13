@@ -109,8 +109,15 @@ function verifyStripeSignature(payload, header, secret) {
 // carries it in its metadata: one address can pay for several workspaces now,
 // and a failed renewal on one must lock that one. The studio reads the id
 // first and the address only when there is none.
-async function callSuspension({ email, action, reason, paid, clientId, secret }) {
-  const body = JSON.stringify({ email, action, reason: reason || undefined, paid: paid || undefined, clientId: clientId || undefined });
+// `cancellation` (studio #752) rides a cancel: Stripe's own reason token from
+// the hosted portal's question (`feedback`) and why Stripe ended it
+// (`reason`), never the customer's free-text comment. The studio folds the
+// token onto its closed list; an older studio ignores the field.
+async function callSuspension({ email, action, reason, paid, clientId, cancellation, secret }) {
+  const body = JSON.stringify({
+    email, action, reason: reason || undefined, paid: paid || undefined, clientId: clientId || undefined,
+    cancellation: cancellation || undefined,
+  });
   for (let attempt = 0; ; attempt++) {
     try {
       const response = await fetch(PROVISION_URL, {
@@ -659,9 +666,20 @@ exports.handler = async function(event) {
     const paid = stripeEvent.type === 'invoice.paid' && Number.isInteger(cents) && cents > 0
       ? { at: new Date((paidAt || Date.now() / 1000) * 1000).toISOString(), amount: cents, currency: String(object.currency || '').toLowerCase() || undefined }
       : undefined;
+    /*
+     * Why they left (studio #752). Cancelling moved to Stripe's hosted page,
+     * whose question lands on the subscription as `cancellation_details`.
+     * Two tokens from Stripe's closed sets and nothing else: the `comment`
+     * box is the customer's own words and stays in Stripe.
+     */
+    const details = stripeEvent.type === 'customer.subscription.deleted' && object.cancellation_details
+      ? object.cancellation_details : null;
+    const cancellation = details
+      ? { feedback: details.feedback ? String(details.feedback) : null, reason: details.reason ? String(details.reason) : null }
+      : undefined;
     let result;
     try {
-      result = await callSuspension({ email, action: billing.action, reason: billing.reason, paid, clientId, secret });
+      result = await callSuspension({ email, action: billing.action, reason: billing.reason, paid, clientId, cancellation, secret });
     } catch (e) {
       console.error('Studio unreachable for', billing.action, 'after retries:', e.message);
       return { statusCode: 502, body: JSON.stringify({ error: 'Studio unreachable' }) };

@@ -51,7 +51,7 @@ permalink: "{{ language.prefix }}/integrations/close/"
 {% set intCtaHref = '#start' %}
 {%- if offer.close %}
 {% set intCtaLabel %}{% t %}Start my free month →{% endt %}{% endset %}
-{% set intOffer %}{% t %}<strong>One month free for Close users.</strong> Card on file, nothing charged for 30 days, and one email cancels.{% endt %}{% endset %}
+{% set intOffer %}{% t %}<strong>One month free for Close users.</strong> Card on file, nothing charged for 30 days, and you cancel in the studio with one button.{% endt %}{% endset %}
 {%- else %}
 {% set intCtaLabel %}{% t %}Start my studio →{% endt %}{% endset %}
 {%- endif %}
@@ -83,7 +83,7 @@ permalink: "{{ language.prefix }}/integrations/close/"
 {% set s2 %}{% t %}Run a pitch on a company you want.{% endt %}{% endset %}
 {% set s3 %}{% t %}Press <strong>Push to Close</strong>.{% endt %}{% endset %}
 {%- if offer.close %}
-{% set pExtra %}{% t %}<strong>One month free for Close users.</strong> Card on file, nothing charged for 30 days, and one email to <a href="mailto:hello@prospektor.ai">hello@prospektor.ai</a> cancels.{% endt %}{% endset %}
+{% set pExtra %}{% t %}<strong>One month free for Close users.</strong> Card on file, nothing charged for 30 days, and you cancel in the studio with one button.{% endt %}{% endset %}
 {%- endif %}
 
 {% set intExtra %}
@@ -106,9 +106,8 @@ permalink: "{{ language.prefix }}/integrations/close/"
           together in both directions. -#}
       <div class="onboard-note">
         <p>{% t %}<strong>First month free for Close users.</strong> Card on file, nothing
-          charged for 30 days. Cancel inside them with one email to
-          <a href="mailto:hello@prospektor.ai">hello@prospektor.ai</a> and you are
-          never charged.{% endt %}</p>
+          charged for 30 days. Cancel inside them with <strong>Manage billing in
+          Stripe</strong>, on the studio's Plan page, and you are never charged.{% endt %}</p>
       </div>
       {%- endif %}
 

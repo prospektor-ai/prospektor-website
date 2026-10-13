@@ -443,6 +443,31 @@ describe('stripe-webhook billing gate', () => {
     assert.equal(resume.reason, undefined, 'a resume carries no reason');
   });
 
+  test('a cancel relays Stripe’s reason token and never the comment (studio #752)', async () => {
+    let calls = stubFetch([
+      ['api.stripe.com/v1/customers/cus_9', { status: 200, body: { email: 'b@acme.com' } }],
+      suspended(),
+    ]);
+    await fn.handler(signedStripeEvent(SECRET, {
+      type: 'customer.subscription.deleted',
+      data: { object: {
+        id: 'sub_1', customer: 'cus_9', status: 'canceled',
+        cancellation_details: { feedback: 'too_expensive', reason: 'cancellation_requested', comment: 'my own words' },
+      } },
+    }));
+    const body = JSON.parse(patchCalls(calls)[0].body);
+    assert.deepEqual(body.cancellation, { feedback: 'too_expensive', reason: 'cancellation_requested' });
+    assert.ok(!JSON.stringify(body).includes('my own words'), 'the free-text comment stays in Stripe');
+
+    // A failed payment carries no cancellation at all.
+    calls = stubFetch([suspended()]);
+    await fn.handler(signedStripeEvent(SECRET, {
+      type: 'invoice.payment_failed',
+      data: { object: { id: 'in_1', customer: 'cus_9', customer_email: 'b@acme.com' } },
+    }));
+    assert.equal(JSON.parse(patchCalls(calls)[0].body).cancellation, undefined);
+  });
+
   test('a paused subscription reporting active is NOT recovery — the workspace stays locked', async () => {
     // pause_collection is the studio's own suspend reaching Stripe
     // (billing-action.js); the update event it fires must not undo the lock.

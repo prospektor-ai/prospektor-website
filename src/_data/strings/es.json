@@ -326,7 +326,6 @@
   "Your own agent": "Tu propio agente",
   "A token lets a script, an agent or your CRM call the workspace. Tick what it may do and when it expires; the secret is shown once.": "Un token deja que un script, un agente o tu CRM llamen al espacio de trabajo. Marca qué puede hacer y cuándo caduca; el secreto se muestra una vez.",
   "← All integrations": "← Todas las integraciones",
-  "<strong>One month free for Close users.</strong> Card on file, nothing charged for 30 days, and one email cancels.": "<strong>Un mes gratis para usuarios de Close.</strong> Tarjeta registrada, sin cobro durante 30 días, y un email cancela.",
   "Integration support": "Soporte de la integración",
   "Documentation": "Documentación",
   "Terms of service": "Términos del servicio",
@@ -350,7 +349,6 @@
   "Press <strong>Connect Close</strong> in your workspace settings and approve it on Close's screen. There is no API key.": "Pulsa <strong>Conectar Close</strong> en los ajustes de tu espacio de trabajo y apruébalo en la pantalla de Close. No hay clave de API.",
   "Run a pitch on a company you want.": "Lanza un pitch sobre una empresa que te interese.",
   "Press <strong>Push to Close</strong>.": "Pulsa <strong>Enviar a Close</strong>.",
-  "<strong>One month free for Close users.</strong> Card on file, nothing charged for 30 days, and one email to <a href=\"mailto:hello@prospektor.ai\">hello@prospektor.ai</a> cancels.": "<strong>Un mes gratis para usuarios de Close.</strong> Tarjeta registrada, sin cobro durante 30 días, y un email a <a href=\"mailto:hello@prospektor.ai\">hello@prospektor.ai</a> cancela.",
   "More integrations from Prospektor": "Más integraciones de Prospektor",
   "See all integrations →": "Ver todas las integraciones →",
   "integrations": "integraciones",
@@ -358,12 +356,10 @@
   "Every door out of your workspace and into it. A finished pitch lands in the CRM your team already works in, Slack gets the message, and your own Claude or ChatGPT can do the work here.": "Todas las puertas que salen de tu espacio de trabajo y entran en él. Un pitch terminado aterriza en el CRM donde ya trabaja tu equipo, Slack recibe el mensaje, y tu propio Claude o ChatGPT puede hacer el trabajo aquí.",
   "Missing one? Name it under Request an integration in your workspace settings, or <a href=\"mailto:hello@prospektor.ai\">write to us</a>. The one asked for most is the one we build next.": "¿Falta alguna? Nómbrala en Pide una integración, en los ajustes de tu espacio de trabajo, o <a href=\"mailto:hello@prospektor.ai\">escríbenos</a>. La más pedida es la siguiente que construimos.",
   "Card saved, nothing charged. Your studio is already reading your site and drafting your brief.": "Tarjeta guardada, sin cobro alguno — tu estudio ya está leyendo tu web y redactando tu brief.",
-  "Free for 30 days, then $999/month. Cancel before then (email <a href=\"mailto:hello@prospektor.ai\">hello@prospektor.ai</a>) and nothing is charged.": "Gratis 30 días y después 999 $/mes. Cancela antes — escribe a <a href=\"mailto:hello@prospektor.ai\">hello@prospektor.ai</a> — y no se cobra nada.",
   "Prospektor finds the companies worth approaching and writes the pitch. One press files it in Close as a lead, its contacts, an opportunity and a note.": "Prospektor encuentra las empresas que merece la pena abordar y escribe el pitch. Un clic lo archiva en Close: lead, contactos, oportunidad y nota.",
   "Prospektor writes the pitch. Close works the deal.": "Prospektor escribe el pitch. Close trabaja el trato.",
   "Prospektor finds the companies worth approaching, names who to talk to and writes what you send them, in your voice. One press files all of it in Close, where your team already works.": "Prospektor encuentra las empresas que merece la pena abordar, nombra con quién hablar y escribe lo que les envías, con tu voz. Un clic lo archiva todo en Close, donde tu equipo ya trabaja.",
   "Start my free month →": "Empezar mi mes gratis →",
-  "<strong>First month free for Close users.</strong> Card on file, nothing charged for 30 days. Cancel inside them with one email to <a href=\"mailto:hello@prospektor.ai\">hello@prospektor.ai</a> and you are never charged.": "<strong>Primer mes gratis para usuarios de Close.</strong> Tarjeta registrada, sin cobro durante 30 días. Cancela dentro de ellos con un email a <a href=\"mailto:hello@prospektor.ai\">hello@prospektor.ai</a> y nunca se te cobra.",
   "Every finished pitch pushed to Close with one press": "Cada pitch terminado enviado a Close con un clic",
   "Start my free month · $0 today →": "Empezar mi mes gratis · 0 $ hoy →",
   "Nothing is charged for 30 days. After that, money back any month it doesn't earn its keep.": "No se cobra nada durante 30 días. Después, te devolvemos el dinero de cualquier mes en que no se lo gane.",
@@ -651,5 +647,8 @@
   "one page before every call": "una página antes de cada llamada",
   "Wins and losses": "Victorias y derrotas",
   "shape the next pitch": "moldean el siguiente pitch",
-  "teach it how you write": "le enseñan cómo escribes"
+  "teach it how you write": "le enseñan cómo escribes",
+  "<strong>One month free for Close users.</strong> Card on file, nothing charged for 30 days, and you cancel in the studio with one button.": "<strong>Un mes gratis para usuarios de Close.</strong> Tarjeta registrada, sin cobro durante 30 días, y cancelas en el estudio con un botón.",
+  "Free for 30 days, then $999/month. Cancel before then (Settings, Plan, <strong>Manage billing in Stripe</strong>) and nothing is charged.": "Gratis 30 días y después 999 $/mes. Cancela antes (Ajustes, Plan, <strong>Gestionar la facturación en Stripe</strong>) y no se cobra nada.",
+  "<strong>First month free for Close users.</strong> Card on file, nothing charged for 30 days. Cancel inside them with <strong>Manage billing in Stripe</strong>, on the studio's Plan page, and you are never charged.": "<strong>El primer mes gratis para usuarios de Close.</strong> Tarjeta registrada, sin cobro durante 30 días. Cancela dentro de ese plazo con <strong>Gestionar la facturación en Stripe</strong>, en la página Plan del estudio, y nunca se te cobra."
 }
