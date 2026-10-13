@@ -102,6 +102,12 @@ exports.handler = async function(event) {
   }
   const email = String(data.email || '').trim().toLowerCase();
   const action = String(data.action || '').trim();
+  // The workspace (studio #1240). One address can pay for several now, each on
+  // its own subscription named in `metadata.workspace` by the webhook. Given,
+  // the action touches the subscriptions that carry this id; a customer from
+  // before the webhook named them has exactly one live subscription with no
+  // name, and that one is still theirs.
+  const workspace = String(data.workspace || '').trim().slice(0, 120);
   if (!EMAIL_RE.test(email)) {
     return { statusCode: 400, body: JSON.stringify({ error: 'Say whose subscription: email' }) };
   }
@@ -121,6 +127,15 @@ exports.handler = async function(event) {
 
   try {
     let subscriptions = await subscriptionsFor(key, email);
+    if (workspace) {
+      const named = subscriptions.filter(s => s.metadata && s.metadata.workspace === workspace);
+      const unnamed = subscriptions.filter(s => !(s.metadata && s.metadata.workspace));
+      // A lone unnamed subscription is by construction the pre-#1240 one: every
+      // later one is named by the webhook, so a customer who then bought a second
+      // workspace can still pause or cancel the first (security pass, 13 Oct 2026).
+      subscriptions = named.length ? named : (unnamed.length === 1 ? unnamed : []);
+      if (!subscriptions.length) console.log(`billing-action: ${action} for workspace ${workspace} matched no subscription behind ${email}`);
+    }
 
     if (action === 'portal') {
       // No live subscription, no portal: matched 0 is the studio's cue to say

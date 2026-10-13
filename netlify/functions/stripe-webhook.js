@@ -105,8 +105,12 @@ function verifyStripeSignature(payload, header, secret) {
 // carried money at all — `{ at, amount, currency }`. The studio records it as
 // the workspace's last real payment, which is the one fact that tells a free
 // month that converted from one that ended. An older studio ignores the field.
-async function callSuspension({ email, action, reason, paid, secret }) {
-  const body = JSON.stringify({ email, action, reason: reason || undefined, paid: paid || undefined });
+// `clientId` (studio #1240) names the workspace outright when the subscription
+// carries it in its metadata: one address can pay for several workspaces now,
+// and a failed renewal on one must lock that one. The studio reads the id
+// first and the address only when there is none.
+async function callSuspension({ email, action, reason, paid, clientId, secret }) {
+  const body = JSON.stringify({ email, action, reason: reason || undefined, paid: paid || undefined, clientId: clientId || undefined });
   for (let attempt = 0; ; attempt++) {
     try {
       const response = await fetch(PROVISION_URL, {
@@ -236,7 +240,11 @@ async function freeUntil(session) {
 // `photo`, which rode through checkout as `metadata[ab]`; the studio keeps it
 // beside the plan so the tiles test can count customers. Omitted when there
 // is none, which is every buyer who did not arrive from the homepage test.
-async function callProvision({ email, company, website, goal, marketing, language, endsAt, ref, ab, secret }) {
+// `intent` (studio #1240) is the studio's own signed token for a second
+// workspace, read off the session's metadata and handed back whole: the studio
+// verifies it and redeems it once, so a retried delivery gets the workspace it
+// already made. Omitted on every other checkout.
+async function callProvision({ email, company, website, goal, marketing, language, endsAt, ref, ab, intent, secret }) {
   // `plan: 'paid'` because this caller is the one door money actually came
   // through — the studio defaults everything else to 'comped', and without
   // this line every checkout-provisioned workspace was landing as comped
@@ -254,6 +262,7 @@ async function callProvision({ email, company, website, goal, marketing, languag
     endsAt: endsAt || undefined,
     ref: ref || undefined,
     ab: ab || undefined,
+    intent: intent || undefined,
   });
   for (let attempt = 0; ; attempt++) {
     try {
@@ -271,6 +280,30 @@ async function callProvision({ email, company, website, goal, marketing, languag
       if (attempt >= 2) throw e;
       await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
     }
+  }
+}
+
+// Write the workspace id onto the subscription's metadata (studio #1240). The
+// session carries the subscription as an id or, when expanded, as an object.
+async function nameWorkspaceOnSubscription(subscription, clientId) {
+  const key = process.env.STRIPE_SECRET_KEY;
+  const id = typeof subscription === 'string' ? subscription : subscription && subscription.id;
+  if (!key || !id) return false;
+  try {
+    const response = await fetch('https://api.stripe.com/v1/subscriptions/' + encodeURIComponent(id), {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ 'metadata[workspace]': clientId }).toString(),
+    });
+    if (!response.ok) {
+      const body = await response.json().catch(() => null);
+      console.error('Subscription', id, 'could not be named for workspace', clientId, ':', response.status, redactKeys((body && body.error && body.error.message) || ''));
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error('Subscription', id, 'could not be named for workspace', clientId, ':', redactKeys(e.message));
+    return false;
   }
 }
 
@@ -576,6 +609,15 @@ exports.handler = async function(event) {
     // only carry ids, so resolve the customer with one authenticated read.
     // A dispute names its customer via the charge's expandable field — take
     // what is inline and fall back to the customer lookup.
+    // The workspace the subscription names (studio #1240), when it does: a
+    // subscription event carries its own metadata, an invoice its
+    // subscription's under `subscription_details`. Absent on every
+    // subscription from before the webhook started writing it.
+    const clientId = String(
+      (object.metadata && object.metadata.workspace)
+      || (object.subscription_details && object.subscription_details.metadata && object.subscription_details.metadata.workspace)
+      || '',
+    ).trim();
     const inline = String(object.customer_email || '').trim().toLowerCase();
     // Only looked up when the event did not carry the address, exactly as
     // before — what changed is that the lookup now says why it came back empty.
@@ -619,7 +661,7 @@ exports.handler = async function(event) {
       : undefined;
     let result;
     try {
-      result = await callSuspension({ email, action: billing.action, reason: billing.reason, paid, secret });
+      result = await callSuspension({ email, action: billing.action, reason: billing.reason, paid, clientId, secret });
     } catch (e) {
       console.error('Studio unreachable for', billing.action, 'after retries:', e.message);
       return { statusCode: 502, body: JSON.stringify({ error: 'Studio unreachable' }) };
@@ -628,7 +670,7 @@ exports.handler = async function(event) {
       console.error(billing.action, 'failed:', result.status, JSON.stringify(result.data).slice(0, 300));
       return { statusCode: 502, body: JSON.stringify({ error: 'Suspension call failed' }) };
     }
-    console.log(stripeEvent.type, '->', billing.action, 'for', email,
+    console.log(stripeEvent.type, '->', billing.action, 'for', clientId || email,
       JSON.stringify(result.data).slice(0, 200));
     return { statusCode: 200, body: JSON.stringify({ received: true, acted: billing.action }) };
   }
@@ -688,6 +730,8 @@ exports.handler = async function(event) {
   // #1195: the homepage version, one of two words or nothing, read in the same
   // grammar create-checkout-session wrote it in.
   const ab = armOf(metadata.ab);
+  // #1240: the second-workspace intent, forwarded whole; the studio verifies it.
+  const intent = String(metadata.intent || '').trim().slice(0, 1200) || '';
 
   const provisionSecret = process.env.STUDIO_PROVISION_SECRET;
   if (!provisionSecret) {
@@ -705,7 +749,7 @@ exports.handler = async function(event) {
 
   let provision;
   try {
-    provision = await callProvision({ email, company, website, goal, marketing, language, endsAt, ref, ab, secret: provisionSecret });
+    provision = await callProvision({ email, company, website, goal, marketing, language, endsAt, ref, ab, intent, secret: provisionSecret });
   } catch (e) {
     console.error('Studio unreachable after retries:', e.message);
     return { statusCode: 502, body: JSON.stringify({ error: 'Studio unreachable' }) };
@@ -717,6 +761,12 @@ exports.handler = async function(event) {
   }
 
   const clientId = provision.data && provision.data.client && provision.data.client.id;
+  // The workspace onto the subscription (studio #1240): from here every
+  // subscription names the workspace it pays for, so billing-action and the
+  // billing events above can act on one of several. Best effort, after the
+  // provision, never a reason to fail the delivery: a subscription left
+  // unnamed is the pre-#1240 state, which still works by address.
+  if (clientId) await nameWorkspaceOnSubscription(session.subscription, clientId);
   const existing = !!(provision.data && provision.data.existing);
   // existing + resumed is the re-subscribe path working as designed: the
   // buyer's workspace was suspended and this payment just unlocked it. Not a

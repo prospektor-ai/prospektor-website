@@ -593,3 +593,74 @@ describe('the partner marker reaches provisioning', () => {
     assert.ok(!/Referred/.test(notice.TextBody));
   });
 });
+
+// ── A second workspace, and the workspace on the subscription (studio #1240) ──
+describe('stripe-webhook, one address and several workspaces', () => {
+  const patchCalls2 = calls => calls.filter(c => c.url.includes('/api/provision') && c.method === 'PATCH');
+  beforeEach(() => {
+    resetEnv();
+    process.env.STRIPE_WEBHOOK_SECRET = SECRET;
+    process.env.STUDIO_PROVISION_SECRET = 'shh';
+    process.env.STRIPE_SECRET_KEY = 'sk_test_x';
+  });
+
+  test('the intent rides from the session metadata to the studio, whole', async () => {
+    const calls = stubFetch([provisioned({ intent: 'redeemed' }), ['api.stripe.com/v1/subscriptions/sub_777', { status: 200, body: { id: 'sub_777' } }], ['postmarkapp', { status: 200, body: {} }]]);
+    const event = checkoutSessionCompleted({ email: 'b@acme.com', metadata: { domain: 'northwind.co', door: 'studio', intent: 'abc.def' } });
+    event.data.object.subscription = 'sub_777';
+    const r = await fn.handler(signedStripeEvent(SECRET, event));
+    assert.equal(r.statusCode, 200);
+    const body = JSON.parse(calls.find(c => c.url.includes('/api/provision')).body);
+    assert.equal(body.intent, 'abc.def');
+    assert.equal(body.email, 'b@acme.com');
+  });
+
+  test('every provisioned checkout names its workspace on the subscription, after the studio answered', async () => {
+    const calls = stubFetch([provisioned(), ['api.stripe.com/v1/subscriptions/sub_777', { status: 200, body: { id: 'sub_777' } }], ['postmarkapp', { status: 200, body: {} }]]);
+    const event = checkoutSessionCompleted({ email: 'b@acme.com', metadata: { domain: 'acme.com' } });
+    event.data.object.subscription = 'sub_777';
+    assert.equal((await fn.handler(signedStripeEvent(SECRET, event))).statusCode, 200);
+    const write = calls.find(c => c.url.includes('/v1/subscriptions/sub_777') && c.method === 'POST');
+    assert.ok(write, 'the subscription is written to');
+    assert.equal(new URLSearchParams(write.body).get('metadata[workspace]'), 'acme');
+    assert.ok(calls.indexOf(write) > calls.findIndex(c => c.url.includes('/api/provision')), 'after the provision, never before');
+  });
+
+  test('a subscription that cannot be named still completes the delivery', async () => {
+    const calls = stubFetch([provisioned(), ['api.stripe.com/v1/subscriptions/sub_777', { status: 500, body: { error: { message: 'nope' } } }], ['postmarkapp', { status: 200, body: {} }]]);
+    const event = checkoutSessionCompleted({ email: 'b@acme.com', metadata: { domain: 'acme.com' } });
+    event.data.object.subscription = 'sub_777';
+    assert.equal((await fn.handler(signedStripeEvent(SECRET, event))).statusCode, 200);
+    assert.ok(calls.find(c => c.url.includes('/api/provision')));
+  });
+
+  test('a billing event on a named subscription locks that workspace by id, beside the address', async () => {
+    const calls = stubFetch([['/api/provision', { status: 200, body: { action: 'suspend', existed: true } }]]);
+    const r = await fn.handler(signedStripeEvent(SECRET, {
+      type: 'customer.subscription.deleted',
+      data: { object: { id: 'sub_second', customer: 'cus_1', customer_email: 'b@acme.com', metadata: { workspace: 'northwind' } } },
+    }));
+    assert.equal(r.statusCode, 200);
+    const body = JSON.parse(patchCalls2(calls)[0].body);
+    assert.equal(body.clientId, 'northwind');
+    assert.equal(body.email, 'b@acme.com');
+  });
+
+  test('an invoice names its workspace through subscription_details', async () => {
+    const calls = stubFetch([['/api/provision', { status: 200, body: { action: 'suspend', existed: true } }]]);
+    await fn.handler(signedStripeEvent(SECRET, {
+      type: 'invoice.payment_failed',
+      data: { object: { customer: 'cus_1', customer_email: 'b@acme.com', subscription_details: { metadata: { workspace: 'northwind' } } } },
+    }));
+    assert.equal(JSON.parse(patchCalls2(calls)[0].body).clientId, 'northwind');
+  });
+
+  test('an unnamed subscription sends no clientId, exactly as before', async () => {
+    const calls = stubFetch([['/api/provision', { status: 200, body: { action: 'suspend', existed: true } }]]);
+    await fn.handler(signedStripeEvent(SECRET, {
+      type: 'invoice.payment_failed',
+      data: { object: { customer: 'cus_1', customer_email: 'b@acme.com' } },
+    }));
+    assert.deepEqual(JSON.parse(patchCalls2(calls)[0].body), { email: 'b@acme.com', action: 'suspend', reason: 'payment_failed' });
+  });
+});

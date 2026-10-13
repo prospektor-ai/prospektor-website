@@ -43,6 +43,7 @@ const { languageOf, LANGUAGES } = require('../../lib/i18n');
 const { trialDays, partnerOf } = require('../../lib/trial');
 const { rewardfulKey, referralOf } = require('../../lib/rewardful');
 const { armOf } = require('../../lib/ab');
+const { verifyIntent } = require('../lib/intent');
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const STUDIO = 'https://studio.prospektor.ai';
@@ -173,7 +174,22 @@ exports.handler = async function(event) {
     }
   }
 
-  const owned = await checkOwnership(email);
+  // #1240: a second workspace, bought on purpose from the studio. The studio
+  // mints a signed, single-use intent for the signed-in address and the site
+  // it typed; the same shared secret verifies it here, and only a verified
+  // intent whose address and site are this request's lets a known owner past
+  // the guard below. A token that does not verify is refused outright rather
+  // than sold as an ordinary checkout: the studio would then answer `existing`
+  // and the buyer would have paid for a workspace they already own.
+  const intent = data.from === 'studio' && data.intent ? verifyIntent(data.intent, process.env.STUDIO_PROVISION_SECRET) : null;
+  if (data.from === 'studio' && data.intent && !intent) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'That checkout has expired. Start it again from the workspace menu.' }) };
+  }
+  if (intent && (intent.email !== email || intent.domain !== cleanDomain(website || '')))  {
+    return { statusCode: 400, body: JSON.stringify({ error: 'That checkout was started for another company. Start it again from the workspace menu.' }) };
+  }
+
+  const owned = intent ? { taken: false, checked: false } : await checkOwnership(email);
   // Suspended is the exception to one-email-one-workspace: this owner's
   // subscription lapsed, their studio is locked, and completing this checkout
   // is what unlocks it — the studio resumes the workspace instead of creating
@@ -214,7 +230,12 @@ exports.handler = async function(event) {
     const text = q.toString();
     return STUDIO + '/signup' + (text ? '?' + text : '');
   };
-  const cancelUrl = data.from === 'resubscribe'
+  // #1240: a second workspace starts and ends inside the studio the buyer is
+  // already signed in to. Paying lands on the studio's home with the intent's
+  // id, which the page waits on until the webhook has opened the workspace;
+  // cancelling lands on the home as it was. The id is the studio's own, from
+  // a token this function has just verified, so it can steer nothing.
+  const cancelUrl = data.from === 'resubscribe' || intent
     ? STUDIO + '/'
     : studioDoor ? studioBack(website ? { website } : {})
       : site + prefix + (RETURNS.get(data.from) || '/checkout/');
@@ -231,8 +252,9 @@ exports.handler = async function(event) {
     // the real cs_… id on redirect, and /checkout/done/ trades it back for
     // the paid amount and sign-in address via checkout-session-status (#244).
     success_url: data.from === 'resubscribe' ? STUDIO + '/'
-      : studioDoor ? studioBack({ paid: '1' })
-        : site + prefix + '/checkout/done/?session_id={CHECKOUT_SESSION_ID}',
+      : intent ? STUDIO + '/?opening=' + encodeURIComponent(intent.id)
+        : studioDoor ? studioBack({ paid: '1' })
+          : site + prefix + '/checkout/done/?session_id={CHECKOUT_SESSION_ID}',
     cancel_url: cancelUrl,
   });
   if (lang) params.set('locale', lang.code);
@@ -262,6 +284,9 @@ exports.handler = async function(event) {
   const tags = UTM.map(k => [k, meta((data.utm || {})[k])]);
   // #1097: which door the buyer came through, so the webhook's welcome mail
   // can say the workspace is already open instead of asking them to sign in.
+  // #1240: the intent rides the session's metadata to the webhook and on to
+  // /api/provision, which redeems it once. Never on the subscription's: that
+  // copy would outlive the purchase it belongs to.
   for (const [k, v] of [['door', studioDoor ? 'studio' : ''], ['domain', website], ['company', company], ['goal', goal], ['marketing', marketing], ['language', lang ? lang.code : ''], ['plan', plan === 'month' ? '' : plan], ['via', partner], ['ref', referral], ['ab', ab], ...tags]) {
     if (v) {
       params.set('metadata[' + k + ']', v);
@@ -269,6 +294,7 @@ exports.handler = async function(event) {
     }
   }
   params.set('customer_email', email);
+  if (intent) params.set('metadata[intent]', data.intent);
 
   let response, session;
   try {

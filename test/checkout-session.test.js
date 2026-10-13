@@ -451,3 +451,52 @@ describe('the partner marker', () => {
     }
   });
 });
+
+// ── A second workspace, bought from the studio (studio #1240) ──
+describe('the second-workspace intent', () => {
+  const { signIntent } = require('../netlify/lib/intent');
+  const SECRET = 'a-long-enough-provisioning-secret-for-tests';
+  const TAKEN = ['provision-check', { status: 200, body: { taken: true, name: 'Acme', reason: 'email' } }];
+  const claims = (extra = {}) => ({ id: 'int-abc', email: 'buyer@acme.com', domain: 'northwind.co', exp: Date.now() + 3600000, ...extra });
+  beforeEach(() => { resetEnv(); process.env.STRIPE_SECRET_KEY = 'sk_test_x'; process.env.STUDIO_PROVISION_SECRET = SECRET; });
+
+  test('a verified intent lets an address that owns a studio buy a second one, and rides the session metadata', async () => {
+    const calls = stubFetch([STRIPE_OK, TAKEN]);
+    const token = signIntent(claims(), SECRET);
+    const r = await post(fn, { email: 'buyer@acme.com', domain: 'northwind.co', from: 'studio', intent: token });
+    assert.equal(r.statusCode, 200, r.body);
+    assert.equal(calls.filter(c => c.url.includes('provision-check')).length, 0, 'the ownership guard is not asked: the studio vouched');
+    const p = new URLSearchParams(stripeCalls(calls)[0].body);
+    assert.equal(p.get('metadata[intent]'), token);
+    assert.equal(p.get('subscription_data[metadata][intent]'), null, 'never on the subscription');
+    assert.equal(p.get('metadata[domain]'), 'northwind.co');
+    assert.equal(p.get('metadata[door]'), 'studio');
+    assert.equal(p.get('success_url'), 'https://studio.prospektor.ai/?opening=int-abc');
+    assert.equal(p.get('cancel_url'), 'https://studio.prospektor.ai/');
+    assert.equal(p.get('customer_email'), 'buyer@acme.com');
+  });
+
+  test('a token that does not verify is refused, never sold as an ordinary checkout', async () => {
+    const calls = stubFetch([STRIPE_OK, TAKEN]);
+    const forged = signIntent(claims(), 'some-other-secret-that-is-long-enough-xx');
+    assert.equal((await post(fn, { email: 'buyer@acme.com', domain: 'northwind.co', from: 'studio', intent: forged })).statusCode, 400);
+    const expired = signIntent(claims({ exp: Date.now() - 1000 }), SECRET);
+    assert.equal((await post(fn, { email: 'buyer@acme.com', domain: 'northwind.co', from: 'studio', intent: expired })).statusCode, 400);
+    assert.equal(stripeCalls(calls).length, 0);
+  });
+
+  test('an intent minted for another address or another site is refused', async () => {
+    const calls = stubFetch([STRIPE_OK, TAKEN]);
+    const token = signIntent(claims(), SECRET);
+    assert.equal((await post(fn, { email: 'other@acme.com', domain: 'northwind.co', from: 'studio', intent: token })).statusCode, 400);
+    assert.equal((await post(fn, { email: 'buyer@acme.com', domain: 'fernway.co', from: 'studio', intent: token })).statusCode, 400);
+    assert.equal(stripeCalls(calls).length, 0);
+  });
+
+  test('without a studio door the intent is ignored and the guard stands', async () => {
+    const calls = stubFetch([STRIPE_OK, TAKEN]);
+    const token = signIntent(claims(), SECRET);
+    assert.equal((await post(fn, { email: 'buyer@acme.com', domain: 'northwind.co', from: 'pricing', intent: token })).statusCode, 409);
+    assert.equal(stripeCalls(calls).length, 0);
+  });
+});

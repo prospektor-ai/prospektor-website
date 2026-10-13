@@ -195,3 +195,72 @@ describe('billing-action', () => {
     assert.match(body.cause, /billing_portal/);
   });
 });
+
+// ── One address, several workspaces (studio #1240) ──
+describe('billing-action by workspace', () => {
+  beforeEach(() => {
+    resetEnv();
+    process.env.STUDIO_PROVISION_SECRET = SECRET;
+    process.env.STRIPE_SECRET_KEY = 'sk_test_x';
+  });
+  const named = () => [
+    ['/v1/customers?', { status: 200, body: { data: [{ id: 'cus_1' }] } }],
+    ['/v1/subscriptions?customer=cus_1', { status: 200, body: { data: [
+      { id: 'sub_first', status: 'active', metadata: { workspace: 'acme' } },
+      { id: 'sub_second', status: 'active', metadata: { workspace: 'northwind' } },
+    ] } }],
+    ['/v1/subscriptions/', { status: 200, body: { id: 'sub_x' } }],
+  ];
+
+  test('pausing one workspace touches its subscription and leaves the sibling charging', async () => {
+    const calls = stubFetch(named());
+    const r = await post({ email: 'b@acme.com', action: 'pause', workspace: 'northwind' });
+    assert.equal(r.statusCode, 200);
+    assert.deepEqual(JSON.parse(r.body).subscriptions, ['sub_second']);
+    assert.equal(acts(calls).length, 1);
+    assert.ok(acts(calls)[0].url.endsWith('/sub_second'));
+  });
+
+  test('a workspace no subscription names matches nothing, rather than everything', async () => {
+    const calls = stubFetch(named());
+    const r = await post({ email: 'b@acme.com', action: 'cancel', workspace: 'nobody' });
+    assert.equal(r.statusCode, 200);
+    assert.equal(JSON.parse(r.body).matched, 0);
+    assert.equal(acts(calls).length, 0);
+  });
+
+  test('a customer from before the webhook named subscriptions, with one, is still reached by workspace', async () => {
+    const calls = stubFetch([
+      ['/v1/customers?', { status: 200, body: { data: [{ id: 'cus_1' }] } }],
+      ['/v1/subscriptions?customer=cus_1', { status: 200, body: { data: [{ id: 'sub_old', status: 'active' }] } }],
+      ['/v1/subscriptions/', { status: 200, body: { id: 'sub_x' } }],
+    ]);
+    const r = await post({ email: 'b@acme.com', action: 'pause', workspace: 'acme' });
+    assert.deepEqual(JSON.parse(r.body).subscriptions, ['sub_old']);
+    assert.equal(acts(calls).length, 1);
+  });
+
+  test('without a workspace, every subscription behind the address is acted on as before', async () => {
+    const calls = stubFetch(named());
+    const r = await post({ email: 'b@acme.com', action: 'pause' });
+    assert.deepEqual(JSON.parse(r.body).subscriptions.sort(), ['sub_first', 'sub_second']);
+    assert.equal(acts(calls).length, 2);
+  });
+});
+
+describe('billing-action by workspace, after a second one was bought', () => {
+  beforeEach(() => { resetEnv(); process.env.STUDIO_PROVISION_SECRET = SECRET; process.env.STRIPE_SECRET_KEY = 'sk_test_x'; });
+  test('the first workspace’s unnamed subscription is still reached beside a named second (security pass)', async () => {
+    const calls = stubFetch([
+      ['/v1/customers?', { status: 200, body: { data: [{ id: 'cus_1' }] } }],
+      ['/v1/subscriptions?customer=cus_1', { status: 200, body: { data: [
+        { id: 'sub_old', status: 'active' },
+        { id: 'sub_second', status: 'active', metadata: { workspace: 'northwind' } },
+      ] } }],
+      ['/v1/subscriptions/', { status: 200, body: { id: 'sub_x' } }],
+    ]);
+    const r = await post({ email: 'b@acme.com', action: 'cancel', workspace: 'acme' });
+    assert.deepEqual(JSON.parse(r.body).subscriptions, ['sub_old']);
+    assert.equal(acts(calls).length, 1);
+  });
+});
