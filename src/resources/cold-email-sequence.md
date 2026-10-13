@@ -85,7 +85,8 @@ not scale, which is precisely why it works.
 That is a large difference for a change that costs nothing. The instinct is to
 defer price until value is established. The data says the deferral reads as
 evasion, and it wastes cycles on people who were never going to clear the number.
-If your pricing is public, say it early and let the unqualified self-select out.
+If your pricing is public, say it early, let the unqualified self-select out, and
+[watch how each buyer takes the number](/resources/test-your-price-on-a-sales-call/).
 
 **Expect to lose 75–85% of first meetings.** From Pete Kazanjy: a **25% win rate is
 very good**, and **10–15% is normal in a new category.** Worth writing on a wall,

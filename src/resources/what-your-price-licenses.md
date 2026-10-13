@@ -44,7 +44,8 @@ The direction of the fix is the useful part. If your motion is too expensive for
 your price, you have two options and only one of them is usually considered.
 Everybody tries to make the motion cheaper. Raising the price is the other one, and
 it is frequently the correct one: roughly 80% of early B2B companies have a pricing
-problem, and it is nearly always underpricing.
+problem, and it is nearly always underpricing, which you can [test on your next
+sales call](/resources/test-your-price-on-a-sales-call/).
 
 Being five times underpriced costs more than margin. **It removes your right to
 market at all**, because every channel that involves a human becomes unaffordable
