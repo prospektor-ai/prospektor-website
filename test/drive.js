@@ -1723,7 +1723,7 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
     check('they are told the card is saved and nothing was charged',
       /nothing charged/i.test(shown), shown);
     check('and when the first charge comes, and how to stop it',
-      /30 days/.test(shown) && /\$999/.test(shown) && /hello@prospektor\.ai/.test(shown), shown);
+      /30 days/.test(shown) && /\$999/.test(shown) && /Manage billing in Stripe/.test(shown), shown);
     check('no amount is printed, because none left the card',
       await page.isHidden('#confirmPaid'));
     // And the paid path is untouched by all of it.
