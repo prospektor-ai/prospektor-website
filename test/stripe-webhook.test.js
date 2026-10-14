@@ -680,6 +680,42 @@ describe('stripe-webhook, one address and several workspaces', () => {
     assert.equal(JSON.parse(patchCalls2(calls)[0].body).clientId, 'northwind');
   });
 
+  test('a second workspace’s first invoice names it by the intent id, until the subscription names the workspace (studio #1334)', async () => {
+    const calls = stubFetch([['/api/provision', { status: 200, body: { action: 'resume', existed: true } }]]);
+    await fn.handler(signedStripeEvent(SECRET, {
+      type: 'invoice.paid',
+      data: { object: { customer: 'cus_1', customer_email: 'b@acme.com', amount_paid: 0, subscription_details: { metadata: { intent: 'int-abc' } } } },
+    }));
+    const body = JSON.parse(patchCalls2(calls)[0].body);
+    assert.equal(body.intent, 'int-abc');
+    assert.equal(body.clientId, undefined);
+    await fn.handler(signedStripeEvent(SECRET, {
+      type: 'customer.subscription.deleted',
+      data: { object: { id: 'sub_2', customer: 'cus_1', customer_email: 'b@acme.com', metadata: { intent: 'int-abc', workspace: 'northwind' } } },
+    }));
+    const named = JSON.parse(patchCalls2(calls)[1].body);
+    assert.equal(named.clientId, 'northwind');
+    assert.equal(named.intent, 'int-abc');
+  });
+
+  test('only an intent id is relayed, never anything shaped like a token', async () => {
+    const calls = stubFetch([['/api/provision', { status: 200, body: { action: 'resume', existed: true } }]]);
+    await fn.handler(signedStripeEvent(SECRET, {
+      type: 'invoice.paid',
+      data: { object: { customer: 'cus_1', customer_email: 'b@acme.com', amount_paid: 0, subscription_details: { metadata: { intent: 'eyJpZCI6ImludC0x.sig' } } } },
+    }));
+    assert.equal(JSON.parse(patchCalls2(calls)[0].body).intent, undefined);
+  });
+
+  test('a studio still opening the workspace answers 409 and Stripe re-delivers', async () => {
+    stubFetch([['/api/provision', { status: 409, body: { error: 'still being opened' } }]]);
+    const r = await fn.handler(signedStripeEvent(SECRET, {
+      type: 'invoice.paid',
+      data: { object: { customer: 'cus_1', customer_email: 'b@acme.com', amount_paid: 0, subscription_details: { metadata: { intent: 'int-abc' } } } },
+    }));
+    assert.equal(r.statusCode, 502);
+  });
+
   test('an unnamed subscription sends no clientId, exactly as before', async () => {
     const calls = stubFetch([['/api/provision', { status: 200, body: { action: 'suspend', existed: true } }]]);
     await fn.handler(signedStripeEvent(SECRET, {

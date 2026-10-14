@@ -468,12 +468,36 @@ describe('the second-workspace intent', () => {
     assert.equal(calls.filter(c => c.url.includes('provision-check')).length, 0, 'the ownership guard is not asked: the studio vouched');
     const p = new URLSearchParams(stripeCalls(calls)[0].body);
     assert.equal(p.get('metadata[intent]'), token);
-    assert.equal(p.get('subscription_data[metadata][intent]'), null, 'never on the subscription');
+    assert.equal(p.get('subscription_data[metadata][intent]'), 'int-abc', 'the id names the subscription until the workspace does (studio #1334); never the token');
     assert.equal(p.get('metadata[domain]'), 'northwind.co');
     assert.equal(p.get('metadata[door]'), 'studio');
     assert.equal(p.get('success_url'), 'https://studio.prospektor.ai/?opening=int-abc');
     assert.equal(p.get('cancel_url'), 'https://studio.prospektor.ai/');
     assert.equal(p.get('customer_email'), 'buyer@acme.com');
+  });
+
+  test('the session closes before the intent does, so nobody pays for one the studio has let lapse (studio #1333)', async () => {
+    const calls = stubFetch([STRIPE_OK, TAKEN]);
+    const before = Math.floor(Date.now() / 1000);
+    const token = signIntent(claims({ exp: Date.now() + 2 * 3600000 }), SECRET);
+    assert.equal((await post(fn, { email: 'buyer@acme.com', domain: 'northwind.co', from: 'studio', intent: token })).statusCode, 200);
+    const at = Number(new URLSearchParams(stripeCalls(calls)[0].body).get('expires_at'));
+    assert.ok(at >= before + 30 * 60, 'Stripe refuses less than 30 minutes');
+    assert.ok(at <= before + 2 * 3600, 'never past the intent');
+    // An intent with less than Stripe's minimum left still gets the minimum:
+    // the studio redeems a signed, expired token whose record exists.
+    const short = signIntent(claims({ exp: Date.now() + 10 * 60000 }), SECRET);
+    await post(fn, { email: 'buyer@acme.com', domain: 'northwind.co', from: 'studio', intent: short });
+    const floor = Number(new URLSearchParams(stripeCalls(calls)[1].body).get('expires_at'));
+    assert.ok(floor >= before + 30 * 60 && floor <= before + 32 * 60, String(floor - before));
+  });
+
+  test('a checkout without an intent keeps Stripe’s own expiry', async () => {
+    const calls = stubFetch([STRIPE_OK, ['provision-check', { status: 200, body: { taken: false } }]]);
+    assert.equal((await post(fn, { email: 'buyer@acme.com', domain: 'northwind.co', from: 'studio' })).statusCode, 200);
+    const p = new URLSearchParams(stripeCalls(calls)[0].body);
+    assert.equal(p.get('expires_at'), null);
+    assert.equal(p.get('subscription_data[metadata][intent]'), null);
   });
 
   test('a token that does not verify is refused, never sold as an ordinary checkout', async () => {

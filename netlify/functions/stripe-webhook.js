@@ -113,10 +113,13 @@ function verifyStripeSignature(payload, header, secret) {
 // the hosted portal's question (`feedback`) and why Stripe ended it
 // (`reason`), never the customer's free-text comment. The studio folds the
 // token onto its closed list; an older studio ignores the field.
-async function callSuspension({ email, action, reason, paid, clientId, cancellation, secret }) {
+// `intent` (studio #1334) is a second workspace's intent id, off the
+// subscription's metadata: the first invoice is billed before the workspace is
+// written there, and the studio maps the id to the workspace it bought.
+async function callSuspension({ email, action, reason, paid, clientId, intent, cancellation, secret }) {
   const body = JSON.stringify({
     email, action, reason: reason || undefined, paid: paid || undefined, clientId: clientId || undefined,
-    cancellation: cancellation || undefined,
+    intent: intent || undefined, cancellation: cancellation || undefined,
   });
   for (let attempt = 0; ; attempt++) {
     try {
@@ -625,6 +628,14 @@ exports.handler = async function(event) {
       || (object.subscription_details && object.subscription_details.metadata && object.subscription_details.metadata.workspace)
       || '',
     ).trim();
+    // And the intent id (studio #1334), on a second workspace's subscription
+    // from its first invoice on. Only the id's own shape is relayed.
+    const intentId = String(
+      (object.metadata && object.metadata.intent)
+      || (object.subscription_details && object.subscription_details.metadata && object.subscription_details.metadata.intent)
+      || '',
+    ).trim();
+    const intent = /^int-[A-Za-z0-9_-]{1,80}$/.test(intentId) ? intentId : '';
     const inline = String(object.customer_email || '').trim().toLowerCase();
     // Only looked up when the event did not carry the address, exactly as
     // before — what changed is that the lookup now says why it came back empty.
@@ -679,7 +690,7 @@ exports.handler = async function(event) {
       : undefined;
     let result;
     try {
-      result = await callSuspension({ email, action: billing.action, reason: billing.reason, paid, clientId, cancellation, secret });
+      result = await callSuspension({ email, action: billing.action, reason: billing.reason, paid, clientId, intent, cancellation, secret });
     } catch (e) {
       console.error('Studio unreachable for', billing.action, 'after retries:', e.message);
       return { statusCode: 502, body: JSON.stringify({ error: 'Studio unreachable' }) };
@@ -688,7 +699,7 @@ exports.handler = async function(event) {
       console.error(billing.action, 'failed:', result.status, JSON.stringify(result.data).slice(0, 300));
       return { statusCode: 502, body: JSON.stringify({ error: 'Suspension call failed' }) };
     }
-    console.log(stripeEvent.type, '->', billing.action, 'for', clientId || email,
+    console.log(stripeEvent.type, '->', billing.action, 'for', clientId || intent || email,
       JSON.stringify(result.data).slice(0, 200));
     return { statusCode: 200, body: JSON.stringify({ received: true, acted: billing.action }) };
   }

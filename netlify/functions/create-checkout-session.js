@@ -285,8 +285,8 @@ exports.handler = async function(event) {
   // #1097: which door the buyer came through, so the webhook's welcome mail
   // can say the workspace is already open instead of asking them to sign in.
   // #1240: the intent rides the session's metadata to the webhook and on to
-  // /api/provision, which redeems it once. Never on the subscription's: that
-  // copy would outlive the purchase it belongs to.
+  // /api/provision, which redeems it once. The token never goes on the
+  // subscription's: that copy would outlive the purchase it belongs to.
   for (const [k, v] of [['door', studioDoor ? 'studio' : ''], ['domain', website], ['company', company], ['goal', goal], ['marketing', marketing], ['language', lang ? lang.code : ''], ['plan', plan === 'month' ? '' : plan], ['via', partner], ['ref', referral], ['ab', ab], ...tags]) {
     if (v) {
       params.set('metadata[' + k + ']', v);
@@ -294,7 +294,20 @@ exports.handler = async function(event) {
     }
   }
   params.set('customer_email', email);
-  if (intent) params.set('metadata[intent]', data.intent);
+  if (intent) {
+    params.set('metadata[intent]', data.intent);
+    // The intent's id, never its token, on the subscription (studio #1334):
+    // the workspace is written there only after the studio has opened it, so
+    // the first invoice would otherwise name nothing and the studio would
+    // have to guess between the buyer's workspaces.
+    params.set('subscription_data[metadata][intent]', intent.id);
+    // The page closes before the intent does (studio #1333): Stripe keeps a
+    // session payable for 24 hours, the intent lives two. Stripe refuses less
+    // than 30 minutes, so an intent with less left gets the minimum, and the
+    // studio redeems a signed intent paid just past its clock.
+    const nowS = Math.floor(Date.now() / 1000);
+    params.set('expires_at', String(Math.max(nowS + 31 * 60, Math.min(Math.floor(intent.exp / 1000), nowS + 2 * 3600))));
+  }
 
   let response, session;
   try {
