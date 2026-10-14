@@ -31,6 +31,7 @@ const { redactKeys, worthRetrying } = require('../../lib/stripe-error');
 const { referralOf } = require('../../lib/rewardful');
 const { armOf } = require('../../lib/ab');
 const { companyDomainFromEmail } = require('../lib/email-domain');
+const { subscriptionsFor } = require('../lib/subscriptions');
 // The catalogues, as literal requires the bundler can see (#114).
 i18n.load(require('../lib/strings'));
 const { languageOf, languageName } = i18n;
@@ -313,6 +314,33 @@ async function nameWorkspaceOnSubscription(subscription, clientId) {
     return true;
   } catch (e) {
     console.error('Subscription', id, 'could not be named for workspace', clientId, ':', redactKeys(e.message));
+    return false;
+  }
+}
+
+// The owner's older subscription, named on their second purchase (studio
+// #1335). A subscription bought before #1240 carries no workspace, so once its
+// owner holds two workspaces its billing events place nowhere (the studio
+// refuses to guess, #1334). When an intent provision answers with `sibling`,
+// the address's one other workspace, the one live subscription behind the
+// address that names no workspace and is no other purchase in flight is that
+// workspace's: the same rule billing-action already acts on. Exactly one, or
+// nothing is written. Best effort and logged, never a failed delivery, and
+// it runs only on a real purchase.
+async function nameSiblingSubscription(email, current, sibling) {
+  const key = process.env.STRIPE_SECRET_KEY;
+  const currentId = typeof current === 'string' ? current : current && current.id;
+  if (!key || !/^[a-z0-9][a-z0-9-]{1,48}$/.test(String(sibling || ''))) return false;
+  try {
+    const unnamed = (await subscriptionsFor(key, email)).filter(s => s.id !== currentId
+      && !(s.metadata && (s.metadata.workspace || s.metadata.intent)));
+    if (unnamed.length !== 1) {
+      if (unnamed.length) console.log('Older subscription not named for workspace', sibling, ':', unnamed.length, 'unnamed live subscriptions behind the address');
+      return false;
+    }
+    return await nameWorkspaceOnSubscription(unnamed[0].id, sibling);
+  } catch (e) {
+    console.error('Older subscription could not be named for workspace', sibling, ':', redactKeys(e.message));
     return false;
   }
 }
@@ -796,6 +824,8 @@ exports.handler = async function(event) {
   // provision, never a reason to fail the delivery: a subscription left
   // unnamed is the pre-#1240 state, which still works by address.
   if (clientId) await nameWorkspaceOnSubscription(session.subscription, clientId);
+  const bought = provision.data && (provision.data.intent === 'redeemed' || provision.data.intent === 'spent');
+  if (bought && provision.data.sibling) await nameSiblingSubscription(email, session.subscription, provision.data.sibling);
   const existing = !!(provision.data && provision.data.existing);
   // existing + resumed is the re-subscribe path working as designed: the
   // buyer's workspace was suspended and this payment just unlocked it. Not a

@@ -27,8 +27,8 @@
 
 const crypto = require('node:crypto');
 const { redactKeys } = require('../../lib/stripe-error');
+const { stripe, subscriptionsFor } = require('../lib/subscriptions');
 
-const STRIPE = 'https://api.stripe.com/v1';
 const ACTIONS = ['pause', 'resume', 'cancel', 'portal'];
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -38,43 +38,6 @@ function secretMatches(given, expected) {
   const a = Buffer.from(String(given || ''));
   const b = Buffer.from(String(expected || ''));
   return a.length === b.length && a.length > 0 && crypto.timingSafeEqual(a, b);
-}
-
-async function stripe(key, method, path, params) {
-  const response = await fetch(STRIPE + path, {
-    method,
-    headers: {
-      'Authorization': `Bearer ${key}`,
-      ...(params ? { 'Content-Type': 'application/x-www-form-urlencoded' } : {}),
-    },
-    body: params ? params.toString() : undefined,
-  });
-  const data = await response.json().catch(() => null);
-  if (!response.ok || !data) {
-    const detail = data && data.error && data.error.message;
-    throw new Error(`Stripe ${method} ${path} answered ${response.status}${detail ? `: ${detail}` : ''}`);
-  }
-  return data;
-}
-
-// Every not-yet-canceled subscription behind an address, across every
-// customer that address has minted. `status=all` because a past_due or
-// trialing subscription still bills; the canceled ones are already done.
-async function subscriptionsFor(key, email) {
-  const customers = await stripe(key, 'GET', '/customers?' + new URLSearchParams({ email, limit: '100' }));
-  const found = [];
-  for (const customer of customers.data || []) {
-    const subscriptions = await stripe(key, 'GET', '/subscriptions?' + new URLSearchParams({
-      customer: customer.id, status: 'all', limit: '100',
-    }));
-    for (const subscription of subscriptions.data || []) {
-      if (subscription.status === 'canceled' || subscription.status === 'incomplete_expired') continue;
-      // The customer it hangs off, for the portal: a session is minted per
-      // customer, and the one holding a live subscription is the one to open.
-      found.push(Object.assign({}, subscription, { customer: customer.id }));
-    }
-  }
-  return found;
 }
 
 exports.handler = async function(event) {

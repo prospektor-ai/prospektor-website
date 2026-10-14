@@ -640,6 +640,63 @@ describe('stripe-webhook, one address and several workspaces', () => {
     assert.equal(body.email, 'b@acme.com');
   });
 
+  // #1335: the subscription the owner bought before #1240 carries no workspace,
+  // so once they own two, its billing events place nowhere. The studio names
+  // the one other workspace; the address's one unnamed live subscription is it.
+  const siblingRoutes = (subs, extra = {}) => [
+    ['/api/provision', { status: 201, body: { client: { id: 'second' }, intent: 'redeemed', sibling: 'first', ...extra } }],
+    ['api.stripe.com/v1/customers?', { status: 200, body: { data: [{ id: 'cus_old' }, { id: 'cus_new' }] } }],
+    ['api.stripe.com/v1/subscriptions?', (opts, calls) => {
+      const customer = new URL(calls[calls.length - 1].url).searchParams.get('customer');
+      return { status: 200, body: { data: subs[customer] || [] } };
+    }],
+    ['api.stripe.com/v1/subscriptions/', { status: 200, body: { id: 'x' } }],
+    ['postmarkapp', { status: 200, body: {} }],
+  ];
+  const secondPurchase = () => {
+    const event = checkoutSessionCompleted({ email: 'b@acme.com', metadata: { domain: 'northwind.co', door: 'studio', intent: 'abc.def' } });
+    event.data.object.subscription = 'sub_777';
+    return event;
+  };
+  const writes = calls => calls.filter(c => c.method === 'POST' && c.url.includes('/v1/subscriptions/'))
+    .map(c => [c.url.split('/v1/subscriptions/')[1], new URLSearchParams(c.body).get('metadata[workspace]')]);
+
+  test('a second purchase names the owner’s one unnamed older subscription with their other workspace (studio #1335)', async () => {
+    const calls = stubFetch(siblingRoutes({
+      cus_old: [{ id: 'sub_old', status: 'active', metadata: {} }, { id: 'sub_gone', status: 'canceled', metadata: {} }],
+      cus_new: [{ id: 'sub_777', status: 'active', metadata: { intent: 'int-x' } }],
+    }));
+    assert.equal((await fn.handler(signedStripeEvent(SECRET, secondPurchase()))).statusCode, 200);
+    assert.deepEqual(writes(calls).sort(), [['sub_777', 'second'], ['sub_old', 'first']]);
+  });
+
+  test('two unnamed live subscriptions, or one that is another purchase in flight, name nothing (studio #1335)', async () => {
+    let calls = stubFetch(siblingRoutes({
+      cus_old: [{ id: 'sub_a', status: 'active', metadata: {} }, { id: 'sub_b', status: 'past_due', metadata: {} }],
+    }));
+    await fn.handler(signedStripeEvent(SECRET, secondPurchase()));
+    assert.deepEqual(writes(calls), [['sub_777', 'second']]);
+    calls = stubFetch(siblingRoutes({
+      cus_old: [{ id: 'sub_a', status: 'active', metadata: {} }, { id: 'sub_c', status: 'active', metadata: { intent: 'int-other' } }],
+    }));
+    await fn.handler(signedStripeEvent(SECRET, secondPurchase()));
+    assert.deepEqual(writes(calls).sort(), [['sub_777', 'second'], ['sub_a', 'first']], 'the in-flight purchase is not the old one');
+  });
+
+  test('no sibling in the studio’s answer asks Stripe nothing more; a failed lookup never fails the delivery (studio #1335)', async () => {
+    let calls = stubFetch(siblingRoutes({}, { sibling: undefined }));
+    await fn.handler(signedStripeEvent(SECRET, secondPurchase()));
+    assert.equal(calls.filter(c => c.url.includes('/v1/customers')).length, 0);
+    calls = stubFetch([['api.stripe.com/v1/customers?', { status: 500, body: { error: { message: 'down' } } }], ...siblingRoutes({})]);
+    assert.equal((await fn.handler(signedStripeEvent(SECRET, secondPurchase()))).statusCode, 200);
+  });
+
+  test('a sibling that is not a workspace id is never written', async () => {
+    const calls = stubFetch(siblingRoutes({ cus_old: [{ id: 'sub_old', status: 'active', metadata: {} }] }, { sibling: 'first&metadata[x]=y' }));
+    await fn.handler(signedStripeEvent(SECRET, secondPurchase()));
+    assert.deepEqual(writes(calls), [['sub_777', 'second']]);
+  });
+
   test('every provisioned checkout names its workspace on the subscription, after the studio answered', async () => {
     const calls = stubFetch([provisioned(), ['api.stripe.com/v1/subscriptions/sub_777', { status: 200, body: { id: 'sub_777' } }], ['postmarkapp', { status: 200, body: {} }]]);
     const event = checkoutSessionCompleted({ email: 'b@acme.com', metadata: { domain: 'acme.com' } });
