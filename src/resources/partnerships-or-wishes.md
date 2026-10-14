@@ -84,7 +84,9 @@ The mistake is to keep pitching. The alternatives are better:
   logo was not.
 - **Partner sideways instead of up.** The agencies, consultancies and implementers
   who serve that platform are within your power of ten, need what you have, and can
-  each bring several accounts. They are also far easier to reach.
+  each bring several accounts. They are also far easier to reach: [the partner
+  directories of the tools they resell](/resources/find-agencies-to-resell-you/)
+  name them.
 - **Wait for the mandate and monitor for it.** Put the target on a watch list rather
   than a pipeline. When the mandate appears, and it eventually does, you are the
   company that is already integrated and already loved by their users, and the

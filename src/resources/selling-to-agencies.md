@@ -43,7 +43,9 @@ over.
 
 Run your own version of it: **what is the median number of accounts an agency
 customer brings you over two years?** If you have any agencies at all, you can
-answer it today, and the answer sets your budget.
+answer it today, and the answer sets your budget. If you have none yet, [find the
+agencies that already resell tools like yours](/resources/find-agencies-to-resell-you/)
+first.
 
 ## The stickiness argument, which is the bigger one
 

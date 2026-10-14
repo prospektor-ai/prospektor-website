@@ -77,11 +77,12 @@ words: the number you ask for is a ceiling, and it returns fewer companies when
 public evidence cannot confirm both the date of the event and the identity of
 the company.
 
-The same rule works by hand. When twenty outbound agencies were ranked from
-their own pages, five more could not be read: a domain with nothing on it, a
-server that failed three times in a row, a page that rendered no text, a parked
-domain, and one whose site could not be found at all. They went at the bottom as
-unread, each with its reason, and none of them was ranked on a guess.
+The same rule works by hand. When [twenty outbound agencies were ranked from
+their own pages](/resources/find-agencies-to-resell-you/), five more could not
+be read: a domain with nothing on it, a server that failed three times in a row,
+a page that rendered no text, a parked domain, and one whose site could not be
+found at all. They went at the bottom as unread, each with its reason, and none
+of them was ranked on a guess.
 
 That is the same move as the activation column in
 [the only prospects worth emailing this quarter](/resources/who-to-approach/):
