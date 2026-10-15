@@ -72,6 +72,29 @@ function emailShell(inner, footnote) {
 </body>`;
 }
 
+// The buyer's two mails are drawn in the studio's own letter (studio #1339):
+// white ground, the name in type, one coral button, a one-line footer. The
+// values are the studio's `lib/mail-shell.js`, so a buyer's first mail looks
+// like every mail after it. The operator notice keeps the card shell above.
+const LETTER = { ink: '#1d1d1f', faint: '#86868b', stone: '#e8e8ed', coral: '#e8533a' };
+const letterPara = (html, margin = '0 0 12px') =>
+  `<p style="font-size:15px;color:${LETTER.ink};line-height:1.6;margin:${margin};">${html}</p>`;
+function letterShell({ body, cta, footer }) {
+  return `
+<body style="margin:0;padding:28px 20px;background:#ffffff;font-family:${BRAND.font};">
+  <div style="max-width:520px;margin:0 auto;">
+    <p style="font-size:14px;font-weight:700;color:${LETTER.ink};margin:0 0 22px;">Prospektor</p>
+    ${body}
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:22px 0 0;border-collapse:separate;">
+      <tr><td style="border-radius:10px;background:${LETTER.coral};">
+        <a href="${cta.href}" style="display:inline-block;padding:12px 22px;font-size:15px;font-weight:600;line-height:1.2;color:#ffffff;text-decoration:none;border-radius:10px;">${cta.label}</a>
+      </td></tr>
+    </table>
+    <p style="font-size:12px;color:${LETTER.faint};line-height:1.6;margin:32px 0 0;padding-top:16px;border-top:1px solid ${LETTER.stone};">${footer}</p>
+  </div>
+</body>`;
+}
+
 // Stripe-Signature: t=<unix>,v1=<hex>[,v1=<hex>…] over `${t}.${rawBody}`.
 function verifyStripeSignature(payload, header, secret) {
   if (!header || !secret) return false;
@@ -485,55 +508,31 @@ async function sendOperatorNotice({ email, company, website, goal, language, ref
 // In the language the buyer bought in (#114): `language` is the code that
 // rode through checkout metadata, and every sentence goes through `t`, so an
 // English buyer's email is byte for byte the one this sent before.
-// The three lines under the button say what the first screen does, in the
-// walkthrough's own words (#721): signing in lands on the deck, three
-// companies one at a time, Glance the read and Prospekt the run (#725), and
-// the brief already holds the checkout sentence. Until 17 Sep 2026 the mail
-// told a first minute the studio had not had since #248: "confirm your target
-// sentence", which nothing on the screen asks. `test/stripe-webhook.test.js`
-// pins the names to the getting-started article in `data/help-corpus.json`,
-// so a renamed button goes red here rather than in a customer's inbox.
+// Rewritten in plain words on 15 Oct 2026 (studio #1339, the operator's
+// "this makes zero sense"): what is waiting, how to sign in, one button. It no
+// longer names the studio's buttons, so the help-corpus pin on Glance and
+// Prospekt went with them (#721's stale "confirm your target sentence" stays
+// pinned out).
 async function sendWelcomeEmail(email, language) {
   if (!process.env.POSTMARK_SERVER_TOKEN) return;
   const L = language || '';
   const signin = 'https://studio.prospektor.ai/?signin=' + encodeURIComponent(email);
+  const domain = companyDomainFromEmail(email);
 
-  const textBody = [
-    t('Your Prospektor workspace is ready.', L),
-    '',
-    t('Sign in here: {url}', L, { url: signin }),
-    t('Sign in with Google, using this address (the one you paid with), or have the studio email you a sign-in link from that page. Either way, that is the whole setup.', L),
-    '',
-    t('While you were paying, your studio read your site and drafted your brief.', L),
-    t('Sign in and three companies are waiting, one at a time. Glance reads one in fifteen seconds. Prospekt writes the pitch.', L),
-    t('The line you typed at checkout is already in your brief. Change it any time on Getting started.', L),
-    '',
-    t('Paid with your work email? Every colleague on your domain can sign in the same way.', L),
-    '',
-    '— Prospektor',
-  ].join('\n');
-  const link = `<a href="${signin}" style="color:${BRAND.ink};border-bottom:1px solid ${BRAND.accent};text-decoration:none;">studio.prospektor.ai</a>`;
-  const htmlBody = emailShell(`
-    <p style="font-size:22px;font-weight:800;letter-spacing:-0.02em;color:${BRAND.ink};line-height:1.25;margin:0 0 14px;">${t('Your studio is ready.', L)}</p>
-    <p style="font-size:14px;color:${BRAND.ink};line-height:1.7;margin:0 0 22px;">
-      ${t('Sign in at {link}, <strong>with Google, using this address</strong> (the one you paid with), <strong>or have the studio email you a sign-in link</strong> from that same page. That&#39;s the whole setup: no token, no wizard.', L, { link })}
-    </p>
-    <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 26px;"><tr><td style="border-radius:100px;background:${BRAND.coral};">
-      <a href="${signin}" style="display:inline-block;padding:13px 28px;font-size:14px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:100px;">${t('Sign in to your studio &rarr;', L)}</a>
-    </td></tr></table>
-    <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;">
-      ${[
-        t('While you were paying, your studio read your site and drafted your brief.', L),
-        t('Sign in and three companies are waiting, one at a time. Glance reads one in fifteen seconds. Prospekt writes the pitch.', L),
-        t('The line you typed at checkout is already in your brief. Change it any time on Getting started.', L),
-      ].map(li => `<tr><td style="width:16px;vertical-align:top;padding:5px 0;"><span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:${BRAND.accent};margin-bottom:2px;"></span></td><td style="font-size:14px;color:${BRAND.ink};line-height:1.6;padding:3px 0;">${li}</td></tr>`).join('')}
-    </table>
-    <p style="font-size:13px;color:${BRAND.inkFaint};line-height:1.65;margin:20px 0 0;">
-      ${t('Paid with your work email? Every colleague on your domain can sign in the same way.', L)}
-    </p>`,
-    t('You&#39;re getting this one email because you started a Prospektor workspace. Questions? Just reply. It reaches a human at hello@prospektor.ai.', L));
+  const ready = t('Thanks for signing up. Your first three companies are waiting. We read your website while you paid, so they already fit what you sell.', L);
+  const how = t('No password. Sign in with Google using this address, or ask for a sign-in link.', L);
+  const team = domain ? t('Anyone with an @{site} address can sign in the same way.', L, { site: domain }) : '';
+  const ask = t('Questions? Reply, a person reads it.', L);
+  const footer = [team, ask].filter(Boolean).join(' ');
 
-  await sendMail({ to: email, subject: t('Your studio is ready: sign in', L), textBody, htmlBody });
+  const textBody = [ready, '', how, '', t('Sign in: {url}', L, { url: signin }), '', footer].join('\n');
+  const htmlBody = letterShell({
+    body: [letterPara(escHtml(ready)), letterPara(escHtml(how), '0 0 4px')].join('\n    '),
+    cta: { href: signin, label: escHtml(t('Sign in', L)) },
+    footer: escHtml(footer),
+  });
+
+  await sendMail({ to: email, subject: t('Your Prospektor workspace is ready', L), textBody, htmlBody });
 }
 
 // #1097: the welcome for a buyer who signed in to the studio BEFORE paying.
@@ -548,29 +547,18 @@ async function sendOpenEmail(email, language, { company, website }) {
   const studio = 'https://studio.prospektor.ai/';
   const name = company || website || 'Prospektor';
   const domain = companyDomainFromEmail(email);
-  const team = domain ? t('Anyone at {site} can sign in with their work address.', L, { site: domain }) : '';
-  const fine = [team, t('Stripe sends the receipt separately. Reply to this email with any question.', L)].filter(Boolean).join(' ');
-  const said = t("You started {company}'s workspace on Prospektor. It opened in your browser as soon as you paid, and its first leads are waiting.", L, { company: name });
+  const said = t('Thanks for signing up. Your first leads are waiting.', L);
+  const team = domain ? t('Anyone at {site} can sign in with their work email.', L, { site: domain }) : '';
+  const footer = [team, t('Stripe sends your receipt separately. Questions? Reply to this email.', L)].filter(Boolean).join(' ');
 
-  const textBody = [
-    said,
-    '',
-    t('Open it: {url}', L, { url: studio }),
-    '',
-    fine,
-    '',
-    'Prospektor',
-  ].join('\n');
-  const htmlBody = emailShell(`
-    <p style="font-size:22px;font-weight:800;letter-spacing:-0.02em;color:${BRAND.ink};line-height:1.25;margin:0 0 14px;">${t('Your workspace is open', L)}</p>
-    <p style="font-size:14px;color:${BRAND.ink};line-height:1.7;margin:0 0 22px;">${escHtml(said)}</p>
-    <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 26px;"><tr><td style="border-radius:100px;background:${BRAND.coral};">
-      <a href="${studio}" style="display:inline-block;padding:13px 28px;font-size:14px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:100px;">${escHtml(t("Open {company}'s workspace", L, { company: name }))}</a>
-    </td></tr></table>
-    <p style="font-size:13px;color:${BRAND.inkFaint};line-height:1.65;margin:0;">${escHtml(fine)}</p>`,
-    t('You&#39;re getting this one email because you started a Prospektor workspace. Questions? Just reply. It reaches a human at hello@prospektor.ai.', L));
+  const textBody = [said, '', t('Open your workspace: {url}', L, { url: studio }), '', footer].join('\n');
+  const htmlBody = letterShell({
+    body: letterPara(escHtml(said), '0 0 4px'),
+    cta: { href: studio, label: escHtml(t('Open your workspace', L)) },
+    footer: escHtml(footer),
+  });
 
-  await sendMail({ to: email, subject: t("{company}'s workspace is open", L, { company: name }), textBody, htmlBody });
+  await sendMail({ to: email, subject: t('Your {company} workspace is ready', L, { company: name }), textBody, htmlBody });
 }
 
 exports.handler = async function(event) {

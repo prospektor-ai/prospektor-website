@@ -10,7 +10,8 @@ const SECRET = 'whsec_test';
 const provisioned = (extra = {}) => ['/api/provision', { status: 201, body: { client: { id: 'acme' }, research: 'pending', ...extra } }];
 const mail = calls => calls.filter(c => c.url.includes('postmarkapp')).map(c => JSON.parse(c.body));
 const notice = calls => mail(calls).find(m => /order/i.test(m.Subject));
-const welcome = calls => mail(calls).find(m => /studio is ready/i.test(m.Subject));
+const welcome = calls => mail(calls).find(m => !/order/i.test(m.Subject) && m.TextBody.includes('?signin='));
+const opened = calls => mail(calls).find(m => !/order/i.test(m.Subject) && !m.TextBody.includes('?signin='));
 
 describe('stripe-webhook', () => {
   beforeEach(() => {
@@ -159,15 +160,13 @@ describe('stripe-webhook', () => {
     assert.ok(w.HtmlBody.includes('/?signin=' + encodeURIComponent('b@acme.com')), 'the button link prefills');
   });
 
-  // #721: the mail's three lines describe the first minute the studio actually
-  // has. Signing in lands on the deck, three companies one at a time, Glance
-  // the read and Prospekt the run (#725), the checkout sentence already in the
-  // brief. Every screen and button the mail names is pinned to the studio's
-  // own getting-started article, as snapshotted in data/help-corpus.json
-  // (`npm run help:snapshot` refreshes it), so a renamed button is red here
-  // rather than a wrong instruction in a customer's inbox. And the old first
-  // step, which nothing on screen asks for since #248, must not come back.
-  test('the welcome mail says what the first screen does, in the walkthrough\'s words (#721)', async () => {
+  // #721, rewritten in plain words by studio #1339 (15 Oct 2026): the mail
+  // says three companies are waiting and how to sign in, and names no studio
+  // button, so there is nothing left to pin to the getting-started article. If
+  // a button name ever comes back, it must be one that article says. And the
+  // old first step, which nothing on screen asks for since #248, must not
+  // come back.
+  test('the welcome mail says three companies are waiting, and how to sign in (#721, #1339)', async () => {
     const calls = stubFetch([provisioned({ goal: true }), ['postmarkapp', { status: 200, body: {} }]]);
     await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({
       email: 'b@acme.com', metadata: { domain: 'acme.com', company: 'Acme', goal: 'Property managers' } })));
@@ -175,14 +174,14 @@ describe('stripe-webhook', () => {
     const corpus = require('../data/help-corpus.json');
     const article = corpus.files.find(f => f.name === '01-getting-started.md');
     assert.ok(article && article.text, 'data/help-corpus.json holds no getting-started article');
-    for (const name of ['Glance', 'Prospekt', 'Getting started']) {
-      assert.ok(w.TextBody.includes(name), `the text mail names ${name}`);
-      assert.ok(w.HtmlBody.includes(name), `the HTML mail names ${name}`);
+    for (const name of ['Glance', 'Prospekt', 'Getting started'].filter(name => w.TextBody.includes(name))) {
       assert.ok(article.text.includes(name),
         `the mail names ${name} and the studio's getting-started article does not: the studio renamed it, `
         + 'or the snapshot is stale (npm run help:snapshot). The mail says what the screen says, or it says nothing');
     }
-    assert.ok(w.TextBody.includes('three companies'), 'the deck: three companies, one at a time');
+    assert.ok(w.TextBody.includes('three companies'), 'the deck: three companies are waiting');
+    assert.match(w.TextBody, /Sign in with Google using this address, or ask for a sign-in link/);
+    assert.match(w.TextBody, /Anyone with an @acme\.com address can sign in/);
     for (const stale of [/confirm your target sentence/i, /researched prospects are waiting/i])
       assert.doesNotMatch(w.TextBody + w.HtmlBody, stale, 'the first step #248 removed is back in the mail');
   });
@@ -195,10 +194,10 @@ describe('stripe-webhook', () => {
       email: 'b@acme.com', metadata: { domain: 'acme.com', company: 'Acme', door: 'studio' } })));
     const all = mail(calls);
     assert.equal(welcome(calls), undefined, 'not the sign-in welcome');
-    const open = all.find(m => /workspace is open/.test(m.Subject));
+    const open = opened(calls);
     assert.ok(open, 'the open mail went out');
-    assert.equal(open.Subject, "Acme's workspace is open");
-    assert.match(open.TextBody, /opened in your browser as soon as you paid/);
+    assert.equal(open.Subject, 'Your Acme workspace is ready');
+    assert.match(open.TextBody, /Your first leads are waiting/);
     assert.match(open.TextBody, /Anyone at acme\.com can sign in/);
     assert.doesNotMatch(open.TextBody + open.HtmlBody, /signin=/, 'no sign-in link: they are already signed in');
     assert.ok(open.HtmlBody.includes('https://studio.prospektor.ai/'));
@@ -208,10 +207,9 @@ describe('stripe-webhook', () => {
     const calls = stubFetch([provisioned({ goal: true }), ['postmarkapp', { status: 200, body: {} }]]);
     await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({
       email: 'b@gmail.com', metadata: { domain: 'acme.com', company: 'A<b>', door: 'studio' } })));
-    const open = mail(calls).find(m => /workspace is open/.test(m.Subject));
+    const open = opened(calls);
     assert.doesNotMatch(open.TextBody, /Anyone at/);
-    assert.ok(open.HtmlBody.includes('A&lt;b&gt;'), 'the name is escaped in the HTML');
-    assert.ok(!open.HtmlBody.includes('A<b>'));
+    assert.ok(!open.HtmlBody.includes('A<b>'), 'the name never reaches the HTML unescaped');
   });
 
   // #114: a buyer who bought in Spanish is welcomed in Spanish, the operator is
@@ -224,12 +222,12 @@ describe('stripe-webhook', () => {
     const r = await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({
       email: 'b@acme.com', metadata: { domain: 'acme.com', language: 'es' } })));
     assert.equal(r.statusCode, 200);
-    const w = mail(calls).find(m => /estudio está listo/.test(m.Subject));
-    assert.ok(w, 'the welcome subject is Spanish');
-    assert.ok(w.TextBody.includes('Tu espacio de trabajo de Prospektor está listo.'), 'the text body is Spanish');
-    assert.ok(w.HtmlBody.includes('Entrar en tu estudio &rarr;'), 'the button is Spanish');
+    const w = welcome(calls);
+    assert.equal(w.Subject, 'Tu espacio de trabajo de Prospektor está listo', 'the welcome subject is Spanish');
+    assert.ok(w.TextBody.startsWith('Gracias por suscribirte.'), 'the text body is Spanish');
+    assert.ok(w.HtmlBody.includes('>Iniciar sesión</a>'), 'the button is Spanish');
     assert.ok(w.TextBody.includes('/?signin=' + encodeURIComponent('b@acme.com')), 'the sign-in link still prefills');
-    assert.ok(!/Your studio is ready/.test(w.TextBody + w.HtmlBody), 'no English sentence leaks into the Spanish mail');
+    assert.ok(!/Thanks for signing up|No password/.test(w.TextBody + w.HtmlBody), 'no English sentence leaks into the Spanish mail');
     const n = notice(calls);
     assert.ok(/Language: Spanish/.test(n.TextBody), 'the operator notice names the language');
     const body = JSON.parse(calls.find(c => c.url.includes('/api/provision')).body);
@@ -240,7 +238,7 @@ describe('stripe-webhook', () => {
     const calls = stubFetch([provisioned({ goal: true }), ['postmarkapp', { status: 200, body: {} }]]);
     await fn.handler(signedStripeEvent(SECRET, checkoutSessionCompleted({ email: 'b@acme.com', metadata: { domain: 'acme.com' } })));
     const w = welcome(calls);
-    assert.ok(w && w.TextBody.startsWith('Your Prospektor workspace is ready.'));
+    assert.ok(w && w.Subject === 'Your Prospektor workspace is ready' && w.TextBody.startsWith('Thanks for signing up.'));
     assert.ok(!/Language:/.test(notice(calls).TextBody), 'nothing to say about English');
     const body = JSON.parse(calls.find(c => c.url.includes('/api/provision')).body);
     assert.ok(!('language' in body), 'an older studio sees nothing new');

@@ -93,9 +93,9 @@ const CEILING = {
   help: { dashes: 0 },
   scripts: { dashes: 0, verbose: 6 },
   functions: { dashes: 0, verbose: 3 },
-  es: { dashes: 61 },
-  de: { dashes: 61 },
-  nl: { dashes: 61 },
+  es: { dashes: 54 },
+  de: { dashes: 54 },
+  nl: { dashes: 54 },
 };
 
 /** Every file whose string literals a person may read: a mail, a notice, a
