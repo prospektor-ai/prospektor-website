@@ -1,10 +1,10 @@
 {
   "//": "The getting-started course, as `public/lessons.js` in prospektor-ai/studio holds it, read out of that checkout by `npm run lessons:snapshot`. Do not hand-edit: `/learn/` draws these pages from it (#742) and `tools/resources-coverage.js` checks their names against the product.",
-  "fetchedAt": "2026-10-07",
+  "fetchedAt": "2026-10-15",
   "source": {
     "repo": "prospektor-ai/studio",
     "file": "public/lessons.js",
-    "commit": "0dba75a2180eed2b185bbc0011a30e3918ea2ff8"
+    "commit": "50f95d355b3f3ad93d994c5bee4874a67b4188a8"
   },
   "groups": [
     {
@@ -48,35 +48,32 @@
     {
       "day": 1,
       "topic": "Leads for you",
-      "subject": "Glance one company",
-      "opener": "Leads for you holds companies worth approaching, each with a fit score out of 100 and one line on why.",
+      "subject": "Your first leads are waiting",
+      "opener": "Prospektor has picked companies that look like good customers for you. Each has a score out of 100 and one line on why.",
       "bullets": [
-        "Glance reads one company in about fifteen seconds.",
-        "Skip teaches the studio what not to bring back.",
-        "The shelf is built from Ideal customer, under Settings."
+        "Open Leads for you.",
+        "Press Glance on a company. In about 15 seconds you see who they are and why they fit.",
+        "Not a fit? Press Skip, and you’ll see fewer like it."
       ],
-      "close": "Glance the one you would most like a meeting with.",
+      "close": "Start with the one you’d most like a meeting with.",
       "path": "/leads",
       "label": "Open Leads for you",
       "names": [
         "Leads for you",
-        "fit score",
         "Glance",
-        "Skip",
-        "Ideal customer"
+        "Skip"
       ]
     },
     {
       "day": 2,
       "topic": "Prospekt",
-      "subject": "Prospekt the one you glanced",
-      "opener": "One press on Prospekt writes the pitch: why them, who decides, and the first email, in your voice.",
+      "subject": "Get the first email written for you",
+      "opener": "Yesterday you looked at a company. Today Prospektor writes what to send them.",
       "bullets": [
-        "It runs in the background. Leave the screen and it finishes without you.",
-        "Every claim carries the page it came from.",
-        "The finished pitch lands in the Library."
+        "Open that company and press Prospekt.",
+        "A few minutes later you have the first email, who to send it to, and why it matters to them."
       ],
-      "close": "Read it to the end. Next you make the email yours.",
+      "close": "You can close the tab. The pitch is saved in your Library when it’s done.",
       "path": "/leads",
       "label": "Open Leads for you",
       "names": [
@@ -87,14 +84,13 @@
     {
       "day": 3,
       "topic": "Your voice",
-      "subject": "Make the email yours",
-      "opener": "A saved edit is a lesson. Fix the one sentence you would never send, and every later pitch is written with that in mind.",
+      "subject": "Fix one line and every email gets better",
+      "opener": "Open the email Prospektor wrote for you and change the sentence that doesn’t sound like you. Prospektor remembers it and writes the next email closer to how you talk.",
       "bullets": [
-        "Open the pitch in the Library and press Edit on the email.",
-        "Change the line that is not you. Leave the rest.",
-        "Save. The studio keeps the before and the after as a voice record."
+        "Open the Library and pick the pitch.",
+        "Press Edit on the email, change what you’d never say, and press Save."
       ],
-      "close": "Then send it from your own mailbox.",
+      "close": "Then send it from your own inbox.",
       "path": "/library",
       "label": "Open the Library",
       "names": [
@@ -106,14 +102,14 @@
     {
       "day": 4,
       "topic": "Your network",
-      "subject": "Bring in who you know",
-      "opener": "Your network turns a cold pitch into a warm one. Import it once and every pitch after it checks who already knows the way in.",
+      "subject": "Who do you already know?",
+      "opener": "Upload your LinkedIn connections once. From then on, every pitch tells you if someone you know works there, or knows someone who does.",
       "bullets": [
-        "Export your LinkedIn connections as Connections.csv and drop it on Your network.",
-        "Or paste a list of names and companies. Either works.",
-        "Email addresses are dropped at import. Only you can remove what you imported."
+        "In LinkedIn, export your connections. You get a file called Connections.csv.",
+        "Drop it on Your network. A pasted list of names and companies works too.",
+        "We don’t keep their email addresses, and only you can delete the list."
       ],
-      "close": "Five minutes, once.",
+      "close": "It takes about five minutes.",
       "path": "/network",
       "label": "Open Your network",
       "names": [
@@ -124,14 +120,13 @@
     {
       "day": 5,
       "topic": "Warm intros",
-      "subject": "Find the person who can walk you in",
-      "opener": "Warm intros takes a company and finds who you know that knows the people who decide there.",
+      "subject": "Get introduced instead of emailing cold",
+      "opener": "Type a company you want to reach. Prospektor shows who you know who can introduce you to the person who decides, and drafts the ask for you.",
       "bullets": [
-        "Type the company. It opens with who you already know there.",
-        "Each path comes with an intro request, written in your voice.",
-        "Every finished pitch carries the same Warm paths panel."
+        "Type the company on Warm intros.",
+        "Pick the best path and send the request it wrote."
       ],
-      "close": "Send the request to the person on the best path.",
+      "close": "Every finished pitch shows the same thing under Warm paths.",
       "path": "/intro",
       "label": "Open Warm intros",
       "names": [
@@ -142,52 +137,48 @@
     {
       "day": 6,
       "topic": "Counterprospekt",
-      "subject": "Find a competitor’s clients",
-      "opener": "Counterprospekt reads who buys from a competitor, and names a client only when a page it read says so.",
+      "subject": "Find your competitors’ customers",
+      "opener": "A company that buys from your competitor already pays for what you sell. Prospektor finds them on public pages, like a competitor’s case studies and customer logos.",
       "bullets": [
-        "Press Find their clients on a competitor, or add one by name.",
-        "Each client links the page that names it.",
-        "They all land in one table, Leads from your competitors."
+        "Open Counterprospekt and press Find their clients on a competitor, or add one by name.",
+        "Every customer it finds links to the page that names them."
       ],
-      "close": "A competitor’s client already pays for what you sell.",
+      "close": "Tomorrow you pitch one of them.",
       "path": "/competitors",
       "label": "Open Counterprospekt",
       "names": [
         "Counterprospekt",
-        "Find their clients",
-        "Leads from your competitors"
+        "Find their clients"
       ]
     },
     {
       "day": 7,
       "topic": "Counterprospekt",
-      "subject": "Write to one of them",
-      "opener": "The best fit in that table is your next pitch.",
+      "subject": "Pitch one of your competitor’s customers",
+      "opener": "Pick the best fit from yesterday’s list and get the email written.",
       "bullets": [
-        "Press Glance on the client you would most like to win.",
-        "Then press Write the pitch.",
-        "Open the pitch once it lands, and send the email."
+        "Press Glance on the customer you’d most like to win.",
+        "Press Write the pitch.",
+        "When it’s ready, open it and send the email."
       ],
-      "close": "One switch from a competitor is worth ten cold replies.",
+      "close": "Tomorrow: what to do when they answer.",
       "path": "/competitors",
       "label": "Open Counterprospekt",
       "names": [
         "Glance",
-        "Write the pitch",
-        "Open the pitch"
+        "Write the pitch"
       ]
     },
     {
       "day": 8,
       "topic": "Outcomes",
-      "subject": "Say what happened",
-      "opener": "A recorded outcome is what every later pitch, prep sheet and evaluation is written from.",
+      "subject": "Tell Prospektor what happened",
+      "opener": "Did they reply, book a meeting, or say no? Mark it on the lead. Prospektor uses what worked and what didn’t to write your next pitches.",
       "bullets": [
-        "Press the badge on any lead: replied, meeting, won, lost, or never answered.",
-        "Add one line in your own words. That line is worth more than the badge.",
-        "Make sense of this reads the record back: what won, what lost, what to ask next."
+        "Press the badge on a lead and pick what happened.",
+        "Add one line on why, in your own words. That line helps the most."
       ],
-      "close": "A workspace that records nothing writes run 100 like run 1.",
+      "close": "Press Make sense of this to see what’s winning and what isn’t.",
       "path": "/outcomes",
       "label": "Open Outcomes",
       "names": [
@@ -198,14 +189,14 @@
     {
       "day": 9,
       "topic": "Outcomes",
-      "subject": "Teach it from your calls",
-      "opener": "A notetaker already wrote your calls down. Those transcripts teach the brief the way a won or lost deal does.",
+      "subject": "Teach it from your sales calls",
+      "opener": "If Fathom, Otter, Granola or Zoom records your calls, upload the transcripts. Prospektor picks out the objections and questions buyers raise.",
       "bullets": [
-        "Export them from Fathom, Otter, Granola or Zoom.",
-        "Press Bring your call recordings on Outcomes and pick up to six.",
-        "Each objection, question and answer that landed waits for your Keep."
+        "Export up to six transcripts.",
+        "Press Bring your call recordings on Outcomes.",
+        "Press Keep on what’s worth remembering."
       ],
-      "close": "Every pitch after that answers the objection before it is raised.",
+      "close": "Your next pitches answer them up front.",
       "path": "/outcomes",
       "label": "Open Outcomes",
       "names": [
