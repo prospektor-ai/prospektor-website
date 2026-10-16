@@ -125,7 +125,7 @@ silence, and the silence looks exactly like a copywriting problem. It is not.
 Before you rewrite email 1 for the fourth time, check whether the people receiving
 it have any current reason to care, and [whether each row on the list is the
 company you think it is](/resources/clean-a-prospect-list/). Reply rate is capped by what share of your list
-is actually in the market, not by your subject line.
+is in the market, not by your subject line.
 
 ## The checklist
 

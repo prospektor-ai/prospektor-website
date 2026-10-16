@@ -22,7 +22,7 @@ subject line. Use it again in the opener. Use it a third time before the ask.
 
 Here is Jason Cohen, founder of Smart Bear and WP Engine and a person whose
 inbox is a reasonable proxy for the inbox of anyone you are trying to reach,
-describing what that actually does:
+describing what that does:
 
 > There's that thing where you're supposed to use the other person's name all the
 > time. People do that on purpose, and that means I don't trust you. So to me it
@@ -36,7 +36,7 @@ supposed to signal *I see you.* To an experienced buyer it signals the opposite:
 to one person writes that way. The name is right. The tell is that it is
 deployed.
 
-## The distinction that actually matters
+## The distinction that matters
 
 In the same conversation, Cohen describes the version that does land, a cold
 email containing a screenshot of the recipient's own website:
@@ -54,7 +54,7 @@ what separates them is **evidence of work**.
   knows exactly what it cost.
 - A specific, verifiable observation about the recipient's business costs
   somebody twenty minutes. It proves that a person (or something acting with a
-  person's diligence) actually looked before they wrote.
+  person's diligence) looked before they wrote.
 
 Cold outreach is a trust transaction conducted entirely through inference. The
 recipient cannot check your claims, so they grade the **signal of effort** instead.
@@ -68,7 +68,7 @@ only be true of this company, that you could only know by looking.
 
 **Strong signals**, things that require someone to have read:
 
-- What they actually sell, described in their own vocabulary rather than their
+- What they sell, described in their own vocabulary rather than their
   category's. Every project-management tool says "project management"; the good
   ones describe a specific job.
 - Something that changed recently, with the source. A new market they announced,
@@ -170,7 +170,7 @@ findings. The volume goes up. The evidence stays real.
 2. Take the first line of email one and apply the paste test. If it survives being
    moved to another company, it is doing no work. Replace it with one verifiable
    observation.
-3. Pick the three signals above that you can actually source for your segment and
+3. Pick the three signals above that you can source for your segment and
    make them a required field on your list. If a row cannot be filled in, that row
    is [not ready to email](/resources/clean-a-prospect-list/).
 4. Measure reply rate, not open rate. Merge tags do fine on opens. They lose on

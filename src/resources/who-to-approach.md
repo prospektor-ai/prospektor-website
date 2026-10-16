@@ -55,7 +55,7 @@ quarter depends on solving this.** Cohen's phrasing:
 That is a different question, it is answerable from public information, and
 almost nobody scores for it.
 
-## What activation actually looks like from outside
+## What activation looks like from outside
 
 You cannot see someone's OKRs. You can see the artefacts of them, and they are
 surprisingly legible:

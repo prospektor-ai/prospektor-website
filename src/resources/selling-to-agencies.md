@@ -79,7 +79,7 @@ answer is that a direct customer works through their obvious use once and is don
 you have a project-shaped product being sold as a subscription, and agencies are
 the fix.
 
-## What agencies actually want, and it is not a commission
+## What agencies want, and it is not a commission
 
 The default assumption is that agency partnerships run on kickbacks. Sometimes.
 But the more valuable thing is cheaper than a revenue share:

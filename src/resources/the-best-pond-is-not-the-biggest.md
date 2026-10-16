@@ -41,7 +41,7 @@ He chose the smaller one. The verdict on that choice:
 ## Why size is the wrong first question
 
 Segment size tells you the ceiling on how many customers *could* exist. It tells you
-nothing about the four things that actually decide whether you get any of them.
+nothing about the four things that decide whether you get any of them.
 
 | What size does not tell you | Why it decides the outcome |
 |---|---|
@@ -89,7 +89,7 @@ not the point, and a spread of three points is decisive.
   recommendations compounds; one where they don't means you buy every customer.
 
 The bigger pond usually wins on reachability and loses on everything else. That is
-the trade you are actually making, and it is much easier to make deliberately than
+the trade you are making, and it is much easier to make deliberately than
 by default.
 
 ## Two failure modes to name

@@ -29,7 +29,7 @@ they have now. So what changed is **the other side of the ratio**: the value the
 believe they are getting. "Too expensive" is a statement about value, phrased as a
 statement about price, because price is the socially easy thing to say.
 
-## What they actually mean
+## What they mean
 
 "Too expensive" is a container for at least four distinct diagnoses, and they have
 nothing in common except the words:

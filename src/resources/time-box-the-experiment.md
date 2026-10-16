@@ -23,7 +23,7 @@ The answer, prescribed to a founder deciding between four strategic options:
 
 Roughly four weeks, with the rest of the business on a skeleton crew. Long enough
 to reach real people and hear real answers; short enough that you have not spent a
-season on it, and short enough that you will actually run it properly rather than
+season on it, and short enough that you will run it properly rather than
 letting it drift into the background.
 
 ## What the box is really protecting
@@ -84,7 +84,7 @@ The related claim is blunter and worth pinning above a desk: **building more doe
 not de-risk the company.** Every additional feature shipped before the twenty hours
 have been run increases the amount you will have to throw away if the answer is no.
 It also postpones the moment you find out, which is the only thing that was
-actually risky.
+risky.
 
 ## An initiative nobody owns does not happen
 

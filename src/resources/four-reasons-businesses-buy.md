@@ -40,13 +40,13 @@ buyer with a single motive.
 |---|---|---|
 | **Make more money** | Founder, CRO, GM, anyone carrying a number | "More pipeline, same headcount" |
 | **Save money** | CFO, procurement, finance-adjacent ops | "Cheaper than the alternative, and I can show the line" |
-| **Increase efficiency** | The team that will actually use it | "I stop doing the part of my job I hate" |
+| **Increase efficiency** | The team that will use it | "I stop doing the part of my job I hate" |
 | **Mitigate risk** | Security, legal, compliance, and any exec who has been burned | "This does not become my problem later" |
 
 The two most commonly neglected are the ends of that table. **Efficiency** gets
 skipped because it feels unambitious next to revenue, but the person who feels it
 is the person whose sign-off you need to survive a trial. **Risk** gets skipped
-because it feels negative, and it is often the one that actually kills the deal:
+because it feels negative, and it is often the one that kills the deal:
 nobody says no because of risk, they simply stop replying.
 
 ## The trap in leading with efficiency alone

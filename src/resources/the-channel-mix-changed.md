@@ -20,7 +20,7 @@ That advice was correct, and several things underneath it moved.
 
 The current floor is three channels: one social channel at the top of the funnel
 that genuinely matches where your buyers are, search if, and only if, you are
-actually excited by it, and **an email list from day one**.
+excited by it, and **an email list from day one**.
 
 The reason for the third is the interesting one, and it is not the obvious reason.
 Search engines increasingly weight whether you exist anywhere else at all: whether

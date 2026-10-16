@@ -55,7 +55,7 @@ cannot:
 
 Sales calls are the deepest instrument and they have a selection problem: everyone
 on a call already responded to something. Ads test the sentence on people who have
-not agreed to anything yet, which is the population your cold outreach is actually
+not agreed to anything yet, which is the population your cold outreach is
 addressing.
 
 ## Running it as an experiment
@@ -103,7 +103,7 @@ Three results that are not "no signal", though they get filed that way:
   before you rebuild the company around it.
 
 The one trap: a headline can win clicks by promising something you do not sell.
-Always read the winner back against what you actually do before adopting it.
+Always read the winner back against what you do before adopting it.
 
 ## What this is not
 

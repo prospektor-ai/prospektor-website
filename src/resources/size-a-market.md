@@ -38,7 +38,7 @@ Then apply the only rule that matters:
 >
 > Jason Cohen
 
-The made-up-ness is what makes the method fast enough to actually run. Accuracy
+The made-up-ness is what makes the method fast enough to run. Accuracy
 is a forecast's job; this test only asks whether a plan is off by an order of
 magnitude, and a startling number of plans are.
 
@@ -83,7 +83,7 @@ from the one most market-sizing decks run.
 Which is the second half of this. The standard TAM slide answers *how much money
 exists in this category*, a number that is essentially never the constraint for a
 company doing outbound with a small team. Rob Walling's version replaces it with
-**total reachable market**: how many you can actually get in front of, with the
+**total reachable market**: how many you can get in front of, with the
 channels and the budget you have.
 
 The distinction matters because the two numbers can differ by three orders of

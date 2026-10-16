@@ -30,7 +30,7 @@ paying for.
 The finding does not rest on one talk. Anthony Pierri's positioning framework
 arrives at the same place from the other direction: segment by the workflow, not
 by firmographics. Industry, headcount and revenue describe the shape of a company.
-The workflow describes what a team inside it actually does on a Tuesday, and that
+The workflow describes what a team inside it does on a Tuesday, and that
 is where the buying happens.
 
 Two practitioners, working on different problems, landed on the same instruction:

@@ -73,7 +73,7 @@ words, the ones you most want, are gone.
 half-articulates a problem, the instinct is to finish the sentence with your feature
 in it. That is the single most expensive habit on a first call.
 
-## The questions that actually pay
+## The questions that pay
 
 - **"What are you doing about this today?"** The answer is your real competitor. You
   expect a vendor; it is usually a spreadsheet, an agency or a person.

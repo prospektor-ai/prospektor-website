@@ -24,7 +24,7 @@ argument you are likely to hear this year.
 >
 > Jason Cohen
 
-## What narrowing actually buys you
+## What narrowing buys you
 
 The first-order effect is the obvious one, and it is real:
 
@@ -123,7 +123,7 @@ whole point is that clarity is what brought them.
    know the industry. One sentence: *for the {role} who has to {the thing}.* The
    role is a proxy for [the job they are hiring you
    for](/resources/sell-the-job-not-the-persona/); if you know the job, name that.
-2. **Write down the trade-offs you actually make** (what you are worse at than the
+2. **Write down the trade-offs you make** (what you are worse at than the
    obvious alternative) and put the important one somewhere a buyer will see it.
    This is the counterintuitive move and it is the one that works.
 3. **Check the arithmetic before you commit.** Number of companies, share you could

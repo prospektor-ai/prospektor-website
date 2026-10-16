@@ -126,7 +126,7 @@ call want someone who knows the domain and will answer a direct question directl
 and a founder outperforms a professional seller on both. Polish is not what they
 came for.
 
-What actually makes this easier is [preparation](/resources/prepare-for-a-sales-call/)
+What makes this easier is [preparation](/resources/prepare-for-a-sales-call/)
 rather than charisma: the ten objections written down with short answers, a
 handful of specific examples you can recall rather than invent, and the price said
 out loud on the first call. Those

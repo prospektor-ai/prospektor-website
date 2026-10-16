@@ -59,7 +59,7 @@ capped share of your time, and stop calling it pipeline. Once it is labelled
 correctly, it stops competing with the work that produces customers, and you stop
 feeling guilty about the part of it you should keep.
 
-## The menu you are actually choosing from
+## The menu you are choosing from
 
 It is a shorter list than the internet suggests. The approaches that reliably work
 in B2B software:
@@ -85,7 +85,7 @@ strategy, or they run all six badly.
 
 ## Which ad platform your knowledge licenses
 
-If advertising is one of your two to four, what you actually know about the buyer
+If advertising is one of your two to four, what you know about the buyer
 decides the platform:
 
 | If you know… | Use | With the caveat |
