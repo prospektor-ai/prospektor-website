@@ -109,8 +109,8 @@ see exactly what they would be buying.
 Two things this argument does not say.
 
 **It does not say pick a tiny market.** The specificity is in the *message*, and the
-segment still has to be large enough to produce your revenue goal, which is four
-minutes of arithmetic you should do before committing to any cut.
+segment still has to be large enough to produce your revenue goal, which is [four
+minutes of arithmetic](/resources/size-a-market/) you should do before committing to any cut.
 
 **It does not say refuse the customers who do not fit.** Nothing here requires
 turning anyone away. If someone outside the description wants to buy, sell to them.

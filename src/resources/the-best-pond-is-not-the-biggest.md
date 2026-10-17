@@ -40,7 +40,7 @@ He chose the smaller one. The verdict on that choice:
 
 ## Why size is the wrong first question
 
-Segment size tells you the ceiling on how many customers *could* exist. It tells you
+[Segment size](/resources/size-a-market/) tells you the ceiling on how many customers *could* exist. It tells you
 nothing about the four things that decide whether you get any of them.
 
 | What size does not tell you | Why it decides the outcome |
@@ -48,7 +48,7 @@ nothing about the four things that decide whether you get any of them.
 | **Whether they can pay** | A segment full of people who do not yet have revenue converts at a fraction of the rate and churns at a multiple of it |
 | **Who else is shouting** | Ten competitors in a small pond is a harder market than two in a big one |
 | **What support costs** | Cheap, inexperienced buyers consume more support per pound than anyone else |
-| **Whether they stay** | A big cohort with double the churn is a smaller business than a small cohort that renews |
+| **Whether they stay** | A big cohort with [double the churn is a smaller business](/resources/the-ceiling-formula/) than a small cohort that renews |
 
 The instinct to go where the numbers are is really an instinct to avoid a decision.
 Picking the big pond feels safe because you cannot be accused of missing the market.

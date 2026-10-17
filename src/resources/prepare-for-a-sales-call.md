@@ -97,7 +97,7 @@ every call, so that forty answers can be put side by side. Then stop talking.
 
 **The ask.** One, and never a discount. The close written for these calls: *"If
 I set this up for one of your accounts this week, would you use it and tell me
-what's wrong with it?"* A discount offered early also costs you a fact: once the
+what's wrong with it?"* [A discount offered early](/resources/too-expensive/) also costs you a fact: once the
 price has moved, you cannot learn what they would have paid. Note whether a
 conversation about price happened at all, and say the price out loud if it does
 not come up. For the hard question nobody prepared for, have [a shape for

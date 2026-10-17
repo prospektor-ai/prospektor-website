@@ -65,7 +65,7 @@ uninformative result.
 
 **Write hypotheses, not variations.** Five headlines is the usual test. Run three
 *claims* instead, each implying a different buyer or a different problem. The
-career claim against the utility claim. The expensive-problem framing against the
+[career claim against the utility claim](/resources/sell-to-the-career/). The expensive-problem framing against the
 time-saving framing. A named role against a named industry. If two headlines could
 be true of the same reader, they are one hypothesis with two haircuts.
 

@@ -17,7 +17,7 @@ teams, which is the hardest audience for this because they recognise every move.
 
 The prerequisite matters more than the emails. Before you write anything, you need
 **the two biggest problems you solve, expressed in the customer's own language.**
-Your category's language and your positioning do not count; the words a customer
+[Your category's language](/resources/problem-stack/) and your positioning do not count; the words a customer
 used on a call do. Call them A and B.
 
 ## The four emails

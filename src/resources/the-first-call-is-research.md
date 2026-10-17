@@ -81,9 +81,9 @@ in it. That is the single most expensive habit on a first call.
   question is a targeting strategy: you now know which observable events precede a
   buying window.
 - **"Who else would have to be comfortable with this?"** Names the committee before
-  it ambushes you, and tells you which of the four buying arguments you still need.
-- **"If this existed and worked, what changes for you personally?"** The career
-  claim, in their words, free.
+  it ambushes you, and tells you which of the [four buying arguments](/resources/four-reasons-businesses-buy/) you still need.
+- **"If this existed and worked, what changes for you personally?"** The [career
+  claim](/resources/sell-to-the-career/), in their words, free.
 - **"What would have to be true for this to be an easy no?"** Surfaces the real
   objection while it is still cheap, which is the same list you should be writing
   answers to anyway.

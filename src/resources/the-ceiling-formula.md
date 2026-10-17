@@ -119,7 +119,7 @@ than any single person's opinion about it.
    instrument the second one, because you already have the first.
 2. **Compare it to your goal.** If the ceiling is below the number you are
    planning around, no channel fixes it. Stop reading channel advice and go and
-   look at who is leaving.
+   [look at who is leaving](/resources/too-expensive/).
 3. **Split churn by cohort before you react to it.** A 10% blended rate that lives
    entirely in one segment is a targeting problem wearing a churn costume, and the
    fix is the list, not the product.

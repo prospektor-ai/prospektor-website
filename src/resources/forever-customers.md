@@ -31,7 +31,7 @@ recognised.
 
 ## The plateau this produces
 
-Walling names only three causes of an early plateau, and the third one is this
+Walling names only three causes of [an early plateau](/resources/the-ceiling-formula/), and the third one is this
 exact shape:
 
 > You've built a one-time-use product rather than building something people want
