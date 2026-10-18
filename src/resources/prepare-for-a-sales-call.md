@@ -35,7 +35,7 @@ decide whether the call happens and who should be on it.
   it. You want a named person whose current quarter turns on the problem you
   solve.
 - **Who does the work today?** If they already pay people to do it, the sale
-  gets harder, the pitch moves to capacity, and the person on the call needs to
+  gets harder, [the pitch moves to capacity](/resources/four-reasons-businesses-buy/), and the person on the call needs to
   sit above the people whose work would change.
 
 These are the same tests that decide [who belongs on a list at
@@ -109,8 +109,8 @@ Write the scale before the first call. For the deciding question it was three
 marks: yes, no or hedged, with the exact words written down when it was a
 hedge, and a hedge counted as a no until something proved otherwise.
 
-The same goes for the decision the calls add up to. The numbers that would
-count as success were written before the first conversation, said out loud, so
+The same goes for the decision the calls add up to. [The numbers that would
+count as success were written before the first conversation](/resources/time-box-the-experiment/), said out loud, so
 that four weeks later they would be read rather than argued about. Written
 first, a pass mark cannot be renegotiated once the results are in.
 

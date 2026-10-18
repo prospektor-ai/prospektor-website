@@ -99,7 +99,7 @@ Two outcomes that look the same in a CRM, and they demand opposite responses:
 | **No decision** | They were never activated. | The list. The pitch was never the problem. |
 
 If you are mostly losing to competitors, congratulations: you have found the
-market and you have a differentiation problem, which is tractable. If you are
+market and you have [a differentiation problem, which is tractable](/resources/problem-stack/). If you are
 mostly getting no-decisions, **the pitch is fine and the list is wrong**, and every
 hour spent rewriting email copy is an hour spent on the wrong end of the problem.
 

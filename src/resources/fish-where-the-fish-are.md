@@ -80,8 +80,8 @@ your preferences:
 > Rob Walling
 
 Two to four, chosen from six, on the basis of where the buyers are. Most struggling
-go-to-market plans fail one of two ways: they run one channel and call it a
-strategy, or they run all six badly.
+go-to-market plans fail one of two ways: [they run one channel and call it a
+strategy](/resources/the-channel-mix-changed/), or they run all six badly.
 
 ## Which ad platform your knowledge licenses
 

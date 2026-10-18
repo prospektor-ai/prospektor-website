@@ -97,8 +97,8 @@ There are three ways to narrow, and they are not equally expensive.
 Across a large portfolio of B2B software companies, both vertical and orthogonal
 positioning grow faster and churn lower than horizontal. The orthogonal cut is the
 one worth noticing, because it is available this afternoon: the product stays as
-it is, and what changes is who the homepage is written to and which words it
-uses.
+it is, and what changes is who the homepage is written to and [which words it
+uses](/resources/ads-as-a-positioning-lab/).
 
 Same product. Same features. Same price. A different named reader. The person who
 fits that description now recognises themselves, while everyone else can still

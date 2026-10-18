@@ -109,7 +109,7 @@ trick:
 
 Why the length cap: *a long answer signals to the buyer that the objection is a real
 problem; a short, confident one signals expertise.* Unwritten answers vary with your
-mood and always run long, because thinking while talking expands.
+mood and always run long, because [thinking while talking expands](/resources/answer-without-freezing/).
 
 ## The part nobody wants to hear
 

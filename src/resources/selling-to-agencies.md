@@ -52,8 +52,8 @@ first.
 Revenue shape is the visible benefit. The invisible one is retention, and it is
 better.
 
-A tool is genuinely hard to cancel when it is built into something the customer
-themselves sells. For a brand, your product is an internal cost line, cancellable
+A tool is genuinely hard to cancel when it is [built into something the customer
+themselves sells](/resources/forever-customers/). For a brand, your product is an internal cost line, cancellable
 in a quarterly review by someone who has never used it. For an agency that has
 built your output into a retained service, cancelling means **renegotiating their
 own client contracts.**

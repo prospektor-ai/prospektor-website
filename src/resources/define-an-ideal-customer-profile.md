@@ -61,8 +61,8 @@ generation and business development for their own clients, wrote its reasons:
 - **The best prospect builds the product into something it resells.** An agency
   that bills clients for a retained business-development service cannot drop a tool
   inside that service without renegotiating its own client contracts.
-- **An agency compounds and a direct buyer is flat.** One agency brings one client,
-  then two or three more over time.
+- **An agency compounds and a direct buyer is flat.** [One agency brings one client,
+  then two or three more over time](/resources/selling-to-agencies/).
 - **Activation beats fit.** A recent business-development hire, a new service line,
   a funding round or a public commitment to growth is a stronger signal than an
   industry match.

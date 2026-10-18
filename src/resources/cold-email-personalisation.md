@@ -147,8 +147,8 @@ value](/resources/what-your-price-licenses/). Below it, the maths gets hard.
 **Two: narrow the segment until the research generalises.** If you only write to
 BigCommerce stores doing over $400k, a lot of the reading is shared across the
 list. You do the work once and the specifics stay specific. This is the quiet
-argument for niching: it is a **research efficiency** move as well as a
-positioning move.
+argument for niching: it is a **research efficiency** move as well as [a
+positioning move](/resources/niche-down/).
 
 **Three: automate the reading, not the writing.** This is the interesting one,
 and it is the distinction most "AI SDR" tools get backwards. They automate the

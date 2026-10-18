@@ -64,7 +64,7 @@ even when the motion works perfectly.
 
 So: **annual contract value under about $3,000, and outbound is not your channel.**
 However well you execute it, it is arithmetically closed to you. Content, SEO,
-integrations and partnerships are where that price point can still reach people.
+integrations and [partnerships](/resources/partnerships-or-wishes/) are where that price point can still reach people.
 Above the floor, outbound is the channel your price specifically licenses, and it
 is the one a small team fully controls without a budget or an audience.
 

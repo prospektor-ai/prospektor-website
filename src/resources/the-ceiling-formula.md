@@ -58,7 +58,7 @@ looks the same from inside. The outcome is completely different.
 
 Which means the most important thing about the number is *when* you compute it. At
 forty customers, changing churn means changing a product that forty people have
-built habits around. At zero customers it means choosing a different cohort, which
+built habits around. At zero customers it means [choosing a different cohort](/resources/the-best-pond-is-not-the-biggest/), which
 is free.
 
 ## Run it on yourself
