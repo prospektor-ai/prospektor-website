@@ -6,13 +6,16 @@ description: "The maths behind selling through agencies rather than to brands: w
 topic: partnerships
 learnings: what-partners-want, material-partners-reserve, another-client-campaign, partner-opening
 date: 2026-08-19
+updated: 2026-10-19
 readingTime: 7
 ogImage: /assets/img/og/selling-to-agencies.png
 ---
 
-Two customers sign on the same day at the same price. One is a brand buying for
-itself. One is an agency buying on behalf of a client. Twelve months later they
-look nothing alike, and the reason is worth more than most growth tactics.
+An agency is worth more than a direct customer because it keeps bringing you
+accounts after it signs, while a brand's spend stays where it was on the day it
+signed. Take two customers who sign on the same day at the same price, one a
+brand buying for itself and one an agency buying on behalf of a client. Twelve
+months later they look nothing alike.
 
 > An agency can bring one, you can tactically maybe get one or two more out of
 > existing ones, and over time they'll bring you more. Your business model with
@@ -145,10 +148,11 @@ Every vendor in your category has had this idea. The agency inbox is accordingly
 cynical, and the generic partner-program email is dead on arrival.
 
 Two things get through. **Credibility**: if you have run an agency, say so in the
-first line, because it is the fastest trust transfer available. And **doing the work
-first**: send the finished artefact for one of their actual accounts rather than a
-description of what you could do. A partner deck is a request. A completed
-one-pager for their client, with their name on it and not yours, is a demonstration.
+first line. And **doing the work
+first**: [send the finished artefact](/resources/prepare-for-a-sales-call/) for
+one of their actual accounts rather than a description of what you could do. A
+partner deck is a request. A completed one-pager for their client, with their
+name on it and not yours, is a demonstration.
 
 ## The four things to do
 
@@ -158,5 +162,4 @@ one-pager for their client, with their name on it and not yours, is a demonstrat
    offering to do the first piece of work free.
 3. **Offer both commercial models** in the same sentence, and let them pick.
 4. **Give them something to hand their client**: a document with their branding on
-   it, not yours. An agency cannot resell a tool it has to explain; it can resell an
-   artefact it can put its name on.
+   it, not yours.
