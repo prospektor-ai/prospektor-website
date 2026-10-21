@@ -1,6 +1,7 @@
 // The partner programme, rented from Rewardful and dark (#885, out of #87).
 //
 // The operator's condition, 29 Sep 2026: build it, and show *Coming soon*
+// (lifted 21 Oct 2026, #1361: the page explains the programme either way)
 // until they have onboarded with Rewardful and have paying customers. So the
 // one test that matters is the absent-key one: with no REWARDFUL_API_KEY the
 // served pages must be what they were — no third-party script, no handoff for
@@ -83,12 +84,14 @@ describe('the dark build — the one that matters', () => {
     assert.deepEqual(carrying, [], 'pages carrying Rewardful while the key is absent');
   });
 
-  test('/partners/ is one line, Coming soon, noindex and out of the sitemap', () => {
+  test('/partners/ explains the programme dark too, with no Rewardful link, indexable and in the sitemap (#1361)', () => {
     const html = read(site.dir, 'partners/index.html');
-    assert.match(html, /<h1 class="page-h1">Coming soon\.<\/h1>/);
-    assert.ok(!/partner-terms|Sign up as a partner|getrewardful/.test(html), 'the dark page must carry no terms and no link');
-    assert.match(html, /<meta name="robots" content="noindex, follow">/);
-    assert.ok(!read(site.dir, 'sitemap.xml').includes('/partners/'), 'a noindex page must not be in the sitemap');
+    assert.match(html, /<h1 class="page-h1">Refer a client, earn 20% for a year\.<\/h1>/);
+    assert.equal((html.match(/<ol class="partner-terms">[\s\S]*?<\/ol>/)[0].match(/<li>/g) || []).length, 7);
+    assert.ok(!/Coming soon|Sign up as a partner|getrewardful/.test(html), 'dark, the way in is our address, never a link');
+    assert.match(html, /<a href="mailto:hello@prospektor\.ai">hello@prospektor\.ai<\/a> and we send you your link/);
+    assert.ok(!/name="robots"/.test(html), 'the page indexes');
+    assert.match(read(site.dir, 'sitemap.xml'), /<loc>https:\/\/prospektor\.ai\/partners\/<\/loc>/);
   });
 
   test('every page links to /partners/ from the footer, so it is not an orphan', () => {

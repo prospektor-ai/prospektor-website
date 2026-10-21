@@ -99,7 +99,8 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
 
   // ── CLAIM: the partner programme is exactly as dark as the build says (#885) ──
   // Dark (no REWARDFUL_API_KEY on the site) means no handoff on any page and
-  // /partners/ one line long; lit means the handoff and the terms. Either way
+  // no Rewardful link on /partners/; lit means the handoff. The terms are there
+  // either way since #1361. Either way
   // Rewardful's script is never a live tag in the HTML — only consent creates
   // it — which is the claim a page cannot check about itself.
   {
@@ -108,10 +109,11 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
     catch (e) { RELAY_RETRIES.push(SITE + '/partners/'); }
     const lit = /id="ppsc-gated-rewardful"/.test(homeHtml);
     check('/partners/ serves 200', !!partnersRes && partnersRes.status === 200, 'HTTP ' + (partnersRes && partnersRes.status));
-    check(lit ? 'the programme is on, and /partners/ carries the terms (#885)'
-              : 'the programme is dark, and /partners/ says Coming soon and nothing more (#885)',
-      lit ? /partner-terms/.test(partnersHtml)
-          : /Coming soon\./.test(partnersHtml) && !/partner-terms|getrewardful/.test(partnersHtml));
+    check('/partners/ explains the programme and carries the terms either way (#885, #1361)',
+      /partner-terms/.test(partnersHtml) && !/Coming soon\./.test(partnersHtml));
+    check(lit ? 'the programme is on, and /partners/ carries the handoff (#885)'
+              : 'the programme is dark, and /partners/ links to no Rewardful signup (#885)',
+      lit ? /id="ppsc-gated-rewardful"/.test(partnersHtml) : !/getrewardful/.test(partnersHtml));
     check('the home page and /partners/ agree on whether the programme is on',
       /id="ppsc-gated-rewardful"/.test(partnersHtml) === lit);
     check('Rewardful\'s script is never served as a live tag; only consent can create it (#885)',

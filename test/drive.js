@@ -630,6 +630,8 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
                     // here fails as "one article too many, and it has no date",
                     // which names neither the page nor the cause.
                     'https://prospektor.ai/contact/',
+                    // #1361. The partner programme explained, lit for good.
+                    'https://prospektor.ai/partners/',
                     // #838. The integrations directory the Close page sits under.
                     'https://prospektor.ai/integrations/',
                     // #620. The page Close's integration directory points at —
@@ -1856,8 +1858,8 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
       const rows = await panelRows(page);
       check('dark: the panel names no cookie', !rows.some(r => /rewardful/i.test(r)), rows);
       await page.goto('http://localhost:8899/partners/');
-      check('dark: /partners/ is Coming soon', ((await page.textContent('h1')) || '').trim() === 'Coming soon.');
-      check('and says nothing else', !(await page.$('.partner-terms')));
+      check('dark: /partners/ explains the programme (#1361)', ((await page.textContent('h1')) || '').trim() === 'Refer a client, earn 20% for a year.');
+      check('and carries the terms, with no Rewardful link', !!(await page.$('.partner-terms')) && !(await page.$('a[href*="getrewardful"]')));
       await page.close();
     }
 
