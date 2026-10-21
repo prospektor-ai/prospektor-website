@@ -88,8 +88,8 @@ describe('the dark build — the one that matters', () => {
     const html = read(site.dir, 'partners/index.html');
     assert.match(html, /<h1 class="page-h1">Refer a client, earn 20% for a year\.<\/h1>/);
     assert.equal((html.match(/<ol class="partner-terms">[\s\S]*?<\/ol>/)[0].match(/<li>/g) || []).length, 7);
-    assert.ok(!/Coming soon|Sign up as a partner|getrewardful/.test(html), 'dark, the way in is our address, never a link');
-    assert.match(html, /<a href="mailto:hello@prospektor\.ai">hello@prospektor\.ai<\/a> and we send you your link/);
+    assert.ok(!/Coming soon|Sign up as a partner|getrewardful/.test(html), 'dark, the way in is the waitlist, never a link');
+    assert.match(html, /<form[^>]*name="partner-waitlist"/, 'the waitlist form (#1362)');
     assert.ok(!/name="robots"/.test(html), 'the page indexes');
     assert.match(read(site.dir, 'sitemap.xml'), /<loc>https:\/\/prospektor\.ai\/partners\/<\/loc>/);
   });
@@ -151,13 +151,13 @@ describe('the lit build — the switch switches', () => {
     assert.match(html, /20%/); assert.match(html, /twelve months/); assert.match(html, /thirty days/);
   });
 
-  test('with the key set and no signup URL, the way in is our address', () => {
+  test('with the key set and no signup URL, the way in is the waitlist form', () => {
     const d2 = fs.mkdtempSync(path.join(os.tmpdir(), 'rewardful-nolink-'));
     try {
       buildInto(d2, { REWARDFUL_API_KEY: KEY, HELP_CORPUS_OFFLINE: '1' });
       const html = read(d2, 'partners/index.html');
       assert.ok(!/getrewardful|Sign up as a partner/.test(html));
-      assert.match(html, /<a href="mailto:hello@prospektor\.ai">hello@prospektor\.ai<\/a> and we send you your link/);
+      assert.match(html, /<form[^>]*name="partner-waitlist"/, 'the waitlist form (#1362)');
       assert.ok(/partner-terms/.test(html), 'the terms are there either way');
     } finally {
       fs.rmSync(d2, { recursive: true, force: true });

@@ -1,0 +1,21 @@
+---
+layout: base.njk
+title: You are on the list
+noindex: true
+description: "Your address reached the Prospektor inbox. We write to you when your partner link is ready, and nothing else happens with it."
+permalink: /partners/thanks/
+---
+
+{#- #1362. Netlify Forms redirects here after a successful POST from
+    /partners/, so this URL has to be one the build really writes (the
+    /contact/thanks/ reasoning, #456). noindex and out of the sitemap, like
+    every thanks page. English only, like /partners/. -#}
+
+<header class="page-hero">
+  <div class="page-hero-inner">
+    <span class="tag">partners</span>
+    <h1 class="page-h1">You are on the list.</h1>
+    <p class="page-lede">We write to you, at the address you gave, when your partner link is ready.</p>
+    <a class="btn-cta" href="/">Back to Prospektor</a>
+  </div>
+</header>

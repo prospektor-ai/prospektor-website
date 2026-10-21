@@ -1209,6 +1209,11 @@ footer {
   margin-top: 2rem; font-size: 0.8rem; line-height: 1.7; color: var(--ink-mid);
 }
 .partner-note a { color: var(--accent); }
+/* #1362: the waitlist form, the contact form's rows inside the terms column. */
+.partner-waitlist { margin-top: 2.5rem; gap: 1rem; }
+.partner-waitlist .section-h2 { margin-bottom: 0; }
+.partner-lede { margin: 0 0 0.5rem; color: var(--ink-mid); line-height: 1.6; }
+.partner-waitlist p { margin: 0; }
 
 @media (max-width: 860px) {
   .contact-section { padding: 0.5rem 16px 1rem; }

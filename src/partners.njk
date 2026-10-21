@@ -16,7 +16,15 @@ permalink: /partners/
     the signup URL decides is the one way in:
 
       REWARDFUL_SIGNUP_URL set   the "Sign up as a partner" button
-      otherwise                  write to us and we send the link
+      otherwise                  the waitlist form (#1362, operator 21 Oct
+                                 2026: "a 'join waitlist' form that people can
+                                 submit before I start paying Rewardful")
+
+    The waitlist is a Netlify Form, the contact form's idiom (#456): the name
+    in the POST body, the honeypot, a success page the build really writes
+    (src/partners-thanks.njk). It collects an email address and what the
+    person does, and privacy §03 says so; test/partner-waitlist.test.js holds
+    the form to that list.
 
     The rate, the twelve months and the thirty-day hold are set inside
     Rewardful by #886 and quoted here; the cookie window and the attribution
@@ -45,7 +53,7 @@ permalink: /partners/
           {%- if rewardful.signup %}
           Sign up as a partner and you get a link of your own. Rewardful runs the programme for us: your link, your clicks and your balance are all there.
           {%- else %}
-          Write to <a href="mailto:{{ site.email }}">{{ site.email }}</a> and we send you your link. Rewardful runs the programme for us: your link, your clicks and your balance are all there.
+          <a href="#waitlist">Join the waitlist</a> and we send you your link when the programme opens. Rewardful runs the programme for us: your link, your clicks and your balance are all there.
           {%- endif %}
         </dd>
       </div>
@@ -80,7 +88,28 @@ permalink: /partners/
     {%- if rewardful.signup %}
     <p><a class="btn-cta" href="{{ rewardful.signup }}" rel="noopener">Sign up as a partner</a></p>
     {%- else %}
-    <p>Write to <a href="mailto:{{ site.email }}">{{ site.email }}</a> and we send you your link.</p>
+    <form class="contact-form partner-waitlist" id="waitlist" name="partner-waitlist" method="POST" action="/partners/thanks/"
+          netlify netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="partner-waitlist">
+      <h2 class="section-h2">Join the waitlist</h2>
+      <p class="partner-lede">The programme opens with its first partners. Leave your email and we write to you when your link is ready.</p>
+      <div class="contact-row">
+        <label class="contact-label" for="waitlistEmail">Your work email</label>
+        <input class="contact-input" id="waitlistEmail" name="email" type="email" autocomplete="email" placeholder="you@yourcompany.com" required>
+      </div>
+      <div class="contact-row">
+        <label class="contact-label" for="waitlistRole">What you do</label>
+        <select class="contact-input" id="waitlistRole" name="role" required>
+          <option value="" selected disabled>Choose one</option>
+          <option value="agency">I run outbound for clients</option>
+          <option value="fractional">I lead sales for clients, fractionally</option>
+          <option value="consultant">I consult or build automations for clients</option>
+          <option value="other">Something else</option>
+        </select>
+      </div>
+      <input type="text" name="bot-field" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;" aria-hidden="true">
+      <p><button class="btn-cta" type="submit">Join the waitlist</button></p>
+    </form>
     {%- endif %}
     <p class="partner-note">Your link and your balance are in Rewardful, which runs the programme for us. What its cookie records, and how to switch it off, is in <a href="/privacy/#cookies">the privacy notice</a>.</p>
   </div>

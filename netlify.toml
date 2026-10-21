@@ -34,19 +34,6 @@
 # anything left under /es/help/ that the build did not write falls back to its
 # English twin. `test/help.test.js` holds every old address to a rule here
 # and every rule to a page the build wrote.
-# #1361 (21 Oct 2026): the operator asked for "/refer or something"; the page
-# is /partners/ (the footer, the tests and Rewardful's own docs name it), and
-# /refer/ is the short address that lands there.
-[[redirects]]
-  from = "/refer"
-  to = "/partners/"
-  status = 301
-
-[[redirects]]
-  from = "/refer/*"
-  to = "/partners/"
-  status = 301
-
 [[redirects]]
   from = "/help/getting-started/*"
   to = "/help/get-started/"
