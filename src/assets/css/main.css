@@ -1209,12 +1209,50 @@ footer {
   margin-top: 2rem; font-size: 0.8rem; line-height: 1.7; color: var(--ink-mid);
 }
 .partner-note a { color: var(--accent); }
-/* #1362: the waitlist form, the contact form's rows inside the terms column. */
-.partner-waitlist { margin-top: 2.5rem; gap: 1rem; }
-.partner-waitlist .section-h2 { margin-bottom: 0; }
-.partner-lede { margin: 0 0 0.5rem; color: var(--ink-mid); line-height: 1.6; }
-.partner-waitlist p { margin: 0; }
-
+/* #1362: the number first, the form in a card that does not blend into the
+   ground, then three steps, then the terms. */
+.partner-hero { padding-bottom: 1rem; }
+.partner-h1 { font-size: 72px; font-weight: 500; letter-spacing: -0.03em; }
+.partner-star { color: var(--coral); text-decoration: none; font-size: 0.5em; vertical-align: super; margin-left: 2px; }
+.partner-fine { margin: 14px auto 0; max-width: 520px; font-size: 13px; line-height: 1.6; color: var(--ink-faint); }
+.partner-fine a { color: var(--ink-mid); }
+.partner-join { padding: 0.5rem 16px 1rem; }
+.partner-card {
+  max-width: 480px; margin: 0 auto; background: var(--white);
+  border: 1px solid var(--border); border-radius: 16px; padding: 32px;
+  box-shadow: 0 12px 40px rgba(31, 31, 31, 0.08);
+}
+.partner-card-h2 { font-size: 24px; font-weight: 500; letter-spacing: -0.01em; margin: 0 0 6px; line-height: 1.2; }
+.partner-card-lede { margin: 0 0 1.4rem; font-size: 15px; line-height: 1.55; color: var(--ink-mid); }
+.partner-waitlist { gap: 1.1rem; }
+.partner-waitlist .partner-card-lede { margin-bottom: 0.2rem; }
+.partner-card .contact-input { background: var(--white); border-color: #c9ccd1; }
+.partner-card .contact-input:focus { border-color: var(--coral); box-shadow: 0 0 0 3px var(--accent-bg); }
+.partner-card-cta { margin: 0.3rem 0 0; }
+.btn-wide { display: block; width: 100%; text-align: center; padding: 14px 22px; font-size: 16px; }
+.partner-how { padding: 3rem 2.5rem 1rem; }
+.partner-how-inner { max-width: 880px; margin: 0 auto; }
+.partner-how-h2 { text-align: center; max-width: none; margin-bottom: 1.6rem; }
+.partner-steps {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;
+}
+.partner-steps li { background: var(--white); border-radius: 16px; padding: 24px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.partner-step-n {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--accent-bg); color: var(--accent); font-size: 14px; font-weight: 600;
+}
+.partner-steps h3 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+.partner-steps p { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--ink-mid); }
+.partner-agency { max-width: 640px; margin: 1.6rem auto 0; text-align: center; font-size: 14.5px; line-height: 1.6; color: var(--ink-mid); }
+.partner-terms-section { padding-top: 2rem; }
+@media (max-width: 760px) {
+  .partner-h1 { font-size: 52px; }
+  .partner-steps { grid-template-columns: 1fr; }
+  .partner-how { padding: 2rem 16px 0.5rem; }
+  .partner-card { padding: 24px 18px; }
+}
 @media (max-width: 860px) {
   .contact-section { padding: 0.5rem 16px 1rem; }
   .contact-inner { padding: 22px 18px; }

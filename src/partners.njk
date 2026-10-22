@@ -26,73 +26,40 @@ permalink: /partners/
     person does, and privacy §03 says so; test/partner-waitlist.test.js holds
     the form to that list.
 
+    The shape (operator, 21 Oct 2026, the same night): "just the headline
+    'get 20%' * terms apply (12 months limitation), then the form (needs to be
+    clearer not so blended into the background), then more information ...
+    Clear CTA, easy to sign up, not a page full of text and then some form at
+    the very bottom." So: the number, one line, the fine print; the form in a
+    white card with bordered fields; three short steps; the terms last.
+
     The rate, the twelve months and the thirty-day hold are set inside
     Rewardful by #886 and quoted here; the cookie window and the attribution
     rule are set there too, which is why rule 3 states no number of days.
     English only, like the legal pages: these are terms, and a translation
     of terms is a compliance job, not a catalogue entry. -#}
 
-<header class="page-hero">
+<header class="page-hero partner-hero">
   <div class="page-hero-inner">
     <span class="tag">partners</span>
-    <h1 class="page-h1">Refer a client, earn 20% for a year.</h1>
-    <p class="page-lede">
-      Send us a company that buys Prospektor and you get 20% of what it pays us, every month, for its first twelve months.
-      Run workspaces for your own clients and they are 20% off instead.
-    </p>
+    <h1 class="page-h1 partner-h1">Get 20%.<a class="partner-star" href="#terms" aria-label="Terms apply">*</a></h1>
+    <p class="page-lede">Of everything a client you refer pays Prospektor, for their first twelve months.</p>
+    <p class="partner-fine">* Terms apply: 20% of each paid invoice, for twelve months from the client's first payment. <a href="#terms">The terms</a>.</p>
   </div>
 </header>
 
-<section class="pricing-faq">
-  <div class="pricing-faq-inner">
-    <h2>How it works</h2>
-    <dl class="pricing-faq-list">
-      <div class="pricing-faq-item">
-        <dt>1. Get your link</dt>
-        <dd>
-          {%- if rewardful.signup %}
-          Sign up as a partner and you get a link of your own. Rewardful runs the programme for us: your link, your clicks and your balance are all there.
-          {%- else %}
-          <a href="#waitlist">Join the waitlist</a> and we send you your link when the programme opens. Rewardful runs the programme for us: your link, your clicks and your balance are all there.
-          {%- endif %}
-        </dd>
-      </div>
-      <div class="pricing-faq-item">
-        <dt>2. Send it to a client</dt>
-        <dd>They buy Prospektor through your link, by the month or the year up front. The first partner link a buyer used is the one that counts, and a workspace has one partner.</dd>
-      </div>
-      <div class="pricing-faq-item">
-        <dt>3. Get paid</dt>
-        <dd>You earn 20% of every invoice they pay for twelve months. Each line becomes payable thirty days after its invoice is paid, which is past the money-back window, and Rewardful pays it out.</dd>
-      </div>
-      <div class="pricing-faq-item">
-        <dt>Running Prospektor for your own clients?</dt>
-        <dd>An agency that pays for the workspaces it runs for its clients gets 20% off each one instead. A workspace only ever earns one of the two: the discount, or the share.</dd>
-      </div>
-    </dl>
-  </div>
-</section>
-
-<section class="section">
-  <div class="legal-inner">
-    <h2 class="section-h2">The terms</h2>
-    <ol class="partner-terms">
-      <li>You cannot refer yourself: not your own domain, your own workspace, your own card, or an address at your company.</li>
-      <li>A company that has ever had a workspace cannot be referred. Deleted counts as ever.</li>
-      <li>The first partner link a buyer used is the one that counts. One partner per workspace.</li>
-      <li>A workspace you pay for at 20% off does not also earn 20% back.</li>
-      <li>No ads on our name, and no coupon sites.</li>
-      <li>We can end a partnership and cancel unpaid earnings if the rules are broken.</li>
-      <li>Earnings become payable thirty days after the invoice they come from is paid, and are paid out through Rewardful.</li>
-    </ol>
+<section class="partner-join">
+  <div class="partner-card" id="waitlist">
     {%- if rewardful.signup %}
-    <p><a class="btn-cta" href="{{ rewardful.signup }}" rel="noopener">Sign up as a partner</a></p>
+    <h2 class="partner-card-h2">Become a partner</h2>
+    <p class="partner-card-lede">Sign up and you get a link of your own. Rewardful runs the programme for us: your link, your clicks and your balance are all there.</p>
+    <p class="partner-card-cta"><a class="btn-cta btn-wide" href="{{ rewardful.signup }}" rel="noopener">Sign up as a partner</a></p>
     {%- else %}
-    <form class="contact-form partner-waitlist" id="waitlist" name="partner-waitlist" method="POST" action="/partners/thanks/"
+    <form class="contact-form partner-waitlist" name="partner-waitlist" method="POST" action="/partners/thanks/"
           netlify netlify-honeypot="bot-field">
       <input type="hidden" name="form-name" value="partner-waitlist">
-      <h2 class="section-h2">Join the waitlist</h2>
-      <p class="partner-lede">The programme opens with its first partners. Leave your email and we write to you when your link is ready.</p>
+      <h2 class="partner-card-h2">Join the waitlist</h2>
+      <p class="partner-card-lede">The programme opens with its first partners. We write to you when your link is ready.</p>
       <div class="contact-row">
         <label class="contact-label" for="waitlistEmail">Your work email</label>
         <input class="contact-input" id="waitlistEmail" name="email" type="email" autocomplete="email" placeholder="you@yourcompany.com" required>
@@ -108,9 +75,48 @@ permalink: /partners/
         </select>
       </div>
       <input type="text" name="bot-field" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;" aria-hidden="true">
-      <p><button class="btn-cta" type="submit">Join the waitlist</button></p>
+      <p class="partner-card-cta"><button class="btn-cta btn-wide" type="submit">Join the waitlist</button></p>
     </form>
     {%- endif %}
+  </div>
+</section>
+
+<section class="section partner-how">
+  <div class="partner-how-inner">
+    <h2 class="section-h2 partner-how-h2">How it works</h2>
+    <ol class="partner-steps">
+      <li>
+        <span class="partner-step-n">1</span>
+        <h3>Get your link</h3>
+        <p>{% if rewardful.signup %}Sign up above{% else %}Join the waitlist above{% endif %} and your link is yours. Rewardful runs the programme: your clicks and your balance are there.</p>
+      </li>
+      <li>
+        <span class="partner-step-n">2</span>
+        <h3>Send it to a client</h3>
+        <p>They buy Prospektor through your link, by the month or the year up front. The first partner link a buyer used is the one that counts.</p>
+      </li>
+      <li>
+        <span class="partner-step-n">3</span>
+        <h3>Get paid</h3>
+        <p>20% of every invoice they pay, for twelve months. Each line is payable thirty days after its invoice is paid, through Rewardful.</p>
+      </li>
+    </ol>
+    <p class="partner-agency">Running Prospektor for your own clients? An agency that pays for the workspaces it runs gets 20% off each one instead. A workspace earns one of the two: the discount, or the share.</p>
+  </div>
+</section>
+
+<section class="section partner-terms-section" id="terms">
+  <div class="legal-inner">
+    <h2 class="section-h2">The terms</h2>
+    <ol class="partner-terms">
+      <li>You cannot refer yourself: not your own domain, your own workspace, your own card, or an address at your company.</li>
+      <li>A company that has ever had a workspace cannot be referred. Deleted counts as ever.</li>
+      <li>The first partner link a buyer used is the one that counts. One partner per workspace.</li>
+      <li>A workspace you pay for at 20% off does not also earn 20% back.</li>
+      <li>No ads on our name, and no coupon sites.</li>
+      <li>We can end a partnership and cancel unpaid earnings if the rules are broken.</li>
+      <li>Earnings become payable thirty days after the invoice they come from is paid, and are paid out through Rewardful.</li>
+    </ol>
     <p class="partner-note">Your link and your balance are in Rewardful, which runs the programme for us. What its cookie records, and how to switch it off, is in <a href="/privacy/#cookies">the privacy notice</a>.</p>
   </div>
 </section>

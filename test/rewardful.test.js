@@ -86,7 +86,7 @@ describe('the dark build — the one that matters', () => {
 
   test('/partners/ explains the programme dark too, with no Rewardful link, indexable and in the sitemap (#1361)', () => {
     const html = read(site.dir, 'partners/index.html');
-    assert.match(html, /<h1 class="page-h1">Refer a client, earn 20% for a year\.<\/h1>/);
+    assert.match(html, /<h1 class="page-h1 partner-h1">Get 20%\./);
     assert.equal((html.match(/<ol class="partner-terms">[\s\S]*?<\/ol>/)[0].match(/<li>/g) || []).length, 7);
     assert.ok(!/Coming soon|Sign up as a partner|getrewardful/.test(html), 'dark, the way in is the waitlist, never a link');
     assert.match(html, /<form[^>]*name="partner-waitlist"/, 'the waitlist form (#1362)');
@@ -141,9 +141,9 @@ describe('the lit build — the switch switches', () => {
 
   test('/partners/ carries the seven terms, the signup link, and is indexable and in the sitemap', () => {
     const html = read(dir, 'partners/index.html');
-    assert.match(html, /<h1 class="page-h1">Refer a client, earn 20% for a year\.<\/h1>/);
+    assert.match(html, /<h1 class="page-h1 partner-h1">Get 20%\./);
     assert.equal((html.match(/<ol class="partner-terms">[\s\S]*?<\/ol>/)[0].match(/<li>/g) || []).length, 7);
-    assert.match(html, new RegExp(`<a class="btn-cta" href="${SIGNUP.replace(/[/.]/g, '\\$&')}" rel="noopener">Sign up as a partner</a>`));
+    assert.match(html, new RegExp(`<a class="btn-cta btn-wide" href="${SIGNUP.replace(/[/.]/g, '\\$&')}" rel="noopener">Sign up as a partner</a>`));
     assert.ok(!/Coming soon/.test(html));
     assert.ok(!/name="robots"/.test(html), 'the lit page indexes');
     assert.match(read(dir, 'sitemap.xml'), /<loc>https:\/\/prospektor\.ai\/partners\/<\/loc>/);

@@ -1858,7 +1858,7 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
       const rows = await panelRows(page);
       check('dark: the panel names no cookie', !rows.some(r => /rewardful/i.test(r)), rows);
       await page.goto('http://localhost:8899/partners/');
-      check('dark: /partners/ explains the programme (#1361)', ((await page.textContent('h1')) || '').trim() === 'Refer a client, earn 20% for a year.');
+      check('dark: /partners/ explains the programme (#1361)', ((await page.textContent('h1')) || '').trim() .startsWith('Get 20%.'));
       check('and carries the terms, with no Rewardful link', !!(await page.$('.partner-terms')) && !(await page.$('a[href*="getrewardful"]')));
       await page.close();
     }
@@ -1910,7 +1910,7 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
       await page.goto('http://localhost:8898/partners/');
       check('lit: /partners/ carries the seven terms',
         (await page.$$('.partner-terms li')).length === 7);
-      check('and the signup link', (await page.getAttribute('.partner-terms + p a', 'href')) === 'https://prospektor.getrewardful.com/signup');
+      check('and the signup link', (await page.getAttribute('.partner-card a.btn-cta', 'href')) === 'https://prospektor.getrewardful.com/signup');
       check('lit: the only host outside this origin was Rewardful\'s script, and only after Accept',
         [...hosts].every(h => h === 'r.wdfl.co' || h === 'studio.prospektor.ai'), [...hosts]);
       await page.close();
