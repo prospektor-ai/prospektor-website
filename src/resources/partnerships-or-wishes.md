@@ -82,8 +82,8 @@ The mistake is to keep pitching. The alternatives are better:
   cooperation. In the case above, the customers loved the product and the platform's
   own blog was the thing nobody updated. The customers were the opportunity; the
   logo was not.
-- **Partner sideways instead of up.** The agencies, consultancies and implementers
-  who serve that platform are within your power of ten, need what you have, and can
+- **Partner sideways instead of up.** The [agencies, consultancies and implementers
+  who serve that platform](/resources/recruit-referral-partners/) are within your power of ten, need what you have, and can
   each bring several accounts. They are also far easier to reach: [the partner
   directories of the tools they resell](/resources/find-agencies-to-resell-you/)
   name them.

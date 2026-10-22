@@ -417,6 +417,39 @@
       ],
       "status": "published",
       "published_date": "2026-10-14"
+    },
+    {
+      "slug": "recruit-referral-partners",
+      "type": "article",
+      "action": "new",
+      "cluster": null,
+      "title": "How to recruit referral partners for B2B SaaS",
+      "seo_title": "How to recruit referral partners for B2B SaaS",
+      "primary_keyword": "how to recruit referral partners for b2b saas",
+      "secondary_keywords": [
+        "saas referral partner program commission",
+        "commission only referral partners b2b"
+      ],
+      "target_words": 1200,
+      "faq": false,
+      "topic": "partnerships",
+      "source": "studio docs/research/partner-types.md (The answer; Six partner types, ranked, for why each type's clients need the product and the recruiting verdict per type; What comparable tools pay, for the range and the benchmark average only; Recommendation, for the flat number, the hold, no cash bounty and the order) and consultant-message.md (the message's shape and Why it is shaped this way).",
+      "angle": "Recruit the people a client already pays to run their outbound, because they decide which tools the client uses and are judged on meetings booked; a referral from them arrives with the tool already chosen. Rank partner types by why their clients need what you sell, never by how many exist: done-for-you outbound agencies first, fractional sales leaders, consultants who build sales workflows, then CRM and RevOps implementers (slow, they expect a marketplace listing), coaches one at a time, white label after renewals. Pay one flat share inside the 20% to 35% comparable programmes pay, most for twelve months, with a 250-programme benchmark averaging 22% to 25%, and add a tier only when a partner with five paying clients asks. The commission is a tip: 20% of $999 a month is about $200 a month and $2,400 a year against a fractional sales leader's $8,000 to $12,000 monthly fee, so the partner buys the deliverable they can bill for. The message runs stake, claim, money, with one ask, one price, no feature list and a subject naming what the partner sells; shown as a generic template. Send to existing agencies first, then consultants, then fractional leaders through two or three communities. Added 22 Oct 2026 by the daily article. Names no vendor, platform, community, benchmark publisher, directory or person, carries no directory or commenter count, and states no price but our own ($999 a month, $9,990 a year) and our own published programme terms (20% for twelve months, a thirty-day hold).",
+      "internal_links": [
+        "/resources/find-agencies-to-resell-you/",
+        "/resources/selling-to-agencies/",
+        "/resources/do-not-delegate-sales/"
+      ],
+      "distinct_from": "find-agencies-to-resell-you is the search: partner directories as a source, the three ranking facts from an agency's own page, a written reason per agency left out, and one message in which one sentence changes; this is the channel the search feeds, covering five more partner types, what to pay all of them, the arithmetic of the commission and the order to recruit in, and links there for the search. selling-to-agencies is why an agency is the better customer (revenue compounds, retention, premium support worth more than 20%, the kickback offered both ways, the email to agencies you already work with); this takes a referral programme as given and says who to recruit into it, what rate to set and what to write to a consultant who is not an agency, and links there for the argument. partnerships-or-wishes is whether a partnership with a larger platform will ever happen (the power-of-ten test, the public mandate); this is about service firms inside your own power of ten, which that page already points sideways to, and it is not linked from here because nothing on this page needs the platform test. do-not-delegate-sales warns against the commission-only sales hire; this page says in one paragraph why a referral partner with a consulting practice is a different arrangement, and links there. No article covers partner types beyond agencies, referral commission rates and duration, the tip arithmetic, the stake-claim-money order or the recruiting order.",
+      "distinct_from_checked": "22 Oct 2026, against find-agencies-to-resell-you, selling-to-agencies and partnerships-or-wishes read in full, do-not-delegate-sales by its commission-only paragraph, and all 35 existing articles searched for partner, referral and commission: only those four touch the subject, and none covers fractional sales leaders, workflow consultants, implementers, coaches or resellers as partners, a commission rate or its duration, the commission's arithmetic against a consultant's fee, or the order a partner message runs in. docs/seo/gsc-latest.md absent (GSC_SERVICE_ACCOUNT_KEY unset, studio #135), so `npm run gsc:cannibals` has no data; recorded, not read as permission. Left out of the angle: every name, count and rival rate in the source tables, the agencies' retainer range, the source message's own product, price and connector, and the internal rows the files cite. Two sentences are the writer's own reading of the sources, said as such here: that a referral from these partners arrives with the tool already chosen (from the source's 'pick the tools' and 'judged on meetings'), and that a referral partner differs from the commission-only hire because the referral rides on work they do anyway (from the operator's framing of a workforce that makes most of its money from consulting).",
+      "ledger": "NEW ROWS, written with the article: partners-run-the-clients-outbound (partner-types.md The answer, Six partner types, What comparable tools pay, Recommendation), commission-is-a-tip (partner-types.md The answer; consultant-message.md Why it is shaped this way) and money-last-in-the-partner-message (consultant-message.md). The first rows from either file; rank-agencies-on-their-own-page and full-agencies-refer cite agency-list.md and zero-to-closed-message.md, which this article does not read. Promotion noted in the ledger's scope comment.",
+      "inbound_from": [
+        "/resources/find-agencies-to-resell-you/",
+        "/resources/selling-to-agencies/",
+        "/resources/partnerships-or-wishes/"
+      ],
+      "status": "published",
+      "published_date": "2026-10-22"
     }
   ],
   "maintenance": [

@@ -6,7 +6,7 @@ description: "The maths behind selling through agencies rather than to brands: w
 topic: partnerships
 learnings: what-partners-want, material-partners-reserve, another-client-campaign, partner-opening
 date: 2026-08-19
-updated: 2026-10-19
+updated: 2026-10-22
 readingTime: 7
 ogImage: /assets/img/og/selling-to-agencies.png
 ---
@@ -98,7 +98,7 @@ An agency's product is its credibility with its client. Anything that protects t
 credibility is worth more than margin, because margin is recoverable and a burned
 client relationship is not.
 
-On the commission question itself, the honest answer is that agencies split, and
+On [the commission question](/resources/recruit-referral-partners/) itself, the honest answer is that agencies split, and
 you should say so out loud. Cohen used this at WP Engine, close to word for word:
 
 > Some agencies want a kickback and some are offended if you talk about a kickback.

@@ -43,8 +43,8 @@ agency still called itself a prospecting agency on its listing while its own
 site had started selling a data product. Take the price from the listing and
 what the agency does from its own page.
 
-The vendors' partner programme pages say what an agency is paid to resell a
-tool, and an agency that already resells tools knows that rate.
+The vendors' partner programme pages say [what an agency is paid to resell a
+tool](/resources/recruit-referral-partners/), and an agency that already resells tools knows that rate.
 
 ## Rank each agency on three facts from its own page
 
