@@ -740,6 +740,9 @@ const check = (claim, ok, detail) => { R.push({ claim, ok, detail }); console.lo
                        // nor the cause. test/drive.js keeps the same list for
                        // the built sitemap and needs the same edit.
                        'https://prospektor.ai/contact/',
+                       // #1361. The partner programme page, lit for good on 21 Oct 2026
+                       // and listed in src/sitemap.njk after /contact/.
+                       'https://prospektor.ai/partners/',
                        // #838. The integrations directory, before the Close
                        // page that sits under it, in the sitemap's own order.
                        'https://prospektor.ai/integrations/',

@@ -6,14 +6,17 @@ description: "Why 'too expensive' is the wrong diagnosis for churn and lost deal
 topic: retention
 learnings: too-expensive
 date: 2026-08-16
+updated: 2026-10-26
 readingTime: 6
 ogImage: /assets/img/og/too-expensive.png
 ---
 
-Run an exit survey on any B2B product and one answer dominates: **too expensive.**
-It is near the top for almost everybody who publishes their data. The obvious
-response is to cut the price, or add a cheaper tier, or start discounting to save
-accounts at risk.
+"Too expensive" is not why they left. The customer saw the price before they
+bought and decided it was acceptable, so what changed since then is the value
+they believe they are getting. Run an exit survey on any B2B product and that
+answer still dominates: **too expensive**, near the top for almost everybody who
+publishes their data. The obvious response is to cut the price, or add a cheaper
+tier, or start discounting to save accounts at risk.
 
 That response is nearly always wrong, and the argument against it is airtight:
 
@@ -40,7 +43,8 @@ nothing in common except the words:
    onboarding stalled, the data was never imported, the person who championed it
    moved on. They are cancelling something they never used.
 3. **The thing it was for ended.** A project finished. A campaign shipped. This is
-   not a failure at all, and treating it as one distorts every metric you have.
+   [a temporary customer](/resources/forever-customers/), not a failure, and
+   treating it as one distorts every metric you have.
 4. **Someone above them is cutting costs**, and yours is the line item with the
    weakest internal advocate. This is a champion problem, not a price problem.
 
@@ -80,8 +84,7 @@ beats large and occasional.
 You cannot fix a reason you did not capture. The cancellation flow that produces
 usable answers:
 
-- **Multiple choice, never free text.** Free text yields less, not more: most people
-  type nothing, and the ones who type something write "too expensive". Structured
+- **Multiple choice, never free text.** Free text yields less, not more. Structured
   options force a distinction.
 - **Offer a pause, not just a cancel.** Far cheaper than re-acquiring the customer
   later, and it separates "done for now" from "done".
@@ -98,8 +101,9 @@ usable answers:
 ## The same mistake in the sales pipeline
 
 This generalises past churn. "Too expensive" is also the most common lost-deal
-note, and it fails there for the same reason: a prospect who reached a pricing
-conversation had already decided the number was plausible enough to keep talking.
+note, and it fails there for the same reason: a prospect who reached a [pricing
+conversation](/resources/test-your-price-on-a-sales-call/) had already decided
+the number was plausible enough to keep talking.
 
 What "too expensive" usually means on a lost deal is *I did not believe it enough*:
 insufficient proof, an unclear outcome, or a champion who could not make the
@@ -112,7 +116,7 @@ wonder what else is.
 
 1. **Stop treating "too expensive" as a reason.** Treat it as a *symptom code* that
    must be resolved into one of the four diagnoses above.
-2. **Split your churn and your losses by whether the customer ever reached value.**
+2. **[Split your churn](/resources/the-ceiling-formula/) and your losses by whether the customer ever reached value.**
    Someone who never activated is an onboarding number. Someone who used it happily
    for a year and left is a product or a lifecycle number. Averaging them together
    hides both.

@@ -242,7 +242,7 @@
     { "id": "one-time-use-product", "ref": "§9.2", "title": "A one-time-use product is a top-three cause of early plateau — and the fix is the cohort, not the price", "verdict": "article", "article": "forever-customers" },
     { "id": "retention-curve-flattens", "ref": "§9.3", "title": "The retention curve must flatten and hold, not decay to zero, or cohorts never layer", "verdict": "article", "article": "forever-customers" },
 
-    { "id": "too-expensive", "ref": "§1.4", "title": "\"Too expensive\" is never the real cancellation reason — they already agreed the price when they bought", "verdict": "article", "article": "too-expensive" },
+    { "id": "too-expensive", "ref": "§1.4, §9.6 (the cancel flow), §9.7 (the annual increase)", "title": "\"Too expensive\" is never the real cancellation reason — they already agreed the price when they bought", "verdict": "article", "article": "too-expensive" },
 
     { "id": "delight-vs-table-stakes", "ref": "§1.5", "title": "Requested features are table stakes; delight comes from you, and customers are not product people", "verdict": "article", "article": "sell-to-the-career" },
     { "id": "career-not-task", "ref": "§1.6", "title": "Position to the buyer's career, not the buyer's task — and the Slack-channel test for whether it is strong enough", "verdict": "article", "article": "sell-to-the-career" },
