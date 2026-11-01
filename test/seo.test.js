@@ -154,6 +154,24 @@ describe('SEO — the #137 findings, pinned', () => {
     }
   });
 
+  // The money questions on /pricing/ are a FAQPage block generated from the
+  // <dl> itself (.eleventy.js, 1 Nov 2026), so the answer engines read the
+  // same eight pairs a visitor does, in the language of each twin. Pinned by
+  // count against the list, so a question added to the page reaches the block.
+  test('every /pricing/ twin carries a FAQPage with one entry per money question', () => {
+    for (const p of pricingPages()) {
+      const faq = p.jsonld.map(JSON.parse).find(v => v['@type'] === 'FAQPage');
+      assert.ok(faq, `${p.url}: no FAQPage structured data`);
+      const dts = (p.html.match(/<dl class="pricing-faq-list">([\s\S]*?)<\/dl>/) || ['', ''])[1].match(/<dt>/g) || [];
+      assert.ok(dts.length >= 5, `${p.url}: the money questions list has ${dts.length} questions`);
+      assert.equal(faq.mainEntity.length, dts.length, `${p.url}: FAQPage has ${faq.mainEntity.length} entries, the page ${dts.length} questions`);
+      for (const q of faq.mainEntity) {
+        assert.ok(q.name && q.acceptedAnswer && q.acceptedAnswer.text, `${p.url}: an empty FAQ entry`);
+        assert.ok(!/<[a-z]/i.test(q.acceptedAnswer.text), `${p.url}: markup leaked into an FAQ answer`);
+      }
+    }
+  });
+
   test('every indexable page carries structured data beyond the sitewide pair', () => {
     // Eight pages had none at all. The sitewide Organization/WebSite closes
     // that for all of them; this asserts the pair is really reaching them.

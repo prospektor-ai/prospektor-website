@@ -256,6 +256,31 @@ module.exports = function(eleventyConfig) {
       .sort((a, b) => a.topic.localeCompare(b.topic));
   });
 
+  // ── FAQPage structured data (monthly AI search pass, 1 Nov 2026) ───────
+  // /pricing/ answers the money questions in a <dl class="pricing-faq-list">,
+  // and the answer engines read Question/Answer pairs as structured data. The
+  // built page therefore carries a FAQPage block generated from that very
+  // markup, after the page has rendered in its own language: one source of
+  // truth, every /pricing/ twin covered, no second copy to keep in step. Only a
+  // page that holds the list gets the block; a page without one is untouched.
+  eleventyConfig.addTransform("faq-jsonld", function(content, outputPath) {
+    if (!outputPath || !/\/pricing\/index\.html$/.test(outputPath)) return content;
+    const list = content.match(/<dl class="pricing-faq-list">([\s\S]*?)<\/dl>/);
+    if (!list || !content.includes("</head>")) return content;
+    const text = s => s.replace(/<[^>]+>/g, "")
+      .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&nbsp;/g, " ")
+      .replace(/\s+/g, " ").trim();
+    const pairs = [...list[1].matchAll(/<dt>([\s\S]*?)<\/dt>\s*<dd>([\s\S]*?)<\/dd>/g)]
+      .map(m => ({ "@type": "Question", "name": text(m[1]),
+                   "acceptedAnswer": { "@type": "Answer", "text": text(m[2]) } }))
+      .filter(q => q.name && q.acceptedAnswer.text);
+    if (!pairs.length) return content;
+    const faq = { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": pairs };
+    const block = '<script type="application/ld+json">\n' + JSON.stringify(faq, null, 2) + '\n</script>\n';
+    return content.replace("</head>", block + "</head>");
+  });
+
   return {
     dir: {
       input: "src",

@@ -40,7 +40,8 @@
     "\"how many cold emails\" page (its arithmetic is already in three articles), reevo §8.1 items",
     "10 to 12 as a pipeline review page (one vendor feature list and one buyer remark, thin), and",
     "MARKET-RESEARCH.md's sending tar pit (deliverability is outside WHOM and WHAT, and the rows",
-    "record failures, not a method). Add an item the day a research file lands with a method in it."
+    "record failures, not a method). Add an item the day a research file lands with a method in it.",
+    "MONTHLY AI SEARCH PASS, 1 Nov 2026. The ten buyer questions and which sources the engines cite are in docs/seo/publishing-log.md under that date. Two of the ten have no article yet and no studio research to write one from, so they are candidates, not queued items, until a source lands or #1259 is answered: 'how to research a prospect company before cold outreach' (the engines cite tool-vendor checklists: tech stack, news, a trigger, past interactions) and 'how to do outbound as a founder' (do-not-delegate-sales is the why; nobody has written the how, and the engines cite consultancies' 5 to 10 conversations a week and 8 to 12 weeks before judging). The other eight each have an article that answers them; none is cited yet."
   ],
   "cluster": {
     "name": "founder-led sales",
