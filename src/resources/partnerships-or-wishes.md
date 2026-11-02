@@ -6,17 +6,21 @@ description: "Two questions that predict whether a B2B partnership will ever hap
 topic: partnerships
 learnings: partnership-or-wish
 date: 2026-08-17
+updated: 2026-11-02
 readingTime: 6
 ogImage: /assets/img/og/partnerships-or-wishes.png
 ---
 
-Here is a situation that plays out constantly and is almost always misdiagnosed.
+A partnership with a company much larger than yours happens for one of two
+reasons: you are within a power of ten of their revenue, or they have a public
+strategic mandate you are the answer to. Everything else is a wish, however much
+their customers love what you sell. Here is the situation that teaches it, and it
+is almost always misdiagnosed.
 
 A company builds something that works beautifully alongside a much larger
 platform. The platform's customers adopt it and love it. The company ranks first
 in the platform's app store. Every objective signal says this should be a
-partnership. They make three attempts to start one and are held politely at arm's
-length each time.
+partnership. Every attempt to start one is held politely at arm's length.
 
 The conclusion most teams draw is that they pitched it wrong. They did not. Here is
 the actual mechanism:
@@ -79,14 +83,14 @@ quarters disappear.
 The mistake is to keep pitching. The alternatives are better:
 
 - **Go around them, to their customers.** Their ecosystem is reachable without their
-  cooperation. In the case above, the customers loved the product and the platform's
-  own blog was the thing nobody updated. The customers were the opportunity; the
-  logo was not.
+  cooperation. In the case above, the customers loved the product. They were the
+  opportunity; the logo was not.
 - **Partner sideways instead of up.** The [agencies, consultancies and implementers
   who serve that platform](/resources/recruit-referral-partners/) are within your power of ten, need what you have, and can
   each bring several accounts. They are also far easier to reach: [the partner
   directories of the tools they resell](/resources/find-agencies-to-resell-you/)
-  name them.
+  name them, and [what they want from you](/resources/selling-to-agencies/) is
+  support and a reason to go back to their own clients, not a cheque.
 - **Wait for the mandate and monitor for it.** Put the target on a watch list rather
   than a pipeline. When the mandate appears, and it eventually does, you are the
   company that is already integrated and already loved by their users, and the
