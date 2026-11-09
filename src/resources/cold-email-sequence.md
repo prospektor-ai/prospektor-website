@@ -1,24 +1,27 @@
 ---
 title: "The cold email sequence that expects no reply to the first email"
 seoTitle: "The cold email sequence that expects no reply"
-dek: "A four-email structure built by someone who sells to sales teams for a living. The first email is designed to get roughly zero responses, and that is what makes the other three work."
+dek: "A four-email structure whose first email is designed to get roughly zero responses. That is what makes the other three work, and why the list matters more than any of them."
 description: "A four-email B2B cold sequence: the two-problem opener, the free-resource follow-ups and the ask, plus why the list matters more than the copy."
 topic: cold email
 learnings: small-ask-immediate-value, four-email-sequence, price-on-the-first-call, objection-document, first-meeting-loss-rate
 date: 2026-08-18
+updated: 2026-11-09
 readingTime: 7
 ogImage: /assets/img/og/cold-email-sequence.png
 ---
 
-Most cold sequences are the same email five times, with the politeness escalating
-and the desperation showing. Here is a different structure, from Damian Thompson,
-who has spent twenty-plus years in B2B software sales, including selling to sales
-teams, which is the hardest audience for this because they recognise every move.
+A cold sequence works when it spends three emails being useful and asks once.
+Here is a four-email structure that does exactly that, from Damian Thompson: the
+first email expects roughly no replies, the next two give something away, and only
+the fourth asks. Most cold sequences are the same email five times, with the
+politeness escalating and the desperation showing.
 
 The prerequisite matters more than the emails. Before you write anything, you need
 **the two biggest problems you solve, expressed in the customer's own language.**
 [Your category's language](/resources/problem-stack/) and your positioning do not count; the words a customer
-used on a call do. Call them A and B.
+used on a call do, and they are also [what reads as personal](/resources/cold-email-personalisation/)
+when a merge tag does not. Call them A and B.
 
 ## The four emails
 
@@ -61,18 +64,9 @@ That does three things:
 
 ## The ten-day multi-channel version
 
-Thompson's expanded sequence runs across channels over about ten business days:
-
-| Day | Channel | Move |
-|---|---|---|
-| Mon | LinkedIn | Connection request, no pitch |
-| Tue | Email | Email 1: the two-problem question |
-| Wed | Phone | One call |
-| Fri | Email | **Screen-recorded video made from their own website** + resource |
-| Next week | Email | Automated follow-up |
-| | LinkedIn | Light touch |
-
-The Friday step is the one worth stealing. A short screen recording walking through
+Thompson's expanded sequence runs the same moves across more than one channel over
+about ten business days, and one step in it is worth stealing on its own: a
+**screen-recorded video made from their own website**. A short recording walking through
 **their** site (what you noticed, what you would change, what it implies) is the
 single most efficient trust transfer in cold outreach, because it is unfakeable
 evidence that a person looked. It is also the step everyone skips, because it does
@@ -113,12 +107,8 @@ mood and always run long, because [thinking while talking expands](/resources/an
 
 ## The part nobody wants to hear
 
-The copy is not what makes the difference.
-
-> The list is what takes the longest, and it's what actually makes the biggest
-> difference.
->
-> Damian Thompson
+The copy is not what makes the difference. The list is, and it is also the part
+that takes the longest.
 
 A structurally perfect sequence sent to people who are not in-market produces
 silence, and the silence looks exactly like a copywriting problem. It is not.
