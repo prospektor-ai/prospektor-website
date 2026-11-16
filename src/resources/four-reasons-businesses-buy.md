@@ -6,6 +6,7 @@ description: "Make money, save money, increase efficiency, mitigate risk: why no
 topic: messaging
 learnings: four-reasons-to-buy
 date: 2026-08-20
+updated: 2026-11-16
 readingTime: 6
 ogImage: /assets/img/og/four-reasons-businesses-buy.png
 ---
@@ -19,13 +20,13 @@ There are exactly four reasons a business buys anything:
 
 Most sales advice tells you to pick the strongest one and lead with it, usually
 "make more money", on the theory that revenue beats cost. That advice is wrong,
-and the reason is structural rather than rhetorical. Here is Stephen Steers:
+and the reason is structural rather than rhetorical: none of the four is better
+than the others. Here is Stephen Steers:
 
-> None is better than the others, because roughly seven people need to agree to buy
-> a software solution and each carries a different KPI: the CEO cares about making
-> more money, the CFO about saving it, the end-user department about efficiency.
-> Your product must be able to tell all four stories, and you must know which one to
-> tell to whom.
+> Roughly seven people need to agree to buy a software solution, and each carries a
+> different KPI: the CEO cares about making more money, the CFO about saving it, the
+> end-user department about efficiency. Your product must be able to tell all four
+> stories, and you must know which one to tell to whom.
 >
 > Stephen Steers
 
@@ -79,8 +80,8 @@ There is a fifth framing, kept off the list because it is a personal reason and 
 list holds business ones. In practice it beats the four:
 
 > If you can explain to the marketer in three words, you're gonna keep your job
-> because you're gonna be this critical person, that's what I'm talking about. Not
-> just, you won't hate this as much as you hate the current thing.
+> because you're gonna be this critical person … I mean, that's what I'm talking
+> about. Not just like, you won't hate this as much as you hate the current thing.
 >
 > Jason Cohen
 
@@ -91,8 +92,8 @@ it make me the person who introduced the tool that failed?*
 Rob Walling's version, aimed at a smaller-company buyer where job security is not
 the lever:
 
-> If you're a founder running a five person company, well, I don't need to save my
-> job, but what I do need is results. I need more leads.
+> If you're a founder and you're running a five person company, well, I don't need
+> to save my job, but what I do need is results. I need more leads.
 >
 > Rob Walling
 
@@ -125,6 +126,7 @@ forwarded, because it will be, and you will not be in the room when it is.
 ## Before your next first call
 
 Write one sentence for each of the four reasons, specific to the account, in that
-account's language. If any of the four is blank, that is the objection you are
-going to lose to, and you have found it for free, before the call, instead of
-three weeks later when the thread goes quiet.
+account's language, as part of [the preparation you do before the call](/resources/prepare-for-a-sales-call/).
+If any of the four is blank, that is [the objection](/resources/cold-email-sequence/)
+you are going to lose to, and you have found it for free, before the call, instead
+of three weeks later when the thread goes quiet.
