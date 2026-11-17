@@ -76,18 +76,9 @@
     </a>
   </li>
   {%- endif %}
-  {#- Reevo, Attio and HighLevel (#1045), each with its own page since #1046. -#}
-  {%- if skipApp != 'reevo' %}
-  <li class="card int-card">
-    <a href="{{ '/integrations/reevo/' | localize }}">
-      <span class="int-mark has-logo"><img src="{{ '/assets/img/integrations/reevo.svg' | asset }}" alt="" width="24" height="24"></span>
-      <span class="card-topic">{% t %}CRM{% endt %}</span>
-      <{{ cardH }} class="card-title">Reevo</{{ cardH }}>
-      <p class="card-dek">{% t %}An account, the contacts with a work email, an opportunity and an activity saying why. Paste a key and press Connect.{% endt %}</p>
-      <span class="card-cta">{% t %}How it works →{% endt %}</span>
-    </a>
-  </li>
-  {%- endif %}
+  {#- Attio and HighLevel (#1045), each with its own page since #1046. Reevo's card and page
+      left on 17 Nov 2026 (#1397): the operator, "keep reevo out as they're quite competitive
+      to what we do". -#}
   {%- if skipApp != 'attio' %}
   <li class="card int-card">
     <a href="{{ '/integrations/attio/' | localize }}">
