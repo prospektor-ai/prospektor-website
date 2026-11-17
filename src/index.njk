@@ -196,19 +196,70 @@ permalink: "{{ language.prefix }}/"
 </section>
 <script src="{{ '/assets/js/signup.js' | asset }}" defer></script>
 
-{#- #830/#838: the directory has a page per integration; the chips are its
-    doors. Logos are the directory's own files (#841). -#}
-<section class="sec home-sec">
+{#- Keep your CRM (#1396, 17 Nov 2026). The operator: "it becomes very
+    clear that prospector sits on top of any CRM that you use and it's
+    responsible for finding the right companies that fit the leads you're
+    looking for and then feeding them into your CRM where you run your
+    standardized sales process", in the shape of shootpick.com's how-it-works
+    map. Where leads come from above (one tile per door the studio has, each a
+    live help article), Prospektor as the one dark hub, the CRMs the studio
+    connects below (the same seven as the integrations grid, each tile the door
+    to its page), and a side panel that reads out the part under the pointer
+    (flow.js). It replaced #838's row of chips, which said the same thing in
+    one line. The vendors' marks are the directory's own files (#841). -#}
+<section class="sec home-sec" id="crm">
   <div class="col">
     <div class="sec-h">
-      <h2>{% t %}Works where you already work{% endt %}</h2>
-      <p>{% t %}Your own Claude or ChatGPT can run Prospektor, and a finished pitch goes to your CRM in one press.{% endt %}</p>
+      <h2>{% t %}Keep your CRM.{% endt %}</h2>
+      <p>{% t %}Prospektor finds the companies that fit and puts each one into the CRM you already run. Your pipeline, your stages and your follow-up stay where they are.{% endt %}</p>
     </div>
-    <div class="chips">
-      {%- for c in [['claude', 'Claude'], ['chatgpt', 'ChatGPT'], ['hubspot', 'HubSpot'], ['attio', 'Attio'], ['close', 'Close'], ['affinity', 'Affinity'], ['slack', 'Slack']] %}
-      <a class="chip" href="{{ ('/integrations/' + c[0] + '/') | localize }}"><img src="{{ ('/assets/img/integrations/' + c[0] + '.svg') | asset }}" alt="" width="18" height="18">{{ c[1] }}</a>
-      {%- endfor %}
-      <a class="chip" href="{{ '/integrations/' | localize }}">{% t %}All integrations{% endt %} ›</a>
+    <div class="flowmap" data-flowmap>
+      <div class="fm">
+        <p class="fm-cap">{% t %}Where leads come from{% endt %}</p>
+        <div class="fm-row">
+        <button type="button" class="fm-in" data-step="in"><span class="fm-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span><span class="fm-lbl">{% t %}Your website{% endt %}</span></button>
+        <button type="button" class="fm-in" data-step="in"><span class="fm-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17l-5.4 2.8 1.1-6.1L3.2 9.4l6.1-.8z"/></svg></span><span class="fm-lbl">{% t %}Your best customers{% endt %}</span></button>
+        <button type="button" class="fm-in" data-step="in"><span class="fm-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h12l-2 4 2 4H5"/></svg></span><span class="fm-lbl">{% t %}A competitor’s customers{% endt %}</span></button>
+        <button type="button" class="fm-in" data-step="in"><span class="fm-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span class="fm-lbl">{% t %}A list you upload{% endt %}</span></button>
+        <button type="button" class="fm-in" data-step="in"><span class="fm-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c2.4 0 4 1.5 4.5 4"/></svg></span><span class="fm-lbl">{% t %}People you know{% endt %}</span></button>
+        <button type="button" class="fm-in" data-step="in"><span class="fm-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg></span><span class="fm-lbl">{% t %}An inbound lead{% endt %}</span></button>
+        </div>
+        <div class="fm-bus" aria-hidden="true"><span class="v"></span><span class="h"></span><span class="v"></span></div>
+        <button type="button" class="fm-hub is-on" data-step="hub"><b><i><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6C2 3.79 3.79 2 6 2s4 1.79 4 4-1.79 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round"/><circle cx="6" cy="6" r="1.2" fill="white"/></svg></i>Prospektor</b><span>{% t %}Scores the fit · names who decides · writes the first email{% endt %}</span></button>
+        <div class="fm-bus" aria-hidden="true"><span class="v"></span><span class="h bot"></span><span class="v"></span></div>
+        <p class="fm-cap">{% t %}Your CRM{% endt %}</p>
+        <div class="fm-row crm">
+          {#- The operator, 17 Nov 2026: "keep reevo out as they're quite
+              competitive to what we do. Also use the actual CRMs we have
+              (Salesforce is missing)". Salesforce has no page of its own yet,
+              so its tile opens the directory. -#}
+          {%- for c in [['hubspot', 'HubSpot'], ['salesforce', 'Salesforce'], ['attio', 'Attio'], ['close', 'Close'], ['affinity', 'Affinity'], ['lightfield', 'Lightfield'], ['highlevel', 'HighLevel']] %}
+          <a class="fm-out" data-step="crm" href="{{ (('/integrations/' + c[0] + '/') if c[0] != 'salesforce' else '/integrations/') | localize }}"><span class="fm-ic"><img src="{{ ('/assets/img/integrations/' + c[0] + '.svg') | asset }}" alt="" width="22" height="22"></span><span class="fm-lbl">{{ c[1] }}</span></a>
+          {%- endfor %}
+        </div>
+        <p class="fm-foot">{% t %}Your sales process runs there, as it does today.{% endt %}</p>
+      </div>
+      <aside class="fm-panel">
+        <div data-pane="in" hidden>
+          <p class="k">{% t %}1 · Where leads come from{% endt %}</p>
+          <h3>{% t %}Start from what you already have{% endt %}</h3>
+          <p>{% t %}Prospektor reads your website and asks who you sell to. Point it at your best customers, a competitor, a list from a conference or the people you know, and it finds more companies like them.{% endt %}</p>
+          <p class="hint">{% t %}Hover or tap any part of the diagram.{% endt %}</p>
+        </div>
+        <div data-pane="hub">
+          <p class="k">{% t %}2 · Prospektor{% endt %}</p>
+          <h3>{% t %}Finds the fit, writes the pitch{% endt %}</h3>
+          <p>{% t %}Each company gets a fit score with the reasons, the names of the people who decide, and a first email in your voice. Wins and losses you record sharpen the next one.{% endt %}</p>
+          <p class="hint">{% t %}Hover or tap any part of the diagram.{% endt %}</p>
+        </div>
+        <div data-pane="crm" hidden>
+          <p class="k">{% t %}3 · Your CRM{% endt %}</p>
+          <h3>{% t %}One press, and it is in your pipeline{% endt %}</h3>
+          <p>{% t %}Prospektor writes the company, its people, a deal in your first stage and a note with the fit and the angle. Push again and the same records update. From there your team works the way it always has.{% endt %}</p>
+          <a class="lnk" href="{{ '/integrations/' | localize }}">{% t %}All integrations{% endt %} ›</a>
+        </div>
+      </aside>
     </div>
   </div>
 </section>
+<script src="{{ '/assets/js/flow.js' | asset }}" defer></script>
