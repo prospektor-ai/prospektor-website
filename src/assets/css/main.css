@@ -1483,3 +1483,83 @@ footer {
   footer { padding-left: 16px; padding-right: 16px; }
 }
 .pricing-page .grid2 { align-items: start; }
+
+/* ── Keep your CRM (#1396, 17 Nov 2026): the flow map on the homepage and the
+   flow row at the head of /integrations/. ShootPick's how-it-works pattern in
+   this site's tokens: where leads come from above, Prospektor as the one dark
+   hub, the CRMs below, and a side panel that reads out the part under the
+   pointer. The lines are borders, so they scale; nothing is drawn. ── */
+.flowmap { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 28px; align-items: start; }
+.fm { display: grid; justify-items: center; }
+.fm-cap { font-size: 12px; color: var(--ink-faint); letter-spacing: .04em; text-transform: uppercase; margin: 0 0 10px; }
+.fm-row { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; width: 100%; }
+.fm-row.crm { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.fm-in, .fm-out {
+  background: var(--white); border-radius: 14px; padding: 14px 6px 12px; min-width: 0;
+  display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;
+  border: 1.5px solid transparent; transition: border-color .15s, transform .15s;
+  font: inherit; color: var(--ink); text-decoration: none; cursor: pointer;
+}
+.fm-ic {
+  width: 36px; height: 36px; border-radius: 50%; background: var(--off-white);
+  display: grid; place-items: center; color: var(--ink); flex: none;
+}
+.fm-ic svg { width: 19px; height: 19px; }
+.fm-ic img { width: 22px; height: 22px; display: block; }
+.fm-lbl { font-size: 12px; line-height: 1.3; }
+.fm-in:hover, .fm-out:hover, .fm-in.is-on, .fm-out.is-on { border-color: var(--coral); transform: translateY(-1px); }
+.fm-in:focus-visible, .fm-out:focus-visible, .fm-hub:focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; }
+.fm-hub {
+  background: #1a1a18; color: var(--white); border-radius: 16px; padding: 18px 36px; text-align: center;
+  display: grid; gap: 4px; min-width: min(100%, 300px); border: 2px solid transparent;
+  font: inherit; cursor: pointer;
+}
+.fm-hub.is-on, .fm-hub:hover { border-color: var(--coral); }
+.fm-hub b { font-size: 19px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 9px; }
+.fm-hub b i { width: 22px; height: 22px; border-radius: 6px; background: #333; display: grid; place-items: center; font-style: normal; }
+.fm-hub b i svg { width: 14px; height: 14px; }
+.fm-hub span { font-size: 12.5px; color: #c9c9cf; }
+.fm-bus { width: 100%; display: grid; justify-items: center; }
+.fm-bus .v { width: 2px; height: 18px; background: #c9c9cf; }
+.fm-bus .h { height: 2px; background: #c9c9cf; border-radius: 2px; width: calc(100% - 100% / 6); }
+.fm-bus .h.bot { width: calc(100% - 100% / 7); }
+.fm-foot { font-size: 12px; color: var(--ink-faint); margin-top: 14px; }
+.fm-panel { background: var(--white); border-radius: 16px; padding: 26px 26px 22px; min-height: 270px; }
+.fm-panel .k { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.fm-panel h3 { font-size: 22px; font-weight: 600; letter-spacing: -.01em; line-height: 1.2; margin: 0 0 12px; text-wrap: balance; }
+.fm-panel p { font-size: 15px; color: var(--ink-mid); line-height: 1.55; }
+.fm-panel .hint { font-size: 12.5px; color: var(--ink-faint); margin-top: 16px; }
+.fm-panel .lnk { display: inline-block; margin-top: 14px; font-size: 14px; font-weight: 500; text-decoration: none; }
+.fm-panel .lnk:hover { text-decoration: underline; }
+
+.flowrow { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+.flowrow-in { background: var(--white); border-radius: 24px; padding: 40px 28px 28px; }
+.flowrow ol { list-style: none; display: flex; align-items: stretch; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; }
+.flowrow li { display: flex; align-items: center; gap: 8px; }
+.fr-box {
+  width: 176px; min-height: 128px; border-radius: 16px; background: var(--off-white); padding: 18px 14px 16px;
+  display: grid; justify-items: center; align-content: center; gap: 8px; text-align: center;
+}
+.fr-box > svg { width: 26px; height: 26px; }
+.fr-box strong { font-size: 15px; font-weight: 600; display: block; }
+.fr-box span { font-size: 12.5px; color: var(--ink-mid); line-height: 1.35; display: block; }
+.fr-box.hub { background: #1a1a18; color: var(--white); }
+.fr-box.hub span { color: #c9c9cf; }
+.fr-box .fr-logos { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; margin-top: 2px; }
+.fr-logos img { width: 18px; height: 18px; display: block; }
+.fr-arrow { width: 22px; height: 22px; color: var(--ink-faint); flex: none; }
+.fr-note { text-align: center; font-size: 14px; color: var(--ink-mid); margin: 22px auto 0; max-width: 560px; line-height: 1.5; }
+
+@media (max-width: 860px) {
+  .flowmap { grid-template-columns: 1fr; }
+  .fm-panel { min-height: 0; }
+  .fm-row, .fm-row.crm { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .fm-bus .h { display: none; }
+  .fm-bus .v { height: 14px; }
+  .flowrow { padding: 0 16px; }
+  .flowrow-in { padding: 24px 16px 20px; }
+  .flowrow ol, .flowrow li { flex-direction: column; }
+  .flowrow li { width: 100%; }
+  .fr-box { width: 100%; min-height: 0; }
+  .fr-arrow { transform: rotate(90deg); }
+}
