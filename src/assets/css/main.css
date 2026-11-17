@@ -10,7 +10,8 @@
   --ink-mid: #5f6368;
   --ink-faint: #80868b;
   --white: #FFFFFF;
-  --off-white: #f7f7f9;        /* the ground */
+  --off-white: #ffffff;        /* the ground (white since #1398; was #f7f7f9) */
+  --band: #f5f5f7;             /* a grey band or panel on the white ground (#1398) */
   --stone: #ebebef;            /* the grey pill */
   --accent: #c8432c;           /* links */
   --accent-dim: #c8432c;
@@ -21,10 +22,10 @@
   --bad: #c5221f;
   --border: #e6e6ea;
   /* The homepage tiles' four tints, one per tile (the big-tiles mockup). */
-  --tint-who: #fde8e1;
-  --tint-what: #f2eee6;
-  --tint-intro: #e6f1eb;
-  --tint-learn: #ebe8f6;
+  --tint-who: #f5f5f7;
+  --tint-what: #f5f5f7;
+  --tint-intro: #f5f5f7;
+  --tint-learn: #f5f5f7;       /* all four grey since #1398: no colour tints */
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: var(--font);         /* small labels: the same face, never a terminal */
   --code: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -184,7 +185,7 @@ nav {
   white-space: nowrap; overflow: hidden;
 }
 .scan-suggest li:hover,
-.scan-suggest li[aria-selected="true"] { background: var(--off-white); }
+.scan-suggest li[aria-selected="true"] { background: var(--band); }
 .scan-suggest-name {
   font-size: 15px; color: var(--ink);
   overflow: hidden; text-overflow: ellipsis;
@@ -407,7 +408,7 @@ nav {
 
 .order-card {
   margin-top: 1.5rem; padding: 1.75rem;
-  background: var(--off-white); border-radius: 16px;
+  background: var(--band); border-radius: 16px;
 }
 .order-row {
   display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
@@ -429,7 +430,7 @@ nav {
 
 .onboard-note {
   margin-top: 1.25rem; padding: 1.1rem 1.35rem;
-  border-radius: 12px; background: var(--off-white);
+  border-radius: 12px; background: var(--band);
 }
 .onboard-note p { font-size: 0.85rem; color: var(--ink-mid); line-height: 1.65; }
 .onboard-note strong { color: var(--ink); }
@@ -659,7 +660,7 @@ footer {
 .legal-note {
   margin-top: 1.35rem; padding: 1.1rem 1.35rem;
   border: 1px solid var(--border); border-radius: 10px;
-  background: var(--off-white);
+  background: var(--band);
   display: flex; gap: 1rem; align-items: flex-start;
 }
 .legal-note-tag {
@@ -679,7 +680,7 @@ footer {
   font-family: var(--mono); font-size: 0.62rem; font-weight: 500;
   letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint);
   text-align: left; padding: 0.7rem 1rem;
-  background: var(--off-white); border-bottom: 1px solid var(--border);
+  background: var(--band); border-bottom: 1px solid var(--border);
 }
 .legal-table td {
   padding: 0.85rem 1rem; font-size: 0.82rem;
@@ -693,7 +694,7 @@ footer {
 .legal-end {
   margin-top: 2.5rem; padding: 1.35rem 1.5rem;
   border: 1px solid var(--border); border-radius: 12px;
-  background: var(--off-white);
+  background: var(--band);
   display: flex; flex-wrap: wrap; align-items: center;
   gap: 0.5rem 1.5rem;
 }
@@ -1008,7 +1009,7 @@ footer {
   font-family: var(--mono); font-size: 0.82rem; font-weight: 700;
   letter-spacing: 0.02em; margin-bottom: 0.35rem;
 }
-.int-mark.has-logo { background: var(--off-white); }
+.int-mark.has-logo { background: var(--band); }
 .int-mark img { width: 62%; height: 62%; object-fit: contain; display: block; }
 .int-card.is-static .int-mark { color: var(--ink-faint); }
 .int-card.is-static .int-mark img { opacity: .55; }
@@ -1501,7 +1502,7 @@ footer {
   font: inherit; color: var(--ink); text-decoration: none; cursor: pointer;
 }
 .fm-ic {
-  width: 36px; height: 36px; border-radius: 50%; background: var(--off-white);
+  width: 36px; height: 36px; border-radius: 50%; background: var(--band);
   display: grid; place-items: center; color: var(--ink); flex: none;
 }
 .fm-ic svg { width: 19px; height: 19px; }
@@ -1537,7 +1538,7 @@ footer {
 .flowrow ol { list-style: none; display: flex; align-items: stretch; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; }
 .flowrow li { display: flex; align-items: center; gap: 8px; }
 .fr-box {
-  width: 176px; min-height: 128px; border-radius: 16px; background: var(--off-white); padding: 18px 14px 16px;
+  width: 176px; min-height: 128px; border-radius: 16px; background: var(--band); padding: 18px 14px 16px;
   display: grid; justify-items: center; align-content: center; gap: 8px; text-align: center;
 }
 .fr-box > svg { width: 26px; height: 26px; }
@@ -1563,3 +1564,191 @@ footer {
   .fr-box { width: 100%; min-height: 0; }
   .fr-arrow { transform: rotate(90deg); }
 }
+
+/* ══ The Keep-your-CRM pass (#1398, 17 Nov 2026) ═══════════════════════════
+   The operator, on #1396's flow map: "I like this design language in general.
+   Worth giving the entire website a pass with this style?" and then "let's
+   start on the full redesign pass now". The language, read off the map and
+   off shootpick.com's how-it-works and integrations pages: a WHITE ground
+   with grey bands (.band) instead of the grey ground with white cards; a
+   card on the white ground wears a 1px border; headlines are bold, tight and
+   end in a full stop; numbered steps carry a drawn preview on top; one dark
+   hub in a diagram and one dark closing band (.close-band) per page; no
+   photos, no colour tints. Coral stays on exactly one press per page. The
+   rules below override the ones above rather than rewriting them, so every
+   page that only used the tokens picks the look up without a template change. */
+
+.band { background: var(--band); }
+
+/* A card on the white ground needs an edge. */
+.hcard, .pricing-card, .legal > .legal-inner, .onboard-panel, .contact-inner,
+.partner-card, .partner-steps li, .page-split-inner, .fm-panel, .flowrow-in,
+.demo-end, .pcol, .res-card, .card, .res-body, .int-side, .int-visual,
+.demo-shot, .scan-card, .chip { border: 1px solid var(--border); }
+.band .hcard, .band .pcol, .band .res-card, .band .card { border-color: var(--border); }
+.hcard-q, .price .per { color: var(--ink-mid); }
+
+/* Headlines: bold and tight, the way the map's section reads. */
+.hero h1 { font-size: 64px; font-weight: 700; letter-spacing: -.03em; line-height: 1.05; margin-bottom: 20px; }
+.hero h1 .accent { color: var(--ink); }
+.hero-sub { font-size: 19px; max-width: 640px; }
+.page-h1, .res-hub-h1 { font-size: 52px; font-weight: 700; letter-spacing: -.025em; line-height: 1.08; }
+.page-lede, .res-hub-lede { font-size: 19px; }
+.sec .sec-h h2, .pricing-faq h2, .legal-hero h1, .res-hero h1, .int-page h1 { font-weight: 700; letter-spacing: -.025em; }
+.sec .sec-h h2 { font-size: 46px; }
+.pricing-faq h2 { font-size: 40px; margin-bottom: 36px; }
+.sec-h { max-width: 760px; }
+.sec-h p { font-size: 19px; }
+.home-sec { padding-top: 0; }
+
+/* The eyebrow over a headline: one short coral line, the map's "2 · Prospektor". */
+.eyebrow { color: var(--accent); font-size: 14px; font-weight: 600; margin: 0 0 14px; }
+.page-hero .tag { color: var(--accent); background: transparent; font-size: 14px; font-weight: 600; letter-spacing: 0; text-transform: none; padding: 0; }
+
+/* A grey panel that holds a diagram or a product frame (the map's ground). */
+.panel { background: var(--band); border-radius: 28px; padding: 48px; }
+.band .panel { background: var(--white); border: 1px solid var(--border); }
+
+/* The product frame: a white window with a title bar, drawn, never a photo. */
+.frame { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+.frame-bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid #efeff2; background: #fafafb; font-size: 12.5px; color: var(--ink-faint); }
+.frame-bar i { width: 10px; height: 10px; border-radius: 50%; background: #e0e0e5; }
+.frame-bar span { margin-left: 10px; }
+.frame-body { display: grid; grid-template-columns: 200px minmax(0, 1fr); min-height: 330px; }
+.frame-nav { border-right: 1px solid #efeff2; padding: 18px 14px; display: grid; gap: 2px; align-content: start; font-size: 13.5px; }
+.frame-nav .ws { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 10px; background: var(--band); margin-bottom: 10px; font-weight: 600; }
+.frame-nav .ws i { width: 24px; height: 24px; border-radius: 6px; background: var(--ink); color: #fff; font-style: normal; font-size: 11px; font-weight: 600; display: grid; place-items: center; }
+.frame-nav .k { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; padding: 10px 10px 2px; }
+.frame-nav span { padding: 7px 10px; border-radius: 10px; }
+.frame-nav span.on { background: var(--accent-bg); font-weight: 600; }
+.frame-main { padding: 22px 26px; min-width: 0; }
+.frame-main .fh { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
+.frame-main .fh b { font-size: 19px; font-weight: 600; }
+.frame-main .fh span { font-size: 13px; color: var(--ink-faint); }
+.lead { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid #efeff2; font-size: 14px; }
+.lead:first-of-type { border-top: 0; }
+.lg { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; color: #fff; font-weight: 600; font-size: 13px; flex: none; }
+.lg.b { background: #2f5fbf; } .lg.o { background: #c47a1c; } .lg.g { background: #1e8e5a; } .lg.v { background: #6a5acd; } .lg.k { background: var(--ink); }
+.nm { display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; }
+.nm b { font-weight: 600; }
+.nm span { color: var(--ink-faint); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fit { margin-left: auto; color: var(--good); font-weight: 600; font-size: 14px; flex: none; }
+.fit.low { color: var(--ink-faint); }
+.pill { display: inline-block; border: 1px solid #d9d9de; border-radius: 999px; padding: 5px 11px; font-size: 12.5px; color: var(--ink); background: var(--white); white-space: nowrap; }
+.pill.done { background: var(--band); color: var(--ink-mid); border-color: var(--band); }
+.pill.dark { background: var(--ink); color: #fff; border-color: var(--ink); }
+.pill.for { background: #e6f1eb; border-color: #e6f1eb; color: var(--good); }
+.pill.against { background: var(--accent-bg); border-color: var(--accent-bg); color: var(--accent); }
+.small { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; }
+.caps3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 28px; text-align: center; }
+.caps3 b { font-size: 15px; font-weight: 600; }
+.caps3 p { margin: 4px 0 0; font-size: 14px; color: var(--ink-mid); }
+
+/* Numbered steps: a grey card, the drawn preview on top, "01" in coral. */
+.steps3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.stepc { background: var(--band); border-radius: 24px; padding: 24px 24px 30px; display: flex; flex-direction: column; min-width: 0; }
+.band .stepc { background: var(--white); border: 1px solid var(--border); }
+.stepc .shot { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 18px; min-height: 176px; display: flex; flex-direction: column; gap: 10px; justify-content: center; }
+.stepc .n, .row2 .n { color: var(--accent); font-size: 14px; font-weight: 600; margin: 22px 0 10px; }
+.stepc h3 { font-size: 24px; font-weight: 600; letter-spacing: -.015em; margin: 0 0 8px; }
+.stepc p { margin: 0; color: var(--ink-mid); font-size: 15.5px; line-height: 1.55; }
+.scanf { display: flex; align-items: center; background: var(--stone); border-radius: 999px; padding: 6px 6px 6px 18px; gap: 10px; font-size: 14px; color: var(--ink-mid); }
+.scanf b { margin-left: auto; background: var(--coral); color: #fff; border-radius: 999px; padding: 9px 14px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+.kv { display: grid; gap: 6px; font-size: 13.5px; color: var(--ink-mid); margin-top: 4px; }
+.kv div { display: flex; justify-content: space-between; gap: 12px; }
+.kv b { color: var(--ink); font-weight: 500; text-align: right; }
+
+/* The how-it-works rows: text one side, the drawn preview the other. */
+.row2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+.row2 .n { margin: 0 0 12px; }
+.row2 h3 { font-size: 34px; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; margin: 0 0 14px; text-wrap: balance; }
+.row2 p { margin: 0; color: var(--ink-mid); font-size: 17px; line-height: 1.55; }
+.row2 .shotp { min-width: 0; background: var(--band); border-radius: 24px; padding: 36px; }
+.band .row2 .shotp { background: var(--white); border: 1px solid var(--border); }
+.row2 .shot { min-width: 0; background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+.band .row2 .shot { border-color: var(--border); }
+.note { background: var(--band); border-radius: 12px; padding: 12px 14px; font-size: 13px; line-height: 1.5; }
+.row2 .shot .note .small { display: block; margin-bottom: 4px; }
+
+/* The icon grid: "What you get." */
+.icons6 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 32px; }
+.icons6 .ico { width: 44px; height: 44px; border-radius: 12px; background: var(--white); border: 1px solid var(--border); display: grid; place-items: center; color: var(--ink); }
+.icons6 .ico svg { width: 20px; height: 20px; }
+.icons6 h3 { font-size: 19px; font-weight: 600; margin: 16px 0 6px; }
+.icons6 p { margin: 0; color: var(--ink-mid); font-size: 15px; line-height: 1.55; }
+.icons6 a { color: inherit; text-decoration: none; display: block; }
+.icons6 a:hover h3 { color: var(--accent); }
+
+/* Pick your CRM: the list and the setup panel (shootpick's pick-your-app). */
+.pick { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 24px; align-items: start; }
+.pick-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.pick-list button { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: var(--band); border: 0; border-radius: 14px; padding: 14px 16px; font: inherit; font-size: 15px; font-weight: 500; color: var(--ink); cursor: pointer; }
+.pick-list button:hover { background: var(--stone); }
+.pick-list button[aria-selected="true"] { background: var(--ink); color: #fff; }
+.pick-list button:focus-visible { outline: 2px solid var(--coral); outline-offset: 2px; }
+.pick-list img { width: 22px; height: 22px; display: block; }
+.setup { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 32px 36px; }
+.setup h3 { font-size: 26px; font-weight: 600; letter-spacing: -.015em; margin: 8px 0 4px; }
+.setup ol { list-style: none; margin: 0; padding: 0; }
+.setup li { display: flex; gap: 14px; margin-top: 20px; }
+.setup li i { width: 26px; height: 26px; border-radius: 50%; background: var(--ink); color: #fff; font-style: normal; font-size: 13px; font-weight: 600; display: grid; place-items: center; flex: none; }
+.setup li b { font-size: 15.5px; font-weight: 600; display: block; margin-bottom: 3px; }
+.setup li span { font-size: 14.5px; color: var(--ink-mid); line-height: 1.5; }
+.setup .note { margin-top: 24px; font-size: 13.5px; color: var(--ink-mid); padding: 12px 16px; }
+
+/* Questions as plain rows: a rule between each, a plus at the right. */
+.faq { list-style: none; margin: 0 auto; padding: 0; max-width: 760px; }
+.faq details { border-top: 1px solid var(--border); padding: 20px 0; }
+.faq details:last-child { border-bottom: 1px solid var(--border); }
+.faq summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 17px; font-weight: 600; cursor: pointer; list-style: none; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--ink-faint); font-weight: 400; font-size: 22px; line-height: 1; }
+.faq details[open] summary::after { content: "−"; }
+.faq details p { margin: 10px 0 0; color: var(--ink-mid); font-size: 15.5px; line-height: 1.55; max-width: 660px; }
+.pricing-faq-list { border: 0; border-radius: 0; padding: 0; max-width: 760px; margin: 0 auto; background: transparent; }
+.pricing-faq-item { border-top: 1px solid var(--border); padding: 20px 0 !important; margin: 0 !important; }
+.pricing-faq-item:last-child { border-bottom: 1px solid var(--border); }
+.pricing-faq-item dt { font-size: 17px; font-weight: 600; }
+.pricing-faq-item dd { margin: 10px 0 0; color: var(--ink-mid); font-size: 15.5px; line-height: 1.55; max-width: 660px; }
+
+/* The dark closing band: one headline, one line, one press. */
+.close-band { background: #141416; color: #fff; text-align: center; padding: 104px 24px; }
+.close-band h2 { font-size: 46px; font-weight: 700; letter-spacing: -.025em; line-height: 1.08; margin: 0 0 14px; color: #fff; text-wrap: balance; }
+.close-band p { font-size: 19px; color: #b8b8c0; margin: 0 auto; max-width: 560px; line-height: 1.5; }
+.close-band .btn-cta { margin-top: 32px; font-size: 16px; padding: 14px 26px; border-radius: 999px; }
+.close-band .quiet { display: block; margin-top: 18px; font-size: 14px; color: #b8b8c0; }
+.close-band .quiet a { color: #fff; }
+
+/* The map on the white ground: tiles with an edge, the panel too. */
+.fm-in, .fm-out { border-color: var(--border); }
+.fm-ic { background: var(--band); }
+.fm-panel { border: 1px solid var(--border); }
+.int-hub-more { text-align: center; }
+
+@media (max-width: 960px) {
+  .hero h1 { font-size: 44px; }
+  .page-h1, .res-hub-h1 { font-size: 36px; }
+  .sec .sec-h h2, .close-band h2, .pricing-faq h2 { font-size: 34px; }
+  .panel { padding: 20px; border-radius: 20px; }
+  .steps3, .icons6, .row2, .pick, .caps3 { grid-template-columns: minmax(0, 1fr); }
+  .row2 { gap: 24px; }
+  .row2.flip .txt { order: -1; }
+  .row2 h3 { font-size: 28px; }
+  .frame-body { grid-template-columns: minmax(0, 1fr); }
+  .frame-nav { display: none; }
+  .close-band { padding: 64px 16px; }
+  .setup { padding: 24px 20px; }
+  .lead .pill { display: none; }
+}
+
+/* The home page's sections (#1398): one rhythm, 96px of air, the wide column. */
+.hs { padding: 96px 0; scroll-margin-top: var(--nav-h); }
+.home-col { max-width: 1120px; }
+.sec-h2 { font-size: 46px; font-weight: 700; letter-spacing: -.025em; line-height: 1.08; margin: 0 0 44px; text-wrap: balance; }
+.hs .sec-h { margin-bottom: 48px; }
+.hs .sec-h h2 { font-size: 46px; font-weight: 700; letter-spacing: -.025em; line-height: 1.08; margin: 0 0 14px; text-wrap: balance; }
+.hs .hcard { border-radius: 20px; padding: 32px; }
+.hs .hcard.band { border-color: var(--band); }
+.hs .price .big { font-size: 40px; font-weight: 700; letter-spacing: -.02em; }
+.hs .hcard-foot.buy { align-items: center; }
+@media (max-width: 960px) { .hs { padding: 64px 0; } .sec-h2, .hs .sec-h h2 { font-size: 34px; } .hs .hcard { padding: 24px; } }

@@ -1,0 +1,165 @@
+---
+layout: base.njk
+title: How it works
+description: "Prospektor sits on top of your CRM. It finds the companies that fit, works out who decides and what to say, and sends each one into the CRM you already run."
+# One page per language (#114/#535), the shape every funnel page takes; see
+# src/index.njk for the reasoning.
+pagination:
+  data: languages
+  size: 1
+  alias: language
+  addAllPagesToCollections: true
+permalink: "{{ language.prefix }}/how-it-works/"
+---
+
+{#- How it works (#1398, 17 Nov 2026), the page shootpick.com's how-it-works
+    and integrations pages add up to, in Prospektor's words: the one
+    sentence (it sits on top of your CRM), the flow in one row, three
+    numbered steps each with a drawn preview, the CRM picker with the setup
+    steps the studio's own help gives (docs/help/articles/connect-apps.md),
+    five questions and the close. It took Demo's place in the header; the
+    demo stays one link under the scan field and one more below. Nothing
+    here is a screenshot: every frame is drawn example content, the cast
+    the rest of the site uses. -#}
+<header class="page-hero">
+  <div class="page-hero-inner">
+    <span class="tag">{% t %}How it works{% endt %}</span>
+    <h1 class="page-h1">{% t %}Prospektor sits on top of your CRM.{% endt %}</h1>
+    <p class="page-lede">{% t %}It does not replace anything. It finds the companies that fit, works out who decides and what to say, and sends each one into the CRM you already run.{% endt %}</p>
+  </div>
+</header>
+
+<section class="flowrow" aria-label="{{ 'How Prospektor feeds your CRM' | t }}">
+  <div class="flowrow-in">
+    <ol>
+      <li><div class="fr-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><strong>{% t %}What you sell{% endt %}</strong><span>{% t %}Your site, your best customers, a competitor{% endt %}</span></div><svg class="fr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></li>
+      <li><div class="fr-box hub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><strong>Prospektor</strong><span>{% t %}Finds the companies that fit, the people who decide, the first email{% endt %}</span></div><svg class="fr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></li>
+      <li><div class="fr-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg><strong>{% t %}Your CRM{% endt %}</strong><span class="fr-logos">{%- for c in ['hubspot', 'salesforce', 'attio', 'close', 'affinity', 'lightfield', 'highlevel'] %}<img src="{{ ('/assets/img/integrations/' + c + '.svg') | asset }}" alt="" width="18" height="18">{%- endfor %}</span></div><svg class="fr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></li>
+      <li><div class="fr-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18h5v-4h5v-4h6"/><path d="m17 7 3 3-3 3"/></svg><strong>{% t %}Your sales process{% endt %}</strong><span>{% t %}Stages, tasks and follow-up, unchanged{% endt %}</span></div></li>
+    </ol>
+    <p class="fr-note">{% t %}Prospektor writes a company, its people, a deal and a note. Push again and the same records update. Your stages and fields stay yours.{% endt %}</p>
+  </div>
+</section>
+
+<section class="hs band" style="margin-top:96px" id="steps">
+  <div class="col home-col" style="display:grid;gap:80px">
+    <div class="row2">
+      <div class="txt">
+        <p class="n">01</p>
+        <h3>{% t %}Tell it what you sell.{% endt %}</h3>
+        <p>{% t %}Give it your website and it works out who you sell to. Point it at your best customers, a competitor, a list from a conference or the people you know, and it looks for more companies like them.{% endt %}</p>
+      </div>
+      <div class="shotp" aria-hidden="true">
+        <div class="shot">
+          <span class="small">{% t %}What you sell{% endt %}</span>
+          <div class="scanf">ledgerpost.com<b>{% t %}Find my leads{% endt %}</b></div>
+          <p style="margin:8px 0 0;font-size:13.5px;line-height:1.5"><b style="font-weight:600">Ledgerpost</b> {% t %}sells customs software to freight forwarders above 100,000 shipments a year. Worth hunting: forwarders in the Benelux who still file by hand.{% endt %}</p>
+          <div style="display:flex;flex-wrap:wrap;gap:6px"><span class="pill">{% t %}Like Northwind{% endt %}</span><span class="pill">{% t %}A competitor’s customers{% endt %}</span><span class="pill">{% t %}Multimodal 2026 exhibitors{% endt %}</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="row2 flip">
+      <div class="shotp" aria-hidden="true">
+        <div class="shot">
+          <div style="display:flex;align-items:center;gap:12px"><span class="lg o" style="width:36px;height:36px;font-size:15px">C</span><span class="nm"><b style="font-size:15px">Calder Shipping Group</b><span>calder-shipping.com · Rotterdam</span></span><span class="fit" style="font-size:24px">84</span></div>
+          <p style="margin:4px 0 0;font-size:13.5px;line-height:1.5">{% t %}Nine people retype customs filings by hand, and their investor update names customs delay as the top drag on margin.{% endt %}</p>
+          <div class="lead" style="margin-top:4px"><span class="lg b">M</span><span class="nm"><b>Marieke de Vries</b><span>{% t %}COO · LinkedIn · work email found{% endt %}</span></span><span class="pill">{% t %}Write to{% endt %}</span></div>
+          <div class="lead"><span class="lg v">J</span><span class="nm"><b>Jonas Albers</b><span>{% t %}Head of Customs · LinkedIn{% endt %}</span></span></div>
+          <div class="note"><span class="small">{% t %}Cold email{% endt %}</span>{% t %}Marieke, you already hold the filing data for 11 of your 14 ports. Worth twenty minutes to try one?{% endt %}</div>
+        </div>
+      </div>
+      <div class="txt">
+        <p class="n">02</p>
+        <h3>{% t %}It finds the fit and writes the pitch.{% endt %}</h3>
+        <p>{% t %}Each company gets a score with the reasons on both sides, the names of the people who decide, and a first email in your voice. Wins and losses you record sharpen the next one.{% endt %}</p>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="txt">
+        <p class="n">03</p>
+        <h3>{% t %}One press, and it is in your pipeline.{% endt %}</h3>
+        <p>{% t %}Prospektor writes the company, its people, a deal in your first stage and a note with the fit and the angle. From there your team works the way it always has.{% endt %}</p>
+      </div>
+      <div class="shotp" aria-hidden="true">
+        <div class="shot">
+          <div style="display:flex;align-items:center;gap:10px"><img src="{{ '/assets/img/integrations/hubspot.svg' | asset }}" alt="" width="22" height="22"><b style="font-size:15px;font-weight:600">HubSpot</b><span class="pill dark" style="margin-left:auto">{% t %}Push to HubSpot{% endt %}</span></div>
+          <div class="kv" style="gap:8px;margin-top:6px">
+            <div><span>{% t %}Company{% endt %}</span><b>Calder Shipping Group</b></div>
+            <div><span>{% t %}Contacts{% endt %}</span><b>Marieke de Vries, Jonas Albers</b></div>
+            <div><span>{% t %}Deal{% endt %}</span><b>{% t %}New · Pilot on the Rotterdam lane{% endt %}</b></div>
+            <div><span>{% t %}Note{% endt %}</span><b>{% t %}Fit 84, the reasons and the angle{% endt %}</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{#- Pick your CRM: one button per CRM the studio connects, the setup panel
+    for the one pressed (pick.js). The steps are the help's own, with the
+    one difference per CRM the help names: HubSpot, Close and Salesforce
+    approve on their own screen, the others take a pasted key. -#}
+<section class="hs" id="connect">
+  <div class="col home-col">
+    <div style="margin-bottom:40px">
+      <h2 class="sec-h2" style="margin-bottom:14px">{% t %}Pick your CRM.<br>Connected in a minute.{% endt %}</h2>
+      <p style="margin:0;font-size:19px;color:var(--ink-mid)">{% t %}Choose the one you run to see the setup.{% endt %}</p>
+    </div>
+    {%- set crms = [
+      ['hubspot', 'HubSpot', 'oauth'], ['salesforce', 'Salesforce', 'oauth'], ['attio', 'Attio', 'key'],
+      ['close', 'Close', 'oauth'], ['affinity', 'Affinity', 'key'], ['lightfield', 'Lightfield', 'key'],
+      ['highlevel', 'HighLevel', 'key']
+    ] %}
+    <div class="pick" data-pick>
+      <ul class="pick-list" role="tablist" aria-label="{{ 'Your CRM' | t }}">
+        {%- for c in crms %}
+        <li><button type="button" role="tab" id="pick-{{ c[0] }}" aria-controls="setup-{{ c[0] }}" aria-selected="{{ 'true' if loop.first else 'false' }}"><img src="{{ ('/assets/img/integrations/' + c[0] + '.svg') | asset }}" alt="" width="22" height="22">{{ c[1] }}</button></li>
+        {%- endfor %}
+      </ul>
+      {%- for c in crms %}
+      <div class="setup" role="tabpanel" id="setup-{{ c[0] }}" aria-labelledby="pick-{{ c[0] }}"{% if not loop.first %} hidden{% endif %}>
+        <span class="small">{% t %}Setup{% endt %}</span>
+        <h3>{{ c[1] }}</h3>
+        <ol>
+          <li><i>1</i><div><b>{% t %}Open Settings, then Connectors{% endt %}</b><span>{% t %}Each app has a tile that says whether it is connected.{% endt %}</span></div></li>
+          {%- if c[2] == 'oauth' %}
+          <li><i>2</i><div><b>{% t %}Press the tile and approve Prospektor{% endt %}</b><span>{% t %}The CRM asks on its own screen. Nothing to paste.{% endt %}{% if c[0] == 'salesforce' %} {% t %}Your Salesforce admin installs the Prospektor app first; ask us for the install link.{% endt %}{% endif %}</span></div></li>
+          {%- else %}
+          <li><i>2</i><div><b>{% t %}Paste a key and press Connect{% endt %}</b><span>{% t %}The key comes from your CRM’s own settings. The tile says where.{% endt %}</span></div></li>
+          {%- endif %}
+          <li><i>3</i><div><b>{% t %}Push a finished pitch{% endt %}</b><span>{% t %}Every pitch has a Push to button named after your CRM, beside Share.{% endt %}
+            {% if c[0] == 'hubspot' %}{% t %}It writes a Company, its Contacts, a Deal in your first stage and a Note.{% endt %}
+            {%- elif c[0] == 'salesforce' %}{% t %}It writes an Account, its Contacts, an Opportunity and a Note.{% endt %}
+            {%- elif c[0] == 'attio' %}{% t %}It writes a Company, the people with a work email and a dated Note.{% endt %}
+            {%- elif c[0] == 'close' %}{% t %}It writes a Lead, its Contacts, an Opportunity and a Note.{% endt %}
+            {%- elif c[0] == 'affinity' %}{% t %}It writes the Organization onto the list you pick, with its people and a Note.{% endt %}
+            {%- elif c[0] == 'lightfield' %}{% t %}It writes an Account, the contacts with a work email, an Opportunity and a Note.{% endt %}
+            {%- else %}{% t %}It writes a Contact for each person with a work email, tagged prospektor, and a Note.{% endt %}{% endif %}</span></div></li>
+        </ol>
+        <p class="note">{% t %}One CRM at a time. Pushing the same pitch again adds no second company or person. Disconnect stops it at once; what it already sent stays in your CRM.{% endt %}</p>
+      </div>
+      {%- endfor %}
+    </div>
+    <p style="margin:28px 0 0;font-size:15px;color:var(--ink-mid)">{% t %}Slack, your own Claude or ChatGPT and a token for anything else are on the{% endt %} <a href="{{ '/integrations/' | localize }}">{% t %}integrations page{% endt %}</a>. <a href="{{ '/demo/' | localize }}">{% t %}Or click through the demo.{% endt %}</a></p>
+  </div>
+</section>
+<script src="{{ '/assets/js/pick.js' | asset }}" defer></script>
+
+<section class="hs band">
+  <div class="col home-col">
+    <h2 class="sec-h2" style="text-align:center">{% t %}Questions.{% endt %}</h2>
+    <div class="faq">
+      <details open><summary>{% t %}Does it replace my CRM?{% endt %}</summary><p>{% t %}No. Your pipeline, stages, tasks and follow-up stay where they are. Prospektor only adds the companies that fit, with their people and a note, and your team works them as before.{% endt %}</p></details>
+      <details><summary>{% t %}What exactly does a push write?{% endt %}</summary><p>{% t %}A company, its people, a deal in your first stage and a note with the fit and the angle. Push again and the same records update; nothing is duplicated.{% endt %}</p></details>
+      <details><summary>{% t %}Can I bring my own list?{% endt %}</summary><p>{% t %}Yes. Drop a spreadsheet of companies, or paste a page that lists them, and each one comes back scored.{% endt %}</p></details>
+      <details><summary>{% t %}Can my own Claude or ChatGPT do the work?{% endt %}</summary><p>{% t %}Yes. Add one connector address and your own assistant reads a company, writes the pitch and preps the call, with the same sources.{% endt %}</p></details>
+      <details><summary>{% t %}Where do the names and emails come from?{% endt %}</summary><p>{% t %}Public pages it read, each one linked. Without a source, a role stays a role.{% endt %}</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="close-band">
+  <h2>{% t %}Keep your CRM. Add Prospektor.{% endt %}</h2>
+  <p>{% t %}Scan your site and see the first three companies, free.{% endt %}</p>
+  <a class="btn-cta" href="{{ '/#scan' | localize }}">{% t %}Scan your site{% endt %}</a>
+</section>

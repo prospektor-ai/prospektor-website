@@ -191,11 +191,13 @@ describe('the test is over: no page tosses the coin or beacons (#1279)', () => {
     }
   });
 
-  test('the photos still serve the two product pages', () => {
-    if (!abtest.enabled) return;
+  // #1398 (17 Nov 2026, the Keep-your-CRM pass): the product pages draw their
+  // product pieces and carry no stock photo. The four JPEGs stay in the tree
+  // for the record of the test they were for; nothing serves them.
+  test('the two product pages carry no stock photo (#1398)', () => {
     for (const page of ['who-to-pitch', 'what-to-send']) {
       const html = fs.readFileSync(path.join(built.dir, page, 'index.html'), 'utf8');
-      assert.ok(/\/assets\/img\/tiles\/[a-z]+\.jpg/.test(html), `/${page}/ lost its photo`);
+      assert.ok(!/\/assets\/img\/tiles\/[a-z]+\.jpg/.test(html), `/${page}/ serves a stock photo again`);
     }
   });
 });

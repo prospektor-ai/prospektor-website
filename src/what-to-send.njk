@@ -19,7 +19,6 @@ permalink: "{{ language.prefix }}/what-to-send/"
     own help (docs/help/03-pitches.md, 06-calls.md, 07-outcomes.md). Do not
     soften "nothing invented": the product keeps it mechanically, which is
     why every price and date in the drawn pieces is a bracketed gap. -#}
-{%- set ph = abtest.photos %}
 
 <header class="tp-hero tp-what">
   <div class="tp-hero-in">
@@ -34,27 +33,24 @@ permalink: "{{ language.prefix }}/what-to-send/"
         <li>{% t %}Your whole team{% endt %}</li>
       </ul>
     </div>
-    {%- if ph.what %}
-    <div class="tp-shot">
-      <img src="{{ ph.what.src | asset }}" width="{{ ph.what.width }}" height="{{ ph.what.height }}" fetchpriority="high" decoding="async" alt="{% t %}Hands on a laptop with a short email on screen, a coffee beside it{% endt %}">
-      <div class="tp-chip tp-chip-a" aria-hidden="true">
+    <div class="tp-shot" aria-hidden="true">
+      <div class="tp-chip tp-chip-a">
         <div class="tp-chip-t">{% t %}Cold email{% endt %}</div>
         <b>{% t %}Harborline and Ledgerpost: the rekeying{% endt %}</b>
         <p>{% t %}Your investor update names customs delay as the top drag on margin, and nine people retype filings to get there.{% endt %}</p>
       </div>
-      <div class="tp-chip tp-chip-b" aria-hidden="true">
+      <div class="tp-chip tp-chip-b">
         <div class="tp-chip-t">{% t %}Ready{% endt %}</div>
-        <div class="tp-roles"><span>{% t %}Deck{% endt %}</span><span>{% t %}One-pager{% endt %}</span><span>{% t %}Cold email{% endt %}</span><span>{% t %}Proposal{% endt %}</span></div>
+        <div class="tp-roles"><span>{% t %}Deck{% endt %}</span><span>{% t %}One-pager{% endt %}</span><span>{% t %}Cold email{% endt %}</span><span>{% t %}Proposal{% endt %}</span><span>{% t %}Push to HubSpot{% endt %}</span></div>
       </div>
     </div>
-    {%- endif %}
   </div>
 </header>
 
 <section class="tp-sec tp-white">
   <div class="tp-in">
     <div class="tp-sh">
-      <h2>{% t %}One press per piece{% endt %}</h2>
+      <h2>{% t %}One press per piece.{% endt %}</h2>
       <p>{% t %}Each lands in under two minutes, editable and shareable at once.{% endt %}</p>
     </div>
     <div class="tp-fmts">
@@ -85,7 +81,7 @@ permalink: "{{ language.prefix }}/what-to-send/"
 <section class="tp-sec tp-dark" id="in-your-voice">
   <div class="tp-in">
     <div class="tp-sh">
-      <h2>{% t %}In your voice, and sharper with every pitch{% endt %}</h2>
+      <h2>{% t %}In your voice, and sharper with every pitch.{% endt %}</h2>
       <p>{% t %}Save an edit and later pitches are written against it. Record what happened, and every pitch after it is written from that.{% endt %}</p>
     </div>
     <div class="tp-loop" aria-hidden="true">
@@ -112,7 +108,7 @@ permalink: "{{ language.prefix }}/what-to-send/"
 
 <section class="tp-sec tp-white">
   <div class="tp-in">
-    <div class="tp-sh"><h2>{% t %}And everything around the pitch{% endt %}</h2></div>
+    <div class="tp-sh"><h2>{% t %}And everything around the pitch.{% endt %}</h2></div>
     <div class="tp-split">
       <div class="tp-pane tp-bg-intro">
         <h3>{% t %}Prepare a call{% endt %}</h3>
@@ -138,7 +134,7 @@ permalink: "{{ language.prefix }}/what-to-send/"
 
 <section class="tp-sec">
   <div class="tp-in">
-    <div class="tp-sh"><h2>{% t %}Questions{% endt %}</h2></div>
+    <div class="tp-sh"><h2>{% t %}Questions.{% endt %}</h2></div>
     <div class="tp-faq">
       <details open><summary>{% t %}What does it cost?{% endt %}</summary><p>{% t %}One workspace, one price, your whole team in.{% endt %} <a href="{{ '/pricing/' | localize }}">{% t %}See the price{% endt %}</a></p></details>
       <details><summary>{% t %}Will it make things up?{% endt %}</summary><p>{% t %}Numbers come from your brief or a cited source. Anything else becomes a bracketed placeholder for you to fill.{% endt %}</p></details>

@@ -172,7 +172,8 @@ permalink: "{{ language.prefix }}/pricing/"
 
 <header class="page-hero">
   <div class="page-hero-inner">
-    <h1 class="page-h1">{% t %}One price for your whole team{% endt %}</h1>
+    <span class="tag">{% t %}Pricing{% endt %}</span>
+    <h1 class="page-h1">{% t %}One price. Your whole team.{% endt %}</h1>
     <p class="page-lede">{% t %}Who to pitch is free. What to send is one workspace, with no seats to count and no credit meter.{% endt %}</p>
   </div>
 </header>
@@ -181,9 +182,10 @@ permalink: "{{ language.prefix }}/pricing/"
     card is the scan and the free run (#419); the paid card is the one place
     on this page with a coral button. -#}
 <section class="sec sec-first pricing-page" id="plans">
-  <div class="col">
+  <div class="col home-col">
+    <div class="panel pricing-panel">
     <div class="grid2 price">
-      <div class="hcard">
+      <div class="hcard band">
         <p class="hcard-q">{% t %}Who to pitch{% endt %}</p>
         <b class="big">{% t %}Free{% endt %}</b>
         <p class="per">{% t %}No card, no sign-up to start{% endt %}</p>
@@ -238,6 +240,7 @@ permalink: "{{ language.prefix }}/pricing/"
         </div>
       </div>
     </div>
+    </div>
   </div>
 </section>
 {#- defer (#137). Every one of these is an IIFE that looks its elements up by
@@ -248,9 +251,9 @@ permalink: "{{ language.prefix }}/pricing/"
 <script src="{{ '/assets/js/signup.js' | asset }}" defer></script>
 <script src="{{ '/assets/js/plan.js' | asset }}" defer></script>
 
-<section class="pricing-faq">
+<section class="pricing-faq band">
   <div class="pricing-faq-inner">
-    <h2>{% t %}The money questions{% endt %}</h2>
+    <h2>{% t %}The money questions.{% endt %}</h2>
     <dl class="pricing-faq-list">
       <div class="pricing-faq-item">
         <dt>{% t %}What counts as a workspace?{% endt %}</dt>
@@ -327,4 +330,11 @@ permalink: "{{ language.prefix }}/pricing/"
       </div>
     </dl>
   </div>
+</section>
+
+{#- The close (#1398): the free half first, the same press as the home page's. -#}
+<section class="close-band">
+  <h2>{% t %}Start with the free half.{% endt %}</h2>
+  <p>{% t %}Scan your site and see the first three companies. Pay only when you want what to send them.{% endt %}</p>
+  <a class="btn-cta" href="{{ '/#scan' | localize }}">{% t %}Scan your site{% endt %}</a>
 </section>
