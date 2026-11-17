@@ -49,6 +49,18 @@
   to = "/help/"
   status = 301
 
+# #1397, 17 Nov 2026: the Reevo page is gone (the operator: a competitor), and
+# its URL lands on the directory, in every language.
+[[redirects]]
+  from = "/integrations/reevo/*"
+  to = "/integrations/"
+  status = 301
+
+[[redirects]]
+  from = "/:lang/integrations/reevo/*"
+  to = "/:lang/integrations/"
+  status = 301
+
 [[redirects]]
   from = "/help/pitches/*"
   to = "/help/write-a-pitch/"
