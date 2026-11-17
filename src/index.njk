@@ -229,8 +229,12 @@ permalink: "{{ language.prefix }}/"
         <div class="fm-bus" aria-hidden="true"><span class="v"></span><span class="h bot"></span><span class="v"></span></div>
         <p class="fm-cap">{% t %}Your CRM{% endt %}</p>
         <div class="fm-row crm">
-          {%- for c in [['hubspot', 'HubSpot'], ['attio', 'Attio'], ['close', 'Close'], ['affinity', 'Affinity'], ['lightfield', 'Lightfield'], ['reevo', 'Reevo'], ['highlevel', 'HighLevel']] %}
-          <a class="fm-out" data-step="crm" href="{{ ('/integrations/' + c[0] + '/') | localize }}"><span class="fm-ic"><img src="{{ ('/assets/img/integrations/' + c[0] + '.svg') | asset }}" alt="" width="22" height="22"></span><span class="fm-lbl">{{ c[1] }}</span></a>
+          {#- The operator, 17 Nov 2026: "keep reevo out as they're quite
+              competitive to what we do. Also use the actual CRMs we have
+              (Salesforce is missing)". Salesforce has no page of its own yet,
+              so its tile opens the directory. -#}
+          {%- for c in [['hubspot', 'HubSpot'], ['salesforce', 'Salesforce'], ['attio', 'Attio'], ['close', 'Close'], ['affinity', 'Affinity'], ['lightfield', 'Lightfield'], ['highlevel', 'HighLevel']] %}
+          <a class="fm-out" data-step="crm" href="{{ (('/integrations/' + c[0] + '/') if c[0] != 'salesforce' else '/integrations/') | localize }}"><span class="fm-ic"><img src="{{ ('/assets/img/integrations/' + c[0] + '.svg') | asset }}" alt="" width="22" height="22"></span><span class="fm-lbl">{{ c[1] }}</span></a>
           {%- endfor %}
         </div>
         <p class="fm-foot">{% t %}Your sales process runs there, as it does today.{% endt %}</p>
