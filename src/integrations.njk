@@ -67,5 +67,12 @@ permalink: "{{ language.prefix }}/integrations/"
     settings, or <a href="mailto:hello@prospektor.ai">write to us</a>. The one
     asked for most is the one we build next.{% endt %}
   </p>
-  <a class="btn-ghost" href="{{ '/pricing/' | localize }}">{% t %}One price, the whole box →{% endt %}</a>
+</section>
+
+{#- The close (#1398): the same band every funnel page ends on. -#}
+<section class="close-band">
+  <h2>{% t %}Keep your CRM. Add Prospektor.{% endt %}</h2>
+  <p>{% t %}Scan your site and see the first three companies, free.{% endt %}</p>
+  <a class="btn-cta" href="{{ '/#scan' | localize }}">{% t %}Scan your site{% endt %}</a>
+  <span class="quiet"><a href="{{ '/pricing/' | localize }}">{% t %}One price, the whole box →{% endt %}</a></span>
 </section>

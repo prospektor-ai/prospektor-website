@@ -241,7 +241,7 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
       const page = await browser.newPage({ viewport: vp });
       await page.goto('http://localhost:8899/');
       const m = await page.evaluate(() => {
-        const cols = [...document.querySelectorAll('#what a.pcol')];
+        const cols = [...document.querySelectorAll('#what .icons6 > a')];
         const tops = cols.map(t => Math.round(t.getBoundingClientRect().top));
         return {
           n: cols.length,
@@ -252,14 +252,14 @@ const check = (n, c, x) => { if (c) { pass++; console.log('  ok  ', n); } else {
           // body is overflow-x:hidden, so the page's scrollWidth alone would
           // hide a column that ran off the edge; measure what is drawn as well.
           scroll: Math.max(document.documentElement.scrollWidth,
-            ...[...document.querySelectorAll('.home-sec *')].map(e => Math.ceil(e.getBoundingClientRect().right))) - window.innerWidth,
+            ...[...document.querySelectorAll('.hs *')].map(e => Math.ceil(e.getBoundingClientRect().right))) - window.innerWidth,
         };
       });
       const w = `${vp.width}px`;
-      check(`four columns under the hero (${w})`,
-        m.n === 4 && m.heads.join('|') === 'Find the right companies|Reach the people who decide|Know what to say|Sharper every pitch', m.heads);
-      check(`the columns sit ${vp.width > 960 ? 'four across' : 'one to a row'} (${w})`,
-        m.rows === (vp.width > 960 ? 1 : 4), m.rows);
+      check(`six items under What you get (${w})`,
+        m.n === 6 && m.heads.join('|') === 'Companies that fit|The people who decide|Warm intros|The pitch, in your voice|A sheet for every call|Sharper every pitch', m.heads);
+      check(`the items sit ${vp.width > 960 ? 'three across' : 'one to a row'} (${w})`,
+        m.rows === (vp.width > 960 ? 2 : 6), m.rows);
       check(`every column is a link into a product page, its icon hidden from a screen reader (${w})`,
         m.hidden && m.hrefs.every(h => /^\/(who-to-pitch|what-to-send)\//.test(h)), m.hrefs);
       check(`the homepage does not scroll sideways (${w})`, m.scroll <= 0, m.scroll);

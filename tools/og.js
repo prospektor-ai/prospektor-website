@@ -224,7 +224,7 @@ function siteCard() {
  * is the hero in picture form (#453), and test/assets.test.js holds both
  * against src/index.njk so the picture cannot outlive the words again.
  */
-const TAGLINE_LINE = 'Give it your website. It finds the companies worth approaching and writes the pitch in your voice.';
+const TAGLINE_LINE = 'Give it your website. It finds the companies worth approaching, names who decides, writes the first email and puts each one into your CRM.';
 /** The hero's own headline, split where the card breaks the line; the second half is the coral one. */
 const HEADLINE = ['Find Leads.', 'That fit you.'];
 
