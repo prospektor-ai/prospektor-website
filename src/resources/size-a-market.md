@@ -6,18 +6,20 @@ description: "The powers-of-ten market sizing test, why total reachable market b
 topic: targeting
 learnings: powers-of-ten, trm-not-tam, size-the-segment-first
 date: 2026-08-21
+updated: 2026-11-23
 readingTime: 6
 ogImage: /assets/img/og/size-a-market.png
 ---
 
-Here is a way to lose two quarters. Pick a plausible customer segment. Build a
-list. Write good outreach. Run it properly. Discover, in month five, that even if
-the campaign had worked perfectly it could not have produced the number you
-needed, because there were never enough companies in the segment paying enough
-money.
+A segment is worth working when four crude numbers, multiplied on the back of an
+envelope, land within a power of ten of the revenue you need. If they do not, no
+campaign will rescue it, and the test takes about four minutes.
 
-That failure is entirely preventable, and the prevention takes about four minutes.
-It is deliberately crude, and the crudeness is the point.
+The failure it prevents is common and slow. Pick a plausible customer segment.
+Build a list. Write good outreach. Run it properly. Discover, in month five, that
+even a perfect campaign could not have produced the number you needed, because
+there were never enough companies in the segment paying enough money. The test is
+deliberately crude, and the crudeness is the point.
 
 ## The four numbers
 
@@ -31,10 +33,10 @@ It is deliberately crude, and the crudeness is the point.
 
 Then apply the only rule that matters:
 
-> If it's not even within a power of 10 of what I want, then it's just not the
-> answer. The numbers are just too small. Now, obviously we made up all those
-> numbers and they're not exactly right. But if it's off by a whole power of ten,
-> it's just wrong.
+> If it's not even within a power of 10 of what I want, then it's just … it's not
+> the answer. The numbers are just too small. Now, obviously we made up all those
+> numbers and they're not exactly right, of course. But if it's off by a whole
+> power of ten, it's just wrong.
 >
 > Jason Cohen
 
@@ -47,11 +49,9 @@ magnitude, and a startling number of plans are.
 In a live teardown of ScreenshotOne, a screenshot API doing $32k/month, this test
 was run three times against the founder's three best customer use cases.
 
-**Integration testing for hosting providers.** How many companies host more than a
-hundred websites? Call it 10,000. What share could be convinced to rebuild their
-deploy pipeline around screenshots? The founder's optimistic answer was 10%;
-Cohen's was 1%. At $300/month, 1% is **$30,000/month**, against a $100,000 goal.
-Off by a factor of three at best, and that assumed the optimistic conversion.
+**Integration testing for hosting providers.** How many companies host enough
+websites to want this? Call it 10,000. Convert 1% of them. At $300 a month that is
+**$30,000 a month**, a tenth of the goal. Dead on the multiplication.
 
 **Screenshots inside cold email.** How many companies in the world would want this,
 ever? The founder's own estimate of the *entire global market* was about a
@@ -80,7 +80,7 @@ from the one most market-sizing decks run.
 
 ## Reachable, not addressable
 
-Which is the second half of this. The standard TAM slide answers *how much money
+That is the second half of the test. The standard TAM slide answers *how much money
 exists in this category*, a number that is essentially never the constraint for a
 company doing outbound with a small team. Rob Walling's version replaces it with
 **total reachable market**: how many you can get in front of, with the
@@ -93,7 +93,9 @@ conversations a month, your reachable market this year is about five hundred
 companies. Every plan should be built against **that** number.
 
 The practical consequence is counter-intuitive: a smaller, denser segment usually
-beats a larger, diffuse one, because reachability collapses with diffusion. Ten
+beats a larger, diffuse one, because reachability collapses with diffusion. It is
+the arithmetic behind [niching down](/resources/niche-down/) and behind
+[picking the pond where your wins already cluster](/resources/the-best-pond-is-not-the-biggest/). Ten
 thousand companies who all attend the same two conferences, read the same
 newsletter and hire from each other are worth more than a million companies with
 nothing in common: the second group has a bigger TAM and a smaller TRM.
